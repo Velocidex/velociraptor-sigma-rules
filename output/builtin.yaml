@@ -1,0 +1,1977 @@
+title: Bits Job Created
+logsource:
+  product: windows
+  service: bits-client
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-Bits-Client/Operational
+    EventID: 59
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/BitsClient_Op/BitsCli_59_Info_BitsJobCreated.yml
+details: 'JobTitle: %JobTitle% ¦ URL: %Url%'
+
+---
+title: Recursive DNS Request
+logsource:
+  product: windows
+  description: 'Requirements: Microsoft-Windows-DNS-Server/Analytical ({EB79061A-A566-4698-9119-3ED2807060E7}) Event Log must be collected in order to receive the events.'
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-DNS-Server/Analytical
+    EventID: 260
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/DNS-Server/DNS-ServerAnalytical_260_Info_DNS-Request.yml
+
+---
+title: Recursive DNS Response
+logsource:
+  product: windows
+  description: 'Requirements: Microsoft-Windows-DNS-Server/Analytical ({EB79061A-A566-4698-9119-3ED2807060E7}) Event Log must be collected in order to receive the events.'
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-DNS-Server/Analytical
+    EventID: 261
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/DNS-Server/DNS-ServerAnalytical_261_Info_DNS-Response.yml
+
+---
+title: USB Plugged In
+logsource:
+  product: windows
+  description: Logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-DriverFrameworks-UserMode/Operational
+    EventID: 2003
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/DriverFrameworks_UserMode_Op/DvrFmwk_2003_Info_USB-PluggedIn.yml
+details: 'InstanceID: %InstanceId%'
+
+---
+title: Office App PopUp
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: OAlerts
+    EventID: 300
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/OAlerts/OAlerts_300_Info_OfficeAppPopUp.yml
+details: 'App: %Data[1]% ¦ Msg: %Data[2]% ¦ Ver: %Data[4]%'
+
+---
+title: PwSh 2.0 Downgrade Attack
+logsource:
+  product: windows
+  service: powershell
+detection:
+  condition: selection
+  selection:
+    Channel: Windows PowerShell
+    EventID: 400
+    Data|contains: EngineVersion=2
+author: Yusuke Matsui, Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/PowerShellClassic/PwShClassic_400_Med_PwShStarted_V2DowngradeAttack.yml
+details: 'Data: %Data[3]%'
+
+---
+title: PwSh Pipeline Exec
+logsource:
+  product: windows
+  service: powershell
+  description: Powershell module logging needs to be turned on.
+detection:
+  condition: (select_channel and select_eid)
+  select_channel:
+    - Microsoft-Windows-PowerShell/Operational
+    - PowerShellCore/Operational
+  select_eid:
+    EventID: 4103
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/PowerShell_Op/PwSh_4103_Info_PipelineExecution.yml
+
+---
+title: PwSh Scriptblock
+logsource:
+  product: windows
+  service: powershell
+  description: Powershell script block logging needs to be turned on.
+detection:
+  condition: (select_channel and select_eid and not filter_level_warning)
+  filter_level_warning:
+    Level: 3
+  select_channel:
+    - Microsoft-Windows-PowerShell/Operational
+    - PowerShellCore/Operational
+  select_eid:
+    EventID: 4104
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/PowerShell_Op/PwSh_4104_Info_ScriptblockLog.yml
+
+---
+title: Potentially Malicious PwSh
+logsource:
+  product: windows
+  service: powershell
+  description: Default with PwSh 5+ (Ex. Win 10+)
+detection:
+  condition: (select_channel and select_eid and select_level_warning)
+  select_channel:
+    - Microsoft-Windows-PowerShell/Operational
+    - PowerShellCore/Operational
+  select_eid:
+    EventID: 4104
+  select_level_warning:
+    Level: 3
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/PowerShell_Op/PwSh_4104_Med_ScriptblockLog_PotentiallyMalicious.yml
+
+---
+title: NTLM Auth
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4776
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/CredentialValidation/Sec_4776_Info_NTLM-Auth.yml
+
+---
+title: Kerberos TGT Requested
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4768
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4768_Info_KrbTGT-Req.yml
+
+---
+title: Possible AS-REP Roasting (RC4 Kerberos Ticket Req)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4768
+    TicketEncryptionType: "0x17"
+    PreAuthType: "0"
+author: Yusuke Matsui, Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4768_Med_KrbTGT-Req_PossibleAS-REP-Roasting.yml
+
+---
+title: Possible Kerberoasting (RC4 Kerberos Ticket Req)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4769
+    TicketEncryptionType: "0x17"
+author: Yusuke Matsui, Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4769_Med_KerberosTGT-Request_PossibleKerberoasting.yml
+
+---
+title: Kerberos Service Ticket Requested
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4769
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/KerberosServiceTicketOperations/Sec_4769_Info_KrbSvcTktReq.yml
+
+---
+title: User Added To Global Domain Admins Grp
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    SubjectUserName|endswith: $
+  selection:
+    Channel: Security
+    EventID: 4728
+    TargetUserName: Domain Admins
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_High_MemberAddedToGlobalGrp_DomainAdmins.yml
+
+---
+title: User Added To Non-Admin Global Grp
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    - TargetUserName: Administrators
+    - TargetUserName: None
+    - TargetUserName: Domain Admins
+  selection:
+    Channel: Security
+    EventID: 4728
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_Low_MemberAddedToGlobalGrp_NonAdmin.yml
+
+---
+title: User Added To Global Security Grp
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    - SubjectUserName|endswith: $
+    - TargetUserName: None
+  selection:
+    Channel: Security
+    EventID: 4728
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_Med_MemberAddedToGlobalGroup.yml
+
+---
+title: User Added To Local Admin Grp
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4732
+    TargetUserName: Administrators
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4732_High_MemberAddedToLocalGrp_Administrators.yml
+
+---
+title: User Added To Local Domain Admins Grp
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4732
+    TargetUserName: Domain Admins
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4732_High_MemberAddedToLocalGrp_DomainAdmins.yml
+
+---
+title: Hidden User Account Created
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4720
+    TargetUserName|endswith: $
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/UserAccountManagement/Sec_4720_High_AcctCreated_PossibleHiddenUserAcct.yml
+
+---
+title: Local User Account Created
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    TargetUserName|endswith: $
+  selection:
+    Channel: Security
+    EventID: 4720
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/UserAccountManagement/Sec_4720_Info_AcctCreated_UsrAcctCreated.yml
+
+---
+title: Dir Svc Obj Modified
+logsource:
+  product: windows
+  service: security
+  description: 'The modified object must have an appropriate entry in SACL: the Write action auditing for specific attributes.'
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 5136
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DS-Access/DirectoryServiceChanges/Sec_5136_Info_DirSvcObjModified.yml
+
+---
+title: Log Cleared
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Security
+    EventID: 1102
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/Default/Sec_1102_High_SecLogCleared.yml
+
+---
+title: Credential Manager Accessed
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and not filter)
+  filter:
+    - CountOfCredentialsReturned: 0
+    - SubjectUserName: LOCAL SERVICE
+    - SubjectUserName|endswith: $
+  selection_basic:
+    Channel: Security
+    EventID: 5379
+    ReadOperation: '%%8099'
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/Default/Sec_5397_Low_CredentialManagerAccessed.yml
+
+---
+title: Credential Manager Enumerated
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and not filter)
+  filter:
+    - CountOfCredentialsReturned: 0
+    - SubjectUserName: LOCAL SERVICE
+    - SubjectUserName|endswith: $
+  selection_basic:
+    Channel: Security
+    EventID: 5379
+    ReadOperation: '%%8100'
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/Default/Sec_5397_Low_CredentialManagerEnumerated.yml
+
+---
+title: Proc Exec
+logsource:
+  product: windows
+  service: security
+  description: Process Creation with command line option logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4688
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Info_ProcExec.yml
+
+---
+title: Susp CmdLine (Possible LOLBIN)
+logsource:
+  product: windows
+  service: security
+  description: Process Creation with command line option logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4688
+    CommandLine|contains: ' '
+    NewProcessName:
+      regexes: ./rules/config/regex/LOLBAS_paths.txt
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Low_ProcExec_PossibleLOLBIN-Abuse.yml
+
+---
+title: Susp CmdLine (Possible Meterpreter getsystem)
+logsource:
+  product: windows
+  service: security
+  description: Process Creation with command line option logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4688
+    NewProcessName|endswith: cmd.exe
+    CommandLine|contains: .\pipe
+author: Zach Mathis, Eric Conrad
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Med_ProcExec_MeterpreterGetSystem.yml
+
+---
+title: Possible RDP Hijacking
+logsource:
+  product: windows
+  service: security
+  description: Process Creation with command line option logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4688
+    CommandLine: '*/dest*rdp-tcp*'
+author: rukawa
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Med_ProcExec_RDP-Hijacking.yml
+
+---
+title: Logoff
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    - TargetUserName|endswith: $
+    - TargetUserName|re: (DWM|UMFD)-([0-9]|1[0-2])$
+  selection:
+    Channel: Security
+    EventID: 4634
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4634_Info_Logoff.yml
+details: 'User: %TargetUserName% ¦ LID: %TargetLogonId% ¦ Type: %LogonType%'
+
+---
+title: Logoff (Noisy)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and selection_noisy)
+  selection:
+    Channel: Security
+    EventID: 4634
+  selection_noisy:
+    - TargetUserName|endswith: $
+    - TargetUserName|re: (DWM|UMFD)-([0-9]|1[0-2])$
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4634_Info_Logoff_Noisy.yml
+details: 'User: %TargetUserName% ¦ LID: %TargetLogonId% ¦ Type: %LogonType%'
+
+---
+title: Logoff (User Initiated)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4647
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4647_Info_LogoffUserInitiated.yml
+details: 'User: %TargetUserName% ¦ LID: %TargetLogonId%'
+
+---
+title: Logon (System) - Bootup
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 0
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-0-System.yml
+
+---
+title: Logon (RemoteInteractive (RDP)) *Creds in memory*
+logsource: {}
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 10
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-10-RemoteInteractive.yml
+
+---
+title: Logon (CachedInteractive) *Creds in memory*
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 11
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-11-CachedInteractive.yml
+
+---
+title: Logon (CachedRemoteInteractive) *Creds in memory*
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 12
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-12-CachedRemoteInteractive.yml
+
+---
+title: Logon (CachedUnlock) *Creds in memory*
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 13
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-13-CachedUnlock.yml
+
+---
+title: Logon (Interactive) *Creds in memory*
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    IpAddress: '-'
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 2
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-2-Interactive.yml
+
+---
+title: Logon (Interactive) (Noisy)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 2
+    IpAddress: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-2-Interactive_Noisy.yml
+
+---
+title: Logon (Network)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not 1 of filter*)
+  filter_computer_accounts:
+    TargetUserName|endswith: $
+  filter_local_ip_address:
+    - IpAddress: '-'
+    - IpAddress: 127.0.0.1
+    - IpAddress: ::1
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 3
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-3-Network.yml
+
+---
+title: Logon (Network) (Noisy)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (select_basic and 1 of selection*)
+  select_basic:
+    Channel: Security
+    EventID: 4624
+    LogonType: 3
+  selection_local_ip_address:
+    - IpAddress: '-'
+    - IpAddress: 127.0.0.1
+    - IpAddress: ::1
+  selection_target_computer:
+    TargetUserName|endswith: $
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-3-Network_Noisy.yml
+
+---
+title: Logon (Batch)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: []
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 4
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-4-Batch.yml
+
+---
+title: Logon (Service)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    TargetUserName:
+      - SYSTEM
+      - NETWORK SERVICE
+      - LOCAL SERVICE
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 5
+author: Zach Mathis
+level: info
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-5-Service.yml
+
+---
+title: Logon (Service) (Noisy)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and selection_system_noise)
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 5
+  selection_system_noise:
+    TargetUserName:
+      - SYSTEM
+      - NETWORK SERVICE
+      - LOCAL SERVICE
+author: Zach Mathis
+level: info
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-5-Service_Noisy.yml
+
+---
+title: Logon (Unlock)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 7
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-7-Unlock.yml
+
+---
+title: Logon (NetworkCleartext)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 8
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-8-NetworkCleartext.yml
+
+---
+title: Logon (NewCredentials) *Creds in memory*
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4624
+    LogonType: 9
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-9-NewInteractive.yml
+
+---
+title: Possible Token Impersonation
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and selection_TokenImpersonationCharacteristics)
+  selection_TokenImpersonationCharacteristics:
+    LogonType: 9
+    ImpersonationLevel|contains: 1833
+    SubjectUserName|equalsfield: TargetUserName
+  selection_basic:
+    Channel: Security
+    EventID: 4624
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml
+
+---
+title: NewInteractive Logon (Suspicous Process)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and not filter_ProcessAllowlist)
+  filter_ProcessAllowlist:
+    ProcessName: C:\Windows\System32\svchost.exe
+  selection_basic:
+    Channel: Security
+    EventID: 4624
+    LogonType: 9
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_SuspProc.yml
+
+---
+title: Logon Failure (User Does Not Exist)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and selection_user_not_exist)
+  selection_basic:
+    Channel: Security
+    EventID: 4625
+  selection_user_not_exist:
+    SubStatus: "0xc0000064"
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_NonExistantUser.yml
+
+---
+title: Logon Failure (Unknown Reason)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    - SubStatus: "0xc0000064"
+    - SubStatus: "0xc000006a"
+  selection:
+    Channel: Security
+    EventID: 4625
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_UnknownErr.yml
+details: 'Type: %LogonType% ¦ TgtUser: %TargetUserName% ¦ SrcComp: %WorkstationName% ¦ SrcIP: %IpAddress% ¦ AuthPkg: %AuthenticationPackageName% ¦ Proc: %ProcessName% ¦ SubStatus: %SubStatus%'
+
+---
+title: Logon Failure (Wrong Password)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and selection_wrong_password)
+  selection_basic:
+    Channel: Security
+    EventID: 4625
+  selection_wrong_password:
+    SubStatus: "0xc000006a"
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_WrongPW.yml
+
+---
+title: Explicit Logon
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and not 1 of filter*)
+  filter_ComputerAccounts:
+    - TargetUserName|endswith: $
+    - SubjectUserName|endswith: $
+  filter_SuspiciousProcess:
+    - ProcessName|endswith: powershell.exe
+    - ProcessName|endswith: WMIC.exe
+  filter_SystemAccounts:
+    TargetUserName|re: (DWM|UMFD)-([0-9]|1[0-3])$
+    IpAddress: '-'
+  selection_basic:
+    Channel: Security
+    EventID: 4648
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Info_ExplicitLogon.yml
+
+---
+title: Explicit Logon (Noisy)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and not filter_SuspiciousProcess and 1 of selection_system_noise*)
+  filter_SuspiciousProcess:
+    - ProcessName|endswith: powershell.exe
+    - ProcessName|endswith: WMIC.exe
+  selection_basic:
+    Channel: Security
+    EventID: 4648
+  selection_system_noise_1:
+    - TargetUserName|endswith: $
+    - SubjectUserName|endswith: $
+  selection_system_noise_2:
+    TargetUserName|re: (DWM|UMFD)-([0-9]|1[0-3])$
+    IpAddress: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Info_ExplicitLogon_Noisy.yml
+
+---
+title: Explicit Logon (Suspicious Process)
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection_basic and selection_SuspiciousProcess and not (selection_TargetUserIsComputerAccount and not filter_SubjectUserIsComputerAccount) and not filter_SystemAccounts and not filter_UsersAndTargetServerAreComputerAccounts)
+  filter_SubjectUserIsComputerAccount:
+    SubjectUserName|endswith: $
+  filter_SystemAccounts:
+    TargetUserName|re: (DWM|UMFD)-([0-9]|1[0-3])$
+    IpAddress: '-'
+  filter_UsersAndTargetServerAreComputerAccounts:
+    SubjectUserName|endswith: $
+    TargetUserName|endswith: $
+    TargetInfo|endswith: $
+  selection_SuspiciousProcess:
+    - ProcessName|endswith: powershell.exe
+    - ProcessName|endswith: WMIC.exe
+  selection_TargetUserIsComputerAccount:
+    TargetUserName|endswith: $
+    IpAddress: '-'
+  selection_basic:
+    Channel: Security
+    EventID: 4648
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_SuspProc.yml
+
+---
+title: RDP Session Reconnect
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4778
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/OtherLogonLogoffEvents/Sec_4778_Info_RDP-SessReconn.yml
+
+---
+title: RDP Session Disconnect
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4779
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/OtherLogonLogoffEvents/Sec_4779_Info_RDP-SessDisconn.yml
+
+---
+title: Admin Logon
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    - SubjectUserName: SYSTEM
+    - SubjectUserName: LOCAL SERVICE
+    - SubjectUserName: NETWORK SERVICE
+    - SubjectUserName|endswith: $
+    - SubjectUserName|re: (DWM)-([0-9]|1[0-3])$
+    - SubjectUserName: DefaultAppPool
+    - SubjectUserName: IUSR
+  selection:
+    Channel: Security
+    EventID: 4672
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/SpecialLogon/Sec_4672_Info_AdminLogon.yml
+
+---
+title: NetShare File Access
+logsource:
+  product: windows
+  service: security
+  description: Logging needs to be turned on.
+detection:
+  condition: (selection and not filter)
+  filter:
+    - ShareLocalPath: ""
+    - ShareLocalPath: "null"
+    - ShareName: \\*\IPC$
+    - RelativeTargetName: \
+  selection:
+    Channel: Security
+    EventID: 5145
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/DetailedFileShare/Sec_5145_Info_NetShareFileAccess.yml
+
+---
+title: NetShare Access
+logsource:
+  product: windows
+  service: security
+  description: Logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 5140
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/FileShare/Sec_5140_Info_NetShareAccess.yml
+
+---
+title: Net Conn
+logsource:
+  product: windows
+  service: security
+  description: Logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 5156
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/FilteringPlatformConnection/Sec_5156_Info_NetConn.yml
+
+---
+title: Net Conn Blocked
+logsource:
+  product: windows
+  service: security
+  description: Logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 5157
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/FilteringPlatformConnection/Sec_5157_Info_NetConnBlocked.yml
+
+---
+title: Task Created
+logsource:
+  product: windows
+  service: security
+  description: Other Object Access Events needs to be turned on.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Security
+    EventID: 4698
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/OtherObjectAccessEvents/Sec_4698_Info_TaskCreated.yml
+
+---
+title: Task Deleted
+logsource:
+  product: windows
+  service: security
+  description: Other Object Access Events needs to be turned on.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Security
+    EventID: 4699
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/OtherObjectAccessEvents/Sec_4699_Info_TaskDeleted.yml
+
+---
+title: Process Ran With High Privilege
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and not filter)
+  filter:
+    - ProcessName: C:\Windows\System32\net.exe
+    - ProcessName: C:\Windows\System32\lsass.exe
+    - ProcessName: C:\Windows\System32\audiodg.exe
+    - ProcessName: C:\Windows\System32\svchost.exe
+    - ProcessName: C:\Windows\System32\mmc.exe
+    - ProcessName: C:\Windows\System32\net.exe
+    - ProcessName: C:\Windows\explorer.exe
+    - ProcessName: C:\Windows\System32\SettingSyncHost.exe
+    - ProcessName: C:\Windows\System32\sdiagnhost.exe
+    - ProcessName: C:\Windows\System32\dwm.exe
+    - ProcessName: C:\Windows\System32\WinSAT.exe
+    - ProcessName|endswith: ngentask.exe
+    - ProcessName: C:\Windows\System32\taskhostw.exe
+    - ProcessName|startswith: C:\Program Files
+    - SubjectUserName: LOCAL SERVICE
+  selection:
+    Channel: Security
+    EventID: 4673
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/PrivilegeUse/Sec_4673_Med_PrivSvcCalled_UnknownProcUsedHighPriv.yml
+
+---
+title: Possible Hidden Service Created
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: (selection and selection_process_name)
+  selection:
+    Channel: Security
+    EventID: 4674
+    ObjectType: SERVICE OBJECT
+    AccessMask|contains: '%%1539'
+  selection_process_name:
+    - ProcessName: C:\Windows\System32\services.exe
+    - ProcessName: C:\Windows\SysWOW64\services.exe
+author: Joshua Wright, Zach Mathis (rule creation)
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/PrivilegeUse/Sec_4674_Med_OpAttemptOnPrivObj_PossibleHiddenSvcCreationAttempt.yml
+
+---
+title: RDP Denied
+logsource:
+  product: windows
+  service: security
+  description: Logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4825
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/OtherSystemEvents/Sec_4825_Low_RDP-Denied.yml
+
+---
+title: Svc Installed
+logsource:
+  product: windows
+  service: security
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 4697
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/SecuritySystemExtension/Sec_4697_Info_SvcInstalled.yml
+
+---
+title: Code Integrity Error (Invalid Image Hash)
+logsource:
+  product: windows
+  service: security
+  description: Logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 5038
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/SystemIntegrity/Sec_5038_Low_CodeIntegrityErr_InvalidImgHash.yml
+details: 'Path: %param1%'
+
+---
+title: Code Integrity Error (Invalid Image Page Hash)
+logsource:
+  product: windows
+  service: security
+  description: Logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 6281
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/SystemIntegrity/Sec_6281_Low_CodeIntegrityErr_InvalidImgPageHash.yml
+details: 'Path: %param1%'
+
+---
+title: Code Integrity Proble (Possible Modification)
+logsource:
+  product: windows
+  service: security
+  description: Logging needs to be turned on.
+detection:
+  condition: selection
+  selection:
+    Channel: Security
+    EventID: 6410
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/SystemIntegrity/Sec_6410_Low_CodeIntegrityErr_RequirementsNotMet.yml
+details: 'Path: %param1%'
+
+---
+title: Important Log File Cleared
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    Provider_Name: Microsoft-Windows-Eventlog
+    EventID: 104
+    LogFileClearedChannel:
+      - Application
+      - Microsoft-Windows-Windows Defender/Operational
+      - Microsoft-Windows-AppLocker/EXE and DLL
+      - Microsoft-Windows-PowerShell/Operational
+      - Microsoft-Windows-Sysmon/Operational
+      - Microsoft-Windows-TaskScheduler/Operational
+      - OpenSSH/Operational
+      - Security
+      - System
+      - Windows PowerShell
+author: Florian Roth (Nextron Systems), Tim Shelton, Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_104_High_ImportantLogCleared.yml
+details: 'Log: %LogFileClearedChannel% ¦ User: %LogFileClearedSubjectUserName%'
+
+---
+title: Log File Cleared
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: (selection and not filter)
+  filter:
+    LogFileClearedChannel:
+      - Application
+      - Microsoft-Windows-Windows Defender/Operational
+      - Microsoft-Windows-AppLocker/EXE and DLL
+      - Microsoft-Windows-PowerShell/Operational
+      - Microsoft-Windows-Sysmon/Operational
+      - Microsoft-Windows-TaskScheduler/Operational
+      - OpenSSH/Operational
+      - Security
+      - System
+      - Windows PowerShell
+  selection:
+    Channel: System
+    Provider_Name: Microsoft-Windows-Eventlog
+    EventID: 104
+author: Florian Roth (Nextron Systems), Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_104_Med_LogCleared.yml
+details: 'Log: %LogFileClearedChannel% ¦ User: %LogFileClearedSubjectUserName%'
+
+---
+title: New Non-USB PnP Device
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: (selection and not filter_non_USB)
+  filter_non_USB:
+    DeviceInstanceID|startswith: USB
+  selection:
+    Channel: System
+    EventID: 20001
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_20001_Info_NewNonUSB-PnP-Device_Noisy.yml
+details: 'DeviceID: %DeviceInstanceID% ¦ Provider: %DriverProvider% ¦ Description: %DriverDescription% ¦ Status: %InstallStatus%'
+
+---
+title: New USB PnP Device
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 20001
+    DeviceInstanceID|startswith: USB
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_20001_Info_NewUSB-PnP-Device.yml
+details: 'DeviceID: %DeviceInstanceID% ¦ Provider: %DriverProvider% ¦ Description: %DriverDescription% ¦ Status: %InstallStatus%'
+
+---
+title: Event Log Svc Started
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 6005
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_6005_Info_EventLogSvcStarted.yml
+details: '-'
+
+---
+title: Event Log Svc Stopped
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 6006
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_6006_Info_EventLogSvcStopped.yml
+details: '-'
+
+---
+title: Unexpected Shutdown
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 6008
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_6008_Low_UnexpectedShutdown.yml
+
+---
+title: Service Crashed
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 7031
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7031_Low_ServiceCrashed.yml
+details: 'Svc: %param1% ¦ CrashCount: %param2% ¦ Action: %param5%'
+
+---
+title: Service Crashed
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 7034
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7034_Low_ServiceCrashed.yml
+details: 'Svc: %param1% ¦ CrashCount: %param2%'
+
+---
+title: Event Log Service Startup Type Changed To Disabled
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 7040
+    param1: Windows Event Log
+    param3: disabled
+author: Eric Conrad, Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7040_Med_EventLogServiceStartupDisabled.yml
+details: 'OldSetting: %param2% ¦ NewSetting: %param3%'
+
+---
+title: Malicious Svc Possibly Installed
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: (selection and (selection_SuspiciousServiceNames or selection_SuspiciousPathNames))
+  selection:
+    Channel: System
+    EventID: 7045
+    ImagePath:
+      allowlist: ./rules/config/regex/allowlist_legitimate_services.txt
+  selection_SuspiciousPathNames:
+    ImagePath:
+      - regexes: ./rules/config/regex/detectlist_suspicous_services.txt
+      - min_length: 300
+  selection_SuspiciousServiceNames:
+    ServiceName:
+      - regexes: ./rules/config/regex/detectlist_suspicous_services.txt
+      - min_length: 100
+author: Eric Conrad, Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_High_ServiceInstalled_PossiblyMaliciousSvcInstalled.yml
+details: 'Svc: %ServiceName% ¦ Path: %ImagePath%'
+
+---
+title: Susp Svc Installed
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: (selection and selection_suspicious_keywords)
+  selection:
+    Channel: System
+    EventID: 7045
+  selection_suspicious_keywords:
+    ImagePath|contains:
+      - cmd
+      - powershell
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_High_ServiceInstalled_SuspiciousService.yml
+details: 'Svc: %ServiceName% ¦ Path: %ImagePath% ¦ Acct: %AccountName% ¦ StartType: %StartType%'
+
+---
+title: Svc Installed
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 7045
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_Info_SvcInstalled.yml
+details: 'Svc: %ServiceName% ¦ Path: %ImagePath% ¦ Acct: %AccountName% ¦ StartType: %StartType%'
+
+---
+title: PSExec Lateral Movement
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: (selection and (selection_PSEXESVC_in_service or selection_PSEXESVC_in_path))
+  selection:
+    Channel: System
+    EventID: 7045
+  selection_PSEXESVC_in_path:
+    ImagePath|contains: PSEXESVC
+  selection_PSEXESVC_in_service:
+    Service: PSEXESVC
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_Med_LateralMovement-PSEXEC.yml
+details: 'Svc: %ServiceName% ¦ Path: %ImagePath% ¦ Acct: %AccountName% ¦ StartType: %StartType%'
+
+---
+title: Possible Metasploit Svc Installed
+logsource:
+  product: windows
+  service: system
+detection:
+  condition: selection
+  selection:
+    Channel: System
+    EventID: 7045
+    ImagePath|re: ^%SYSTEMROOT%\\[a-zA-Z]{8}\.exe$
+author: Eric Conrad, Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_Med_ServiceInstalled_MetasploitService.yml
+details: 'Svc: %ServiceName% ¦ Path: %ImagePath%'
+
+---
+title: Task Created
+logsource:
+  product: windows
+  service: taskscheduler
+  description: Taskscheduler logging needs to be enabled.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-TaskScheduler/Operational
+    EventID: 106
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TaskScheduler_Op/TaskSch_106_Info_TaskCreated.yml
+details: 'Name: %TaskName% ¦ UserContext: %UserContext%'
+
+---
+title: Task Updated
+logsource:
+  product: windows
+  service: taskscheduler
+  description: Taskscheduler logging needs to be enabled.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-TaskScheduler/Operational
+    EventID: 140
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TaskScheduler_Op/TaskSch_140_Info_TaskUpdated.yml
+details: 'Name: %TaskName% ¦ User: %UserName%'
+
+---
+title: Task Deleted
+logsource:
+  product: windows
+  service: taskscheduler
+  description: Taskscheduler logging needs to be enabled.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-TaskScheduler/Operational
+    EventID: 141
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TaskScheduler_Op/TaskSch_141_Info_TaskDeleted.yml
+details: 'Name: %TaskName% ¦ User: %UserName%'
+
+---
+title: Task Executed
+logsource:
+  product: windows
+  service: taskscheduler
+  description: Taskscheduler logging needs to be enabled.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-TaskScheduler/Operational
+    EventID: 200
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TaskScheduler_Op/TaskSch_200_Info_TaskExecuted.yml
+details: 'Name: %TaskName% ¦ Action: %ActionName%'
+
+---
+title: RDS Sess Logon
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    EventID: 21
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_21_Info_RDS-SessLogon.yml
+details: 'User: %UserDataUser% ¦ SessID: %UserDataSessionID% ¦ SrcIP: %UserDataAddress%'
+
+---
+title: RDS Sess Start (Noisy)
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    EventID: 22
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_22_Info_RDS-SessStart_Noisy.yml
+details: 'User: %UserDataUser% ¦ SessID: %UserDataSessionID% ¦ SrcIP: %UserDataAddress%'
+
+---
+title: RDS Sess Logoff
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    EventID: 23
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_23_Info_RDS-SessLogoff.yml
+details: 'User: %UserDataUser% ¦ SessID: %UserDataSessionID%'
+
+---
+title: RDS Sess Disconnect
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    EventID: 24
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_24_Info_RDS-SessDisconn.yml
+details: 'User: %UserDataUser% ¦ SessID: %UserDataSessionID% ¦ SrcIP: %UserDataAddress%'
+
+---
+title: RDP Conn Attempt
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-TerminalServices-RDPClient/Operational
+    EventID: 1024
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1024_Info_ConnAttempt.yml
+details: 'TgtIP: %Value%'
+
+---
+title: RDP Attempt
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-TerminalServices-RDPClient/Operational
+    EventID: 1102
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1102_Info_ConnAttempt.yml
+details: 'TgtIP: %Value%'
+
+---
+title: RDS Logon
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational
+    EventID: 1149
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_1149_Info_RDS-Logon.yml
+details: 'User: %UserDataParam1% ¦ Domain: %UserDataParam2% ¦ SrcIP: %UserDataParam3%'
+
+---
+title: RDS Connection (Noisy)
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational
+    EventID: 261
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_261_Info_RDS-Conn_Noisy.yml
+details: '-'
+
+---
+title: Possible Hidden Shellcode
+logsource:
+  product: windows
+  description: null
+detection:
+  condition: selection
+  selection:
+    Data|re: ^[A-Fa-f0-9]{50,}$
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/UnkwnChannEID_Med_PossibleHiddenShellcode.yml
+details: '%Data%'
+
+---
+title: ISO Mounted
+logsource:
+  product: windows
+  service: vhdmp
+  description: Built-in event.
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-VHDMP-Operational
+    EventID: 12
+    VhdType: 3
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_ISO-Mount.yml
+details: 'Path: %VhdFile% ¦ ReadOnly: %ReadOnly%'
+
+---
+title: VHD Mounted
+logsource:
+  product: windows
+  service: vhdmp
+  description: Built-in event.
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-VHDMP-Operational
+    EventID: 12
+    VhdType: 1
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_VHD-Mount.yml
+details: 'Path: %VhdFile% ¦ ReadOnly: %ReadOnly%'
+
+---
+title: VHDX Mounted
+logsource:
+  product: windows
+  service: vhdmp
+  description: Built-in event.
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-VHDMP-Operational
+    EventID: 12
+    VhdType: 2
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_VHDX-Mount.yml
+details: 'Path: %VhdFile% ¦ ReadOnly: %ReadOnly%'
+
+---
+title: Wifi AP Conn
+logsource:
+  product: windows
+detection:
+  condition: selection
+  selection:
+    Channel: Microsoft-Windows-WLAN-AutoConfig
+    EventID: 8001
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WLAN-AutoConfig/Sec_8001_Info_Wifi-AP-Conn.yml
+details: 'SSID: %SSID% ¦ Type: %AuthenticationAlgorithm% ¦ BSSType: %BSSType%'
+
+---
+title: WMI Provider Started
+logsource:
+  product: windows
+  service: wmi
+  definition: Default in 10/2012-R2+
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-WMI-Activity/Operational
+    EventID: 5857
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WMI-Activity_Op/WMI_5857_Info_ProviderStarted.yml
+details: 'Provider: %UserDataProviderName% ¦ Result: %UserDataCode% ¦ Proc: %UserDataHostProcess% ¦ Path: %UserDataProviderPath% ¦ PID: %UserDataProcessID%'
+
+---
+title: Temporary WMI Event Consumer
+logsource:
+  product: windows
+  service: wmi
+  definition: Default in 10/2012-R2+
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-WMI-Activity/Operational
+    EventID: 5860
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WMI-Activity_Op/WMI_5860_Info_TempEventConsumerRegistered.yml
+details: 'Namespace: %UserDataNamespaceName% ¦ Query: %UserDataQuery% ¦ User: %UserDataUser% ¦ PID: %UserDataProcessid%'
+
+---
+title: Permanent WMI Event Consumer
+logsource:
+  product: windows
+  service: wmi
+  definition: Default in 10/2012-R2+
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-WMI-Activity/Operational
+    EventID: 5861
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WMI-Activity_Op/WMI_5861_Info_PermEventConsumerRegistered.yml
+details: 'Namespace: %UserDataNamespace% ¦ Consumer: %UserDataConsumer% ¦ Details: %UserDataPossibleCause%'
+
+---
+title: WMI Filter To Consumer Binding_Command Execution
+logsource:
+  product: windows
+  service: wmi
+  definition: Default in 10/2012-R2+
+detection:
+  condition: (selection_basic and selection_CommandLineEventConsumer and selection_suspicious_commands)
+  selection_CommandLineEventConsumer:
+    UserDataPossibleCause|contains: CommandLineEventConsumer
+  selection_basic:
+    Channel: Microsoft-Windows-WMI-Activity/Operational
+    EventID: 5861
+  selection_suspicious_commands:
+    UserDataPossibleCause|contains:
+      - powershell
+      - cmd
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WMI-Activity_Op/WMI_5861_Med_FilterToConsumerBinding_CmdExec.yml
+details: 'Namespace: %UserDataNamespace% ¦ Consumer: %UserDataConsumer% ¦ Details: %UserDataPossibleCause%'
+
+---
+title: Win RM Session Created
+logsource:
+  product: windows
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-WinRM/Operational
+    EventID: 6
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WinRM_Op/WinRM_6_Info_SessCreated.yml
+details: 'Conn: %connection%'
+
+---
+title: Defender Alert (Severe)
+logsource:
+  product: windows
+  service: windefend
+detection:
+  condition: []
+  selection:
+    Channel: Microsoft-Windows-Windows Defender/Operational
+    EventID: 1116
+    SeverityID: 5
+author: Zach Mathis, Fukusuke Takahashi
+level: critical
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WindowsDefender/Defender_1116_Crit_Alert.yml
+
+---
+title: Defender Alert (High)
+logsource:
+  product: windows
+  service: windefend
+detection:
+  condition: []
+  selection:
+    Channel: Microsoft-Windows-Windows Defender/Operational
+    EventID: 1116
+    SeverityID: 4
+author: Zach Mathis, Fukusuke Takahashi
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WindowsDefender/Defender_1116_High_Alert.yml
+
+---
+title: Defender Alert (Low)
+logsource:
+  product: windows
+  service: windefend
+detection:
+  condition: []
+  selection:
+    Channel: Microsoft-Windows-Windows Defender/Operational
+    EventID: 1116
+    SeverityID: 2
+author: Zach Mathis, Fukusuke Takahashi
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WindowsDefender/Defender_1116_Low_Alert.yml
+
+---
+title: Defender Alert (Moderate)
+logsource:
+  product: windows
+  service: windefend
+detection:
+  condition: []
+  selection:
+    Channel: Microsoft-Windows-Windows Defender/Operational
+    EventID: 1116
+    SeverityID: 3
+author: Zach Mathis, Fukusuke Takahashi
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WindowsDefender/Defender_1116_Med_Alert.yml
+
+---

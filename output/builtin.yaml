@@ -10,7 +10,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/BitsClient_Op/BitsCli_59_Info_BitsJobCreated.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/BitsClient_Op/BitsCli_59_Info_BitsJobCreated.yml
 details: 'JobTitle: %JobTitle% ¦ URL: %Url%'
 
 ---
@@ -26,7 +26,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/DNS-Server/DNS-ServerAnalytical_260_Info_DNS-Request.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/DNS-Server/DNS-ServerAnalytical_260_Info_DNS-Request.yml
 
 ---
 title: Recursive DNS Response
@@ -41,7 +41,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/DNS-Server/DNS-ServerAnalytical_261_Info_DNS-Response.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/DNS-Server/DNS-ServerAnalytical_261_Info_DNS-Response.yml
 
 ---
 title: USB Plugged In
@@ -56,7 +56,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/DriverFrameworks_UserMode_Op/DvrFmwk_2003_Info_USB-PluggedIn.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/DriverFrameworks_UserMode_Op/DvrFmwk_2003_Info_USB-PluggedIn.yml
 details: 'InstanceID: %InstanceId%'
 
 ---
@@ -72,7 +72,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/OAlerts/OAlerts_300_Info_OfficeAppPopUp.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/OAlerts/OAlerts_300_Info_OfficeAppPopUp.yml
 details: 'App: %Data[1]% ¦ Msg: %Data[2]% ¦ Ver: %Data[4]%'
 
 ---
@@ -89,7 +89,7 @@ detection:
 author: Yusuke Matsui, Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/PowerShellClassic/PwShClassic_400_Med_PwShStarted_V2DowngradeAttack.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/PowerShellClassic/PwShClassic_400_Med_PwShStarted_V2DowngradeAttack.yml
 details: 'Data: %Data[3]%'
 
 ---
@@ -108,7 +108,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/PowerShell_Op/PwSh_4103_Info_PipelineExecution.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/PowerShell_Op/PwSh_4103_Info_PipelineExecution.yml
 
 ---
 title: PwSh Scriptblock
@@ -128,7 +128,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/PowerShell_Op/PwSh_4104_Info_ScriptblockLog.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/PowerShell_Op/PwSh_4104_Info_ScriptblockLog.yml
 
 ---
 title: Potentially Malicious PwSh
@@ -148,7 +148,7 @@ detection:
 author: Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/PowerShell_Op/PwSh_4104_Med_ScriptblockLog_PotentiallyMalicious.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/PowerShell_Op/PwSh_4104_Med_ScriptblockLog_PotentiallyMalicious.yml
 
 ---
 title: NTLM Auth
@@ -163,7 +163,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/CredentialValidation/Sec_4776_Info_NTLM-Auth.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountLogon/CredentialValidation/Sec_4776_Info_NTLM-Auth.yml
 
 ---
 title: Kerberos TGT Requested
@@ -178,7 +178,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4768_Info_KrbTGT-Req.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4768_Info_KrbTGT-Req.yml
 
 ---
 title: Possible AS-REP Roasting (RC4 Kerberos Ticket Req)
@@ -195,7 +195,7 @@ detection:
 author: Yusuke Matsui, Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4768_Med_KrbTGT-Req_PossibleAS-REP-Roasting.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4768_Med_KrbTGT-Req_PossibleAS-REP-Roasting.yml
 
 ---
 title: Possible Kerberoasting (RC4 Kerberos Ticket Req)
@@ -211,7 +211,7 @@ detection:
 author: Yusuke Matsui, Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4769_Med_KerberosTGT-Request_PossibleKerberoasting.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountLogon/KerberosAuthenticationService/Sec_4769_Med_KerberosTGT-Request_PossibleKerberoasting.yml
 
 ---
 title: Kerberos Service Ticket Requested
@@ -226,7 +226,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountLogon/KerberosServiceTicketOperations/Sec_4769_Info_KrbSvcTktReq.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountLogon/KerberosServiceTicketOperations/Sec_4769_Info_KrbSvcTktReq.yml
 
 ---
 title: User Added To Global Domain Admins Grp
@@ -244,7 +244,7 @@ detection:
 author: Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_High_MemberAddedToGlobalGrp_DomainAdmins.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_High_MemberAddedToGlobalGrp_DomainAdmins.yml
 
 ---
 title: User Added To Non-Admin Global Grp
@@ -263,7 +263,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_Low_MemberAddedToGlobalGrp_NonAdmin.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_Low_MemberAddedToGlobalGrp_NonAdmin.yml
 
 ---
 title: User Added To Global Security Grp
@@ -281,7 +281,7 @@ detection:
 author: Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_Med_MemberAddedToGlobalGroup.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4728_Med_MemberAddedToGlobalGroup.yml
 
 ---
 title: User Added To Local Admin Grp
@@ -297,7 +297,7 @@ detection:
 author: Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4732_High_MemberAddedToLocalGrp_Administrators.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4732_High_MemberAddedToLocalGrp_Administrators.yml
 
 ---
 title: User Added To Local Domain Admins Grp
@@ -313,7 +313,7 @@ detection:
 author: Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4732_High_MemberAddedToLocalGrp_DomainAdmins.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountManagement/SecurityGroupManagement/Sec_4732_High_MemberAddedToLocalGrp_DomainAdmins.yml
 
 ---
 title: Hidden User Account Created
@@ -329,7 +329,7 @@ detection:
 author: Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/UserAccountManagement/Sec_4720_High_AcctCreated_PossibleHiddenUserAcct.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountManagement/UserAccountManagement/Sec_4720_High_AcctCreated_PossibleHiddenUserAcct.yml
 
 ---
 title: Local User Account Created
@@ -346,7 +346,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/AccountManagement/UserAccountManagement/Sec_4720_Info_AcctCreated_UsrAcctCreated.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/AccountManagement/UserAccountManagement/Sec_4720_Info_AcctCreated_UsrAcctCreated.yml
 
 ---
 title: Dir Svc Obj Modified
@@ -362,7 +362,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DS-Access/DirectoryServiceChanges/Sec_5136_Info_DirSvcObjModified.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/DS-Access/DirectoryServiceChanges/Sec_5136_Info_DirSvcObjModified.yml
 
 ---
 title: Log Cleared
@@ -377,7 +377,7 @@ detection:
 author: Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/Default/Sec_1102_High_SecLogCleared.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/Default/Sec_1102_High_SecLogCleared.yml
 
 ---
 title: Credential Manager Accessed
@@ -397,7 +397,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/Default/Sec_5397_Low_CredentialManagerAccessed.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/Default/Sec_5397_Low_CredentialManagerAccessed.yml
 
 ---
 title: Credential Manager Enumerated
@@ -417,7 +417,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/Default/Sec_5397_Low_CredentialManagerEnumerated.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/Default/Sec_5397_Low_CredentialManagerEnumerated.yml
 
 ---
 title: Proc Exec
@@ -433,7 +433,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Info_ProcExec.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Info_ProcExec.yml
 
 ---
 title: Susp CmdLine (Possible LOLBIN)
@@ -452,7 +452,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Low_ProcExec_PossibleLOLBIN-Abuse.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Low_ProcExec_PossibleLOLBIN-Abuse.yml
 
 ---
 title: Susp CmdLine (Possible Meterpreter getsystem)
@@ -470,7 +470,7 @@ detection:
 author: Zach Mathis, Eric Conrad
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Med_ProcExec_MeterpreterGetSystem.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Med_ProcExec_MeterpreterGetSystem.yml
 
 ---
 title: Possible RDP Hijacking
@@ -487,7 +487,7 @@ detection:
 author: rukawa
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Med_ProcExec_RDP-Hijacking.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/DetailedTracking/ProcessCreation/Sec_4688_Med_ProcExec_RDP-Hijacking.yml
 
 ---
 title: Logoff
@@ -505,7 +505,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4634_Info_Logoff.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4634_Info_Logoff.yml
 details: 'User: %TargetUserName% ¦ LID: %TargetLogonId% ¦ Type: %LogonType%'
 
 ---
@@ -524,7 +524,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4634_Info_Logoff_Noisy.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4634_Info_Logoff_Noisy.yml
 details: 'User: %TargetUserName% ¦ LID: %TargetLogonId% ¦ Type: %LogonType%'
 
 ---
@@ -540,7 +540,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4647_Info_LogoffUserInitiated.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logoff/Sec_4647_Info_LogoffUserInitiated.yml
 details: 'User: %TargetUserName% ¦ LID: %TargetLogonId%'
 
 ---
@@ -557,7 +557,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-0-System.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-0-System.yml
 
 ---
 title: Logon (RemoteInteractive (RDP)) *Creds in memory*
@@ -571,7 +571,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-10-RemoteInteractive.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-10-RemoteInteractive.yml
 
 ---
 title: Logon (CachedInteractive) *Creds in memory*
@@ -587,7 +587,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-11-CachedInteractive.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-11-CachedInteractive.yml
 
 ---
 title: Logon (CachedRemoteInteractive) *Creds in memory*
@@ -603,7 +603,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-12-CachedRemoteInteractive.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-12-CachedRemoteInteractive.yml
 
 ---
 title: Logon (CachedUnlock) *Creds in memory*
@@ -619,7 +619,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-13-CachedUnlock.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-13-CachedUnlock.yml
 
 ---
 title: Logon (Interactive) *Creds in memory*
@@ -637,7 +637,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-2-Interactive.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-2-Interactive.yml
 
 ---
 title: Logon (Interactive) (Noisy)
@@ -654,7 +654,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-2-Interactive_Noisy.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-2-Interactive_Noisy.yml
 
 ---
 title: Logon (Network)
@@ -676,7 +676,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-3-Network.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-3-Network.yml
 
 ---
 title: Logon (Network) (Noisy)
@@ -698,7 +698,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-3-Network_Noisy.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-3-Network_Noisy.yml
 
 ---
 title: Logon (Batch)
@@ -714,7 +714,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-4-Batch.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-4-Batch.yml
 
 ---
 title: Logon (Service)
@@ -735,7 +735,7 @@ detection:
 author: Zach Mathis
 level: info
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-5-Service.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-5-Service.yml
 
 ---
 title: Logon (Service) (Noisy)
@@ -756,7 +756,7 @@ detection:
 author: Zach Mathis
 level: info
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-5-Service_Noisy.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-5-Service_Noisy.yml
 
 ---
 title: Logon (Unlock)
@@ -772,7 +772,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-7-Unlock.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-7-Unlock.yml
 
 ---
 title: Logon (NetworkCleartext)
@@ -788,7 +788,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-8-NetworkCleartext.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-8-NetworkCleartext.yml
 
 ---
 title: Logon (NewCredentials) *Creds in memory*
@@ -804,7 +804,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-9-NewInteractive.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Info_Logon-Type-9-NewInteractive.yml
 
 ---
 title: Possible Token Impersonation
@@ -823,7 +823,7 @@ detection:
 author: Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml
 
 ---
 title: NewInteractive Logon (Suspicous Process)
@@ -841,7 +841,7 @@ detection:
 author: Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_SuspProc.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_SuspProc.yml
 
 ---
 title: Logon Failure (User Does Not Exist)
@@ -858,7 +858,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_NonExistantUser.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_NonExistantUser.yml
 
 ---
 title: Logon Failure (Unknown Reason)
@@ -876,7 +876,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_UnknownErr.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_UnknownErr.yml
 details: 'Type: %LogonType% ¦ TgtUser: %TargetUserName% ¦ SrcComp: %WorkstationName% ¦ SrcIP: %IpAddress% ¦ AuthPkg: %AuthenticationPackageName% ¦ Proc: %ProcessName% ¦ SubStatus: %SubStatus%'
 
 ---
@@ -894,7 +894,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_WrongPW.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Low_LogonFail_WrongPW.yml
 
 ---
 title: Explicit Logon
@@ -918,7 +918,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Info_ExplicitLogon.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Info_ExplicitLogon.yml
 
 ---
 title: Explicit Logon (Noisy)
@@ -942,7 +942,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Info_ExplicitLogon_Noisy.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Info_ExplicitLogon_Noisy.yml
 
 ---
 title: Explicit Logon (Suspicious Process)
@@ -972,7 +972,7 @@ detection:
 author: Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_SuspProc.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_SuspProc.yml
 
 ---
 title: RDP Session Reconnect
@@ -987,7 +987,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/OtherLogonLogoffEvents/Sec_4778_Info_RDP-SessReconn.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/OtherLogonLogoffEvents/Sec_4778_Info_RDP-SessReconn.yml
 
 ---
 title: RDP Session Disconnect
@@ -1002,7 +1002,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/OtherLogonLogoffEvents/Sec_4779_Info_RDP-SessDisconn.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/OtherLogonLogoffEvents/Sec_4779_Info_RDP-SessDisconn.yml
 
 ---
 title: Admin Logon
@@ -1025,7 +1025,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/LogonLogoff/SpecialLogon/Sec_4672_Info_AdminLogon.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/LogonLogoff/SpecialLogon/Sec_4672_Info_AdminLogon.yml
 
 ---
 title: NetShare File Access
@@ -1046,7 +1046,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/DetailedFileShare/Sec_5145_Info_NetShareFileAccess.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/ObjectAccess/DetailedFileShare/Sec_5145_Info_NetShareFileAccess.yml
 
 ---
 title: NetShare Access
@@ -1062,7 +1062,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/FileShare/Sec_5140_Info_NetShareAccess.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/ObjectAccess/FileShare/Sec_5140_Info_NetShareAccess.yml
 
 ---
 title: Net Conn
@@ -1078,7 +1078,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/FilteringPlatformConnection/Sec_5156_Info_NetConn.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/ObjectAccess/FilteringPlatformConnection/Sec_5156_Info_NetConn.yml
 
 ---
 title: Net Conn Blocked
@@ -1094,7 +1094,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/FilteringPlatformConnection/Sec_5157_Info_NetConnBlocked.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/ObjectAccess/FilteringPlatformConnection/Sec_5157_Info_NetConnBlocked.yml
 
 ---
 title: Task Created
@@ -1110,7 +1110,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/OtherObjectAccessEvents/Sec_4698_Info_TaskCreated.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/ObjectAccess/OtherObjectAccessEvents/Sec_4698_Info_TaskCreated.yml
 
 ---
 title: Task Deleted
@@ -1126,7 +1126,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/ObjectAccess/OtherObjectAccessEvents/Sec_4699_Info_TaskDeleted.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/ObjectAccess/OtherObjectAccessEvents/Sec_4699_Info_TaskDeleted.yml
 
 ---
 title: Process Ran With High Privilege
@@ -1157,7 +1157,7 @@ detection:
 author: Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/PrivilegeUse/Sec_4673_Med_PrivSvcCalled_UnknownProcUsedHighPriv.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/PrivilegeUse/Sec_4673_Med_PrivSvcCalled_UnknownProcUsedHighPriv.yml
 
 ---
 title: Possible Hidden Service Created
@@ -1177,7 +1177,7 @@ detection:
 author: Joshua Wright, Zach Mathis (rule creation)
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/PrivilegeUse/Sec_4674_Med_OpAttemptOnPrivObj_PossibleHiddenSvcCreationAttempt.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/PrivilegeUse/Sec_4674_Med_OpAttemptOnPrivObj_PossibleHiddenSvcCreationAttempt.yml
 
 ---
 title: RDP Denied
@@ -1193,7 +1193,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/OtherSystemEvents/Sec_4825_Low_RDP-Denied.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/System/OtherSystemEvents/Sec_4825_Low_RDP-Denied.yml
 
 ---
 title: Svc Installed
@@ -1208,7 +1208,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/SecuritySystemExtension/Sec_4697_Info_SvcInstalled.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/System/SecuritySystemExtension/Sec_4697_Info_SvcInstalled.yml
 
 ---
 title: Code Integrity Error (Invalid Image Hash)
@@ -1224,7 +1224,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/SystemIntegrity/Sec_5038_Low_CodeIntegrityErr_InvalidImgHash.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/System/SystemIntegrity/Sec_5038_Low_CodeIntegrityErr_InvalidImgHash.yml
 details: 'Path: %param1%'
 
 ---
@@ -1241,7 +1241,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/SystemIntegrity/Sec_6281_Low_CodeIntegrityErr_InvalidImgPageHash.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/System/SystemIntegrity/Sec_6281_Low_CodeIntegrityErr_InvalidImgPageHash.yml
 details: 'Path: %param1%'
 
 ---
@@ -1258,7 +1258,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/Security/System/SystemIntegrity/Sec_6410_Low_CodeIntegrityErr_RequirementsNotMet.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/Security/System/SystemIntegrity/Sec_6410_Low_CodeIntegrityErr_RequirementsNotMet.yml
 details: 'Path: %param1%'
 
 ---
@@ -1286,7 +1286,7 @@ detection:
 author: Florian Roth (Nextron Systems), Tim Shelton, Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_104_High_ImportantLogCleared.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_104_High_ImportantLogCleared.yml
 details: 'Log: %LogFileClearedChannel% ¦ User: %LogFileClearedSubjectUserName%'
 
 ---
@@ -1315,7 +1315,7 @@ detection:
 author: Florian Roth (Nextron Systems), Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_104_Med_LogCleared.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_104_Med_LogCleared.yml
 details: 'Log: %LogFileClearedChannel% ¦ User: %LogFileClearedSubjectUserName%'
 
 ---
@@ -1333,7 +1333,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_20001_Info_NewNonUSB-PnP-Device_Noisy.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_20001_Info_NewNonUSB-PnP-Device_Noisy.yml
 details: 'DeviceID: %DeviceInstanceID% ¦ Provider: %DriverProvider% ¦ Description: %DriverDescription% ¦ Status: %InstallStatus%'
 
 ---
@@ -1350,7 +1350,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_20001_Info_NewUSB-PnP-Device.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_20001_Info_NewUSB-PnP-Device.yml
 details: 'DeviceID: %DeviceInstanceID% ¦ Provider: %DriverProvider% ¦ Description: %DriverDescription% ¦ Status: %InstallStatus%'
 
 ---
@@ -1366,7 +1366,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_6005_Info_EventLogSvcStarted.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_6005_Info_EventLogSvcStarted.yml
 details: '-'
 
 ---
@@ -1382,7 +1382,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_6006_Info_EventLogSvcStopped.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_6006_Info_EventLogSvcStopped.yml
 details: '-'
 
 ---
@@ -1398,7 +1398,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_6008_Low_UnexpectedShutdown.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_6008_Low_UnexpectedShutdown.yml
 
 ---
 title: Service Crashed
@@ -1413,7 +1413,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7031_Low_ServiceCrashed.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_7031_Low_ServiceCrashed.yml
 details: 'Svc: %param1% ¦ CrashCount: %param2% ¦ Action: %param5%'
 
 ---
@@ -1429,7 +1429,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7034_Low_ServiceCrashed.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_7034_Low_ServiceCrashed.yml
 details: 'Svc: %param1% ¦ CrashCount: %param2%'
 
 ---
@@ -1447,7 +1447,7 @@ detection:
 author: Eric Conrad, Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7040_Med_EventLogServiceStartupDisabled.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_7040_Med_EventLogServiceStartupDisabled.yml
 details: 'OldSetting: %param2% ¦ NewSetting: %param3%'
 
 ---
@@ -1473,7 +1473,7 @@ detection:
 author: Eric Conrad, Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_High_ServiceInstalled_PossiblyMaliciousSvcInstalled.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_7045_High_ServiceInstalled_PossiblyMaliciousSvcInstalled.yml
 details: 'Svc: %ServiceName% ¦ Path: %ImagePath%'
 
 ---
@@ -1493,7 +1493,7 @@ detection:
 author: Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_High_ServiceInstalled_SuspiciousService.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_7045_High_ServiceInstalled_SuspiciousService.yml
 details: 'Svc: %ServiceName% ¦ Path: %ImagePath% ¦ Acct: %AccountName% ¦ StartType: %StartType%'
 
 ---
@@ -1509,7 +1509,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_Info_SvcInstalled.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_7045_Info_SvcInstalled.yml
 details: 'Svc: %ServiceName% ¦ Path: %ImagePath% ¦ Acct: %AccountName% ¦ StartType: %StartType%'
 
 ---
@@ -1529,7 +1529,7 @@ detection:
 author: Zach Mathis
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_Med_LateralMovement-PSEXEC.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_7045_Med_LateralMovement-PSEXEC.yml
 details: 'Svc: %ServiceName% ¦ Path: %ImagePath% ¦ Acct: %AccountName% ¦ StartType: %StartType%'
 
 ---
@@ -1546,7 +1546,7 @@ detection:
 author: Eric Conrad, Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/System/Sys_7045_Med_ServiceInstalled_MetasploitService.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/System/Sys_7045_Med_ServiceInstalled_MetasploitService.yml
 details: 'Svc: %ServiceName% ¦ Path: %ImagePath%'
 
 ---
@@ -1563,7 +1563,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TaskScheduler_Op/TaskSch_106_Info_TaskCreated.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TaskScheduler_Op/TaskSch_106_Info_TaskCreated.yml
 details: 'Name: %TaskName% ¦ UserContext: %UserContext%'
 
 ---
@@ -1580,7 +1580,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TaskScheduler_Op/TaskSch_140_Info_TaskUpdated.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TaskScheduler_Op/TaskSch_140_Info_TaskUpdated.yml
 details: 'Name: %TaskName% ¦ User: %UserName%'
 
 ---
@@ -1597,7 +1597,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TaskScheduler_Op/TaskSch_141_Info_TaskDeleted.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TaskScheduler_Op/TaskSch_141_Info_TaskDeleted.yml
 details: 'Name: %TaskName% ¦ User: %UserName%'
 
 ---
@@ -1614,7 +1614,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TaskScheduler_Op/TaskSch_200_Info_TaskExecuted.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TaskScheduler_Op/TaskSch_200_Info_TaskExecuted.yml
 details: 'Name: %TaskName% ¦ Action: %ActionName%'
 
 ---
@@ -1629,7 +1629,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_21_Info_RDS-SessLogon.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_21_Info_RDS-SessLogon.yml
 details: 'User: %UserDataUser% ¦ SessID: %UserDataSessionID% ¦ SrcIP: %UserDataAddress%'
 
 ---
@@ -1644,7 +1644,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_22_Info_RDS-SessStart_Noisy.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_22_Info_RDS-SessStart_Noisy.yml
 details: 'User: %UserDataUser% ¦ SessID: %UserDataSessionID% ¦ SrcIP: %UserDataAddress%'
 
 ---
@@ -1659,7 +1659,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_23_Info_RDS-SessLogoff.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_23_Info_RDS-SessLogoff.yml
 details: 'User: %UserDataUser% ¦ SessID: %UserDataSessionID%'
 
 ---
@@ -1674,7 +1674,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_24_Info_RDS-SessDisconn.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TerminalServices-LocalSessionManager_Op/LocalSessManager_24_Info_RDS-SessDisconn.yml
 details: 'User: %UserDataUser% ¦ SessID: %UserDataSessionID% ¦ SrcIP: %UserDataAddress%'
 
 ---
@@ -1689,7 +1689,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1024_Info_ConnAttempt.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1024_Info_ConnAttempt.yml
 details: 'TgtIP: %Value%'
 
 ---
@@ -1704,7 +1704,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1102_Info_ConnAttempt.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1102_Info_ConnAttempt.yml
 details: 'TgtIP: %Value%'
 
 ---
@@ -1719,7 +1719,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_1149_Info_RDS-Logon.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_1149_Info_RDS-Logon.yml
 details: 'User: %UserDataParam1% ¦ Domain: %UserDataParam2% ¦ SrcIP: %UserDataParam3%'
 
 ---
@@ -1734,7 +1734,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_261_Info_RDS-Conn_Noisy.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_261_Info_RDS-Conn_Noisy.yml
 details: '-'
 
 ---
@@ -1749,7 +1749,7 @@ detection:
 author: Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/UnkwnChannEID_Med_PossibleHiddenShellcode.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/UnkwnChannEID_Med_PossibleHiddenShellcode.yml
 details: '%Data%'
 
 ---
@@ -1767,7 +1767,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_ISO-Mount.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_ISO-Mount.yml
 details: 'Path: %VhdFile% ¦ ReadOnly: %ReadOnly%'
 
 ---
@@ -1785,7 +1785,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_VHD-Mount.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_VHD-Mount.yml
 details: 'Path: %VhdFile% ¦ ReadOnly: %ReadOnly%'
 
 ---
@@ -1803,7 +1803,7 @@ detection:
 author: Zach Mathis
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_VHDX-Mount.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/VHDMP_Op/VHDMP_12_Info_VHDX-Mount.yml
 details: 'Path: %VhdFile% ¦ ReadOnly: %ReadOnly%'
 
 ---
@@ -1818,7 +1818,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WLAN-AutoConfig/Sec_8001_Info_Wifi-AP-Conn.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WLAN-AutoConfig/Sec_8001_Info_Wifi-AP-Conn.yml
 details: 'SSID: %SSID% ¦ Type: %AuthenticationAlgorithm% ¦ BSSType: %BSSType%'
 
 ---
@@ -1835,7 +1835,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WMI-Activity_Op/WMI_5857_Info_ProviderStarted.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WMI-Activity_Op/WMI_5857_Info_ProviderStarted.yml
 details: 'Provider: %UserDataProviderName% ¦ Result: %UserDataCode% ¦ Proc: %UserDataHostProcess% ¦ Path: %UserDataProviderPath% ¦ PID: %UserDataProcessID%'
 
 ---
@@ -1852,7 +1852,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WMI-Activity_Op/WMI_5860_Info_TempEventConsumerRegistered.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WMI-Activity_Op/WMI_5860_Info_TempEventConsumerRegistered.yml
 details: 'Namespace: %UserDataNamespaceName% ¦ Query: %UserDataQuery% ¦ User: %UserDataUser% ¦ PID: %UserDataProcessid%'
 
 ---
@@ -1869,7 +1869,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WMI-Activity_Op/WMI_5861_Info_PermEventConsumerRegistered.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WMI-Activity_Op/WMI_5861_Info_PermEventConsumerRegistered.yml
 details: 'Namespace: %UserDataNamespace% ¦ Consumer: %UserDataConsumer% ¦ Details: %UserDataPossibleCause%'
 
 ---
@@ -1892,7 +1892,7 @@ detection:
 author: Zach Mathis
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WMI-Activity_Op/WMI_5861_Med_FilterToConsumerBinding_CmdExec.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WMI-Activity_Op/WMI_5861_Med_FilterToConsumerBinding_CmdExec.yml
 details: 'Namespace: %UserDataNamespace% ¦ Consumer: %UserDataConsumer% ¦ Details: %UserDataPossibleCause%'
 
 ---
@@ -1907,7 +1907,7 @@ detection:
 author: Zach Mathis
 level: informational
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WinRM_Op/WinRM_6_Info_SessCreated.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WinRM_Op/WinRM_6_Info_SessCreated.yml
 details: 'Conn: %connection%'
 
 ---
@@ -1924,7 +1924,7 @@ detection:
 author: Zach Mathis, Fukusuke Takahashi
 level: critical
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WindowsDefender/Defender_1116_Crit_Alert.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WindowsDefender/Defender_1116_Crit_Alert.yml
 
 ---
 title: Defender Alert (High)
@@ -1940,7 +1940,7 @@ detection:
 author: Zach Mathis, Fukusuke Takahashi
 level: high
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WindowsDefender/Defender_1116_High_Alert.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WindowsDefender/Defender_1116_High_Alert.yml
 
 ---
 title: Defender Alert (Low)
@@ -1956,7 +1956,7 @@ detection:
 author: Zach Mathis, Fukusuke Takahashi
 level: low
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WindowsDefender/Defender_1116_Low_Alert.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WindowsDefender/Defender_1116_Low_Alert.yml
 
 ---
 title: Defender Alert (Moderate)
@@ -1972,6 +1972,1070 @@ detection:
 author: Zach Mathis, Fukusuke Takahashi
 level: medium
 references:
-  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/hayabusa/builtin/WindowsDefender/Defender_1116_Med_Alert.yml
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/builtin/WindowsDefender/Defender_1116_Med_Alert.yml
+
+---
+title: Proc Access (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Src User and Tgt User information will not be present in older versions of Sysmon.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 10
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_10_High_ProcessAccess_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ SrcProc: %SourceImage% ¦ TgtProc: %TargetImage% ¦ SrcUser: %SourceUser% ¦ TgtUser: %TargetUser% ¦ Access: %GrantedAccess% ¦ SrcPID: %SourceProcessId% ¦ SrcPGUID: %SourceProcessGUID% ¦ TgtPID: %TargetProcessId% ¦ TgtPGUID: %TargetProcessGUID%'
+
+---
+title: Proc Access
+logsource:
+  product: windows
+  service: sysmon
+  definition: SrcUser and TgtUser fields are not be present in older versions of Sysmon.
+detection:
+  condition: (selection_basic and selection_no_alerts and not filter_allowlist and not filter_lsass_to_winlogon)
+  filter_allowlist:
+    - SourceImage: C:\Program Files (x86)\McAfee\VirusScan Enterprise\VsTskMgr.exe
+    - SourceImage: C:\Program Files\Common Files\McAfee\SystemCore\mcshield.exe
+    - SourceImage: C:\Program Files\VMware\VMware Tools\vmtoolsd.exe
+    - SourceImage: C:\windows\system32\MRT.exe
+  filter_lsass_to_winlogon:
+    SourceImage: C:\Windows\system32\lsass.exe
+    TargetImage: C:\windows\system32\winlogon.exe
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 10
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_10_Low_ProcAccess.yml
+
+---
+title: File Created
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 11
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_11_Info_FileCreated.yml
+
+---
+title: File Created (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 11
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_11_Med_FileCreated_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Path: %TargetFilename% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Reg Key Create/Delete (Noisy)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 12
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_12_Info_RegKeyCreateDelete_Noisy.yml
+
+---
+title: Reg Key Create/Delete (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 12
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_12_Med_RegKeyCreateDelete_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ EventType: %EventType% ¦ TgtObj: %TargetObject% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Reg Key Value Set (Noisy)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 13
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_13_Info_RegKeyValueSet_Noisy.yml
+
+---
+title: Reg Key Value Set (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 13
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_13_RegKeyValueSet_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ EventType: %EventType% ¦ TgtObj: %TargetObject%: %Details% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Reg Key Value Rename (Noisy)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 14
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_14_Info_RegKeyValueRename_Noisy.yml
+
+---
+title: ADS Created (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 15
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_15_ADS-Created_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Path: %TargetFilename% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid% ¦ Hash: %Hash%'
+
+---
+title: ADS Created
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 15
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_15_Info_ADS-Created.yml
+
+---
+title: Sysmon Config Change
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 16
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_16_Info_SysmonConfigChange.yml
+
+---
+title: Pipe Created
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 17
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_17_Info_PipeCreated.yml
+
+---
+title: Pipe Created (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 17
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_17_PipeCreated_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Pipe: %PipeName% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Pipe Conn
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 18
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_18_Info_PipeConnected.yml
+
+---
+title: Pipe Connected (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 18
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_18_PipeConn_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Pipe: %PipeName% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: WMI Event Filter
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 19
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_19_Info_WmiEventFilterActivity.yml
+
+---
+title: WMI Event Filter (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 19
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_19_WmiEventFilterActivity_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Op: %Operation% ¦ Namespace: %EventNamespace% ¦ Name: %Name% ¦ Query: %query% ¦ User: %User%'
+
+---
+title: Proc Exec (Non-Exe Filetype)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection and not (filter_exes or filter_system_processes))
+  filter_exes:
+    Image|endswith: .exe
+  filter_system_processes:
+    - Image: C:\Windows\System32\scrnsave.scr
+    - Image: C:\Windows\SysWOW64\scrnsave.scr
+  selection:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 1
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_1_High_ProcExec_NonExeProcExec.yml
+
+---
+title: Proc Exec (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 1
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_1_High_ProcExec_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Cmdline: %CommandLine% ¦ Proc: %Image% ¦ User: %User% ¦ ParentCmdline: %ParentCommandLine% ¦ LID: %LogonId% ¦ LGUID: %LogonGuid% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid% ¦ ParentPID: %ParentProcessId% ¦ ParentPGUID: %ParentProcessGuid% ¦ Description: %Description% ¦ Product: %Product% ¦ Company: %Company% ¦ Hashes: %Hashes%'
+
+---
+title: Renamed Exe File
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (SelectBasic and not FileNameAndOriginalNameAreSame and not FilterUnknown and not FilterVSCode and not FilterGoogleUpdate)
+  FileNameAndOriginalNameAreSame:
+    Image|endswithfield: OriginalFileName
+  FilterGoogleUpdate:
+    Image|endswith: GoogleCrashHandler*.exe
+    OriginalFileName: GoogleUpdate.exe
+  FilterUnknown:
+    - OriginalFileName: '?'
+    - OriginalFileName: '-'
+    - OriginalFileName: null
+  FilterVSCode:
+    Image|endswith: code.exe
+    OriginalFileName: electron.exe
+  SelectBasic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 1
+    OriginalFileName|endswith: .exe
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_1_Low_ExeFileRenamed.yml
+
+---
+title: LOLBIN Renamed
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_OriginalFilenameIsLOLBIN and not filter_CurrentFilenameIsDifferent)
+  filter_CurrentFilenameIsDifferent:
+    Image:
+      regexes: ./rules/config/regex/LOLBAS_paths.txt
+  selection_OriginalFilenameIsLOLBIN:
+    OriginalFileName:
+      regexes: ./rules/config/regex/LOLBAS_paths.txt
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 1
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_1_ProcExec_High_LOLBAS-Rename.yml
+
+---
+title: WMI Event Consumer
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 20
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_20_Info_WmiEventConsumerActivity.yml
+
+---
+title: WMI Event Consumer (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 20
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_20_Med_WmiEventConsumerActivity_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Op: %Operation% ¦ Type: %Type% ¦ Name: %Name% ¦ Tgt: %Destination% ¦ User: %User%'
+
+---
+title: WMI Event Consumer To Filter
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 21
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_21_Info_WmiEventConsumerToFilterActivity.yml
+
+---
+title: WMI Event Consumer To Filter (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 21
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_21_Med_WmiEventConsumerToFilterActivity_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Op: %Operation% ¦ Consumer: %Consumer% ¦ Filter: %Filter%'
+
+---
+title: DNS Query
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 10+ (Released 2019/06/12) and Windows 8.1+.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 22
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_22_Info_DNS-Query.yml
+details: 'Query: %QueryName% ¦ Result: %QueryResults% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: DNS Query (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 22
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_22_Med_DNS-Query_RuleAlert.yml
+details: 'Rule: %RuleName ¦ Query: %QueryName% ¦ Result: %QueryResults% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Deleted File Archived
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 23
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_23_Info_DeletedFileArchived.yml
+
+---
+title: Deleted File Archived (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 23
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_23_Med_DeletedFileArchived_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Path: %TargetFilename% ¦ Proc: %Image% ¦ User: %User% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Clipboard Change
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 12+ (Released 2020/09/18)
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 24
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_24_Info_ClipboardChange.yml
+
+---
+title: Clipboard Change (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 12+ (Released 2020/09/18)
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 24
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_24_Med_ClipboardChange_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Proc: %Image% ¦ User: %User% ¦ CliInfo: %ClientInfo% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Sysmon Error
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 255
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_255_Low_Error.yml
+
+---
+title: Proc Tampering
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 13+ (Released 2021/01/21)
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 25
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_25_Med_ProcessTampering.yml
+
+---
+title: File Deleted
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 13+ (Released 2021/01/21)
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 26
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_26_Info_FileDeleted.yml
+
+---
+title: File Deleted (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 13+ (Released 2021/01/21)
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 26
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_26_Med_FileDeleted_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Path: %TargetFilename% ¦ Proc: %Image% ¦ User: %User% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Blocked Exe File Creation
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 14+ (Released 2022/08/16)
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 27
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_27_High_BlockedExeFileCreation.yml
+
+---
+title: File Shredding Tool Blocked
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 14.1+ (Released 2022/10/08)
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 28
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_28_High_FileBlockShredding.yml
+
+---
+title: Executable File Creation
+logsource:
+  product: windows
+  service: sysmon
+  definition: Requires Sysmon 15+ (Released 2023/06/27)
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 29
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_29_Info_FileExecutableDetected.yml
+
+---
+title: Possible Timestomping
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 2
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_2_Low_PossibleTimestomping.yml
+details: 'Path: %TargetFilename% ¦ Proc: %Image% ¦ User: %User% ¦ CreateTime: %CreationUtcTime% ¦ PrevTime: %PreviousCreationUtcTime% ¦ PID: %PID% ¦ PGUID: %ProcessGuid%'
+
+---
+title: Net Conn
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 3
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_3_Info_NetConn.yml
+
+---
+title: Net Conn (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 3
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_3_Med_NetConn_RuleAlert.yml
+
+---
+title: Sysmon Service State Changed
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 4
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_4_Info_SvcStateChanged.yml
+
+---
+title: Proc Terminated
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 5
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_5_Info_ProcTerm.yml
+
+---
+title: Driver Loaded (Suspicious Path)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection and not filter)
+  filter:
+    - ImageLoaded|startswith: C:\Windows\System32
+    - ImageLoaded|startswith: C:\Program Files
+    - ImageLoaded|startswith: C:\ProgramData\Microsoft\Windows Defender
+  selection:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 6
+    Signed: "true"
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_6_DrvLoaded_SuspPath.yml
+
+---
+title: Driver Loaded (Invalid Signature)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection and not filter)
+  filter:
+    SignatureStatus: Valid
+  selection:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 6
+    Signed: "true"
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_6_High_DrvLoaded_InvalidSig.yml
+
+---
+title: Signed Driver Loaded
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_signed)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 6
+  selection_signed:
+    Signed: "true"
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_6_Info_DrvLoaded_Signed.yml
+
+---
+title: Driver Loaded (Unknown Signature) (Noisy)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection and not filter)
+  filter:
+    - Signature: Microsoft Windows
+    - Signature: VMware
+    - Signature: VMware, Inc.
+    - Signature: OpenVPN Technologies, Inc.
+    - Signature: Insecure.Com LLC
+    - Signature: Wireshark Foundation, Inc.
+    - Signature: Trend Micro
+    - Signature: McAfee, Inc.
+    - Signature: Riverbed Technology, Inc.
+    - Signature: Oracle Corporation
+    - Signature: innotek GmbH
+  selection:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 6
+    Signed: "true"
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_6_Low_DrvLoaded_UnkwnSig_Noisy.yml
+
+---
+title: Driver Loaded (Expired/Revoked Cert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection and not filter)
+  filter:
+    Signed: "true"
+  selection:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 6
+    SignatureStatus: Expired
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_6_Med_DrvLoaded_ExpiredOrRevoked.yml
+
+---
+title: Driver Loaded (Unsigned)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection and not filter)
+  filter:
+    Signed: "true"
+    SignatureStatus: Expired
+  selection:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 6
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_6_Med_DrvLoaded_Unsigned.yml
+
+---
+title: DLL Loaded (Noisy)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 7
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: informational
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_7_Info_ImgLoaded_Noisy.yml
+
+---
+title: DLL Loaded (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 7
+author: Zach Mathis
+level: low
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_7_Low_ImgLoaded_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ Image: %ImageLoaded% ¦ Proc: %Image% ¦ Description: %Description% ¦ Product: %Product% ¦ Company: %Company% ¦ Signed: %Signed% ¦ Sig: %SignatureStatus% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid% ¦ Hash: %Hashes% ¦ OrigFilename: %OriginalFilename%'
+
+---
+title: Proc Injection (Sysmon Alert)
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and not filter_no_alerts)
+  filter_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 8
+author: Zach Mathis
+level: high
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_8_High_ProcInj_RuleAlert.yml
+details: 'Rule: %RuleName% ¦ SrcProc: %SourceImage% ¦ TgtProc: %TargetImage% ¦ SrcPID: %SourceProcessId% ¦ SrcPGUID: %SourceProcessGuid% ¦ TgtPID: %TargetProcessId% ¦ TgtPGUID: %TargetProcessGuid%'
+
+---
+title: Proc Injection
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: (selection_basic and selection_no_alerts)
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 8
+  selection_no_alerts:
+    - RuleName: ""
+    - RuleName: '-'
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_8_Med_ProcInj.yml
+
+---
+title: Raw Access Read
+logsource:
+  product: windows
+  service: sysmon
+  definition: Sysmon needs to be installed and configured.
+detection:
+  condition: selection_basic
+  selection_basic:
+    Channel: Microsoft-Windows-Sysmon/Operational
+    EventID: 9
+author: Zach Mathis
+level: medium
+references:
+  - https://github.com/Yamato-Security/hayabusa-rules/tree/main/hayabusa/sysmon/Sysmon_9_Med_RawAccessRead.yml
 
 ---

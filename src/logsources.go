@@ -26,6 +26,8 @@ type CompilerContext struct {
 	level_regex *regexp.Regexp
 
 	vql bytes.Buffer
+
+	original_rules *bytes.Buffer
 }
 
 func NewCompilerContext() *CompilerContext {
@@ -35,6 +37,7 @@ func NewCompilerContext() *CompilerContext {
 
 		fields:         make(map[string]int),
 		missing_fields: make(map[string][]string),
+		original_rules: &bytes.Buffer{},
 	}
 }
 
@@ -55,6 +58,8 @@ func (self *CompilerContext) LoadConfig(filename string) error {
 		return err
 	}
 	self.config_obj = config_obj
+
+	Dump(self.config_obj)
 
 	return nil
 }

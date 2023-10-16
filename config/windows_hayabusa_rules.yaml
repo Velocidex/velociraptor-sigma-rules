@@ -1,5 +1,5 @@
 Preamble: |
-  name: Sigma
+  name: Windows.Hayabusa.Rules
   parameters:
     - name: ROOT
       description: The Event Log Directory we use to read all logs
@@ -28,6 +28,9 @@ Preamble: |
       type: regex
       default: .
       description: Use this to filter only some rules to match
+
+    - name: SigmaRules
+      description: If provided we use these rules instead of the built in set.
 
   sources:
   - query: |
@@ -693,3 +696,12 @@ Sources:
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:
       - Microsoft-Windows-Windows Defender/Operational
+
+BaseReferenceURL:
+  https://github.com/Yamato-Security/hayabusa-rules/tree/main/
+
+RuleDirectories:
+  - hayabusa/builtin/
+  - hayabusa/sysmon/
+  - sigma/builtin/
+  - sigma/builtin/sysmon

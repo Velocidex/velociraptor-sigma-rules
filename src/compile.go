@@ -20,14 +20,9 @@ var (
 		"A tool for manipulating sigma files.")
 
 	compile_cmd     = app.Command("compile", "Compile all the rules into one rule.")
-	compile_dirs    = compile_cmd.Arg("directory", "Directory to compile").Required().Strings()
 	output          = compile_cmd.Flag("output", "File to write the artifact to").Required().String()
 	config          = compile_cmd.Flag("config", "Config file to use").Required().ExistingFile()
 	level_regex_str = compile_cmd.Flag("level_regex", "A regex to select rule Levels").Default(".").String()
-
-	base_url = compile_cmd.Flag("base_url", "URL to rule").
-			Default("https://github.com/Yamato-Security/hayabusa-rules/tree/main/").
-			String()
 
 	command_handlers []CommandHandler
 )
@@ -46,8 +41,9 @@ func main() {
 	}
 }
 
-func (self *CompilerContext) CompileDirs(directories []string) error {
-	for _, compile_dir := range directories {
+func (self *CompilerContext) CompileDirs() error {
+	for _, compile_dir := range self.config_obj.RuleDirectories {
+		fmt.Printf("Scanning directory %v for rules\n", compile_dir)
 		err := filepath.WalkDir(compile_dir,
 			func(path string, d fs.DirEntry, err error) error {
 				if !strings.HasSuffix(path, ".yml") {
@@ -63,6 +59,9 @@ func (self *CompilerContext) CompileDirs(directories []string) error {
 				if err != nil {
 					return err
 				}
+
+				self.original_rules.Write(data)
+				self.original_rules.Write([]byte("\n---\n"))
 
 				rule, err := sigma.ParseRule(data)
 				if err != nil {
@@ -87,7 +86,11 @@ func (self *CompilerContext) CompileDirs(directories []string) error {
 					Logsource:        rule.Logsource,
 					Detection:        rule.Detection,
 					AdditionalFields: additional_fields,
-					References:       []string{*base_url + path},
+				}
+
+				if self.config_obj.BaseReferenceURL != "" {
+					new_rule.References = []string{
+						self.config_obj.BaseReferenceURL + path}
 				}
 
 				self.normalize_logsource(&new_rule, path)
@@ -140,7 +143,7 @@ func doCompile() {
 		context.Stats()
 	}()
 
-	err = context.CompileDirs(*compile_dirs)
+	err = context.CompileDirs()
 	kingpin.FatalIfError(err, "Listing directory")
 
 	err = context.WriteArtifact(zip)

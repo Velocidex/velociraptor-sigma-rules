@@ -26,4 +26,8 @@ type Config struct {
 	FieldMappings  map[string]string `json:"FieldMappings"`
 	DefaultDetails DefaultDetails    `json:"DefaultDetails"`
 	Sources        map[string]Query  `json:"Sources"`
+
+	// If this is set then we generate a reference URL for each rule.
+	BaseReferenceURL string   `json:"BaseReferenceURL"`
+	RuleDirectories  []string `json:"RuleDirectories"`
 }

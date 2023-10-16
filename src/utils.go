@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 )
 
@@ -17,4 +18,9 @@ func indent(in string, indent int) string {
 func MustMarshal(in interface{}) []byte {
 	data, _ := json.Marshal(in)
 	return data
+}
+
+func Dump(in interface{}) {
+	data, _ := json.MarshalIndent(in, "", " ")
+	fmt.Printf("%v", string(data))
 }

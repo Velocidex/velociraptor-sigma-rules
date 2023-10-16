@@ -21,7 +21,7 @@ func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
 	vql := BuildLogSource(self.config_obj)
 
 	vql += fmt.Sprintf(`
-LET Rules <= gunzip(string=base64decode(string=%q))
+LET Rules <= SigmaRules || gunzip(string=base64decode(string=%q))
 LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string=%q)))
 LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string=%q)))
 LET X = scope()
@@ -54,11 +54,18 @@ SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
 	}
 	fd.Write([]byte(self.config_obj.Preamble + indent(vql, 4)))
 
+	// Also include the redacted rules in the zip file
 	fd, err = zip.Create("sigma_rules.yml")
 	if err != nil {
 		return err
 	}
 	fd.Write(self.rules.Bytes())
+
+	fd, err = zip.Create("original_sigma_rules.yml")
+	if err != nil {
+		return err
+	}
+	fd.Write(self.original_rules.Bytes())
 
 	fd, err = zip.Create("field_mapping.json")
 	if err != nil {

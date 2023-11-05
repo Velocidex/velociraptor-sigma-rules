@@ -1,0 +1,39 @@
+<url-free> docs/content/_index.md
+--------------------------------------------------------------------------------
+Velociraptor
+--------------------------------------------------------------------------------
+
+Misspelled words:
+<url-free> docs/content/docs/sigma_in_velociraptor/_index.md
+--------------------------------------------------------------------------------
+Capuano
+ECS
+ETW
+EVTX
+Gb
+Hayabusa
+MSDN
+SIEM
+SIEMs
+Splunk
+Sysmon
+VQL
+Velociraptor
+Velociraptor's
+backend
+backend's
+backends
+br
+config
+detections
+executables
+li
+mb
+ol
+responders
+ruleset
+scalable
+schemas
+taskscheduler
+ul
+natively

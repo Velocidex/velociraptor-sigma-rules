@@ -31,7 +31,7 @@ jobs:
         run: |
           make linux
           ./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip ; cd .
-          ./velosigmac compile --config ./config/windows_hayabusa_event_monitoring.yaml --output ../output/Velociraptor-Hayabusa-Monitoring.zip ; cd .
+          ./velosigmac compile --config ./config/windows_hayabusa_event_monitoring.yaml --output ./output/Velociraptor-Hayabusa-Monitoring.zip ; cd .
           cp output/*.zip docs/static/
 
       - name: Build

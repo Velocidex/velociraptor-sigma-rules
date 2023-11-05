@@ -702,7 +702,7 @@ BaseReferenceURL:
   https://github.com/Yamato-Security/hayabusa-rules/tree/main/
 
 RuleDirectories:
-  - hayabusa/builtin/
-  - hayabusa/sysmon/
-  - sigma/builtin/
-  - sigma/builtin/sysmon
+  - hayabusa/hayabusa/builtin/
+  - hayabusa/hayabusa/sysmon/
+  - hayabusa/sigma/builtin/
+  - hayabusa/sigma/builtin/sysmon

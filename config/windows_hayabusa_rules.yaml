@@ -267,6 +267,7 @@ FieldMappings:
   TaskDate: "x=>x.EventData.TaskContent"
   TaskName: "x=>x.EventData.TaskName"
   TemplateContent: "x=>x.EventData.TemplateContent"
+  Timestamp: "x=>x.System.TimeCreated.SystemTime"
   ThreatName: "x=>x.EventData.`Threat Name`"
   TicketEncryptionType: "x=>x.EventData.TicketEncryptionType"
   TicketOptions: "x=>x.EventData.TicketOptions"
@@ -701,7 +702,7 @@ BaseReferenceURL:
   https://github.com/Yamato-Security/hayabusa-rules/tree/main/
 
 RuleDirectories:
-  - hayabusa/builtin/
-  - hayabusa/sysmon/
-  - sigma/builtin/
-  - sigma/builtin/sysmon
+  - hayabusa/hayabusa/builtin/
+  - hayabusa/hayabusa/sysmon/
+  - hayabusa/sigma/builtin/
+  - hayabusa/sigma/builtin/sysmon

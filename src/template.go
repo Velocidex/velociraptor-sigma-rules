@@ -20,3 +20,10 @@ func BuildLogSource(config_obj *Config) string {
 		strings.Join(sources, ",\n") +
 		"\n)\n"
 }
+
+type ArtifactContent struct {
+	Base64CompressedRules      string
+	Base64FieldMapping         string
+	Base64DefaultDetailsLookup string
+	Base64DefaultDetailsQuery  string
+}

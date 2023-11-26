@@ -1,0 +1,146 @@
+Preamble: |
+  name: Linux.ChopChopGo.Rules
+  parameters:
+    - name: ROOT
+      description: The Event Log Directory we use to read all logs
+      default: /var/log/
+    - name: Debug
+      type: bool
+      description: Enable full debug trace
+    - name: RuleLevel
+      type: choices
+      default: All
+      choices:
+        - Critical
+        - Critical and High
+        - All
+
+    - name: DefaultYear
+      description: The Default year for parsing Syslog timestamps (default current year)
+
+    - name: RuleStatus
+      type: choices
+      default: All Rules
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+    - name: SigmaRules
+      description: If provided we use these rules instead of the built in set.
+
+  sources:
+  - query: |
+      LET RuleStatusRegex <= get(item=dict(
+         `Stable`="stable",
+         `Stable and Experimental`="stable|experimental",
+         `Stable and Test`="stable|test",
+         `All Rules`="."), member=RuleStatus)
+
+      LET RuleLevelRegex <= get(item=dict(
+         Critical="critical",
+         `Critical and High`="critical|high",
+         `All`="."), member=RuleLevel)
+
+      LET ParseLogFile(Filter, ROOT) =
+        SELECT OSPath, Line FROM foreach(row={
+           SELECT OSPath FROM glob(globs="*", root=ROOT)
+           WHERE OSPath.Basename =~ Filter
+        }, query={
+           SELECT OSPath, Line
+           FROM parse_lines(filename=OSPath)
+        })
+
+        LET DefaultYear <= format(format=" %v", args=DefaultYear || timestamp(epoch=now()).Year)
+
+FieldMappings:
+  Image: x=>x.Process.exe
+  exe: x=>x.Process.exe
+  TargetFilename: x=>x.File.path
+  name: x=>x.Process.exe
+  CommandLine: x=>x.Process.title
+
+  # Auditd based rules
+  a0: x=>x.Process.args[0]
+  a1: x=>x.Process.args[1]
+  a2: x=>x.Process.args[2]
+  a3: x=>x.Process.args[3]
+  a4: x=>x.Process.args[4]
+  a5: x=>x.Process.args[5]
+  a6: x=>x.Process.args[6]
+  a7: x=>x.Process.args[7]
+  type: x=>if(condition=x.Summary.action =~ "exec", then="EXECVE")
+  comm: x=>x.Process.name
+  nametype: x=>x.Paths.nametype
+  syscall: x=>x.Data.syscall
+
+DefaultDetails:
+  Query: x=>x.Line
+  Lookup:
+    A: x=>x.Line
+
+Sources:
+  "*/linux/*":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|syslog|secure")
+
+  "*/linux/sshd":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|secure")
+      WHERE Line =~ "sshd"
+
+  "*/linux/cron":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="syslog")
+      WHERE Line =~ "cron"
+
+  "*/linux/auth":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|secure")
+
+  "*/linux/syslog":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="syslog")
+
+  "*/linux/sudo":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|secure")
+      WHERE Line =~ "sudo:"
+
+  "*/linux/sudo":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|secure")
+      WHERE Line =~ "sudo:"
+
+  "*/linux/auditd":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT + "/auditd", Filter="auth.log|secure")
+
+  "process_creation/linux/*":
+    query: |
+      SELECT * FROM parse_auditd(filename=ROOT + '/audit/audit.log')
+
+QueryTemplate: |
+   LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
+   LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
+   LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+   LET X = scope()
+
+   LET ParseTimestamp(Line) = grok(grok="%{SYSLOGTIMESTAMP:timestamp}", data=Line)
+
+   SELECT X.Timestamp || timestamp(string=ParseTimestamp(Line=Line).timestamp + DefaultYear) AS Timestamp, *
+   FROM sigma(
+      rules=split(string= Rules, sep_string="\n---\n"),
+      log_sources= LogSources, debug=Debug,
+      default_details="{{.Base64DefaultDetailsQuery}}",
+      rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter",
+      field_mapping= FieldMapping)
+
+RuleDirectories:
+  - ChopChopGo/rules/linux/

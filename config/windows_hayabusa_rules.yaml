@@ -698,6 +698,29 @@ Sources:
     channel:
       - Microsoft-Windows-Windows Defender/Operational
 
+QueryTemplate: |
+   LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
+   LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
+   LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+   LET X = scope()
+
+   SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
+          System.Computer AS Computer,
+          System.Channel AS Channel,
+          System.EventID.Value AS EID,
+          _Rule.Level AS Level,
+          _Rule.Title AS Title,
+          System.EventRecordID AS RecordID,
+          Details,
+          dict(System=System, EventData=X.EventData || X.UserData, Message=X.Message) AS _Event
+    FROM sigma(
+      rules=split(string= Rules, sep_string="\n---\n"),
+      log_sources= LogSources, debug=Debug,
+      default_details="{{.Base64DefaultDetailsQuery}}",
+      rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter",
+      field_mapping= FieldMapping)
+
+
 BaseReferenceURL:
   https://github.com/Yamato-Security/hayabusa-rules/tree/main/
 

@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"encoding/base64"
-	"fmt"
+	"text/template"
 )
 
 func encode(in []byte) string {
@@ -20,33 +20,25 @@ func encode(in []byte) string {
 func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
 	vql := BuildLogSource(self.config_obj)
 
-	vql += fmt.Sprintf(`
-LET Rules <= SigmaRules || gunzip(string=base64decode(string=%q))
-LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string=%q)))
-LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string=%q)))
-LET X = scope()
+	params := &ArtifactContent{
+		Base64CompressedRules:      encode(self.rules.Bytes()),
+		Base64FieldMapping:         encode(MustMarshal(self.config_obj.FieldMappings)),
+		Base64DefaultDetailsLookup: encode(MustMarshal(self.config_obj.DefaultDetails.Lookup)),
+		Base64DefaultDetailsQuery:  self.config_obj.DefaultDetails.Query,
+	}
 
-SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
-       System.Computer AS Computer,
-       System.Channel AS Channel,
-       System.EventID.Value AS EID,
-       _Rule.Level AS Level,
-       _Rule.Title AS Title,
-       System.EventRecordID AS RecordID,
-       Details,
-       dict(System=System, EventData=X.EventData || X.UserData, Message=X.Message) AS _Event
- FROM sigma(
-   rules=split(string= Rules, sep_string="\n---\n"),
-   log_sources= LogSources, debug=Debug,
-   default_details=%q,
-   rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter",
-   field_mapping= FieldMapping)
-`,
-		encode(self.rules.Bytes()),
-		encode(MustMarshal(self.config_obj.FieldMappings)),
-		encode(MustMarshal(self.config_obj.DefaultDetails.Lookup)),
-		self.config_obj.DefaultDetails.Query,
-	)
+	templ, err := template.New("").Parse(self.config_obj.QueryTemplate)
+	if err != nil {
+		return err
+	}
+
+	b := &bytes.Buffer{}
+	err = templ.Execute(b, params)
+	if err != nil {
+		return err
+	}
+
+	vql += string(b.Bytes())
 
 	fd, err := zip.Create("artifact.yaml")
 	if err != nil {

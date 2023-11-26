@@ -1,3 +1,6 @@
 [submodule "hayabusa"]
     path = hayabusa
     url = https://github.com/Yamato-Security/hayabusa-rules
+[submodule "ChopChopGo"]
+	path = ChopChopGo
+	url = https://github.com/M00NLIG7/ChopChopGo.git

@@ -2,6 +2,7 @@ package main
 
 import (
 	"archive/zip"
+	"errors"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -20,7 +21,8 @@ var (
 		"A tool for manipulating sigma files.")
 
 	compile_cmd     = app.Command("compile", "Compile all the rules into one rule.")
-	output          = compile_cmd.Flag("output", "File to write the artifact to").Required().String()
+	output          = compile_cmd.Flag("output", "File to write the artifact bundle to").String()
+	yaml_output     = compile_cmd.Flag("yaml", "File to write the artifact yaml to").String()
 	config          = compile_cmd.Flag("config", "Config file to use").Required().ExistingFile()
 	level_regex_str = compile_cmd.Flag("level_regex", "A regex to select rule Levels").Default(".").String()
 
@@ -118,24 +120,23 @@ func (self *CompilerContext) CompileDirs() error {
 	return nil
 }
 
-func doCompile() {
-	// Write the sigma file in the output directory.
-	out_fd, err := os.OpenFile(*output,
-		os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
-	kingpin.FatalIfError(err, "Creating output")
-	defer out_fd.Close()
+func doCompile() error {
+	if *yaml_output == "" && *output == "" {
+		return errors.New("Must provide either --output or --yaml")
+	}
 
 	level_regex, err := regexp.Compile(*level_regex_str)
-	kingpin.FatalIfError(err, "Level Regex invalid")
-
-	zip := zip.NewWriter(out_fd)
-	defer zip.Close()
+	if err != nil {
+		return fmt.Errorf("Level Regex invalid: %w", err)
+	}
 
 	context := NewCompilerContext()
 	context.level_regex = level_regex
 
 	err = context.LoadConfig(*config)
-	kingpin.FatalIfError(err, "Reading Config")
+	if err != nil {
+		return fmt.Errorf("Reading Config: %w", err)
+	}
 
 	defer func() {
 		fmt.Printf("Generated rules with level %v into %v\n",
@@ -144,17 +145,52 @@ func doCompile() {
 	}()
 
 	err = context.CompileDirs()
-	kingpin.FatalIfError(err, "Listing directory")
+	if err != nil {
+		return fmt.Errorf("Listing directory: %w", err)
+	}
 
-	err = context.WriteArtifact(zip)
-	kingpin.FatalIfError(err, "WriteArtifact")
+	if *output != "" {
+		// Write the sigma file in the output directory.
+		out_fd, err := os.OpenFile(*output,
+			os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		if err != nil {
+			return fmt.Errorf("Creating output: %w", err)
+		}
+		defer out_fd.Close()
+
+		zip := zip.NewWriter(out_fd)
+		defer zip.Close()
+
+		err = context.WriteArtifact(zip)
+		if err != nil {
+			return fmt.Errorf("WriteArtifact: %w", err)
+		}
+	}
+
+	if *yaml_output != "" {
+		out_fd, err := os.OpenFile(*yaml_output,
+			os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		if err != nil {
+			return fmt.Errorf("Creating yaml output: %w", err)
+		}
+		defer out_fd.Close()
+
+		artifact, err := context.GetArtifact()
+		if err != nil {
+			return fmt.Errorf("GetArtifact: %w", err)
+		}
+
+		out_fd.Write([]byte(artifact))
+	}
+	return nil
 }
 
 func init() {
 	command_handlers = append(command_handlers, func(command string) bool {
 		switch command {
 		case compile_cmd.FullCommand():
-			doCompile()
+			err := doCompile()
+			kingpin.FatalIfError(err, "Compiling artifact")
 
 		default:
 			return false

@@ -17,7 +17,7 @@ func encode(in []byte) string {
 	return base64.StdEncoding.EncodeToString(b.Bytes())
 }
 
-func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
+func (self *CompilerContext) GetArtifact() (string, error) {
 	vql := BuildLogSource(self.config_obj)
 
 	params := &ArtifactContent{
@@ -29,22 +29,30 @@ func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
 
 	templ, err := template.New("").Parse(self.config_obj.QueryTemplate)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	b := &bytes.Buffer{}
 	err = templ.Execute(b, params)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	vql += string(b.Bytes())
 
+	return self.config_obj.Preamble + indent(vql, 4), nil
+}
+
+func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
+	artifact_yaml, err := self.GetArtifact()
+	if err != nil {
+		return err
+	}
 	fd, err := zip.Create("artifact.yaml")
 	if err != nil {
 		return err
 	}
-	fd.Write([]byte(self.config_obj.Preamble + indent(vql, 4)))
+	fd.Write([]byte(artifact_yaml))
 
 	// Also include the redacted rules in the zip file
 	fd, err = zip.Create("sigma_rules.yml")

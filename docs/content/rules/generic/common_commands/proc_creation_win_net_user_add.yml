@@ -39,6 +39,6 @@ fields:
     - CommandLine
 falsepositives:
     - Legitimate user creation.
-    - Better use event IDs for user creation rather than command line rules.
+    - Better to use event IDs for user creation rather than command line rules.
 level: medium
 ruletype: Sigma

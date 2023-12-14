@@ -27,6 +27,10 @@ modified: 2021/11/27
 tags:
     - attack.defense_evasion
     - attack.t1562.002
+    - os.windows
+    - windows.event_logs
+    - ruleset.event_logging
+    - ruleset.tampering
 logsource:
     product: windows
     service: security

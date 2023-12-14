@@ -32,6 +32,9 @@ tags:
     - attack.t1210
     - attack.impact
     - attack.t1499.004
+    - os.windows
+    - windows.event_logs
+    - ruleset.event_logging
 logsource:
     product: windows
     service: application

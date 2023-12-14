@@ -10,6 +10,10 @@ author: Nasreddine Bencherchali (Nextron Systems)
 date: 2022/07/12
 tags:
     - attack.execution
+    - os.windows
+    - windows.event_logs
+    - ruleset.database
+    - software.mssql
 logsource:
     product: windows
     service: application

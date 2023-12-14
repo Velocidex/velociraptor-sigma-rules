@@ -23,6 +23,10 @@ tags:
     - attack.defense_evasion
     - attack.t1112
     - attack.t1562
+    - os.windows
+    - windows.event_logs
+    - ruleset.tampering
+    - ruleset.event_logging
 logsource:
     product: windows
     service: security

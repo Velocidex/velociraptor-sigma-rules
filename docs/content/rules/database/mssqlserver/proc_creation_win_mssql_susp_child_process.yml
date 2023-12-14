@@ -15,6 +15,10 @@ tags:
     - attack.initial_access
     - attack.persistence
     - attack.privilege_escalation
+    - os.windows
+    - windows.evtx
+    - ruleset.database
+    - software.mssql
 logsource:
     category: process_creation
     product: windows

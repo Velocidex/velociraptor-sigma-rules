@@ -9,6 +9,11 @@ date: 2021/08/15
 modified: 2022/12/25
 tags:
     - attack.t1070.001
+    - attack.defense_evasion
+    - os.windows
+    - windows.event_logs
+    - ruleset.tampering
+    - ruleset.event_logging
 logsource:
     service: security
     product: windows

@@ -15,9 +15,12 @@ tags:
     - attack.t1059.001
     - attack.lateral_movement
     - attack.t1021.006
+    - os.windows
+    - windows.event_logs
 logsource:
-    product: windows
     category: ps_classic_start
+    product: evtx
+    service: powershell
 detection:
     ps_classic_start:
         EventID: 400
@@ -29,5 +32,5 @@ detection:
     condition: ps_classic_start and selection
 falsepositives:
     - Legitimate use remote PowerShell sessions
-level: high
+level: medium
 ruletype: Sigma

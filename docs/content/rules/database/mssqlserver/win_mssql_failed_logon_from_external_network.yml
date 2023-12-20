@@ -16,10 +16,10 @@ tags:
     - attack.t1110
     - os.windows
     - windows.evtx
-    - ruleset.database
+    - database
     - software.mssql
 logsource:
-    product: windows
+    product: evtx
     service: application
     definition: 'Requirements: Must enable MSSQL authentication.'
 detection:

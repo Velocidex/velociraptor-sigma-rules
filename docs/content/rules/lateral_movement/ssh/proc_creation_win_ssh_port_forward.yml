@@ -13,9 +13,12 @@ tags:
     - attack.t1572
     - attack.t1021.001
     - attack.t1021.004
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

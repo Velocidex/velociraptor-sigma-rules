@@ -13,10 +13,14 @@ author: Aaron Stratton
 date: 2023/11/13
 tags:
     - attack.t1021.003
+    - attack.execution
     - attack.lateral_movement
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

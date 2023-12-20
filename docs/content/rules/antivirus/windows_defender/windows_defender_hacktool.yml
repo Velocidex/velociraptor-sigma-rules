@@ -14,7 +14,7 @@ tags:
     - attack.t1204
     - os.windows
     - windows.evtx
-    - ruleset.antivirus
+    - antivirus
 logsource:
     category: antivirus
     product: windows

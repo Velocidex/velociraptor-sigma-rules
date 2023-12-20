@@ -13,9 +13,12 @@ modified: 2023/02/13
 tags:
     - attack.lateral_movement
     - attack.t1021.006
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

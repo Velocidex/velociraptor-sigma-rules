@@ -11,10 +11,10 @@ tags:
     - attack.execution
     - os.windows
     - windows.event_logs
-    - ruleset.database
+    - database
     - software.mssql
 logsource:
-    product: windows
+    product: evtx
     service: application
 detection:
     application:

@@ -14,9 +14,13 @@ tags:
     - attack.t1570
     - attack.execution
     - attack.t1569.002
+    - os.windows
+    - windows.event_logs
+    - lolbas
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

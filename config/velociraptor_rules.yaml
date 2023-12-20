@@ -1,0 +1,82 @@
+Sources:
+  '*/evtx/security':
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Security.evtx")
+    channel:
+      - Security
+    
+  '*/evtx/system':
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/System.evtx")
+    channel:
+      - System
+  
+  '*/evtx/application'
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Application.evtx")
+    channel:
+      - Application
+ 
+  '*/evtx/windefend':
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-Windows Defender/Operational
+  
+  ps_module/evtx/powershell:
+    query: |
+      SELECT * FROM parse_evtx(filename=[
+         ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
+         ROOT + "/PowerShellCore%4Operational.evtx"
+      ])
+      WHERE System.EventID.Value = 4103
+  
+  ps_script/evtx/powershell:
+    query: |
+      SELECT * FROM parse_evtx(filename=[
+         ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
+         ROOT + "/PowerShellCore%4Operational.evtx"
+      ])
+      WHERE System.EventID.Value = 4104
+  
+  ps_classic_start/evtx/powershell:
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
+      WHERE System.EventID.Value = 400
+  
+  ps_classic_provider_start/evtx/powershell:
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
+      WHERE System.EventID.Value = 600
+  
+  '*/evtx/powershell_classic':
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
+    channel:
+      - Windows PowerShell
+  
+  '*/evtx/powershell':
+    query: |
+      SELECT * FROM parse_evtx(filename=[
+         ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
+         ROOT + "/PowerShellCore%4Operational.evtx",
+      ])
+    channel:
+      - Microsoft-Windows-PowerShell/Operational
+      - PowerShellCore/Operational
+  
+  process_creation/evtx/sysmon:
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
+      WHERE System.EventID.Value = 1
+  
+  create_remote_thread/evtx/sysmon:
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
+      WHERE System.EventID.Value = 8
+
+  '*/evtx/openssh':
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/OpenSSH%4Operational.evtx")
+    channel:
+      - OpenSSH/Operational

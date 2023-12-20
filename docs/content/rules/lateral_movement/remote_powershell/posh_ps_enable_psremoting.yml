@@ -12,9 +12,12 @@ date: 2022/01/07
 tags:
     - attack.lateral_movement
     - attack.t1021.006
+    - os.windows
+    - windows.event_logs
 logsource:
-    product: windows
     category: ps_script
+    product: evtx
+    service: powershell
     definition: 'Requirements: Script Block Logging must be enabled'
 detection:
     ps_script:

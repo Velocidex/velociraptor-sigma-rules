@@ -18,9 +18,14 @@ tags:
     - attack.t1558.003
     - attack.lateral_movement
     - attack.t1550.003
+    - os.windows
+    - windows.event_logs
+    - generic
+    - powershell
 logsource:
-    product: windows
     category: ps_script
+    product: evtx
+    service: powershell
     definition: 'Requirements: Script Block Logging must be enabled'
 detection:
     ps_script:

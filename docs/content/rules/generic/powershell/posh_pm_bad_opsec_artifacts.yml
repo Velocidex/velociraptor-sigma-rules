@@ -23,9 +23,14 @@ modified: 2022/12/25
 tags:
     - attack.execution
     - attack.t1059.001
+    - os.windows
+    - windows.event_logs
+    - powershell
+    - generic
 logsource:
-    product: windows
     category: ps_module
+    product: evtx
+    service: powershell
     definition: 0ad03ef1-f21b-4a79-8ce8-e6900c54b65b
 detection:
     ps_module:

@@ -13,7 +13,7 @@ tags:
     - attack.t1588
     - os.windows
     - windows.evtx
-    - ruleset.antivirus
+    - antivirus
 logsource:
     category: antivirus
     product: windows

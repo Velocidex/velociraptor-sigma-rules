@@ -14,9 +14,13 @@ tags:
     - attack.credential_access
     - attack.t1555.005
     - sysmon
+    - os.windows
+    - windows.event_logs
+    - generic
 logsource:
-    product: windows
     category: create_remote_thread
+    product: evtx
+    service: sysmon
 detection:
     create_remote_thread:
         EventID: 8

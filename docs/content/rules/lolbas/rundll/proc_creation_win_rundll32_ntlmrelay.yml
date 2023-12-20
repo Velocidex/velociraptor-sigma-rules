@@ -13,9 +13,13 @@ tags:
     - attack.privilege_escalation
     - attack.credential_access
     - attack.t1212
+    - os.windows
+    - windows.event_logs
+    - lolbas
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

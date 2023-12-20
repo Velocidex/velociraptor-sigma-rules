@@ -11,9 +11,13 @@ date: 2023/04/18
 tags:
     - attack.command_and_control
     - attack.t1219
+    - attack.lateral_movement
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

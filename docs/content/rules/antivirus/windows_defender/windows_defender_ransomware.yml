@@ -16,7 +16,7 @@ tags:
     - attack.t1486
     - os.windows
     - windows.evtx
-    - ruleset.antivirus
+    - antivirus
 logsource:
     category: antivirus
     product: windows

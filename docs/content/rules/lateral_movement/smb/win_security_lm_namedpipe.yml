@@ -12,8 +12,10 @@ modified: 2023/03/14
 tags:
     - attack.lateral_movement
     - attack.t1021.002
+    - os.windows
+    - windows.event_logs
 logsource:
-    product: windows
+    product: evtx
     service: security
     definition: The advanced audit policy setting "Object Access > Audit Detailed
         File Share" must be configured for Success/Failure

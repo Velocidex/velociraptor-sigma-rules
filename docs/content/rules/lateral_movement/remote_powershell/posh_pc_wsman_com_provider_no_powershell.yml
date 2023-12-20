@@ -15,9 +15,11 @@ tags:
     - attack.t1059.001
     - attack.lateral_movement
     - attack.t1021.003
+    - os.windows
+    - windows.event_logs
 logsource:
-    product: windows
-    service: powershell-classic
+    product: evtx
+    service: powershell_classic   
 detection:
     powershell_classic:
         Channel: Windows PowerShell

@@ -11,10 +11,10 @@ tags:
     - attack.persistence
     - os.windows
     - windows.evtx
-    - ruleset.database
+    - database
     - software.mssql
 logsource:
-    product: windows
+    product: evtx
     service: application
     definition: MSSQL audit policy must be enabled in order to receive this event
         in the application log

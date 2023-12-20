@@ -16,9 +16,12 @@ tags:
     - attack.defense_evasion
     - attack.command_and_control
     - attack.t1090
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

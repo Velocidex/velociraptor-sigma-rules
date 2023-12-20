@@ -15,9 +15,13 @@ tags:
     - attack.privilege_escalation
     - attack.t1055.003
     - sysmon
+    - os.windows
+    - windows.event_logs
+    - generic
 logsource:
-    product: windows
     category: create_remote_thread
+    product: evtx
+    service: sysmon
 detection:
     create_remote_thread:
         EventID: 8

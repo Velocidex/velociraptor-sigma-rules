@@ -13,10 +13,11 @@ tags:
     - attack.t1562.001
     - os.windows
     - windows.evtx
-    - ruleset.antivirus
+    - antivirus
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

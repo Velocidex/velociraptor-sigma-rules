@@ -22,11 +22,12 @@ tags:
     - attack.t1127
     - os.windows
     - windows.evtx
-    - ruleset.database
+    - database
     - software.mssql
 logsource:
     category: process_creation
     product: windows
+    servoce: security
 detection:
     process_creation:
         EventID: 4688

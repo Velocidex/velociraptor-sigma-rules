@@ -14,9 +14,12 @@ modified: 2023/01/25
 tags:
     - attack.command_and_control
     - attack.t1572
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

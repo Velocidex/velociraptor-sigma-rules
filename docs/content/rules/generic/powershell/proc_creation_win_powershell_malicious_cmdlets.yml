@@ -40,9 +40,14 @@ tags:
     - attack.t1069.002
     - attack.t1069
     - attack.t1059.001
+    - os.windows
+    - windows.event_logs
+    - generic
+    - powershell
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

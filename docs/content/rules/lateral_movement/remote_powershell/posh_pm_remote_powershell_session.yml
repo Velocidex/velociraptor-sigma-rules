@@ -12,9 +12,12 @@ tags:
     - attack.t1059.001
     - attack.lateral_movement
     - attack.t1021.006
+    - os.windows
+    - windows.event_logs
 logsource:
-    product: windows
     category: ps_module
+    product: evtx
+    service: powershell
     definition: 0ad03ef1-f21b-4a79-8ce8-e6900c54b65b
 detection:
     ps_module:

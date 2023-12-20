@@ -14,8 +14,10 @@ date: 2022/10/25
 tags:
     - attack.lateral_movement
     - attack.t1021.004
+    - os.windows
+    - windows.event_logs
 logsource:
-    product: windows
+    product: evtx
     service: openssh
 detection:
     openssh:

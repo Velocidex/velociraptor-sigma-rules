@@ -19,10 +19,11 @@ tags:
     - attack.t1021.001
     - os.windows
     - windows.event_logs
-    - ruleset.generic
+    - generic
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

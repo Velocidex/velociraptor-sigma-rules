@@ -29,8 +29,8 @@ tags:
     - attack.t1562.002
     - os.windows
     - windows.event_logs
-    - ruleset.event_logging
-    - ruleset.tampering
+    - event_logging
+    - tampering
 logsource:
     product: windows
     service: security

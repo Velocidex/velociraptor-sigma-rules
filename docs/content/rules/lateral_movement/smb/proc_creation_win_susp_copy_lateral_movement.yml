@@ -18,9 +18,12 @@ tags:
     - attack.t1039
     - attack.t1048
     - attack.t1021.002
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

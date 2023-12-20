@@ -14,9 +14,12 @@ tags:
     - attack.t1563.002
     - attack.t1021.001
     - car.2013-07-002
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

@@ -15,7 +15,7 @@ tags:
     - attack.lateral_movement
     - attack.t1021.002
 logsource:
-    product: windows
+    product: evtx
     service: security
 detection:
     security:

@@ -34,7 +34,7 @@ tags:
     - attack.t1499.004
     - os.windows
     - windows.event_logs
-    - ruleset.event_logging
+    - event_logging
 logsource:
     product: windows
     service: application

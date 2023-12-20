@@ -11,9 +11,13 @@ modified: 2022/10/09
 tags:
     - attack.defense_evasion
     - attack.t1218.011
+    - os.windows
+    - windows.event_logs
+    - lolbas
 logsource:
     category: process_creation
-    product: windows
+    product: evtx
+    service: security
 detection:
     process_creation:
         EventID: 4688

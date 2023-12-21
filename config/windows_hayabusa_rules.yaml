@@ -638,7 +638,7 @@ Sources:
     query: |
       SELECT * FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
-         ROOT + "/System.evtx"
+         ROOT + "/Security.evtx"
       ])
       WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688
 

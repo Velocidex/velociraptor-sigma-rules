@@ -12,11 +12,9 @@ tags:
     - attack.defense_evasion
     - os.windows
     - windows.event_logs
-    - tampering
-    - event_logging
 logsource:
-    service: security
     product: windows
+    service: evtx/security
 detection:
     security:
         Channel: Security

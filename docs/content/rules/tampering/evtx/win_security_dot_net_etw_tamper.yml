@@ -25,11 +25,9 @@ tags:
     - attack.t1562
     - os.windows
     - windows.event_logs
-    - tampering
-    - event_logging
 logsource:
     product: windows
-    service: security
+    service: evtx/security
 detection:
     security:
         Channel: Security

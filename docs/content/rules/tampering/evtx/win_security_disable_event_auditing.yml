@@ -29,11 +29,9 @@ tags:
     - attack.t1562.002
     - os.windows
     - windows.event_logs
-    - event_logging
-    - tampering
 logsource:
     product: windows
-    service: security
+    service: evtx/security
     definition: dfd8c0f4-e6ad-4e07-b91b-f2fca0ddef64
 detection:
     security:

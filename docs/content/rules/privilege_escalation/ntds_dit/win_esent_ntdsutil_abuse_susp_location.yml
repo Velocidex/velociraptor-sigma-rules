@@ -11,9 +11,12 @@ date: 2022/08/14
 modified: 2023/10/23
 tags:
     - attack.execution
+    - attack.credential_access
+    - os.windows
+    - windows.event_logs
 logsource:
     product: windows
-    service: application
+    service: evtx/application
 detection:
     application:
         Channel: Application

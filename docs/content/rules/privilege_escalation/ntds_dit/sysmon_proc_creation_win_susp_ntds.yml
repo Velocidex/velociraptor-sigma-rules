@@ -17,6 +17,8 @@ tags:
     - attack.credential_access
     - attack.t1003.003
     - sysmon
+    - os.windows
+    - windows.event_logs
 logsource:
     product: windows
     category: process_creation

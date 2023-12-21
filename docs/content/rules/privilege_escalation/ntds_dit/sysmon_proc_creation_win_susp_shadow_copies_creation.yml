@@ -15,9 +15,12 @@ tags:
     - attack.t1003.002
     - attack.t1003.003
     - sysmon
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
     product: windows
+    service: evtx/sysmon
 detection:
     process_creation:
         EventID: 1

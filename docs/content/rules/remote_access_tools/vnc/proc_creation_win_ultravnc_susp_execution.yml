@@ -19,6 +19,7 @@ tags:
 logsource:
     category: process_creation
     product: windows
+    service: generic
 detection:
     process_creation:
         EventID: 4688

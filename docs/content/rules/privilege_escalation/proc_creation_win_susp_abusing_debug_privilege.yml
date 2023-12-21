@@ -11,8 +11,9 @@ tags:
     - attack.privilege_escalation
     - attack.t1548
 logsource:
-    product: windows
     category: process_creation
+    product: windows
+    service: evtx/security
 detection:
     process_creation:
         EventID: 4688

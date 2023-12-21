@@ -17,9 +17,12 @@ tags:
     - car.2013-07-001
     - attack.s0404
     - sysmon
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
     product: windows
+    service: evtx/sysmon
 detection:
     process_creation:
         EventID: 1

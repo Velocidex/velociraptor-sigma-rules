@@ -13,8 +13,8 @@ tags:
     - attack.t1550.002
     - car.2016-04-004
 logsource:
-    product: evtx
-    service: security
+    product: windows
+    service: evtx/security
     definition: The successful use of PtH for lateral movement between workstations
         would trigger event ID 4624, a failed logon attempt would trigger an event
         ID 4625

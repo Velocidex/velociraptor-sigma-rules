@@ -21,8 +21,8 @@ tags:
     - generic
 logsource:
     category: create_remote_thread
-    product: evtx
-    service: sysmon
+    product: windows
+    service: evtx/sysmon
 detection:
     create_remote_thread:
         EventID: 8

@@ -46,8 +46,8 @@ tags:
     - powershell
 logsource:
     category: process_creation
-    product: evtx
-    service: security
+    product: windows
+    service: evtx/security
 detection:
     process_creation:
         EventID: 4688

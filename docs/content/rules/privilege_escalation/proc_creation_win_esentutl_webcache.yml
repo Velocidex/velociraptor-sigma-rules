@@ -13,9 +13,13 @@ modified: 2022/10/31
 tags:
     - attack.collection
     - attack.t1005
+    - attack.credential_access
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
     product: windows
+    service: evtx/security
 detection:
     process_creation:
         EventID: 4688

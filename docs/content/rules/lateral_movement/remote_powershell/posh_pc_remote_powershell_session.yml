@@ -19,8 +19,8 @@ tags:
     - windows.event_logs
 logsource:
     category: ps_classic_start
-    product: evtx
-    service: powershell
+    product: windows
+    service: evtx/powershell
 detection:
     ps_classic_start:
         EventID: 400

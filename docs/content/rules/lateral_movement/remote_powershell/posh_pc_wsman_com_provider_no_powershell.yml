@@ -18,8 +18,8 @@ tags:
     - os.windows
     - windows.event_logs
 logsource:
-    product: evtx
-    service: powershell_classic   
+    product: windows
+    service: evtx/powershell_classic   
 detection:
     powershell_classic:
         Channel: Windows PowerShell

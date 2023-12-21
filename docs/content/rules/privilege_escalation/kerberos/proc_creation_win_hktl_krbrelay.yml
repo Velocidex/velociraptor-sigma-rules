@@ -10,9 +10,12 @@ modified: 2023/02/04
 tags:
     - attack.credential_access
     - attack.t1558.003
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
     product: windows
+    service: evtx/security
 detection:
     process_creation:
         EventID: 4688

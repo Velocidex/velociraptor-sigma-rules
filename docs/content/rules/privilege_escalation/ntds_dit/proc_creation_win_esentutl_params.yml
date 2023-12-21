@@ -15,9 +15,14 @@ tags:
     - attack.credential_access
     - attack.t1003
     - attack.t1003.003
+    - os.windows
+    - windows.event_logs
+    - malware.conti
+    - malware.trickbot
 logsource:
     category: process_creation
     product: windows
+    service: evtx/security
 detection:
     process_creation:
         EventID: 4688

@@ -16,8 +16,8 @@ tags:
     - windows.event_logs
 logsource:
     category: ps_script
-    product: evtx
-    service: powershell
+    product: windows
+    service: evtx/powershell
     definition: 'Requirements: Script Block Logging must be enabled'
 detection:
     ps_script:

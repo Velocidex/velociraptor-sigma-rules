@@ -80,3 +80,11 @@ Sources:
       SELECT * FROM parse_evtx(filename=ROOT + "/OpenSSH%4Operational.evtx")
     channel:
       - OpenSSH/Operational
+
+  process_creation/windows/generic:
+    query: |
+      SELECT * FROM parse_evtx(filename=[
+         ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
+         ROOT + "/Security.evtx"
+      ])
+      WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688

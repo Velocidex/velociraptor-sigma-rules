@@ -15,8 +15,8 @@ tags:
     - os.windows
     - windows.event_logs
 logsource:
-    product: evtx
-    service: security
+    product: windows
+    service: evtx/security
     definition: The advanced audit policy setting "Object Access > Audit Detailed
         File Share" must be configured for Success/Failure
 detection:

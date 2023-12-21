@@ -22,6 +22,8 @@ tags:
     - attack.t1070
     - attack.t1490
     - sysmon
+    - os.windows
+    - windows.event_logs
 logsource:
     category: process_creation
     product: windows

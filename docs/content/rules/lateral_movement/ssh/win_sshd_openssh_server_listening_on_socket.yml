@@ -17,8 +17,8 @@ tags:
     - os.windows
     - windows.event_logs
 logsource:
-    product: evtx
-    service: openssh
+    product: windows
+    service: evtx/openssh
 detection:
     openssh:
         Channel: OpenSSH/Operational

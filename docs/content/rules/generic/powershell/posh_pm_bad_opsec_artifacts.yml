@@ -29,8 +29,8 @@ tags:
     - generic
 logsource:
     category: ps_module
-    product: evtx
-    service: powershell
+    product: windows
+    service: evtx/powershell
     definition: 0ad03ef1-f21b-4a79-8ce8-e6900c54b65b
 detection:
     ps_module:

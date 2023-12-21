@@ -19,8 +19,13 @@ tags:
     - attack.t1003.004
     - attack.t1003.001
     - attack.t1003.006
+    - os.windows
+    - windows.event_logs
+    - malware.mimikatz
+    - sysmon
 logsource:
     product: windows
+    service: evtx/sysmon
 detection:
     keywords:
         - dpapi::masterkey

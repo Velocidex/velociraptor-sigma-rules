@@ -75,6 +75,7 @@ FieldMappings:
   Action: "x=>x.EventData.Action"
   AllowedToDelegateTo: "x=>x.EventData.AllowedToDelegateTo"
   ApplicationPath: "x=>x.EventData.ApplicationPath"
+  Arguments: "x=>x.Arguments"
   AttributeLDAPDisplayName: "x=>x.EventData.AttributeLDAPDisplayName"
   AttributeValue: "x=>x.EventData.AttributeValue"
   AuditPolicyChanges: "x=>x.EventData.AuditPolicyChanges"
@@ -92,6 +93,7 @@ FieldMappings:
   Client_Address: "x=>x.EventData.Client_Address"
   ClientName: "x=>x.EventData.ClientName"
   CommandLine: "x=>x.EventData.CommandLine"
+  Command: "x=>x.Command"
   Company: "x=>x.EventData.Company"
   Computer: "x=>x.System.Computer"
   ComputerName: "x=>x.System.Computer"
@@ -123,6 +125,7 @@ FieldMappings:
   ErrorCode: "x=>x.EventData.ErrorCode"
   EventID: "x=>x.System.EventID.Value"
   EventType: "x=>x.EventData.EventType"
+  execution_Name: "x=>x.Name"
   ExecutionProcessID: "x=>x.System.Execution_attributes.ProcessID"
   FailureCode: "x=>x.EventData.FailureCode"
   FilePath: "x=>x.EventData.FilePath"
@@ -180,6 +183,7 @@ FieldMappings:
   Origin: "x=>x.EventData.Origin"
   OriginalFileName: "x=>x.EventData.OriginalFileName"
   OriginalFilename: "x=>x.EventData.OriginalFileName"
+  OSPath: "x=>x.OSPath"
   param1: "x=>x.EventData.param1"
   param2: "x=>x.EventData.param2"
   param3: "x=>x.EventData.param3"
@@ -192,6 +196,7 @@ FieldMappings:
   ParentUser: "x=>x.EventData.ParentUser"
   PasswordLastSet: "x=>x.EventData.PasswordLastSet"
   Path: "x=>x.EventData.Path"
+  PathName: "x=>x.PathName"
   Payload: "x=>x.EventData.Payload"
   PipeName: "x=>x.EventData.PipeName"
   PossibleCause: "x=>x.UserData.PossibleCause"
@@ -249,6 +254,11 @@ FieldMappings:
   State: "x=>x.EventData.State"
   Status: "x=>x.EventData.Status"
   SubStatus: "x=>x.EventData.SubStatus"
+  service_Name: "x=>x.Name"
+  service_DisplayName: "x=>x.DisplayName"
+  service_AbsoluteExePath: "x=>x.AbsoluteExePath"
+  service_PathName: "x=>x.PathName"
+  service_UserAccount: "x=>x.UserAccount"
   SubjectDomainName: "x=>x.EventData.SubjectDomainName"
   SubjectLogonId: "x=>x.EventData.SubjectLogonId"
   SubjectUserName: "x=>x.EventData.SubjectUserName"
@@ -509,13 +519,25 @@ Sources:
     channel:
       - OpenSSH/Operational
 
-  process_creation/windows/generic:
+  process_creation/windows/evtx/execution:
     query: |
       SELECT * FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
          ROOT + "/Security.evtx"
       ])
       WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688
+
+  process_creation/windows/execution:
+    query: |
+      SELECT * FROM Artifact.Windows.Analysis.EvidenceOfExecution()
+
+  '*/windows/services':
+    query: |
+      SELECT * FROM Artifact.Windows.System.Services()
+
+  '*/windows/schtasks':
+    query: |
+      SELECT * FROM Artifact.Windows.System.TaskScheduler()
 
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))

@@ -1,5 +1,5 @@
 Preamble: |
-  name: Sigma.Velociraptor.Rules
+  name: Windows.Sigma.Curated
   parameters:
     - name: ROOT
       description: The Event Log Directory we use to read all logs

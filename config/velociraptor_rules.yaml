@@ -539,6 +539,13 @@ Sources:
     query: |
       SELECT * FROM Artifact.Windows.System.TaskScheduler()
 
+  process_creation/windows/pslist:
+    query: |
+      SELECT *, 
+        Exe AS Image, process_tracker_callchain(id=Pid) AS CallChain, 
+        process_tracker_get(id=Ppid).Data AS ParentImage 
+      FROM process_tracker_pslist()
+
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))

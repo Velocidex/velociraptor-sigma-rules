@@ -14,8 +14,8 @@ tags:
     - attack.t1570
     - attack.execution
     - attack.t1569.002
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - lolbas
 logsource:
     category: process_creation

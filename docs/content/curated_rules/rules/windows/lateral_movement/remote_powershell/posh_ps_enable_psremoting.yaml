@@ -12,8 +12,8 @@ date: 2022/01/07
 tags:
     - attack.lateral_movement
     - attack.t1021.006
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: ps_script
     product: windows

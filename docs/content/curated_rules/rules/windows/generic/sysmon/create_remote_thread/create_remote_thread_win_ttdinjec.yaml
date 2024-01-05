@@ -12,8 +12,8 @@ tags:
     - attack.t1127
     - sysmon
     - lolbas
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - generic
 logsource:
     category: create_remote_thread

@@ -12,8 +12,8 @@ modified: 2023/02/09
 tags:
     - attack.t1218.011
     - attack.defense_evasion
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - lolbas
 logsource:
     category: process_creation

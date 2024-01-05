@@ -7,8 +7,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -19,8 +19,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -31,8 +31,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1562.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -55,8 +55,8 @@
             "attack.t1562",
             "attack.execution",
             "attack.t1059",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -77,8 +77,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -90,7 +90,7 @@
             "attack.discovery",
             "attack.t1033",
             "car.2016-03-001",
-            "os.windows",
+            "windows",
             "windows.evtx"
         ]
     },
@@ -103,7 +103,7 @@
             "attack.discovery",
             "attack.t1033",
             "car.2016-03-001",
-            "os.windows",
+            "windows",
             "windows.evtx"
         ]
     },
@@ -116,8 +116,8 @@
             "attack.discovery",
             "attack.t1033",
             "car.2016-03-001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -140,8 +140,8 @@
         "tags": [
             "attack.persistence",
             "attack.t1505.003",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.generic"
         ]
     },
@@ -167,8 +167,8 @@
             "attack.t1018",
             "attack.t1033",
             "attack.t1087",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.generic"
         ]
     },
@@ -183,8 +183,8 @@
             "attack.t1018",
             "attack.t1033",
             "attack.t1087",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.generic"
         ]
     },
@@ -196,8 +196,8 @@
         "tags": [
             "attack.exfiltration",
             "attack.t1048.003",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -209,7 +209,7 @@
         "tags": [
             "attack.privilege_escalation",
             "attack.t1543.003",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "sysmon"
         ]
@@ -277,7 +277,7 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1562.001",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "antivirus"
         ]
@@ -454,8 +454,8 @@
         "link": "/curated_ruleset/rules/pages/proc_creation_win_rundll32_user32_dll.yaml",
         "tags": [
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -468,8 +468,8 @@
             "attack.exfiltration",
             "attack.t1048.003",
             "cve.2023.23397",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -501,8 +501,8 @@
         "link": "/curated_ruleset/rules/pages/proc_creation_win_rundll32_susp_shellexec_execution.yaml",
         "tags": [
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -514,8 +514,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1003.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -527,8 +527,8 @@
             "attack.credential_access",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -550,8 +550,8 @@
         "tags": [
             "attack.command_and_control",
             "attack.t1219",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -576,8 +576,8 @@
             "attack.privilege_escalation",
             "attack.persistence",
             "attack.t1053.005",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -588,8 +588,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -601,8 +601,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1055",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -614,8 +614,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -627,8 +627,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -653,8 +653,8 @@
             "attack.t1563.002",
             "attack.t1021.001",
             "car.2013-07-002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -666,8 +666,8 @@
             "attack.defense_evasion",
             "attack.t1036",
             "car.2013-05-002",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -679,8 +679,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1003.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -692,8 +692,8 @@
             "attack.credential_access",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -705,8 +705,8 @@
             "attack.persistence",
             "attack.t1505.003",
             "attack.t1190",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.generic"
         ]
     },
@@ -718,8 +718,8 @@
         "tags": [
             "attack.execution",
             "attack.t1059.001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "powershell",
             "generic"
         ]
@@ -756,8 +756,8 @@
             "attack.t1059.001",
             "attack.lateral_movement",
             "attack.t1021.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -778,8 +778,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -802,8 +802,8 @@
             "attack.privilege_escalation",
             "attack.credential_access",
             "attack.t1212",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -816,8 +816,8 @@
             "attack.command_and_control",
             "attack.t1219",
             "attack.lateral_movement",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -838,8 +838,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1555.004",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -862,8 +862,8 @@
         "tags": [
             "attack.defense_evasion",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -876,8 +876,8 @@
             "attack.persistence",
             "attack.t1505.004",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -914,8 +914,8 @@
             "attack.initial_access",
             "attack.t1505.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -930,8 +930,8 @@
             "attack.s0404",
             "attack.t1218",
             "lolbas",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -965,8 +965,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -989,8 +989,8 @@
             "attack.command_and_control",
             "attack.t1071.004",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -1002,8 +1002,8 @@
         "tags": [
             "attack.command_and_control",
             "attack.t1071.004",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -1016,7 +1016,7 @@
             "attack.initial_access",
             "attack.persistence",
             "attack.privilege_escalation",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.veaam",
@@ -1034,7 +1034,7 @@
             "attack.initial_access",
             "attack.persistence",
             "attack.privilege_escalation",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.mssql"
@@ -1048,8 +1048,8 @@
         "tags": [
             "attack.privilege_escalation",
             "attack.t1134.002",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -1062,8 +1062,8 @@
             "attack.privilege_escalation",
             "attack.t1134.002",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -1075,8 +1075,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1097,8 +1097,8 @@
         "link": "/curated_ruleset/rules/pages/proc_creation_win_rundll32_advpack_obfuscated_ordinal_call.yaml",
         "tags": [
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1113,8 +1113,8 @@
             "attack.t1133",
             "attack.t1136.001",
             "attack.t1021.001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -1138,8 +1138,8 @@
             "attack.persistence",
             "attack.t1505.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -1220,8 +1220,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1112",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1245,8 +1245,8 @@
             "attack.defense_evasion",
             "attack.execution",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1270,8 +1270,8 @@
             "attack.impact",
             "attack.t1070",
             "attack.t1490",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1285,8 +1285,8 @@
             "attack.t1070",
             "attack.t1490",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1299,8 +1299,8 @@
             "attack.t1003",
             "attack.t1003.002",
             "attack.t1003.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1314,8 +1314,8 @@
             "attack.t1003.002",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1338,8 +1338,8 @@
             "attack.impact",
             "attack.credential_access",
             "attack.t1490",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.conti"
         ]
     },
@@ -1362,8 +1362,8 @@
         "tags": [
             "attack.t1070.001",
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1411,7 +1411,7 @@
             "attack.t1059.001",
             "attack.defense_evasion",
             "attack.t1127",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.mssql"
@@ -1427,8 +1427,8 @@
             "attack.execution",
             "attack.t1021.002",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1439,8 +1439,8 @@
         "link": "/curated_ruleset/rules/pages/proc_creation_win_rundll32_parent_explorer.yaml",
         "tags": [
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1453,8 +1453,8 @@
             "attack.privilege_escalation",
             "attack.persistence",
             "attack.t1546.015",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1465,8 +1465,8 @@
         "link": "/curated_ruleset/rules/pages/proc_creation_win_rundll32_js_runhtmlapplication.yaml",
         "tags": [
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1478,8 +1478,8 @@
         "tags": [
             "attack.t1218.011",
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1494,8 +1494,8 @@
             "attack.t1570",
             "attack.execution",
             "attack.t1569.002",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1507,8 +1507,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1520,8 +1520,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1202",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1534,8 +1534,8 @@
             "attack.privilege_escalation",
             "attack.credential_access",
             "attack.t1557.001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -1591,8 +1591,8 @@
             "attack.t1218.011",
             "attack.t1059.001",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -1606,8 +1606,8 @@
             "attack.t1127",
             "sysmon",
             "lolbas",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -1621,8 +1621,8 @@
             "attack.privilege_escalation",
             "attack.t1055.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -1634,8 +1634,8 @@
         "tags": [
             "attack.credential_access",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -1651,8 +1651,8 @@
             "sysmon",
             "lolbas",
             "web_exploitation",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -1665,8 +1665,8 @@
             "attack.credential_access",
             "attack.t1555.005",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -1680,8 +1680,8 @@
             "attack.t1059.001",
             "attack.lateral_movement",
             "attack.t1021.006",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1694,8 +1694,8 @@
             "attack.t1059.001",
             "attack.lateral_movement",
             "attack.t1021.006",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1719,7 +1719,7 @@
             "attack.command_and_control",
             "attack.t1219",
             "attack.persistence",
-            "os.windows",
+            "windows",
             "windows.services"
         ]
     },
@@ -1742,8 +1742,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1003.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1756,8 +1756,8 @@
             "attack.defense_evasion",
             "attack.command_and_control",
             "attack.t1090",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1805,8 +1805,8 @@
             "attack.t1036",
             "attack.t1003.001",
             "car.2013-05-009",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1841,8 +1841,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1864,8 +1864,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1562.001",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1878,8 +1878,8 @@
             "attack.t1569.002",
             "attack.privilege_escalation",
             "attack.persistence",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1892,7 +1892,7 @@
             "attack.t1569.002",
             "attack.privilege_escalation",
             "attack.persistence",
-            "os.windows",
+            "windows",
             "windows.services"
         ]
     },
@@ -1906,8 +1906,8 @@
             "attack.t1569.002",
             "attack.privilege_escalation",
             "attack.persistence",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1929,8 +1929,8 @@
             "attack.execution",
             "attack.t1059.001",
             "attack.t1204",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.webdav"
         ]
     },
@@ -1952,8 +1952,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1218.011",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -1986,8 +1986,8 @@
         "tags": [
             "attack.execution",
             "attack.t1218",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -1998,8 +1998,8 @@
         "tags": [
             "attack.execution",
             "attack.t1218",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2010,8 +2010,8 @@
         "tags": [
             "attack.execution",
             "attack.t1218",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "sysmon"
         ]
     },
@@ -2024,8 +2024,8 @@
             "attack.credential_access",
             "car.2019-04-004",
             "attack.t1003.001",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2049,8 +2049,8 @@
             "attack.lateral_movement",
             "attack.t1021.001",
             "attack.t1112",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2083,8 +2083,8 @@
         "tags": [
             "attack.execution",
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -2096,8 +2096,8 @@
         "tags": [
             "attack.execution",
             "attack.t1557.001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -2110,8 +2110,8 @@
             "attack.execution",
             "attack.t1557.001",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -2123,8 +2123,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1564.004",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -2146,8 +2146,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2158,8 +2158,8 @@
         "tags": [
             "attack.command_and_control",
             "attack.t1572",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2170,8 +2170,8 @@
         "tags": [
             "attack.execution",
             "attack.lateral_movement",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2222,8 +2222,8 @@
         "link": "/curated_ruleset/rules/pages/proc_creation_win_rundll32_obfuscated_ordinal_call.yaml",
         "tags": [
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -2247,8 +2247,8 @@
             "attack.privilege_escalation",
             "attack.t1134.001",
             "attack.t1134.002",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2262,8 +2262,8 @@
             "attack.t1134.001",
             "attack.t1134.002",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2275,8 +2275,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1563.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2322,8 +2322,8 @@
             "attack.t1021.003",
             "attack.execution",
             "attack.lateral_movement",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2345,8 +2345,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1003.001",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2358,8 +2358,8 @@
             "attack.credential_access",
             "attack.t1003.001",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -2382,8 +2382,8 @@
         "tags": [
             "attack.execution",
             "attack.t1059",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2396,8 +2396,8 @@
             "attack.execution",
             "attack.t1059",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2413,8 +2413,8 @@
             "attack.t1003.003",
             "attack.lateral_movement",
             "attack.execution",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.impacket"
         ]
     },
@@ -2440,8 +2440,8 @@
             "attack.t1572",
             "attack.t1021.001",
             "attack.t1021.004",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2479,8 +2479,8 @@
             "attack.lateral_movement",
             "attack.t1021.002",
             "attack.t1078",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "bad_practice",
             "generic"
         ]
@@ -2506,8 +2506,8 @@
             "attack.s0005",
             "attack.t1003.001",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -2530,8 +2530,8 @@
         "tags": [
             "attack.execution",
             "attack.t1059.003",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2544,8 +2544,8 @@
             "attack.execution",
             "attack.t1059.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2557,8 +2557,8 @@
         "tags": [
             "attack.execution",
             "attack.t1059.003",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2571,8 +2571,8 @@
             "attack.execution",
             "attack.t1059.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2584,8 +2584,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.004",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2637,8 +2637,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1003.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2671,8 +2671,8 @@
         "tags": [
             "attack.persistence",
             "attack.t1136.001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -2694,8 +2694,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.001",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2708,8 +2708,8 @@
             "attack.defense_evasion",
             "attack.command_and_control",
             "attack.t1090",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2721,8 +2721,8 @@
             "attack.discovery",
             "attack.credential_access",
             "attack.t1040",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2756,8 +2756,8 @@
             "attack.lateral_movement",
             "attack.t1021.002",
             "attack.s0039",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -2781,8 +2781,8 @@
             "attack.t1003.002",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2794,8 +2794,8 @@
             "attack.credential_access",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2807,8 +2807,8 @@
             "attack.credential_access",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2820,8 +2820,8 @@
             "attack.credential_access",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2832,8 +2832,8 @@
         "tags": [
             "attack.command_and_control",
             "attack.t1219",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2843,8 +2843,8 @@
         "link": "/curated_ruleset/rules/pages/proc_creation_win_mstsc_run_local_rpd_file_susp_parent.yaml",
         "tags": [
             "attack.lateral_movement",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2854,8 +2854,8 @@
         "link": "/curated_ruleset/rules/pages/proc_creation_win_rundll32_mshtml_runhtmlapplication.yaml",
         "tags": [
             "attack.defense_evasion",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "lolbas"
         ]
     },
@@ -2918,8 +2918,8 @@
             "attack.t1003.004",
             "attack.t1003.001",
             "attack.t1003.006",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.mimikatz",
             "sysmon"
         ]
@@ -2933,8 +2933,8 @@
             "attack.credential_access",
             "attack.s0002",
             "attack.t1003.006",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -2946,8 +2946,8 @@
             "attack.credential_access",
             "attack.t1003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -2960,8 +2960,8 @@
             "attack.credential_access",
             "attack.t1003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -2974,8 +2974,8 @@
             "attack.privilege_escalation",
             "attack.t1134.001",
             "attack.t1134.002",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -2989,8 +2989,8 @@
             "attack.t1134.001",
             "attack.t1134.002",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -3006,8 +3006,8 @@
             "attack.execution",
             "attack.t1569.002",
             "attack.execution",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.metasploit",
             "malware.impacket"
         ]
@@ -3032,8 +3032,8 @@
             "attack.execution",
             "attack.t1059.001",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic",
             "powershell"
         ]
@@ -3072,8 +3072,8 @@
             "attack.t1069.002",
             "attack.t1069",
             "attack.t1059.001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic",
             "powershell"
         ]
@@ -3095,8 +3095,8 @@
             "attack.t1069",
             "attack.t1059.001",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic",
             "powershell"
         ]
@@ -3126,8 +3126,8 @@
         "link": "/curated_ruleset/rules/pages/win_mssql_xp_cmdshell_audit_log.yaml",
         "tags": [
             "attack.execution",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "database",
             "software.mssql"
         ]
@@ -3139,8 +3139,8 @@
         "link": "/curated_ruleset/rules/pages/win_mssql_xp_cmdshell_change.yaml",
         "tags": [
             "attack.execution",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "database",
             "software.mssql"
         ]
@@ -3153,7 +3153,7 @@
         "tags": [
             "attack.credential_access",
             "attack.t1110",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.mssql"
@@ -3167,7 +3167,7 @@
         "tags": [
             "attack.credential_access",
             "attack.t1110",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.mssql"
@@ -3180,7 +3180,7 @@
         "link": "/curated_ruleset/rules/pages/win_mssql_sp_procoption_set.yaml",
         "tags": [
             "attack.persistence",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.mssql"
@@ -3193,7 +3193,7 @@
         "link": "/curated_ruleset/rules/pages/win_mssql_disable_audit_settings.yaml",
         "tags": [
             "attack.defense_evasion",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.mssql"
@@ -3206,7 +3206,7 @@
         "link": "/curated_ruleset/rules/pages/win_mssql_add_sysadmin_account.yaml",
         "tags": [
             "attack.persistence",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.mssql"
@@ -3221,8 +3221,8 @@
             "attack.execution",
             "attack.t1021.003",
             "attack.lateral_movement",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -3234,8 +3234,8 @@
             "attack.lateral_movement",
             "attack.execution",
             "attack.t1021.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -3268,8 +3268,8 @@
         "tags": [
             "attack.execution",
             "attack.t1557.001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -3497,8 +3497,8 @@
         "tags": [
             "attack.execution",
             "detection.emerging_threats",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -3511,8 +3511,8 @@
             "attack.execution",
             "detection.emerging_threats",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -3535,8 +3535,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1003.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -3548,8 +3548,8 @@
             "attack.credential_access",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -3584,8 +3584,8 @@
         "tags": [
             "attack.defense_evasion",
             "attack.t1562.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -3597,8 +3597,8 @@
             "attack.lateral_movement",
             "attack.t1021.002",
             "attack.execution",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.impacket"
         ]
     },
@@ -3611,8 +3611,8 @@
             "attack.persistence",
             "attack.t1505.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -3647,8 +3647,8 @@
             "attack.defense_evasion",
             "attack.lateral_movement",
             "attack.execution",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.impacket"
         ]
     },
@@ -3660,8 +3660,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.006",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -3675,8 +3675,8 @@
             "attack.t1558.003",
             "attack.lateral_movement",
             "attack.t1550.003",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic",
             "powershell"
         ]
@@ -3691,8 +3691,8 @@
             "attack.t1047",
             "attack.lateral_movement",
             "attack.t1021.003",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.impacket"
         ]
     },
@@ -3705,8 +3705,8 @@
             "attack.defense_evasion",
             "attack.t1055.001",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -3719,8 +3719,8 @@
             "attack.defense_evasion",
             "attack.privilege_escalation",
             "cve.2023.21746",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -3734,8 +3734,8 @@
             "attack.privilege_escalation",
             "cve.2023.21746",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -3749,8 +3749,8 @@
             "attack.t1558.003",
             "attack.lateral_movement",
             "attack.t1550.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -3761,8 +3761,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1558.003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -3774,8 +3774,8 @@
             "attack.execution",
             "attack.t1557.001",
             "attack.lateral_movement",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.impacket"
         ]
     },
@@ -3789,8 +3789,8 @@
             "attack.privilege_escalation",
             "attack.t1055",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -3806,8 +3806,8 @@
             "attack.t1059.003",
             "attack.t1059.001",
             "attack.s0106",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "sysmon"
         ]
     },
@@ -3821,8 +3821,8 @@
             "attack.defense_evasion",
             "attack.t1059.001",
             "attack.t1564.003",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.covenant"
         ]
     },
@@ -3837,8 +3837,8 @@
             "attack.t1059.001",
             "attack.t1564.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.covenant"
         ]
     },
@@ -3852,8 +3852,8 @@
             "attack.privilege_escalation",
             "attack.t1055",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -3866,8 +3866,8 @@
             "attack.defense_evasion",
             "attack.privilege_escalation",
             "attack.t1055",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -3881,8 +3881,8 @@
             "attack.privilege_escalation",
             "attack.t1055",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -3899,8 +3899,8 @@
             "attack.t1059.007",
             "attack.t1218.005",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -3945,8 +3945,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4011,8 +4011,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.006",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4024,8 +4024,8 @@
             "attack.collection",
             "attack.t1005",
             "attack.credential_access",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4037,8 +4037,8 @@
             "attack.collection",
             "attack.t1005",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4050,8 +4050,8 @@
             "attack.credential_access",
             "attack.t1003",
             "attack.t1003.003",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.conti",
             "malware.trickbot"
         ]
@@ -4066,8 +4066,8 @@
             "attack.t1003",
             "attack.t1003.003",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4090,8 +4090,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.006",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4114,8 +4114,8 @@
             "attack.defense_evasion",
             "attack.t1112",
             "attack.t1562",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4229,8 +4229,8 @@
         "tags": [
             "attack.execution",
             "attack.credential_access",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4286,8 +4286,8 @@
             "attack.defense_evasion",
             "attack.t1562.002",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -4323,7 +4323,7 @@
             "attack.defense_evasion",
             "attack.t1127",
             "mssql",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "database",
             "software.mssql"
@@ -4339,8 +4339,8 @@
             "attack.t1134",
             "attack.t1134.002",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.potato"
         ]
     },
@@ -4439,8 +4439,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4463,8 +4463,8 @@
             "attack.defense_evasion",
             "attack.t1055.001",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -4479,8 +4479,8 @@
             "attack.t1003.003",
             "car.2013-07-001",
             "attack.s0404",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4495,8 +4495,8 @@
             "car.2013-07-001",
             "attack.s0404",
             "sysmon",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4511,8 +4511,8 @@
             "attack.t1039",
             "attack.t1048",
             "attack.t1021.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -4611,8 +4611,8 @@
             "attack.t1021.002",
             "attack.t1543.003",
             "attack.t1569.002",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -4628,8 +4628,8 @@
             "attack.t1021.002",
             "attack.t1543.003",
             "attack.t1569.002",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -4643,8 +4643,8 @@
             "attack.privilege_escalation",
             "attack.t1055",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -4658,8 +4658,8 @@
             "attack.privilege_escalation",
             "attack.t1055",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -4673,8 +4673,8 @@
             "attack.privilege_escalation",
             "attack.t1055",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -4687,8 +4687,8 @@
             "attack.defense_evasion",
             "attack.t1218.011",
             "lolbas",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -4701,8 +4701,8 @@
             "attack.defense_evasion",
             "attack.t1218.011",
             "sysmon",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "malware.cobalt_strike"
         ]
     },
@@ -4750,8 +4750,8 @@
             "attack.t1018",
             "attack.t1033",
             "attack.t1087",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "webserver.iis"
         ]
     },
@@ -4840,8 +4840,8 @@
         "tags": [
             "attack.execution",
             "attack.t1059.001",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "powershell",
             "generic"
         ]
@@ -4898,8 +4898,8 @@
             "attack.t1210",
             "attack.impact",
             "attack.t1499.004",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "event_logging"
         ]
     },
@@ -4948,7 +4948,7 @@
         "tags": [
             "attack.persistence",
             "attack.t1505.003",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "antivirus"
         ]
@@ -4961,7 +4961,7 @@
         "tags": [
             "attack.resource_development",
             "attack.t1588",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "antivirus"
         ]
@@ -4973,7 +4973,7 @@
         "link": "/curated_ruleset/rules/pages/windows_defender_ransomware.yaml",
         "tags": [
             "attack.t1486",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "antivirus"
         ]
@@ -4989,7 +4989,7 @@
             "attack.t1558",
             "attack.t1003.001",
             "attack.t1003.002",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "antivirus"
         ]
@@ -5002,7 +5002,7 @@
         "tags": [
             "attack.execution",
             "attack.t1204",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "antivirus"
         ]
@@ -5017,7 +5017,7 @@
             "attack.t1203",
             "attack.command_and_control",
             "attack.t1219",
-            "os.windows",
+            "windows",
             "windows.evtx",
             "antivirus"
         ]
@@ -5030,8 +5030,8 @@
         "tags": [
             "attack.persistence",
             "attack.t1098",
-            "os.windows",
-            "windows.event_logs",
+            "windows",
+            "evtx",
             "generic"
         ]
     },
@@ -5054,8 +5054,8 @@
         "tags": [
             "attack.credential_access",
             "attack.t1003",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {
@@ -5066,8 +5066,8 @@
         "tags": [
             "attack.lateral_movement",
             "attack.t1021.002",
-            "os.windows",
-            "windows.event_logs"
+            "windows",
+            "evtx"
         ]
     },
     {

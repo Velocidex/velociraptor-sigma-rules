@@ -41,8 +41,8 @@ tags:
     - attack.t1069
     - attack.t1059.001
     - sysmon
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - generic
     - powershell
 logsource:

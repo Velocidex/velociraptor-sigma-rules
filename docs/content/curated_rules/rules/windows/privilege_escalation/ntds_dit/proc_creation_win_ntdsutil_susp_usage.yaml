@@ -14,8 +14,8 @@ date: 2022/09/14
 tags:
     - attack.credential_access
     - attack.t1003.003
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

@@ -17,8 +17,8 @@ tags:
     - car.2013-07-001
     - attack.s0404
     - sysmon
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

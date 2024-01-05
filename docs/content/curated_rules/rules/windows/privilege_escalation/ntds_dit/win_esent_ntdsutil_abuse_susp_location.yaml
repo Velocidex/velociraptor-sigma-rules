@@ -12,8 +12,8 @@ modified: 2023/10/23
 tags:
     - attack.execution
     - attack.credential_access
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     product: windows
     service: evtx/application

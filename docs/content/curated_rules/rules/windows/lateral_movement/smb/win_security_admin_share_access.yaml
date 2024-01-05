@@ -8,8 +8,8 @@ modified: 2021/11/27
 tags:
     - attack.lateral_movement
     - attack.t1021.002
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     product: windows
     service: evtx/security

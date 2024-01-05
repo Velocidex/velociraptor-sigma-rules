@@ -16,8 +16,8 @@ tags:
     - attack.s0404
     - attack.t1218
     - lolbas
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

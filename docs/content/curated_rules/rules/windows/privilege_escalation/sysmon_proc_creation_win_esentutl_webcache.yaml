@@ -14,8 +14,8 @@ tags:
     - attack.collection
     - attack.t1005
     - sysmon
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

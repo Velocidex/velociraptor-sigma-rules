@@ -27,8 +27,8 @@ modified: 2021/11/27
 tags:
     - attack.defense_evasion
     - attack.t1562.002
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     product: windows
     service: evtx/security

@@ -16,8 +16,8 @@ tags:
     - attack.t1569.002
     - attack.privilege_escalation
     - attack.persistence
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     product: windows
     service: evtx/security

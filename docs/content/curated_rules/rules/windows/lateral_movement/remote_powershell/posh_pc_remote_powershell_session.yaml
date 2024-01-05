@@ -15,8 +15,8 @@ tags:
     - attack.t1059.001
     - attack.lateral_movement
     - attack.t1021.006
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: ps_classic_start
     product: windows

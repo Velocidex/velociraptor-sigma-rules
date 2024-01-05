@@ -22,7 +22,7 @@ tags:
     - attack.defense_evasion
     - attack.t1127
     - mssql
-    - os.windows
+    - windows
     - windows.evtx
     - database
     - software.mssql

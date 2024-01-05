@@ -11,8 +11,8 @@ modified: 2023/02/09
 tags:
     - attack.credential_access
     - attack.t1555.004
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - lolbas
 logsource:
     category: process_creation

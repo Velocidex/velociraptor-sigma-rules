@@ -15,8 +15,8 @@ date: 2023/07/28
 tags:
     - attack.credential_access
     - sysmon
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - generic
 logsource:
     category: create_remote_thread

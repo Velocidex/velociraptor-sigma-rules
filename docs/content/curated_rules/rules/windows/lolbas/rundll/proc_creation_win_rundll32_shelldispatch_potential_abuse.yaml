@@ -10,8 +10,8 @@ date: 2023/06/20
 tags:
     - attack.execution
     - attack.defense_evasion
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - lolbas
 logsource:
     category: process_creation

@@ -23,8 +23,8 @@ tags:
     - attack.t1036
     - attack.t1003.001
     - car.2013-05-009
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - lolbas
 logsource:
     category: process_creation

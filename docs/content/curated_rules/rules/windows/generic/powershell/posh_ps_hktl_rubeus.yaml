@@ -18,8 +18,8 @@ tags:
     - attack.t1558.003
     - attack.lateral_movement
     - attack.t1550.003
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - generic
     - powershell
 logsource:

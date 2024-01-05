@@ -14,8 +14,8 @@ modified: 2023/01/25
 tags:
     - attack.command_and_control
     - attack.t1572
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

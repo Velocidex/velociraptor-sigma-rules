@@ -12,7 +12,7 @@ modified: 2023/02/03
 tags:
     - attack.execution
     - attack.t1204
-    - os.windows
+    - windows
     - windows.evtx
     - antivirus
 logsource:

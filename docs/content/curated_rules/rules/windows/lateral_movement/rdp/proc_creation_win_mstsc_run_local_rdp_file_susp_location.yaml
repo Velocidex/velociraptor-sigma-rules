@@ -12,8 +12,8 @@ tags:
     - attack.command_and_control
     - attack.t1219
     - attack.lateral_movement
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

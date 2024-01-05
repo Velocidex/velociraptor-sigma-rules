@@ -11,7 +11,7 @@ author: Nasreddine Bencherchali (Nextron Systems)
 date: 2022/07/13
 tags:
     - attack.persistence
-    - os.windows
+    - windows
     - windows.evtx
     - database
     - software.mssql

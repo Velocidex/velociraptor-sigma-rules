@@ -11,7 +11,7 @@ modified: 2023/10/23
 tags:
     - attack.resource_development
     - attack.t1588
-    - os.windows
+    - windows
     - windows.evtx
     - antivirus
 logsource:

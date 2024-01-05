@@ -13,8 +13,8 @@ tags:
     - attack.privilege_escalation
     - attack.persistence
     - attack.t1053.005
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     product: windows
     service: schtasks

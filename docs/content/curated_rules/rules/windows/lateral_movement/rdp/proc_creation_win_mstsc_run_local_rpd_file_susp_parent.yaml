@@ -11,8 +11,8 @@ date: 2023/04/18
 modified: 2023/04/18
 tags:
     - attack.lateral_movement
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

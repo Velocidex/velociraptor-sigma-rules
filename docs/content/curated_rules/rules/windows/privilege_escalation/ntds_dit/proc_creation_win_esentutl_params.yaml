@@ -15,10 +15,10 @@ tags:
     - attack.credential_access
     - attack.t1003
     - attack.t1003.003
-    - os.windows
-    - windows.event_logs
-    - malware.conti
-    - malware.trickbot
+    - windows
+    - evtx
+    - conti
+    - trickbot
 logsource:
     category: process_creation
     product: windows

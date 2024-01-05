@@ -14,7 +14,7 @@ tags:
     - attack.initial_access
     - attack.persistence
     - attack.privilege_escalation
-    - os.windows
+    - windows
     - windows.evtx
     - database
     - software.veaam

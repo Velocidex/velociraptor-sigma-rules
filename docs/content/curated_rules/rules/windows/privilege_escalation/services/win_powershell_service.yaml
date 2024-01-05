@@ -13,7 +13,7 @@ tags:
     - attack.t1569.002
     - attack.privilege_escalation
     - attack.persistence
-    - os.windows
+    - windows
     - windows.services
 logsource:
     product: windows

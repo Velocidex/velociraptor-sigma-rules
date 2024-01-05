@@ -17,8 +17,8 @@ modified: 2023/09/18
 tags:
     - attack.exfiltration
     - attack.t1048.003
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - lolbas
 logsource:
     category: process_creation

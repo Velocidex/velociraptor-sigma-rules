@@ -17,8 +17,8 @@ tags:
     - attack.t1218.011
     - attack.t1059.001
     - sysmon
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - generic
 logsource:
     category: create_remote_thread

@@ -16,8 +16,8 @@ tags:
     - attack.t1562
     - attack.execution
     - attack.t1059
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: ps_script
     product: windows

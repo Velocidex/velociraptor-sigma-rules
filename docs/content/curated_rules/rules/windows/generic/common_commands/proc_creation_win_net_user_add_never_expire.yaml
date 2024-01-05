@@ -14,8 +14,8 @@ modified: 2023/02/21
 tags:
     - attack.persistence
     - attack.t1136.001
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - generic
 logsource:
     category: process_creation

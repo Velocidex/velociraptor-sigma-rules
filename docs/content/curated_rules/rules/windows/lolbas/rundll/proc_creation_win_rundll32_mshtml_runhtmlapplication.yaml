@@ -13,8 +13,8 @@ author: Nasreddine Bencherchali (Nextron Systems)
 date: 2022/08/14
 tags:
     - attack.defense_evasion
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - lolbas
 logsource:
     category: process_creation

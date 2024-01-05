@@ -10,8 +10,8 @@ modified: 2023/02/04
 tags:
     - attack.credential_access
     - attack.t1558.003
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

@@ -18,8 +18,8 @@ tags:
     - attack.t1039
     - attack.t1048
     - attack.t1021.002
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

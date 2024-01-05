@@ -15,8 +15,8 @@ tags:
     - attack.privilege_escalation
     - attack.t1055.003
     - sysmon
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - generic
 logsource:
     category: create_remote_thread

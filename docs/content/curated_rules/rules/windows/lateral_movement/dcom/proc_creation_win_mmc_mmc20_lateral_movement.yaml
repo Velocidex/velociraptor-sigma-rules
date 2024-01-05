@@ -14,8 +14,8 @@ tags:
     - attack.execution
     - attack.t1021.003
     - attack.lateral_movement
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     category: process_creation
     product: windows

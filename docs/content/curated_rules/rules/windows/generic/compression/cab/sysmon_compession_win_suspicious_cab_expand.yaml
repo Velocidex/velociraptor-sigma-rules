@@ -12,8 +12,8 @@ modified: 2023/11/02
 tags:
     - attack.execution
     - attack.t1218
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
     - sysmon
 logsource:
     category: process_creation

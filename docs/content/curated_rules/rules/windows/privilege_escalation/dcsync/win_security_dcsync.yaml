@@ -14,8 +14,8 @@ tags:
     - attack.credential_access
     - attack.s0002
     - attack.t1003.006
-    - os.windows
-    - windows.event_logs
+    - windows
+    - evtx
 logsource:
     product: windows
     service: evtx/security

@@ -5,3 +5,7 @@ title = 'Velociraptor Sigma Rules'
 [module]
 [[module.imports]]
 path = 'github.com/alex-shpak/hugo-book'
+
+
+[params]
+BookTheme = 'light'

@@ -3,7 +3,7 @@
 </script>
 
 <div class="input-group">
-  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control" placeholder="Search posts" aria-describedby="basic-addon2">
+  <input type="text" id="myInput" onkeyup="doSearch()" class="form-control" placeholder="Search rules" aria-describedby="basic-addon2">
   <span class="input-group-addon" id="basic-addon2"><i class="fas fa-search"></i></span>
 </div>
 
@@ -15,7 +15,7 @@
 let all_data = [];
 
 $.ajax({
-  url: "curated_rules/data.json",
+    url: {{ .Get 0 }},
 }).done(function( data ) {
   all_data = data;
   DrawResults(data);
@@ -26,6 +26,7 @@ function matchItem(filter, item) {
         item.description.toUpperCase().includes(filter)) {
         return true;
     }
+
     let labels = item.tags || [];
     for(let j=0;j<labels.length;j++) {
         if (labels[j].toUpperCase().includes(filter)) {
@@ -45,6 +46,9 @@ function doSearch() {
       let item = all_data[i];
       if (matchItem(filter, item)) {
           result.push(item);
+      };
+      if (result.length > 50) {
+          break;
       }
   };
   DrawResults(result);
@@ -55,16 +59,16 @@ function DrawResults(data) {
 
   for(let i=0;i<data.length; i++) {
     let item = data[i];
-    let template = $(`<div class="panel panel-default color">
+      let template = $(`
+<div class="panel panel-default color">
   <div class="panel-heading color">
-    <a class="title" href=""><h3 class="panel-title color " ></h3></a>
-    <div class="date pull-right"></div>
+    <a class="title" target="new" href=""><h3 class="panel-title color " ></h3></a>
+    <div class="author pull-right"></div>
   </div>
   <div class="panel-body color">
     <div class="border color">
        <div class="border color">
          <div class="idea-inner-text-main color">
-           <img class="user-avatar inline">
            <p class="description "></p>
            <p class="idea-tag space"></p>
          </div>
@@ -72,14 +76,16 @@ function DrawResults(data) {
     </div>
 </div>`);
 
-    template.find(".title").append(item.title);
-    template.find(".description").append(item.description);
-    template.find(".title").attr("href", item.link);
-    template.find(".date").append(item.date)
+      template.find(".title").append(item.title);
+      template.find(".author").append(item.author);
+      template.find(".description").append(item.description);
+      template.find(".title").attr("href", item.link);
+      template.find(".date").append(item.date)
 
     for (let j=0; j<item.tags.length; j++) {
         let tag = item.tags[j];
-        let link = $(`<a class="space tag"><i class="linkcolour label label-success">` +
+        let link = $(`
+<a class="space tag"><i class="linkcolour label label-success">` +
                      tag + `</i></a>`).click(function() {
                          document.getElementById('myInput').value = tag;
                          doSearch();
@@ -96,8 +102,10 @@ function myFunction() {
   input = document.getElementById('myInput');
   filter = input.value.toUpperCase();
   ul = document.getElementById("myUL");
-  li = ul.getElementsByTagName('li');
-  // Loop through all list items, and hide those who don't match the search query
+    li = ul.getElementsByTagName('li');
+
+  // Loop through all list items, and hide those who don't match the
+  // search query
   for (i = 0; i < li.length; i++) {
     a = li[i].getElementsByTagName("a")[0];
     txtValue = a.textContent || a.innerText;
@@ -109,6 +117,7 @@ function myFunction() {
     }
   }
 }
+
 function community() { //these are here to add quick buttons to add a phrase into the search engine
     ;
 }

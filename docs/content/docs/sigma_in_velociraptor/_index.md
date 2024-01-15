@@ -1,6 +1,7 @@
 ---
 title: "Sigma In Velociraptor"
 date: 2023-10-15T00:14:44+10:00
+weight: 10
 ---
 
 # Sigma In Velociraptor

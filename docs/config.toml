@@ -1,6 +1,6 @@
 baseURL = 'http://sigma.velocidex.com/'
 languageCode = 'en-us'
-title = 'Velociraptor Sigma Rules'
+title = 'Velociraptor Curated Sigma'
 
 [module]
 [[module.imports]]
@@ -9,3 +9,4 @@ path = 'github.com/alex-shpak/hugo-book'
 
 [params]
 BookTheme = 'light'
+BookSearch = false

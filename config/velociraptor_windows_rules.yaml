@@ -641,6 +641,14 @@ Sources:
   process_creation/windows/execution:
     query: |
       SELECT * FROM Artifact.Windows.Analysis.EvidenceOfExecution()
+  
+  webserver/linux/*:
+    query: |
+      SELECT * FROM Artifact.Linux.WebServer() #ToDo
+
+  webserver/windows/*:
+    query: |
+      SELECT * FROM Artifact.Windows.WebServer() #ToDo
 
 # Volatile Artifacts
 

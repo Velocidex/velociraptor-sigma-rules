@@ -126,6 +126,10 @@ Sources:
     query: |
       SELECT * FROM parse_auditd(filename=ROOT + '/audit/audit.log')
 
+  webserver/linux/*:
+    query: | # ToDo
+      SELECT * FROM Artifact.Linux.WebServer()
+
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))

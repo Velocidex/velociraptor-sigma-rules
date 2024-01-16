@@ -641,31 +641,49 @@ Sources:
   process_creation/windows/execution:
     query: |
       SELECT * FROM Artifact.Windows.Analysis.EvidenceOfExecution()
-  
-  webserver/linux/*:
-    query: |
-      SELECT * FROM Artifact.Linux.WebServer() #ToDo
 
   webserver/windows/*:
     query: |
-      SELECT * FROM Artifact.Windows.WebServer() #ToDo
+      SELECT * FROM Artifact.Windows.Applications.IISLogs()
 
 # Volatile Artifacts
 
   process_creation/windows/pslist:
-    query: | # ToDo - Clean this up
-      SELECT *, 
-        Exe AS Image, process_tracker_callchain(id=Pid) AS CallChain, 
-        process_tracker_get(id=Ppid).Data AS ParentImage 
-      FROM process_tracker_pslist()
+    query: | 
+      LET P = SELECT *, process_tracker_get(id=Ppid).Data AS Data FROM pslist()
+
+      SELECT 
+          Name, CommandLine, Exe AS Image, Data.Exe AS ParentImage,
+          process_tracker_get(id=Data.Ppid).Data.Exe AS GrandParentImage
+      FROM P
 
   image_load/windows/pslist:
     query: |
-      # ToDo
+      SELECT *, process_tracker_get(id=GPPid).Data.Exe AS GrandParentImage FROM foreach(
+        row={
+            SELECT Pid, CommandLine, Exe AS Image, 
+                process_tracker_get(id=Ppid).Data AS P 
+            FROM pslist()},
+        query={
+            SELECT Image, CommandLine, P.Exe AS ParentImage,
+                P.Ppid AS GPPid,
+                ModuleName, ExePath AS ModulePath 
+            FROM modules(pid=Pid)}
+    )
 
   network_connection/windows/netstat:
     query: |
-      # ToDo:
+      LET nt = SELECT 
+          * , process_tracker_get(id=Pid) AS pt
+      FROM netstat()
+
+      SELECT 
+          Laddr.IP as LocalIP, Laddr.Port AS LocalPort, 
+          Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort, 
+          Pid, TypeString AS Protocol, pt.Data.Exe AS Image,
+          pt.Data.CommandLine as CommandLine, 
+          process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
+      FROM nt
 
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))

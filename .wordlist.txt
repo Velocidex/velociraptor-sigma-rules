@@ -42,3 +42,6 @@ rulesets
 
 # docs/content/docs/indexes/chopchopgo/_index.md
 ChopChopGo
+
+# docs/content/docs/indexes/Velociraptor/_index.md
+triaging

@@ -60,8 +60,6 @@ detection:
           - 'ScreenConnect'
           - 'SplashTop'
           - 'OpenSSH'
-        service_PathName|contains:
-          - #ToDo: Research some commandlines. 
     condition: any
 falsepositives:
     - Legitimate usage of the tool

@@ -456,7 +456,7 @@ Sources:
     channel:
       - Application
 
-  dns_query_windows/evtx: # ToDo: Check these are the right path. 
+  dns_query_windows/evtx: 
     query: |
       SELECT * FROM parse_evtx(filename=[
         ROOT + "/Microsoft-Windows-DNS-Client.evtx",

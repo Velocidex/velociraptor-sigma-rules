@@ -17,8 +17,8 @@ logsource:
 detection:
     selection_img:
         Image|endswith: ':\Program Files\SysAidServer\tomcat\webapps\usersfiles\user.exe'
-    selection_hash: # ToDo: Add hash
-        Hashes|contains: 'SHA256=B5ACF14CDAC40BE590318DEE95425D0746E85B1B7B1CBD14DA66F21F2522BF4D'
+    selection_hash: 
+        SHA256|contains: 'SHA256=B5ACF14CDAC40BE590318DEE95425D0746E85B1B7B1CBD14DA66F21F2522BF4D'
     condition: 1 of selection_*
 falsepositives:
     - Unlikely

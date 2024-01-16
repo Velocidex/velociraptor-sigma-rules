@@ -93,7 +93,7 @@ FieldMappings:
   ClientAddress: "x=>x.EventData.ClientAddress"
   Client_Address: "x=>x.EventData.Client_Address"
   ClientName: "x=>x.EventData.ClientName"
-  CommandLine: "x=>x.EventData.CommandLine"
+  CommandLine: "x=>if(condition=x.EventData.CommandLine, then=x.EventData.CommandLine, else=x.CommandLine)"
   Command: "x=>x.Command"
   Company: "x=>x.EventData.Company"
   Computer: "x=>x.System.Computer"
@@ -126,12 +126,12 @@ FieldMappings:
   ErrorCode: "x=>x.EventData.ErrorCode"
   EventID: "x=>x.System.EventID.Value"
   EventType: "x=>x.EventData.EventType"
-  execution_Name: "x=>x.Name"
   ExecutionProcessID: "x=>x.System.Execution_attributes.ProcessID"
   FailureCode: "x=>x.EventData.FailureCode"
   FilePath: "x=>x.EventData.FilePath"
   FileVersion: "x=>x.EventData.FileVersion"
   Filename: "x=>x.EventData.Filename"
+  GrandParentImage: "x=>x.GrandParentImage"
   GrantedAccess: "x=>x.EventData.GrantedAccess"
   GroupName: "x=>x.EventData.GroupName"
   GroupSid: "x=>x.EventData.GroupSid"
@@ -140,10 +140,9 @@ FieldMappings:
   HostApplication: "x=>x.EventData.HostApplication"
   HostName: "x=>x.EventData.HostName"
   HostVersion: "x=>x.EventData.HostVersion"
-  Image: "x=>x.EventData.Image"
-  image: "x=>x.EventData.Image"
-  ImageLoaded: "x=>x.EventData.ImageLoaded"
-  ImagePath: "x=>x.EventData.ImagePath"
+  Image: "x=>if(condition=x.EventData.Image, then=x.EventData.Image, else=x.Image)"
+  ImageLoaded: "x=>if(condition=x.EventData.ImageLoaded, then=x.EventData.ImageLoaded, else=x.ModulePath"
+  ImagePath: "x=>if(condition=x.EventData.ImagePath, then=x.EventData.ImagePath, else=x.Image)"
   Imphash: "x=>x.EventData.Hashes"
   Initiated: "x=>x.EventData.Initiated"
   InstanceID: "x=>x.UserData.UMDFHostDeviceArrivalBegin.InstanceId"
@@ -156,6 +155,8 @@ FieldMappings:
   LDAPDisplayName: "x=>x.EventData.LDAPDisplayName"
   LayerRTID: "x=>x.EventData.LayerRTID"
   Level: "x=>x.System.Level"
+  LocalIP: "x=>x.LocalIP"
+  LocalPort: "x=>x.LocalPort"
   LogFileClearedChannel: "x=>x.UserData.LogFileCleared.Channel"
   LogFileClearedSubjectUserName: "x=>x.UserData.LogFileCleared.SubjectUserName"
   LogonId: "x=>x.EventData.LogonId"
@@ -164,16 +165,21 @@ FieldMappings:
   LogonType: "x=>x.EventData.LogonType"
   Logon_Account: "x=>x.EventData.Logon_Account"
   MachineName: "x=>x.EventData.MachineName"
+  MD5: "x=>x.MD5"
+  md5: "x=>x.MD5"
   MemberName: "x=>x.EventData.MemberName"
   MemberSid: "x=>x.EventData.MemberSid"
   Message: "x=>x.EventData"
   ModifyingApplication: "x=>x.EventData.ModifyingApplication"
+  ModuleName: "x=>x.ModuleName"
+  ModulePath: "x=>x.ModulePath"
+  Name: "x=>x.Name"
   NewName: "x=>x.EventData.NewName"
   NewTemplateContent: "x=> x.EventData.NewTemplateContent"
   NewUacValue: "x=>x.EventData.NewUacValue"
   NewValue: "x=>x.EventData.NewValue"
   New_Value: "x=>x.EventData.`New Value`"
-  NewProcessName: "x=>x.EventData.NewProcessName"
+  NewProcessName: "ifx=>if(condition=x.EventData.NewProcessName, then=x.EventData.NewProcessName, else=x.ProcessName)"
   NewProcessId: "x=>x.EventData.NewProcessId"
   ObjectClass: "x=>x.EventData.ObjectClass"
   ObjectName: "x=>x.EventData.ObjectName"
@@ -190,7 +196,7 @@ FieldMappings:
   param3: "x=>x.EventData.param3"
   param4: "x=>x.EventData.param4"
   param5: "x=>x.EventData.param5"
-  ParentCommandLine: "x=>x.EventData.ParentCommandLine"
+  ParentCommandLine: "x=>if(condition=x.EventData.ParentCommandLine, then=x.EventData.ParentCommandLine, else=x.CommandLine)"
   ParentImage: "x=>x.EventData.ParentImage"
   ParentIntegrityLevel: "x=>x.EventData.ParentIntegrityLevel"
   ParentProcessName: "x=>x.EventData.ParentProcessName"
@@ -219,6 +225,8 @@ FieldMappings:
   QueryResults: "x=>x.EventData.QueryResults"
   QueryStatus: "x=>x.EventData.QueryStatus"
   RelativeTargetName: "x=>x.EventData.RelativeTargetName"
+  RemoteIP: "x=>x.RemoteIP"
+  RemotePort: "x=>x.RemotePort"
   RuleName: "x=>x.EventData.RuleName"
   SAMAccountName: "x=>x.EventData.SamAccountName"
   SamAccountName: "x=>x.EventData.SamAccountName"
@@ -236,6 +244,10 @@ FieldMappings:
   SeverityName: "x=>x.EventData.`Severity Name`"
   ShareLocalPath: "x=>x.EventData.ShareLocalPath"
   ShareName: "x=>x.EventData.ShareName"
+  SHA1: "x=>x.SHA1"
+  sha1: "x=>x.SHA1"
+  SHA256: "x=>x.SHA256"
+  sha256: "x=>x.SHA256"
   SidHistory: "x=>x.EventData.SidHistory"
   Signature: "x=>x.EventData.Signature"
   SignatureStatus: "x=>x.EventData.SignatureStatus"
@@ -297,6 +309,7 @@ FieldMappings:
   param2: "x=>x.EventData.param2"
   service: "x=>x.EventData.Service"
   sha1: "x=>x.EventData.Hashes_sha1"
+  User: "x=>if(condition=x.EventData.User, then=x.EventData.User, else=x.User)"
   UserDataProviderName: "x=>x.UserData.Operation_StartedOperational.ProviderName"
   UserDataCode: "x=>x.UserData.Operation_StartedOperational.Code"
   UserDataHostProcess: "x=>x.UserData.Operation_StartedOperational.HostProcess"
@@ -316,6 +329,7 @@ FieldMappings:
   UserDataUser: "x=>x.UserData.EventXML.User"
   UserDataSessionID: "x=>x.UserData.EventXML.SessionID"
   UserDataAddress: "x=>x.UserData.EventXML.Address"
+  Username: "x=>if(condition=x.EventData.Username, then=x.EventData.Username, else=x.Username)"
   SysmonVersion: "x=>x.EventData.SysmonVersion"
   OperationEssStartedNamespaceName: "x=>x.UserData.Operation_EssStarted.NamespaceName"
   OperationEssStartedQuery: "x=>x.UserData.Operation_EssStarted.Query"
@@ -650,11 +664,12 @@ Sources:
 
   process_creation/windows/pslist:
     query: | 
-      LET P = SELECT *, process_tracker_get(id=Ppid).Data AS Data FROM pslist()
+      LET P = SELECT *, process_tracker_get(id=Ppid).Data AS Data, hash(path=Exe) AS Hash FROM pslist()
 
       SELECT 
           Name, CommandLine, Exe AS Image, Data.Exe AS ParentImage,
-          process_tracker_get(id=Data.Ppid).Data.Exe AS GrandParentImage
+          process_tracker_get(id=Data.Ppid).Data.Exe AS GrandParentImage,
+          Hash.MD5 AS MD5, Hash.SHA1 AS SHA1, Hash.SHA256 AS SHA256, Username
       FROM P
 
   image_load/windows/pslist:

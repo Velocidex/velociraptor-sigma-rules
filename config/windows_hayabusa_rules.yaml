@@ -703,7 +703,7 @@ QueryTemplate: |
    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
    LET X = scope()
-
+   
    SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
           System.Computer AS Computer,
           System.Channel AS Channel,

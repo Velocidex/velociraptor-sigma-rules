@@ -684,7 +684,7 @@ Sources:
                 P.Ppid AS GPPid,
                 ModuleName, ExePath AS ModulePath 
             FROM modules(pid=Pid)}
-    )
+      )
 
   network_connection/windows/netstat:
     query: |
@@ -727,4 +727,4 @@ BaseReferenceURL:
   https://github.com/Yamato-Security/hayabusa-rules/tree/main/
 
 RuleDirectories:
-  - docs/content/rules/windows
+  - ./rules/windows/

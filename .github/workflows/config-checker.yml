@@ -1,15 +1,11 @@
 name: Check VQL in config
 
-on:
-  push:
-    branches:
-      - master  
-  pull_request:
+on: [pull_request]
 
 jobs:
   build:
     name: Windows Test
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
     steps:
 
     - name: Set up Go

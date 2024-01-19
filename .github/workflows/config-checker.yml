@@ -34,11 +34,11 @@ jobs:
 
     - name: Download Velociraptor
       uses: robinraju/release-downloader@v1.8
+      id: velociraptor
       with:
         repository: velocidex/velociraptor
         latest: true
         fileName: "*-amd64.exe"
-        out-file-path: "velociraptor"
 
     - run: 
-        velociraptor.exe -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.CuratedRules(Debug=true)"
+        ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.CuratedRules(Debug=true)"

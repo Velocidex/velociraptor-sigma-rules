@@ -37,5 +37,6 @@ jobs:
 
     - run: |
         mv Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx "Microsoft-Windows-Sysmon%4Operational.evtx"
+        ls -lah
         chmod +x ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}}
         ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.Curated(Debug=true, ROOT='.')"

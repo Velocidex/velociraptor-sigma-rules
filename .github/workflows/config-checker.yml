@@ -4,8 +4,8 @@ on: [pull_request]
 
 jobs:
   build:
-    name: Windows Test
-    runs-on: windows-2019
+    name: Windows Rules Test
+    runs-on: ubuntu-latest
     steps:
 
     - name: Set up Go
@@ -17,20 +17,10 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v3
 
-    - name: Configure test environment
-      shell: cmd
-      if: always()
-      run: |
-        echo %PATH%
-        echo %GOPATH%
-        subst X: %CD%
-        wevtutil.exe cl System
-        sc.exe create TestingDetection1 binPath="%COMSPEC% /Q /c echo 'COMSPEC testing 1"
-
     - name: Build Rules
       run: |
-        make windows
-        ./velosigmac.exe compile --config ./config/velociraptor_windows_rules.yaml --output ./output/rules.zip --yaml ./output/artifact.yaml
+        make linux
+        ./velosigmac compile --config ./config/velociraptor_windows_rules.yaml --output ./output/rules.zip --yaml ./output/artifact.yaml
 
     - name: Download Velociraptor
       uses: robinraju/release-downloader@v1.8
@@ -38,7 +28,13 @@ jobs:
       with:
         repository: velocidex/velociraptor
         latest: true
-        fileName: "*-amd64.exe"
+        fileName: "*-linux-amd64"
+
+    - name: Download evtx samples
+      uses: actions/checkout@v2
+      with:
+        repository: sbousseaden/EVTX-ATTACK-SAMPLES
 
     - run: 
-        ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.Curated(Debug=true)"
+        mv Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx "Microsoft-Windows-Sysmon%4Operational.evtx"
+        ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.Curated(Debug=true, ROOT='.')"

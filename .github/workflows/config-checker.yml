@@ -41,4 +41,4 @@ jobs:
         fileName: "*-amd64.exe"
 
     - run: 
-        ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.CuratedRules(Debug=true)"
+        ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.Curated(Debug=true)"

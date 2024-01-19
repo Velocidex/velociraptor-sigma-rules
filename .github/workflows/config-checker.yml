@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Windows Test
     runs-on: ubuntu-latest
     steps:
 
@@ -23,7 +24,7 @@ jobs:
 
     - name: Build Rules
       run: |
-        make linux
+        make windows
         ./velosigmac.exe compile --config ./config/velociraptor_windows_rules.yaml --output ./output/rules.zip --yaml ./output/artifact.yaml
 
     - name: Download Velociraptor
@@ -36,4 +37,4 @@ jobs:
 
     - run: 
         chmod +x velociraptor
-        output/velociraptor.exe -v golden ./tests/ --config ./tests/github_actions.config.yaml
+        output/velociraptor.exe -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.CuratedRules(Debug=true)"

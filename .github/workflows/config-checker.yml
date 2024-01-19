@@ -24,6 +24,7 @@ jobs:
 
     - name: Build Rules
       run: |
+        go get .src
         make windows
         ./velosigmac.exe compile --config ./config/velociraptor_windows_rules.yaml --output ./output/rules.zip --yaml ./output/artifact.yaml
 

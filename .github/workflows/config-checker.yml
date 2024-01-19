@@ -37,9 +37,8 @@ jobs:
       with:
         repository: velocidex/velociraptor
         latest: true
-        fileName: "*-linux-amd64"
+        fileName: "*-amd64.exe"
         out-file-path: "velociraptor"
 
     - run: 
-        chmod +x velociraptor
-        output/velociraptor.exe -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.CuratedRules(Debug=true)"
+        velociraptor.exe -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.CuratedRules(Debug=true)"

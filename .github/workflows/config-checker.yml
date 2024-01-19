@@ -12,19 +12,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Check out code
-      uses: actions/checkout@v3
-      
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
         go-version: '^1.20'
+      id: go
 
-    - run: go version
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Configure test environment
+      shell: cmd
+      if: always()
+      run: |
+        echo %PATH%
+        echo %GOPATH%
+        subst X: %CD%
+        wevtutil.exe cl System
+        sc.exe create TestingDetection1 binPath="%COMSPEC% /Q /c echo 'COMSPEC testing 1"
 
     - name: Build Rules
       run: |
-        go get .\src\
         make windows
         ./velosigmac.exe compile --config ./config/velociraptor_windows_rules.yaml --output ./output/rules.zip --yaml ./output/artifact.yaml
 

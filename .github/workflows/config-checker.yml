@@ -38,8 +38,8 @@ jobs:
 
     - name: Prepare events for scanning
       run: |
-        mkdir events
-        mv ./samples/Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx events/Microsoft-Windows-Sysmon%4Operational.evtx
+        mkdir /tmp/events
+        mv ./samples/Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx /tmp/events/Microsoft-Windows-Sysmon%4Operational.evtx
 
     - name: Run Velociraptor
       run: |

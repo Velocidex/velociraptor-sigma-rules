@@ -28,8 +28,8 @@ detection:
         EventID: 4688
         Channel: Security
     selection:
-        ParentProcessImage|endswith: \sqlservr.exe
-        Image|endswith:
+        ParentProcessName|endswith: \sqlservr.exe
+        NewProcessName|endswith:
             - \bash.exe
             - \bitsadmin.exe
             - \cmd.exe
@@ -46,8 +46,8 @@ detection:
             - \wsl.exe
     filter_optional_datev:
         CommandLine|startswith: '"C:\Windows\system32\cmd.exe" '
-        ParentProcessImage|startswith: C:\Program Files\Microsoft SQL Server\
-        ParentProcessImage|endswith: DATEV_DBENGINE\MSSQL\Binn\sqlservr.exe
+        ParentProcessName|startswith: C:\Program Files\Microsoft SQL Server\
+        ParentProcessName|endswith: DATEV_DBENGINE\MSSQL\Binn\sqlservr.exe
     condition: process_creation and (selection and not 1 of filter_optional_*)
 level: high
 ruletype: Sigma

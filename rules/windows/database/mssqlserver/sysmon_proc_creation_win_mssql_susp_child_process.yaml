@@ -25,7 +25,7 @@ logsource:
     service: evtx/sysmon
 detection:
     selection:
-        ParentProcessImage|endswith: \sqlservr.exe
+        ParentImage|endswith: \sqlservr.exe
         Image|endswith:
             - \bash.exe
             - \bitsadmin.exe

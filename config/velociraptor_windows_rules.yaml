@@ -205,6 +205,7 @@ FieldMappings:
   ParentImage: "x=>x.EventData.ParentImage"
   ParentIntegrityLevel: "x=>x.EventData.ParentIntegrityLevel"
   ParentProcessName: "x=>x.EventData.ParentProcessName"
+  ParentProcessImage: "x=>x.EventData.ParentImage"
   ParentUser: "x=>x.EventData.ParentUser"
   PasswordLastSet: "x=>x.EventData.PasswordLastSet"
   Path: "x=>x.EventData.Path"

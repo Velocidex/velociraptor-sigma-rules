@@ -1,2 +1,2 @@
 Queries: 
-  - SELECT * FROM Artifact.Windows.Sigma.Curated(ROOT='/tmp/events', RuleLevel='All', RuleStatus='All Rules')
+  - SELECT * FROM Artifact.Windows.Sigma.Curated(ROOT='/tmp/events', RuleLevel='All', RuleStatus='All Rules', Debug=TRUE)

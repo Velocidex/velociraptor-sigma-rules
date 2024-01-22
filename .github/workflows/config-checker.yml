@@ -17,11 +17,6 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v3
 
-    - name: Build Rules
-      run: |
-        make linux
-        ./velosigmac compile --config ./config/velociraptor_windows_rules.yaml --output ./output/rules.zip --yaml ./output/artifact.yaml
-
     - name: Download Velociraptor
       uses: robinraju/release-downloader@v1.8
       id: velociraptor
@@ -43,5 +38,6 @@ jobs:
 
     - name: Run Velociraptor
       run: |
-        chmod +x ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}}
-        ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ golden tests/ --config tests/github_actions.config.yaml
+        mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} velociraptor
+        chmod +x velociraptor
+        make golden

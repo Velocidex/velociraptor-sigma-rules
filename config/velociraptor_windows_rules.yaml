@@ -59,6 +59,11 @@ Preamble: |
         `%%1937`= 'ELEVATED_TOKEN',
         `%%1938`= 'LIMITED_TOKEN')
 
+      LET Nets = SELECT * , process_tracker_get(id=Pid) AS pt
+        FROM netstat()
+
+      LET Process = SELECT *, process_tracker_get(id=Ppid).Data AS Data, hash(path=Exe) AS Hash FROM pslist()
+
 FieldMappings:
   MandatoryLabel: |
     x=>get(item=MandatoryLabelLookup, member=x.EventData.MandatoryLabel || "-")
@@ -664,13 +669,11 @@ Sources:
 
   process_creation/windows/pslist:
     query: | 
-      LET P = SELECT *, process_tracker_get(id=Ppid).Data AS Data, hash(path=Exe) AS Hash FROM pslist()
-
       SELECT 
           Name, CommandLine, Exe AS Image, Data.Exe AS ParentImage,
           process_tracker_get(id=Data.Ppid).Data.Exe AS GrandParentImage,
           Hash.MD5 AS MD5, Hash.SHA1 AS SHA1, Hash.SHA256 AS SHA256, Username
-      FROM P
+      FROM Process
 
   image_load/windows/pslist:
     query: |
@@ -688,17 +691,13 @@ Sources:
 
   network_connection/windows/netstat:
     query: |
-      LET nt = SELECT 
-          * , process_tracker_get(id=Pid) AS pt
-      FROM netstat()
-
       SELECT 
           Laddr.IP as LocalIP, Laddr.Port AS LocalPort, 
           Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort, 
           Pid, TypeString AS Protocol, pt.Data.Exe AS Image,
           pt.Data.CommandLine as CommandLine, 
           process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
-      FROM nt
+      FROM Nets
 
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))

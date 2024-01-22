@@ -44,4 +44,4 @@ jobs:
     - name: Run Velociraptor
       run: |
         chmod +x ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}}
-        ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ query "SELECT * FROM Artifact.Windows.Sigma.Curated(ROOT='/tmp/events', RuleLevel='All', RuleStatus='All Rules')"
+        ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} -v --definitions ./output/ golden tests/ --config tests/github_actions.config.yaml

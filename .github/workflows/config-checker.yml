@@ -37,7 +37,7 @@ jobs:
         path: ./samples/
 
     - name: Prepare events for scanning
-      run:
+      run: |
         mkdir events
         mv ./samples/Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx events/Microsoft-Windows-Sysmon%4Operational.evtx
 

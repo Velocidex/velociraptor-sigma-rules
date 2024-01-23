@@ -26,6 +26,11 @@ jobs:
         fileName: "*-linux-amd64"
         out-file-path: tests
 
+    - name: Build Artifacts
+      run: |
+        make linux
+        make compile
+
     - name: Run Velociraptor
       run: |
         mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor

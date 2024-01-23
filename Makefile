@@ -6,7 +6,7 @@ linux:
 	go build -o velosigmac ./src/*.go
 
 windows:
-	go build -o velosigmac.exe .\src\
+	GOOS=windows go build -o velosigmac.exe .\src\
 
 compile: compileThirdParty compileCurated
 

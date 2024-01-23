@@ -16,6 +16,8 @@ jobs:
 
     - name: Check out code
       uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Download Latest Velociraptor
       uses: robinraju/release-downloader@v1.8

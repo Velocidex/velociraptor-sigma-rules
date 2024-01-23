@@ -24,7 +24,7 @@ jobs:
         repository: velocidex/velociraptor
         latest: true
         fileName: "*-linux-amd64"
-        out-file-path: tests/velociraptor
+        out-file-path: tests
 
     - name: Run Velociraptor
       run: |

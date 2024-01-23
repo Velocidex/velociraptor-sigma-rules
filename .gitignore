@@ -9,4 +9,4 @@ docs/resources/
 velosigmac
 velosigmac.exe
 .wordlist.dict
-velociraptor
+tests/velociraptor

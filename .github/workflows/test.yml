@@ -1,0 +1,33 @@
+name: Test generated artifacts
+
+on: [pull_request]
+
+jobs:
+  build:
+    name: Sigma Rules Test
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '^1.20'
+      id: go
+
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Download Latest Velociraptor
+      uses: robinraju/release-downloader@v1.8
+      id: velociraptor
+      with:
+        repository: velocidex/velociraptor
+        latest: true
+        fileName: "*-linux-amd64"
+        out-file-path: tests/velociraptor
+
+    - name: Run Velociraptor
+      run: |
+        mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor
+        chmod +x ./tests/velociraptor
+        make golden

@@ -36,3 +36,9 @@ jobs:
         mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor
         chmod +x ./tests/velociraptor
         make golden
+
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: artifact
+        path: tests/testcases

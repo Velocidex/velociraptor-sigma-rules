@@ -59,6 +59,11 @@ Preamble: |
         `%%1937`= 'ELEVATED_TOKEN',
         `%%1938`= 'LIMITED_TOKEN')
 
+      LET Nets = SELECT * , process_tracker_get(id=Pid) AS pt
+        FROM netstat()
+
+      LET Process = SELECT *, process_tracker_get(id=Ppid).Data AS Data, hash(path=Exe) AS Hash FROM pslist()
+
 FieldMappings:
   MandatoryLabel: |
     x=>get(item=MandatoryLabelLookup, member=x.EventData.MandatoryLabel || "-")
@@ -93,7 +98,7 @@ FieldMappings:
   ClientAddress: "x=>x.EventData.ClientAddress"
   Client_Address: "x=>x.EventData.Client_Address"
   ClientName: "x=>x.EventData.ClientName"
-  CommandLine: "x=>if(condition=x.EventData.CommandLine, then=x.EventData.CommandLine, else=x.CommandLine)"
+  CommandLine: "x=>x.EventData.CommandLine || x.CommandLine"
   Command: "x=>x.Command"
   Company: "x=>x.EventData.Company"
   Computer: "x=>x.System.Computer"
@@ -140,9 +145,9 @@ FieldMappings:
   HostApplication: "x=>x.EventData.HostApplication"
   HostName: "x=>x.EventData.HostName"
   HostVersion: "x=>x.EventData.HostVersion"
-  Image: "x=>if(condition=x.EventData.Image, then=x.EventData.Image, else=x.Image)"
-  ImageLoaded: "x=>if(condition=x.EventData.ImageLoaded, then=x.EventData.ImageLoaded, else=x.ModulePath"
-  ImagePath: "x=>if(condition=x.EventData.ImagePath, then=x.EventData.ImagePath, else=x.Image)"
+  Image: "x=>x.EventData.Image || x.Image"
+  ImageLoaded: "x=>x.EventData.ImageLoaded || x.ModulePath"
+  ImagePath: "x=>x.EventData.ImagePath || x.Image"
   Imphash: "x=>x.EventData.Hashes"
   Initiated: "x=>x.EventData.Initiated"
   InstanceID: "x=>x.UserData.UMDFHostDeviceArrivalBegin.InstanceId"
@@ -175,11 +180,11 @@ FieldMappings:
   ModulePath: "x=>x.ModulePath"
   Name: "x=>x.Name"
   NewName: "x=>x.EventData.NewName"
-  NewTemplateContent: "x=> x.EventData.NewTemplateContent"
+  NewTemplateContent: "x=>x.EventData.NewTemplateContent"
   NewUacValue: "x=>x.EventData.NewUacValue"
   NewValue: "x=>x.EventData.NewValue"
   New_Value: "x=>x.EventData.`New Value`"
-  NewProcessName: "ifx=>if(condition=x.EventData.NewProcessName, then=x.EventData.NewProcessName, else=x.ProcessName)"
+  NewProcessName: "x=>x.EventData.NewProcessName || x.ProcessName"
   NewProcessId: "x=>x.EventData.NewProcessId"
   ObjectClass: "x=>x.EventData.ObjectClass"
   ObjectName: "x=>x.EventData.ObjectName"
@@ -196,10 +201,11 @@ FieldMappings:
   param3: "x=>x.EventData.param3"
   param4: "x=>x.EventData.param4"
   param5: "x=>x.EventData.param5"
-  ParentCommandLine: "x=>if(condition=x.EventData.ParentCommandLine, then=x.EventData.ParentCommandLine, else=x.CommandLine)"
+  ParentCommandLine: "x=>x.EventData.ParentCommandLine || x.ParentCommandLine"
   ParentImage: "x=>x.EventData.ParentImage"
   ParentIntegrityLevel: "x=>x.EventData.ParentIntegrityLevel"
   ParentProcessName: "x=>x.EventData.ParentProcessName"
+  ParentProcessImage: "x=>x.EventData.ParentImage"
   ParentUser: "x=>x.EventData.ParentUser"
   PasswordLastSet: "x=>x.EventData.PasswordLastSet"
   Path: "x=>x.EventData.Path"
@@ -309,7 +315,7 @@ FieldMappings:
   param2: "x=>x.EventData.param2"
   service: "x=>x.EventData.Service"
   sha1: "x=>x.EventData.Hashes_sha1"
-  User: "x=>if(condition=x.EventData.User, then=x.EventData.User, else=x.User)"
+  User: "x=>x.EventData.User || x.User"
   UserDataProviderName: "x=>x.UserData.Operation_StartedOperational.ProviderName"
   UserDataCode: "x=>x.UserData.Operation_StartedOperational.Code"
   UserDataHostProcess: "x=>x.UserData.Operation_StartedOperational.HostProcess"
@@ -329,7 +335,7 @@ FieldMappings:
   UserDataUser: "x=>x.UserData.EventXML.User"
   UserDataSessionID: "x=>x.UserData.EventXML.SessionID"
   UserDataAddress: "x=>x.UserData.EventXML.Address"
-  Username: "x=>if(condition=x.EventData.Username, then=x.EventData.Username, else=x.Username)"
+  Username: "x=>x.EventData.Username || x.Username"
   SysmonVersion: "x=>x.EventData.SysmonVersion"
   OperationEssStartedNamespaceName: "x=>x.UserData.Operation_EssStarted.NamespaceName"
   OperationEssStartedQuery: "x=>x.UserData.Operation_EssStarted.Query"
@@ -664,13 +670,11 @@ Sources:
 
   process_creation/windows/pslist:
     query: | 
-      LET P = SELECT *, process_tracker_get(id=Ppid).Data AS Data, hash(path=Exe) AS Hash FROM pslist()
-
       SELECT 
-          Name, CommandLine, Exe AS Image, Data.Exe AS ParentImage,
+          Name, CommandLine, Exe AS Image, Data.Exe AS ParentImage, Data.CommandLine AS ParentCommandLine,
           process_tracker_get(id=Data.Ppid).Data.Exe AS GrandParentImage,
           Hash.MD5 AS MD5, Hash.SHA1 AS SHA1, Hash.SHA256 AS SHA256, Username
-      FROM P
+      FROM Process
 
   image_load/windows/pslist:
     query: |
@@ -680,25 +684,21 @@ Sources:
                 process_tracker_get(id=Ppid).Data AS P 
             FROM pslist()},
         query={
-            SELECT Image, CommandLine, P.Exe AS ParentImage,
+            SELECT Image, CommandLine as ParentCommandLine, P.Exe AS ParentImage,
                 P.Ppid AS GPPid,
                 ModuleName, ExePath AS ModulePath 
             FROM modules(pid=Pid)}
-    )
+      )
 
   network_connection/windows/netstat:
     query: |
-      LET nt = SELECT 
-          * , process_tracker_get(id=Pid) AS pt
-      FROM netstat()
-
       SELECT 
           Laddr.IP as LocalIP, Laddr.Port AS LocalPort, 
           Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort, 
           Pid, TypeString AS Protocol, pt.Data.Exe AS Image,
           pt.Data.CommandLine as CommandLine, 
           process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
-      FROM nt
+      FROM Nets
 
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
@@ -727,4 +727,4 @@ BaseReferenceURL:
   https://github.com/Yamato-Security/hayabusa-rules/tree/main/
 
 RuleDirectories:
-  - docs/content/rules/windows
+  - ./rules/windows/

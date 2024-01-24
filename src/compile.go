@@ -48,7 +48,7 @@ func (self *CompilerContext) CompileDirs() error {
 		fmt.Printf("Scanning directory %v for rules\n", compile_dir)
 		err := filepath.WalkDir(compile_dir,
 			func(path string, d fs.DirEntry, err error) error {
-				if !strings.HasSuffix(path, ".yml") {
+				if !strings.HasSuffix(path, ".yml") && !strings.HasSuffix(path, ".yaml") {
 					return nil
 				}
 

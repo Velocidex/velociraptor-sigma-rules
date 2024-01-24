@@ -53,12 +53,12 @@ Preamble: |
          `Critical and High`="critical|high",
          `All`="."), member=RuleLevel)
 
-      LET PstreeFlow = SELECT request.flow_id AS flowId FROM flows(client_id=clientId) WHERE artifacts_with_results =~ "Generic.System.Pstree"
+      LET PstreeFlow = SELECT request.flow_id AS flowId FROM flows(client_id=ClientId) WHERE artifacts_with_results =~ "Generic.System.Pstree"
 
 FieldMappings:
   CallChain: 'x=>x.CallChain'
   CommandLine: 'x=>x.CommandLine'
-  Image: 'x=>x.Image'
+  Image: 'x=>x.Image || x.Exe'
   md5: 'x=>x.Hash.MD5'
   ProcessName: 'x=>x.Name'
   sha1: 'x=>x.Hash.SHA1'
@@ -66,10 +66,22 @@ FieldMappings:
   User: 'x=>x.Username'
   Username: 'x=>x.Username'
 
+DefaultDetails:
+  Query: |
+    x=>get(item=DefaultDetails,
+           member=format(format="%v/%v",
+              args=[x.System.Provider.Name, x.System.EventID.Value])
+          ) || x.Message || x.UserData || x.EventData || x
+  
+  Lookup:
+    Microsoft-Windows-Bits-Client/3: "JobTitle: %jobTitle% ¦ JobID: %jobId% ¦ JobOwner: %jobOwner% ¦ Proc: %processPath% ¦ PID: %ProcessId%"
+    PowerShellCore/4103: "Payload: %Payload%"
+    PowerShellCore/4104: "ScriptBlock: %ScriptBlockText%"
+
 Sources:
   process_creation/windows/pslist: 
     query: |
-      SELECT * FROM flow_results(client_id=clientId, flow_id=PstreeFlow.flowId, artifact="Generic.System.Pstree")
+      SELECT * FROM flow_results(client_id=ClientId, flow_id=PstreeFlow.flowId, artifact="Generic.System.Pstree")
 
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
@@ -89,6 +101,7 @@ QueryTemplate: |
     FROM sigma(
       rules=split(string= Rules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,
+      default_details='''{{.Base64DefaultDetailsQuery}}''',
       rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter",
       field_mapping= FieldMapping)
 

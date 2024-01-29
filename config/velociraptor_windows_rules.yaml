@@ -580,12 +580,67 @@ Sources:
   '*/windows/evtx/sysmon':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
+    fields: 
+      CommandLine: 'x=>x.EventData.CommandLine'
+      Company: 'x=>x.EventData.Company'
+      CreationTime: 'x=>x.EventData.CreationUtcTime'
+      Description: 'x=>x.EventData.Description'
+      DestinationHostname: 'x=>x.EventData.DestinationHostname'
+      DestinationIp: 'x=>x.EventData.DestinationIp'
+      DestinationIsIpv6: 'x=>x.EventData.DestinationIsIpv6'
+      DestinationPort: 'x=>x.EventData.DestinationPort'
+      DestinationPortName: 'x=>x.EventData.DestinationPortName'
+      EventId: 'x=>x.System.EventID.Value'
+      EventType: 'x=>x.EventData.EventType'
+      FileVersion: 'x=>x.EventData.FileVersion'
+      Hashes: 'x=>x.EventData.Hashes'
+      Image: 'x=>x.EventData.Image'
+      Initiated: 'x=>x.EventData.Initiated'
+      OriginalFileName: 'x=>x.EventData.OriginalFileName'
+      ParentCommandLine: 'x=>x.EventData.ParentCommandLine'
+      ParentImage: 'x=>x.EventData.ParentImage'
+      ParentUser: 'x=>x.EventData.ParentUser'
+      PreviousCreationTime: 'x=>x.EventData.PreviousCreationUtcTime'
+      Product: 'x=>x.EventData.Product'
+      Protocol: 'x=>x.EventData.Protocol'
+      QueryName: 'x=>x.EventData.QueryName'
+      QueryStatus: 'x=>x.EventData.QueryStatus'
+      QueryResults: 'x=>x.EventData.QueryResults'
+      QueryResultsType: 'x=>x.EventData.QueryResultsType'
+      SourceHostname: 'x=>x.EventData.SourceHostname'
+      SourceIp: 'x=>x.EventData.SourceIp'
+      SourceIsIpv6: 'x=>x.EventData.SourceIsIpv6'
+      SourcePort: 'x=>x.EventData.SourcePort'
+      SourcePortName: 'x=>x.EventData.SourcePortName'
+      TargetFilename: 'x=>x.EventData.TargetFilename'
+      TargetObject: 'x=>x.EventData.TargetObject'
+      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
+      User: 'x=>x.EventData.User'
+      UserName: 'x=>x.EventData.User'
 
   process_creation/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 1
-  
+    fields:
+      CommandLine: 'x=>x.EventData.CommandLine'
+      Company: 'x=>x.EventData.Company'
+      CreationTime: 'x=>x.EventData.CreationUtcTime'
+      Description: 'x=>x.EventData.Description'
+      EventId: 'x=>x.System.EventID.Value'
+      FileVersion: 'x=>x.EventData.FileVersion'
+      Hashes: 'x=>x.EventData.Hashes'
+      Image: 'x=>x.EventData.Image'
+      OriginalFileName: 'x=>x.EventData.OriginalFileName'
+      ParentCommandLine: 'x=>x.EventData.ParentCommandLine'
+      ParentImage: 'x=>x.EventData.ParentImage'
+      ParentUser: 'x=>x.EventData.ParentUser'
+      PreviousCreationTime: 'x=>x.EventData.PreviousCreationUtcTime'
+      Product: 'x=>x.EventData.Product'
+      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
+      User: 'x=>x.EventData.User'
+      UserName: 'x=>x.EventData.User'
+
   create_remote_thread/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
@@ -595,6 +650,15 @@ Sources:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value in (12, 13, 14)
+    Fields:
+      Details: 'x=>x.EventData.Details'
+      EventId: 'x=>x.System.EventID.Value'
+      EventType: 'x=>x.EventData.EventType'
+      Image: 'x=>x.EventData.Image'
+      TargetObject: 'x=>x.EventData.TargetObject'
+      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
+      User: 'x=>x.EventData.User'
+      UserName: 'x=>x.EventData.User'
 
   pipe_created/windows/evtx/sysmon:
     query: |
@@ -605,21 +669,69 @@ Sources:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value in (9, 11, 23, 26)
+    Fields:
+      EventId: 'x=>x.System.EventID.Value'
+      Image: 'x=>x.EventData.Image'
+      TargetFilename: 'x=>x.EventData.TargetFilename'
+      CreationTime: 'x=>x.EventData.CreationUtcTime'
+      User: 'x=>x.EventData.User'
+      UserName: 'x=>x.EventData.User'
 
   dns_query/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 22
+    fields:
+      EventId: 'x=>x.System.EventID.Value'
+      Image: 'x=>x.EventData.Image'
+      QueryName: 'x=>x.EventData.QueryName'
+      QueryStatus: 'x=>x.EventData.QueryStatus'
+      QueryResults: 'x=>x.EventData.QueryResults'
+      QueryResultsType: 'x=>x.EventData.QueryResultsType'
+      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
+      User: 'x=>x.EventData.User'
+      UserName: 'x=>x.EventData.User'
 
   driver_load/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 6
+    fields:
+      EventId: 'x=>x.System.EventID.Value'
+      Hashes: 'x=>x.EventData.Hashes'
+      ImageLoaded: 'x=>x.EventData.ImageLoaded'
+      Signed: 'x=>x.EventData.Signed'
+      Signature: 'x=>x.EventData.Signature'
+      SignatureStatus: 'x=>x.EventData.SignatureStatus'
+      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
+
 
   image_load/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 7
+
+  network_connection/windows/evtx/sysmon:
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
+      WHERE System.EventID.Value = 3
+    fields:
+      DestinationHostname: 'x=>x.EventData.DestinationHostname'
+      DestinationIp: 'x=>x.EventData.DestinationIp'
+      DestinationIsIpv6: 'x=>x.EventData.DestinationIsIpv6'
+      DestinationPort: 'x=>x.EventData.DestinationPort'
+      DestinationPortName: 'x=>x.EventData.DestinationPortName'
+      Image: 'x=>x.EventData.Image'
+      Initiated: 'x=>x.EventData.Initiated'
+      Protocol: 'x=>x.EventData.Protocol'
+      SourceHostname: 'x=>x.EventData.SourceHostname'
+      SourceIp: 'x=>x.EventData.SourceIp'
+      SourceIsIpv6: 'x=>x.EventData.SourceIsIpv6'
+      SourcePort: 'x=>x.EventData.SourcePort'
+      SourcePortName: 'x=>x.EventData.SourcePortName'
+      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
+      User: 'x=>x.EventData.User'
+      UserName: 'x=>x.EventData.User'
 
   '*/windows/evtx/system':
     query: |
@@ -689,6 +801,9 @@ Sources:
                 ModuleName, ExePath AS ModulePath 
             FROM modules(pid=Pid)}
       )
+    fields:
+      
+
 
   network_connection/windows/netstat:
     query: |
@@ -699,6 +814,16 @@ Sources:
           pt.Data.CommandLine as CommandLine, 
           process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
       FROM Nets
+    fields:
+      CommandLine: 'x=>x.CommandLine'
+      Image: 'x=>x.Image'
+      LocalIP: 'x=>x.LocalIP'
+      LocalPort: 'x=>x.LocalPort'
+      RemoteIP: 'x=>x.RemoteIP'
+      RemotePort: 'x=>x.RemotePort'
+      ParentImage: 'x=>x.ParentImage'
+      Protocol: 'x=>x.Protocol'
+      
 
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))

@@ -9,6 +9,7 @@ type DefaultDetails struct {
 type Query struct {
 	Query   string   `json:"query"`
 	Channel []string `json:"channel"`
+	Fields  []string `json:"fields"`
 }
 
 // Specify source transformations.

@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 
@@ -15,9 +16,11 @@ import (
 )
 
 type CompilerContext struct {
-	logsources     map[string]int
+	logsources     map[string][]string
 	fields         map[string]int
 	missing_fields map[string][]string
+	// Invalid fields are valid fields, but not for its logsource
+	invalid_fields map[string][]string
 
 	errored_rules map[string][]string
 	config_obj    *Config
@@ -32,11 +35,12 @@ type CompilerContext struct {
 
 func NewCompilerContext() *CompilerContext {
 	return &CompilerContext{
-		logsources:    make(map[string]int),
+		logsources:    make(map[string][]string),
 		errored_rules: make(map[string][]string),
 
 		fields:         make(map[string]int),
 		missing_fields: make(map[string][]string),
+		invalid_fields: make(map[string][]string),
 		original_rules: &bytes.Buffer{},
 	}
 }
@@ -69,10 +73,7 @@ func (self *CompilerContext) Resolve(source_spec string) bool {
 	if !pres {
 		return false
 	}
-	count, _ := self.logsources[source_spec]
-	count++
 
-	self.logsources[source_spec] = count
 	return true
 }
 
@@ -101,6 +102,16 @@ func (self *CompilerContext) Stats() {
 	if len(self.missing_fields) > 0 {
 		fmt.Printf("\nMissing field mappings:\n")
 		for k, v := range self.missing_fields {
+			fmt.Printf("  %v:\n", k)
+			for _, i := range v {
+				fmt.Printf("     %v\n", i)
+			}
+		}
+	}
+
+	if len(self.invalid_fields) > 0 {
+		fmt.Printf("\nInvalid field mappings:\n")
+		for k, v := range self.invalid_fields {
 			fmt.Printf("  %v:\n", k)
 			for _, i := range v {
 				fmt.Printf("     %v\n", i)
@@ -146,7 +157,7 @@ func (self *CompilerContext) guessLogSource(rule *sigma.Rule, category, product,
 	return fmt.Sprintf("%v/%v/%v", category, product, service), service
 }
 
-func (self *CompilerContext) walk_fields(rule *sigma.Rule, path string) error {
+func (self *CompilerContext) walk_fields(rule *sigma.Rule, path string, logsource string) error {
 	for _, search := range rule.Detection.Searches {
 		for _, event_matcher := range search.EventMatchers {
 			for _, matcher := range event_matcher {
@@ -157,6 +168,20 @@ func (self *CompilerContext) walk_fields(rule *sigma.Rule, path string) error {
 					missing = append(missing, path)
 					self.missing_fields[matcher.Field] = missing
 					return errors.New("Missing field")
+				}
+
+				// Check if the field is in the source
+				// Not all logsources have fields, so we need to check.
+				if len(self.config_obj.Sources[logsource].Fields) == 0 {
+					continue
+				}
+
+				pres = slices.Contains(self.config_obj.Sources[logsource].Fields, matcher.Field)
+				if !pres {
+					invalid := self.invalid_fields[matcher.Field]
+					invalid = append(invalid, path)
+					self.invalid_fields[matcher.Field] = invalid
+					return errors.New("Invalid field")
 				}
 			}
 		}

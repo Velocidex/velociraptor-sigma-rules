@@ -490,6 +490,14 @@ Sources:
          ROOT + "/Security.evtx"
       ])
       WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688
+    fields:
+      - CommandLine
+      - EventID
+      - Image
+      - ParentImage
+      - TimeCreated
+      - User
+      - UserName
 
   '*/windows/evtx/msexchange-management':
     query: |
@@ -536,6 +544,12 @@ Sources:
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
       WHERE System.EventID.Value = 4103
+    fields:
+      - ContextInfo
+      - EventID
+      - Payload
+      - TimeCreated
+      - UserData
 
   ps_module/windows/*:
     query: |
@@ -544,6 +558,12 @@ Sources:
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
       WHERE System.EventID.Value = 4103
+    fields:
+      - ContextInfo
+      - EventID
+      - Payload
+      - TimeCreated
+      - UserData
 
   ps_script/windows/evtx/powershell:
     query: |
@@ -552,6 +572,12 @@ Sources:
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
       WHERE System.EventID.Value = 4104
+    fields:
+      - EventID
+      - OpCode
+      - ScriptBlockText
+      - TimeCreated
+      - UserID
   
   ps_script/windows/*:
     query: |
@@ -560,6 +586,14 @@ Sources:
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
       WHERE System.EventID.Value = 4104
+    fields:
+      - EventID
+      - MessageNumber
+      - MessageTotal
+      - ScriptBlockText
+      - TimeCreated
+      - UserID
+ 
 
   '*/windows/evtx/security':
     query: |
@@ -571,167 +605,226 @@ Sources:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Security.evtx")
       WHERE System.EventID.Value = 4688
+    fields:
+      - CommandLine
+      - EventID
+      - Image
+      - NewProcessName
+      - ParentProcessName
+      - ParentProcessImage
+      - SubjectUserName
+      - TokenEleveationType
+      - TargetUserName
+      - User
+      - UserName
 
   registry_set/windows/evtx/security:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Security.evtx")
       WHERE System.EventID.Value in (4657)
+    fields:
+      - EventID
+      - NewValue
+      - NewValueType
+      - ObjectName
+      - ObjectValueName
+      - OldValue
+      - OldValueType
+      - OperationType
+      - ProcessName
+      - SubjectUserName
 
   '*/windows/evtx/sysmon':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
     fields: 
-      CommandLine: 'x=>x.EventData.CommandLine'
-      Company: 'x=>x.EventData.Company'
-      CreationTime: 'x=>x.EventData.CreationUtcTime'
-      Description: 'x=>x.EventData.Description'
-      DestinationHostname: 'x=>x.EventData.DestinationHostname'
-      DestinationIp: 'x=>x.EventData.DestinationIp'
-      DestinationIsIpv6: 'x=>x.EventData.DestinationIsIpv6'
-      DestinationPort: 'x=>x.EventData.DestinationPort'
-      DestinationPortName: 'x=>x.EventData.DestinationPortName'
-      EventId: 'x=>x.System.EventID.Value'
-      EventType: 'x=>x.EventData.EventType'
-      FileVersion: 'x=>x.EventData.FileVersion'
-      Hashes: 'x=>x.EventData.Hashes'
-      Image: 'x=>x.EventData.Image'
-      Initiated: 'x=>x.EventData.Initiated'
-      OriginalFileName: 'x=>x.EventData.OriginalFileName'
-      ParentCommandLine: 'x=>x.EventData.ParentCommandLine'
-      ParentImage: 'x=>x.EventData.ParentImage'
-      ParentUser: 'x=>x.EventData.ParentUser'
-      PreviousCreationTime: 'x=>x.EventData.PreviousCreationUtcTime'
-      Product: 'x=>x.EventData.Product'
-      Protocol: 'x=>x.EventData.Protocol'
-      QueryName: 'x=>x.EventData.QueryName'
-      QueryStatus: 'x=>x.EventData.QueryStatus'
-      QueryResults: 'x=>x.EventData.QueryResults'
-      QueryResultsType: 'x=>x.EventData.QueryResultsType'
-      SourceHostname: 'x=>x.EventData.SourceHostname'
-      SourceIp: 'x=>x.EventData.SourceIp'
-      SourceIsIpv6: 'x=>x.EventData.SourceIsIpv6'
-      SourcePort: 'x=>x.EventData.SourcePort'
-      SourcePortName: 'x=>x.EventData.SourcePortName'
-      TargetFilename: 'x=>x.EventData.TargetFilename'
-      TargetObject: 'x=>x.EventData.TargetObject'
-      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
-      User: 'x=>x.EventData.User'
-      UserName: 'x=>x.EventData.User'
+      - CommandLine
+      - Company
+      - CreationTime
+      - Description
+      - DestinationHostname
+      - DestinationIp
+      - DestinationIsIpv6
+      - DestinationPort
+      - DestinationPortName
+      - EventId
+      - EventType
+      - FileVersion
+      - Hashes
+      - Image
+      - Initiated
+      - OriginalFileName
+      - ParentCommandLine
+      - ParentImage
+      - ParentUser
+      - PreviousCreationTime
+      - Product
+      - Protocol
+      - QueryName
+      - QueryStatus
+      - QueryResults
+      - QueryResultsType
+      - Signature
+      - SignatureStatus
+      - Signed
+      - SourceHostname
+      - SourceImage
+      - SourceIp
+      - SourceIsIpv6
+      - SourcePort
+      - SourcePortName
+      - StartAddress
+      - StartFunction
+      - TargetFilename
+      - TargetObject
+      - TimeCreated
+      - User
+      - UserName
 
   process_creation/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 1
     fields:
-      CommandLine: 'x=>x.EventData.CommandLine'
-      Company: 'x=>x.EventData.Company'
-      CreationTime: 'x=>x.EventData.CreationUtcTime'
-      Description: 'x=>x.EventData.Description'
-      EventId: 'x=>x.System.EventID.Value'
-      FileVersion: 'x=>x.EventData.FileVersion'
-      Hashes: 'x=>x.EventData.Hashes'
-      Image: 'x=>x.EventData.Image'
-      OriginalFileName: 'x=>x.EventData.OriginalFileName'
-      ParentCommandLine: 'x=>x.EventData.ParentCommandLine'
-      ParentImage: 'x=>x.EventData.ParentImage'
-      ParentUser: 'x=>x.EventData.ParentUser'
-      PreviousCreationTime: 'x=>x.EventData.PreviousCreationUtcTime'
-      Product: 'x=>x.EventData.Product'
-      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
-      User: 'x=>x.EventData.User'
-      UserName: 'x=>x.EventData.User'
+      - CommandLine
+      - Company
+      - CreationTime
+      - Description
+      - EventId
+      - FileVersion
+      - Hashes
+      - Image
+      - OriginalFileName
+      - ParentCommandLine
+      - ParentImage
+      - ParentUser
+      - PreviousCreationTime
+      - Product
+      - TimeCreated
+      - User
+      - UserName
 
   create_remote_thread/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 8
+    fields:
+      - EventId
+      - Description
+      - SourceImage
+      - StartAddress
+      - StartFunction
+      - StartModule
+      - TargetImage
 
   registry_set/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value in (12, 13, 14)
     Fields:
-      Details: 'x=>x.EventData.Details'
-      EventId: 'x=>x.System.EventID.Value'
-      EventType: 'x=>x.EventData.EventType'
-      Image: 'x=>x.EventData.Image'
-      TargetObject: 'x=>x.EventData.TargetObject'
-      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
-      User: 'x=>x.EventData.User'
-      UserName: 'x=>x.EventData.User'
+      - Details
+      - EventId
+      - EventType
+      - Image
+      - TargetObject
+      - TimeCreated
+      - User
+      - UserName
 
   pipe_created/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value in (17, 18)
+    Fields:
+      - EventId
+      - Image
+      - PipeConnected
+      - PipeCreated
+      - PipeName
 
   file_event/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value in (9, 11, 23, 26)
     Fields:
-      EventId: 'x=>x.System.EventID.Value'
-      Image: 'x=>x.EventData.Image'
-      TargetFilename: 'x=>x.EventData.TargetFilename'
-      CreationTime: 'x=>x.EventData.CreationUtcTime'
-      User: 'x=>x.EventData.User'
-      UserName: 'x=>x.EventData.User'
+      - CreationTime
+      - EventId
+      - Hashes
+      - Image
+      - IsExecutable
+      - TargetFilename
+      - User
+      - UserName
 
   dns_query/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 22
     fields:
-      EventId: 'x=>x.System.EventID.Value'
-      Image: 'x=>x.EventData.Image'
-      QueryName: 'x=>x.EventData.QueryName'
-      QueryStatus: 'x=>x.EventData.QueryStatus'
-      QueryResults: 'x=>x.EventData.QueryResults'
-      QueryResultsType: 'x=>x.EventData.QueryResultsType'
-      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
-      User: 'x=>x.EventData.User'
-      UserName: 'x=>x.EventData.User'
+      - EventId
+      - Image
+      - QueryName
+      - QueryStatus
+      - QueryResults
+      - QueryResultsType
+      - TimeCreated
+      - User
+      - UserName
 
   driver_load/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 6
     fields:
-      EventId: 'x=>x.System.EventID.Value'
-      Hashes: 'x=>x.EventData.Hashes'
-      ImageLoaded: 'x=>x.EventData.ImageLoaded'
-      Signed: 'x=>x.EventData.Signed'
-      Signature: 'x=>x.EventData.Signature'
-      SignatureStatus: 'x=>x.EventData.SignatureStatus'
-      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
+      - EventId
+      - Hashes
+      - ImageLoaded
+      - Signed
+      - Signature
+      - SignatureStatus
+      - TimeCreated
 
 
   image_load/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 7
+    fields:
+      - Company
+      - Description
+      - Event ID
+      - FileVersion
+      - Hashes
+      - Image
+      - ImageLoaded
+      - Product
+      - Signature
+      - SignatureStatus
+      - Signed
+      - User
+      - UserName
 
   network_connection/windows/evtx/sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 3
     fields:
-      DestinationHostname: 'x=>x.EventData.DestinationHostname'
-      DestinationIp: 'x=>x.EventData.DestinationIp'
-      DestinationIsIpv6: 'x=>x.EventData.DestinationIsIpv6'
-      DestinationPort: 'x=>x.EventData.DestinationPort'
-      DestinationPortName: 'x=>x.EventData.DestinationPortName'
-      Image: 'x=>x.EventData.Image'
-      Initiated: 'x=>x.EventData.Initiated'
-      Protocol: 'x=>x.EventData.Protocol'
-      SourceHostname: 'x=>x.EventData.SourceHostname'
-      SourceIp: 'x=>x.EventData.SourceIp'
-      SourceIsIpv6: 'x=>x.EventData.SourceIsIpv6'
-      SourcePort: 'x=>x.EventData.SourcePort'
-      SourcePortName: 'x=>x.EventData.SourcePortName'
-      TimeCreated: 'x=>x.System.TimeCreated.SystemTime'
-      User: 'x=>x.EventData.User'
-      UserName: 'x=>x.EventData.User'
+      - DestinationHostname
+      - DestinationIp
+      - DestinationIsIpv6
+      - DestinationPort
+      - DestinationPortName
+      - Image
+      - Initiated
+      - Protocol
+      - SourceHostname
+      - SourceIp
+      - SourceIsIpv6
+      - SourcePort
+      - SourcePortName
+      - TimeCreated
+      - User
+      - UserName
 
   '*/windows/evtx/system':
     query: |
@@ -761,18 +854,58 @@ Sources:
   '*/windows/schtasks':
     query: |
       SELECT * FROM Artifact.Windows.System.TaskScheduler()
+    fields:
+      - Arguments
+      - Comhandler
+      - CommandLine
+      - Image
+      - UserId
 
   '*/windows/services':
     query: |
-      SELECT * FROM Artifact.Windows.System.Services()
+      SELECT *, 
+          PathName AS CommandLine, ServiceDll AS Image, 
+          UserAccount AS User 
+      FROM Artifact.Windows.System.Services()
+    fields:
+      - CommandLine
+      - Created
+      - DisplayName
+      - ExitCode
+      - Image
+      - Name
+      - ServiceType
+      - StartMode
+      - State
+      - Status
+      - User
 
   persistence/windows/services:
     query: |
-      SELECT * FROM Artifact.Windows.System.Services()
+      PathName AS CommandLine, ServiceDll AS Image, 
+          UserAccount AS User 
+      FROM Artifact.Windows.System.Services()
+    fields:
+      - CommandLine
+      - Created
+      - DisplayName
+      - ExitCode
+      - Image
+      - Name
+      - ServiceType
+      - StartMode
+      - State
+      - Status
+      - User
 
   process_creation/windows/execution:
     query: |
       SELECT * FROM Artifact.Windows.Analysis.EvidenceOfExecution()
+    fields:
+      - LastExecution
+      - Name
+      - NumberOfExecutions
+      - User
 
   webserver/windows/*:
     query: |
@@ -782,28 +915,71 @@ Sources:
 
   process_creation/windows/pslist:
     query: | 
-      SELECT 
-          Name, CommandLine, Exe AS Image, Data.Exe AS ParentImage, Data.CommandLine AS ParentCommandLine,
-          process_tracker_get(id=Data.Ppid).Data.Exe AS GrandParentImage,
-          Hash.MD5 AS MD5, Hash.SHA1 AS SHA1, Hash.SHA256 AS SHA256, Username
-      FROM Process
+      SELECT *,
+          GP.Exe AS GrandParentImage, GP.CommandLine AS GrandParentCommandLine,
+          PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
+      FROM foreach(
+          row={
+              SELECT Pid, CommandLine, Exe AS Image, 
+                  process_tracker_get(id=Ppid).Data AS P,
+                  hash(path=Exe) AS H
+              FROM process_tracker_pslist()},
+          query={
+              SELECT Image, CommandLine, H.MD5 AS MD5, H.SHA1 AS SHA1, H.SHA256 AS SHA256,
+                  P.Exe AS ParentImage, hash(path=P.Exe) AS PH,
+                  P.CommandLine AS ParentCommandLine, 
+                  process_tracker_get(id=P.Ppid).Data AS GP
+              FROM scope()}
+      )
+    fields:
+      - CommandLine
+      - GrandParentCommandLine
+      - GrandParentImage
+      - Image
+      - MD5
+      - ModuleName
+      - ModulePath
+      - ParentCommandLine
+      - ParentImage
+      - ParentMD5
+      - ParentSHA1
+      - ParentSHA256
+      - SHA1
+      - SHA256
 
   image_load/windows/pslist:
     query: |
-      SELECT *, process_tracker_get(id=GPPid).Data.Exe AS GrandParentImage FROM foreach(
-        row={
-            SELECT Pid, CommandLine, Exe AS Image, 
-                process_tracker_get(id=Ppid).Data AS P 
-            FROM pslist()},
-        query={
-            SELECT Image, CommandLine as ParentCommandLine, P.Exe AS ParentImage,
-                P.Ppid AS GPPid,
-                ModuleName, ExePath AS ModulePath 
-            FROM modules(pid=Pid)}
+      SELECT *,
+          GP.Exe AS GrandParentImage, GP.CommandLine AS GrandParentCommandLine,
+          PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
+      FROM foreach(
+          row={
+              SELECT Pid, CommandLine, Exe AS Image, 
+                  process_tracker_get(id=Ppid).Data AS P,
+                  hash(path=Exe) AS H
+              FROM process_tracker_pslist()},
+          query={
+              SELECT Image, CommandLine, H.MD5 AS MD5, H.SHA1 AS SHA1, H.SHA256 AS SHA256,
+                  P.Exe AS ParentImage, hash(path=P.Exe) AS PH,
+                  P.CommandLine AS ParentCommandLine, ModuleName, ExePath AS ModulePath, 
+                  process_tracker_get(id=P.Ppid).Data AS GP
+              FROM modules(pid=int(int=Pid))}
       )
     fields:
-      
-
+      - CommandLine
+      - GrandParentCommandLine
+      - GrandParentImage
+      - Image
+      - MD5
+      - ModuleName
+      - ModulePath
+      - ParentCommandLine
+      - ParentImage
+      - ParentMD5
+      - ParentSHA1
+      - ParentSHA256
+      - SHA1
+      - SHA256
 
   network_connection/windows/netstat:
     query: |
@@ -815,14 +991,14 @@ Sources:
           process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
       FROM Nets
     fields:
-      CommandLine: 'x=>x.CommandLine'
-      Image: 'x=>x.Image'
-      LocalIP: 'x=>x.LocalIP'
-      LocalPort: 'x=>x.LocalPort'
-      RemoteIP: 'x=>x.RemoteIP'
-      RemotePort: 'x=>x.RemotePort'
-      ParentImage: 'x=>x.ParentImage'
-      Protocol: 'x=>x.Protocol'
+      - CommandLine
+      - Image
+      - LocalIP
+      - LocalPort
+      - RemoteIP
+      - RemotePort
+      - ParentImage
+      - Protocol
       
 
 QueryTemplate: |

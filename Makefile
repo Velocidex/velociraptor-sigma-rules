@@ -21,5 +21,8 @@ compileCurated:
 test: compile
 	VELOCIRAPTOR_CONFIG= ../velociraptor/output/velociraptor-v0.7.1-rc1-linux-amd64 --definitions output/ artifacts list -v |grep 'Haya\|Chop'
 
+gotest:
+	go test -v ./src/
+
 golden: #linux compileCurated
 	./tests/velociraptor -v --definitions ./output/ golden ./tests/testcases/ --config tests/golden.config.yaml --env testDir=`pwd`/tests/  --filter=${GOLDEN}

@@ -19,7 +19,7 @@ type CompilerContext struct {
 	logsources     map[string][]string
 	fields         map[string]int
 	missing_fields map[string][]string
-	// Invalid fields are valid fields, but not for its logsource
+	// Invalid fields are available fields, but not for its logsource
 	invalid_fields map[string][]string
 
 	errored_rules map[string][]string

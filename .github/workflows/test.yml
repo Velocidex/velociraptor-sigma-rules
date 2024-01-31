@@ -28,6 +28,10 @@ jobs:
         fileName: "*-linux-amd64"
         out-file-path: tests
 
+    - name: Run tests
+      run: |
+        make gotest
+
     - name: Build Artifacts
       run: |
         make linux

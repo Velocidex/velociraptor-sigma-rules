@@ -46,43 +46,35 @@ func CreateTestContext(fieldName string, logsourceFieldName string, logsource st
 	return context
 }
 
-func TestWalkFields_invalidLogsourceField(t *testing.T) {
+func TestWalkFields(t *testing.T) {
 	logsource := "windows/process_creation"
 	correctName := "process_name"
 	incorrectName := "processName"
 
-	// Create a rule with a valid field, but invalid logsource field
-	rule := CreateSimpleRule(correctName)
+	tests := map[string]struct {
+		RuleField      string
+		ConfigField    string
+		LogsourceField string
+		Logsource      string
+		Want           string
+	}{
+		"Correct Field":             {RuleField: correctName, ConfigField: correctName, LogsourceField: correctName, Logsource: logsource, Want: ""},
+		"Invalid Field":             {RuleField: correctName, ConfigField: incorrectName, LogsourceField: incorrectName, Logsource: logsource, Want: "Missing field"},
+		"Incorrect Logsource Field": {RuleField: correctName, ConfigField: correctName, LogsourceField: incorrectName, Logsource: logsource, Want: "Invalid field"},
+	}
 
-	context := CreateTestContext(correctName, incorrectName, logsource)
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			rule := CreateSimpleRule(tc.RuleField)
 
-	err := context.walk_fields(&rule, "test", logsource)
-	assert.Error(t, err)
-}
+			context := CreateTestContext(tc.ConfigField, tc.LogsourceField, tc.Logsource)
 
-func TestWalkFields_missingField(t *testing.T) {
-	logsource := "windows/process_creation"
-	correctName := "process_name"
-	incorrectName := "processName"
-
-	// Create a rule with a valid field, but invalid logsource field
-	rule := CreateSimpleRule(correctName)
-
-	context := CreateTestContext(incorrectName, incorrectName, logsource)
-
-	err := context.walk_fields(&rule, "test", logsource)
-	assert.Error(t, err)
-}
-
-func TestWalkFields_CorrectField(t *testing.T) {
-	logsource := "windows/process_creation"
-	correctName := "process_name"
-
-	// Create a rule with a valid field, but invalid logsource field
-	rule := CreateSimpleRule(correctName)
-
-	context := CreateTestContext(correctName, correctName, logsource)
-
-	err := context.walk_fields(&rule, "test", logsource)
-	assert.NoError(t, err)
+			err := context.walk_fields(&rule, "test", logsource)
+			if tc.Want == "" {
+				assert.NoError(t, err)
+			} else {
+				assert.Contains(t, err.Error(), tc.Want)
+			}
+		})
+	}
 }

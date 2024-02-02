@@ -1,0 +1,16 @@
+title: Velociraptor Test Rule 
+status: experimental
+description: Detects a running Velociraptor process, designed for testing. 
+
+logsource:
+    category: process_creation
+    product: windows
+    service: pslist
+
+detection:
+    selection:
+        Image|contains:
+            - 'Velociraptor'
+            - 'velociraptor'
+    condition: selection
+level: informational

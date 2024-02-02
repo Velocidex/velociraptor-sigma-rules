@@ -17,6 +17,7 @@ compileThirdParty:
 
 compileCurated:
 	./velosigmac compile --config ./config/velociraptor_windows_rules.yaml --output ./output/Velociraptor-Windows-Rules.zip --yaml ./output/Velociraptor-Windows-Rules.yaml
+	./velosigmac compile --config ./config/velociraptor_post_process.yaml --output ./output/Velociraptor-Post-Process.zip --yaml ./output/Velociraptor-Post-Process.yaml
 
 test: compile
 	VELOCIRAPTOR_CONFIG= ../velociraptor/output/velociraptor-v0.7.1-rc1-linux-amd64 --definitions output/ artifacts list -v |grep 'Haya\|Chop'

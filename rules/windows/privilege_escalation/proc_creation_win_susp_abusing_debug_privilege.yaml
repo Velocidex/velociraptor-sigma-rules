@@ -15,9 +15,7 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
+
     selection_parent:
         ParentProcessName|endswith:
             - \winlogon.exe
@@ -36,10 +34,6 @@ detection:
                 - \powershell.exe
                 - \pwsh.exe
                 - \cmd.exe
-        -   OriginalFileName:
-                - PowerShell.EXE
-                - pwsh.dll
-                - Cmd.Exe
     filter:
         CommandLine|contains|all:
             - ' route '

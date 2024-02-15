@@ -21,9 +21,6 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    process_creation:
-        EventID: 1
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         CommandLine:
             - vssadmin.exe Delete Shadows
@@ -35,7 +32,7 @@ detection:
             - esentutl.exe /y /vss *\ntds.dit*
             - esentutl.exe /y /vss *\SAM
             - esentutl.exe /y /vss *\SYSTEM
-    condition: process_creation and selection
+    condition: selection
 fields:
     - CommandLine
     - ParentCommandLine

@@ -19,9 +19,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection1:
         CommandLine|contains: rundll32
     selection2:
@@ -32,7 +29,7 @@ detection:
         CommandLine|contains:
             - 'javascript:'
             - 'vbscript:'
-    condition: process_creation and (all of selection*)
+    condition: all of selection*
 falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored
         environment

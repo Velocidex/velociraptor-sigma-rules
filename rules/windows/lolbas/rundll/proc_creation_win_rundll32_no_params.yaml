@@ -20,9 +20,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection:
         CommandLine|endswith:
             - \rundll32.exe
@@ -32,7 +29,7 @@ detection:
         ParentProcessName|contains:
             - \AppData\Local\
             - \Microsoft\Edge\
-    condition: process_creation and (selection and not filter)
+    condition: selection and not filter
 falsepositives:
     - Possible but rare
 level: high

@@ -25,9 +25,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection:
         -   CommandLine|contains|all:
                 - 'javascript:'
@@ -100,7 +97,6 @@ detection:
     filter_main_screensaver:
         CommandLine|contains: shell32.dll,Control_RunDLL desk.cpl,screensaver,@screensaver
     filter_main_parent_cpl:
-        ParentCommandLine|contains: .cpl
         CommandLine|contains|all:
             - Shell32.dll
             - Control_RunDLL
@@ -111,7 +107,7 @@ detection:
             "C:\Windows\System32\'
         CommandLine|endswith: .cpl",
         ParentProcessName: C:\Windows\System32\control.exe
-    condition: process_creation and (selection and not 1 of filter_main_*)
+    condition: selection and not 1 of filter_main_*
 falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored
         environment

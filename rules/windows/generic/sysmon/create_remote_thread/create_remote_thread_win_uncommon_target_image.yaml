@@ -23,9 +23,6 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    create_remote_thread:
-        EventID: 8
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         TargetImage|endswith:
             - \calc.exe
@@ -60,8 +57,8 @@ detection:
     filter_optional_winzip:
         SourceImage|endswith: :\Program Files\WinZip\FAHWindow64.exe
         TargetImage|endswith: :\Windows\explorer.exe
-    condition: create_remote_thread and (selection and not 1 of filter_main_* and
-        not 1 of filter_optional_*)
+    condition: selection and not 1 of filter_main_* and
+        not 1 of filter_optional_*
 falsepositives:
     - Unknown
 level: high

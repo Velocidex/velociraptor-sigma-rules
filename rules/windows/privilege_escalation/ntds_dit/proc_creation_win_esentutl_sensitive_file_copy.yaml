@@ -23,12 +23,8 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_esent_img:
         -   NewProcessName|endswith: \esentutl.exe
-        -   OriginalFileName: \esentutl.exe
     selection_esent_cli:
         CommandLine|contains:
             - vss
@@ -46,7 +42,7 @@ detection:
             - \config\RegBack\sam
             - \config\RegBack\system
             - \config\RegBack\security
-    condition: process_creation and (all of selection_esent_* or selection_susp_paths)
+    condition: all of selection_esent_* or selection_susp_paths
 falsepositives:
     - Copying sensitive files for legitimate use (eg. backup) or forensic investigation
         by legitimate incident responder or forensic invetigator

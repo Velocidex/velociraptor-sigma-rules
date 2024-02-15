@@ -21,12 +21,8 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_img:
         -   NewProcessName|endswith: \ntdsutil.exe
-        -   OriginalFileName: ntdsutil.exe
     selection_cli:
         -   CommandLine|contains|all:
                 - snapshot
@@ -35,7 +31,7 @@ detection:
                 - ac
                 - ' i'
                 - ' ntds'
-    condition: process_creation and (all of selection_*)
+    condition: all of selection_*
 falsepositives:
     - Legitimate usage to restore snapshots
     - Legitimate admin activity

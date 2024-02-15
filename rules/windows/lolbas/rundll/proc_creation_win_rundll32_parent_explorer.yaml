@@ -20,18 +20,14 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_parent:
         ParentProcessName|endswith: \explorer.exe
     selection_img:
         -   NewProcessName|endswith: \rundll32.exe
-        -   OriginalFileName: RUNDLL32.EXE
     filter_main_generic:
         -   CommandLine|contains: ' C:\Windows\System32\'
         -   CommandLine|endswith: ' -localserver 22d8c27b-47a1-48d1-ad08-7da7abd79617'
-    condition: process_creation and (all of selection_* and not 1 of filter_main_*)
+    condition: all of selection_* and not 1 of filter_main_*
 falsepositives:
     - Unknown
 level: medium

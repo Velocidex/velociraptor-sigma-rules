@@ -21,22 +21,16 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_name:
         -   NewProcessName|endswith:
                 - \cmd.exe
                 - \powershell.exe
-        -   OriginalFileName:
-                - Cmd.Exe
-                - PowerShell.EXE
     selection_args:
         CommandLine|contains|all:
             - echo
             - '>'
             - \\\\.\\pipe\\
-    condition: process_creation and (all of selection*)
+    condition: all of selection*
 falsepositives:
     - Other programs that cause these patterns (please report)
 level: high

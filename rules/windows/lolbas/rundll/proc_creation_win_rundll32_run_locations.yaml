@@ -19,9 +19,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection:
         -   NewProcessName|contains:
                 - :\RECYCLER\
@@ -35,7 +32,7 @@ detection:
                 - C:\Windows\addins\
                 - C:\Windows\cursors\
                 - C:\Windows\system32\tasks\
-    condition: process_creation and selection
+    condition: selection
 falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored
         environment

@@ -20,7 +20,7 @@ logsource:
     service: services
 detection:
     selection:
-        ImagePath|contains:
+        Image|contains:
             - 'powershell'
             - 'pwsh'
     condition: selection

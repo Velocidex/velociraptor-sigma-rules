@@ -24,11 +24,7 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_parent:
-        ParentCommandLine|contains: VEEAMSQL
         ParentProcessName|endswith: \sqlservr.exe
     selection_child_1:
         CommandLine|contains:
@@ -58,6 +54,6 @@ detection:
             - \ping.exe
             - \tasklist.exe
             - \whoami.exe
-    condition: process_creation and (selection_parent and 1 of selection_child_*)
+    condition: selection_parent and 1 of selection_child_*
 level: critical
 ruletype: Sigma

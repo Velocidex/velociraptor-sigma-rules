@@ -19,16 +19,13 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection1:
         CommandLine|contains: rundll32.exe
     selection2:
         CommandLine|contains:
             - .sys,
             - '.sys '
-    condition: process_creation and (all of selection*)
+    condition: all of selection*
 falsepositives:
     - Unknown
 level: high

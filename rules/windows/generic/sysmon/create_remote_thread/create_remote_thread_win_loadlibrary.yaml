@@ -20,13 +20,10 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    create_remote_thread:
-        EventID: 8
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         StartModule|endswith: \kernel32.dll
         StartFunction: LoadLibraryA
-    condition: create_remote_thread and selection
+    condition: selection
 falsepositives:
     - Unknown
 level: high

@@ -23,9 +23,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_openasrundll:
         CommandLine|contains: ShellExec_RunDLL
     selection_suspcli:
@@ -39,7 +36,7 @@ detection:
             - Invoke-
             - iex
             - comspec
-    condition: process_creation and (all of selection_*)
+    condition: all of selection_*
 falsepositives:
     - Unknown
 level: high

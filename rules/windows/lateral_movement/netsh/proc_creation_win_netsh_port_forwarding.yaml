@@ -23,12 +23,8 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_img:
         -   NewProcessName|endswith: \netsh.exe
-        -   OriginalFileName: netsh.exe
     selection_cli_1:
         CommandLine|contains|all:
             - interface
@@ -46,7 +42,7 @@ detection:
             - connectp
             - listena
             - c=
-    condition: process_creation and (selection_img and 1 of selection_cli_*)
+    condition: selection_img and 1 of selection_cli_*
 falsepositives:
     - Legitimate administration activity
     - WSL2 network bridge PowerShell script used for WSL/Kubernetes/Docker (e.g. https://github.com/microsoft/WSL/issues/4150#issuecomment-504209723)

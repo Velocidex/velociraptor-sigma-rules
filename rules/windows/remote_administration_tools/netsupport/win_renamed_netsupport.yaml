@@ -13,12 +13,11 @@ tags:
 logsource:
     category: process_creation
     product: windows
-    service:  evtx-execution
+    service:  evtx-sysmon
 detection:
     selection:
         - Product|contains: 'NetSupport Remote Control'
         - OriginalFileName|contains: 'client32.exe'
-        - Imphash: a9d50692e95b79723f3e76fcf70d023e
         - Hashes|contains: IMPHASH=A9D50692E95B79723F3E76FCF70D023E
     filter:
         Image|endswith: '\client32.exe'

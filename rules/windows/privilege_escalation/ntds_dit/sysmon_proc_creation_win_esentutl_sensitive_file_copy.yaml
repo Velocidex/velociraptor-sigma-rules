@@ -24,9 +24,6 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    process_creation:
-        EventID: 1
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection_esent_img:
         -   Image|endswith: \esentutl.exe
         -   OriginalFileName: \esentutl.exe
@@ -47,7 +44,7 @@ detection:
             - \config\RegBack\sam
             - \config\RegBack\system
             - \config\RegBack\security
-    condition: process_creation and (all of selection_esent_* or selection_susp_paths)
+    condition: all of selection_esent_* or selection_susp_paths
 falsepositives:
     - Copying sensitive files for legitimate use (eg. backup) or forensic investigation
         by legitimate incident responder or forensic invetigator

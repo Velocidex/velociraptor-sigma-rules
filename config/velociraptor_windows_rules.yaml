@@ -650,6 +650,7 @@ Sources:
       - DestinationPort
       - DestinationPortName
       - EventId
+      - EventID
       - EventType
       - FileVersion
       - Hashes
@@ -923,20 +924,20 @@ Sources:
   process_creation/windows/pslist:
     query: | 
       SELECT *,
-          GP.Exe AS GrandParentImage, GP.CommandLine AS GrandParentCommandLine,
-          PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
+        GP.Exe AS GrandParentImage, GP.CommandLine AS GrandParentCommandLine,
+        PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
       FROM foreach(
-          row={
-              SELECT Pid, CommandLine, Exe AS Image, 
-                  process_tracker_get(id=Ppid).Data AS P,
-                  hash(path=Exe) AS H
-              FROM process_tracker_pslist()},
-          query={
-              SELECT Image, CommandLine, H.MD5 AS MD5, H.SHA1 AS SHA1, H.SHA256 AS SHA256,
-                  P.Exe AS ParentImage, hash(path=P.Exe) AS PH,
-                  P.CommandLine AS ParentCommandLine, 
-                  process_tracker_get(id=P.Ppid).Data AS GP
-              FROM scope()}
+        row={
+            SELECT Pid, CommandLine, Exe AS Image, 
+                process_tracker_get(id=Ppid).Data AS P,
+                hash(path=Exe) AS H, Username AS User
+            FROM process_tracker_pslist()},
+        query={
+            SELECT Image, CommandLine, H.MD5 AS MD5, H.SHA1 AS SHA1, H.SHA256 AS SHA256,
+                User, P.Exe AS ParentImage, hash(path=P.Exe) AS PH,
+                P.CommandLine AS ParentCommandLine, 
+                process_tracker_get(id=P.Ppid).Data AS GP
+            FROM scope()}
       )
     fields:
       - CommandLine
@@ -944,15 +945,17 @@ Sources:
       - GrandParentImage
       - Image
       - MD5
-      - ModuleName
-      - ModulePath
+      - md5
       - ParentCommandLine
       - ParentImage
       - ParentMD5
       - ParentSHA1
       - ParentSHA256
       - SHA1
+      - sha1
       - SHA256
+      - sha256
+      - User
 
   image_load/windows/pslist:
     query: |

@@ -17,9 +17,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection1a:
         CommandLine|contains|all:
             - rundll32
@@ -36,8 +33,8 @@ detection:
         CommandLine|contains:
             - BaseFlushAppcompatCache
             - '#46'
-    condition: process_creation and (( selection1a and selection1b ) or ( selection2a
-        and selection2b ))
+    condition: ( selection1a and selection1b ) or ( selection2a
+        and selection2b )
 fields:
     - NewProcessName
     - CommandLine

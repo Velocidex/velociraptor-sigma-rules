@@ -21,25 +21,17 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_img:
         -   NewProcessName|endswith:
                 - \powershell.exe
                 - \pwsh.exe
                 - \wmic.exe
                 - \vssadmin.exe
-        -   OriginalFileName:
-                - PowerShell.EXE
-                - pwsh.dll
-                - wmic.exe
-                - VSSADMIN.EXE
     selection_cli:
         CommandLine|contains|all:
             - shadow
             - create
-    condition: process_creation and (all of selection_*)
+    condition: all of selection_*
 falsepositives:
     - Legitimate administrator working with shadow copies, access for backup purposes
 level: medium

@@ -23,14 +23,11 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    process_creation:
-        EventID: 1
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         CommandLine|contains|all:
             - esentutl
             - ' /p'
-    condition: process_creation and selection
+    condition: selection
 fields:
     - User
     - CommandLine

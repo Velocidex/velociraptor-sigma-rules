@@ -15,11 +15,10 @@ tags:
 logsource:
     category: process_creation
     product: windows
-    service:  evtx-execution
+    service:  evtx-security
 detection:
     selection_img:
         -   NewProcessName|endswith: \KrbRelay.exe
-        -   OriginalFileName: KrbRelay.exe
     selection_cli_1:
         CommandLine|contains|all:
             - ' -spn '

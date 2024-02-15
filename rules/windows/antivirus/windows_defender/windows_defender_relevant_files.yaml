@@ -17,7 +17,7 @@ tags:
 logsource:
     category: antivirus
     product: windows
-    service: evtx/windefend
+    service:  evtx-windefend
 detection:
     antivirus:
         EventID:

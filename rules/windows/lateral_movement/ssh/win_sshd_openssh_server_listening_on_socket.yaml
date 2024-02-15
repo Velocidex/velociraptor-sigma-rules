@@ -18,13 +18,13 @@ tags:
     - evtx
 logsource:
     product: windows
-    service: evtx/openssh
+    service:  evtx-openssh
 detection:
     openssh:
         Channel: OpenSSH/Operational
     selection:
         EventID: 4
-        payload|startswith: 'Server listening on '
+        Payload|startswith: 'Server listening on '
     condition: openssh and selection
 falsepositives:
     - Legitimate administrator activity

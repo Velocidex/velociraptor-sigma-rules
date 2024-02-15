@@ -23,7 +23,7 @@ tags:
 logsource:
     category: file_event
     product: windows
-    service: evtx/sysmon
+    service:  evtx-sysmon
     definition: 'Requirements: The "ParentImage" field is not available by default
         on EID 11 of Sysmon logs. To be able to use this rule to the full extent you
         need to enrich the log with additional ParentImage data'

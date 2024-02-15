@@ -17,7 +17,7 @@ tags:
 logsource:
     category: registry_set
     product: windows
-    service: evtx/sysmon
+    service:  evtx-sysmon
 detection:
     selection2:
         TargetObject|contains: '\Microsoft\Windows Defender\Exclusions'

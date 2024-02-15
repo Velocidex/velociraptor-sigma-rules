@@ -19,7 +19,7 @@ tags:
 logsource:
     category: process_creation
     product: windows
-    service: evtx/security
+    service:  evtx-security
 detection:
     process_creation:
         EventID: 1

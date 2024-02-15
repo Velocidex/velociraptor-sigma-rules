@@ -17,7 +17,7 @@ tags:
     - apt.Cozy-Bear
 logsource:
     product: windows
-    service: evtx/taskscheduler
+    service:  evtx-taskscheduler
     definition: 'Requirements: The "Microsoft-Windows-TaskScheduler/Operational" is disabled by default and needs to be enabled in order for this detection to trigger'
 detection:
     selection:

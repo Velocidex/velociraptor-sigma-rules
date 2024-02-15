@@ -16,7 +16,7 @@ tags:
     - attack.t1021.002
 logsource:
     product: windows
-    service: evtx/security
+    service:  evtx-security
 detection:
     security:
         Channel: Security

@@ -14,7 +14,7 @@ tags:
 logsource:
     category: registry_event
     product: windows
-    service: evtx/sysmon
+    service:  evtx-sysmon
 detection:
     selection:
         TargetObject|contains|all:

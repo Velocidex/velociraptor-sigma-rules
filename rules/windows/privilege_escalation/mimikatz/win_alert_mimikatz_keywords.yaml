@@ -25,7 +25,7 @@ tags:
     - sysmon
 logsource:
     product: windows
-    service: evtx/sysmon
+    service:  evtx-sysmon
 detection:
     keywords:
         - dpapi::masterkey

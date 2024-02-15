@@ -21,7 +21,7 @@ tags:
     - software.mssql
 logsource:
     product: windows
-    service: evtx/application
+    service:  evtx-application
     definition: 'Requirements: Must enable MSSQL authentication.'
 detection:
     application:

@@ -14,7 +14,7 @@ tags:
 logsource:
     category: process_creation
     product: windows
-    service: evtx/execution
+    service:  evtx-execution
 detection:
     selection:
         CommandLine|contains|all:

@@ -25,7 +25,7 @@ tags:
 logsource:
     category: ps_script
     product: windows
-    service: evtx/powershell
+    service:  evtx-powershell
     definition: 'Requirements: Script Block Logging must be enabled'
 detection:
     ps_script:

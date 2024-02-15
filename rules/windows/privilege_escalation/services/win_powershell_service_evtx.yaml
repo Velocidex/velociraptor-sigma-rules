@@ -17,7 +17,7 @@ tags:
     - evtx
 logsource:
     product: windows
-    service: evtx/system
+    service:  evtx-system
 detection:
     selection:
         Provider_Name: 'Service Control Manager'

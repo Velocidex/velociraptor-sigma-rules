@@ -15,7 +15,7 @@ tags:
     - attack.t1053.005
 logsource:
     product: windows
-    service: evtx/security
+    service:  evtx-security
     definition: 'The Advanced Audit Policy setting Object Access > Audit Other Object Access Events has to be configured to allow this detection. We also recommend extracting the Command field from the embedded XML in the event data.'
 detection:
     selection_eid:

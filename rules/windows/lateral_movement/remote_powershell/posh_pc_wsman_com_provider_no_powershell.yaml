@@ -19,7 +19,7 @@ tags:
     - evtx
 logsource:
     product: windows
-    service: evtx/powershell_classic   
+    service:  evtx-powershell_classic   
 detection:
     powershell_classic:
         Channel: Windows PowerShell

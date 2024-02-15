@@ -20,7 +20,7 @@ tags:
 logsource:
     category: image_load
     product: windows
-    service: evtx/sysmon
+    service:  evtx-sysmon
 detection:
     selection_mscoree:
         Image: 'C:\ProgramShared\PresentationHost.exe'

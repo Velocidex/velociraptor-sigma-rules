@@ -17,7 +17,7 @@ tags:
 logsource:
     category: driver_load
     product: windows
-    service: evtx/sysmon
+    service:  evtx-sysmon
 detection:
     selection_name:
         ImageLoaded|endswith:

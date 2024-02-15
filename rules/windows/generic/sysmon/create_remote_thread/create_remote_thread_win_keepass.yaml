@@ -20,7 +20,7 @@ tags:
 logsource:
     category: create_remote_thread
     product: windows
-    service: evtx/sysmon
+    service:  evtx-sysmon
 detection:
     create_remote_thread:
         EventID: 8

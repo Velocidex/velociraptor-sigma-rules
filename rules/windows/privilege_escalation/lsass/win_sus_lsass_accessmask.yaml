@@ -16,7 +16,7 @@ tags:
     - evtx
 logsource:
     product: windows
-    service: evtx/security
+    service:  evtx-security
 detection:
     selection_1:
         EventID: 4656

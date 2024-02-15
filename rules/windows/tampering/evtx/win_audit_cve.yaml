@@ -37,7 +37,7 @@ tags:
     - event_logging
 logsource:
     product: windows
-    service: evtx/application
+    service:  evtx-application
 detection:
     application:
         Channel: Application

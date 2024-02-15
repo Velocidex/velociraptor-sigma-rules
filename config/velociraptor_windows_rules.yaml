@@ -890,7 +890,8 @@ Sources:
 
   persistence/windows/services:
     query: |
-      PathName AS CommandLine, ServiceDll AS Image, 
+      SELECT *,
+          PathName AS CommandLine, ServiceDll AS Image, 
           UserAccount AS User 
       FROM Artifact.Windows.System.Services()
     fields:

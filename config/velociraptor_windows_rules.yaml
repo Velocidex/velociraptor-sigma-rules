@@ -1,5 +1,5 @@
 Preamble: |
-  name: Windows.Sigma.Curated
+  name: Sigma.Windows.Curated
   parameters:
     - name: ROOT
       description: The Event Log Directory we use to read all logs
@@ -131,6 +131,7 @@ FieldMappings:
   ErrorCode: "x=>x.EventData.ErrorCode"
   EventID: "x=>x.System.EventID.Value"
   EventType: "x=>x.EventData.EventType"
+  ExceptionCode: "x=>x.EventData.ExceptionCode"
   ExecutionProcessID: "x=>x.System.Execution_attributes.ProcessID"
   FailureCode: "x=>x.EventData.FailureCode"
   FilePath: "x=>x.EventData.FilePath"
@@ -221,6 +222,7 @@ FieldMappings:
   ProcessName: "x=>x.EventData.ProcessName"
   Product: "x=>x.EventData.Product"
   Properties: "x=>x.EventData.Properties"
+  Protocol: "x=>x.EventData.Protocol"
   Provider: "x=>x.UserData.Provider"
   ProviderName: "x=>x.System.Provider_attributes.Name"
   Provider_Name: "x=>x.System.Provider_attributes.Name"
@@ -456,7 +458,7 @@ DefaultDetails:
 
 Sources:
 # Evtx 
-  '*/windows/evtx/application':
+  '*/windows/evtx-application':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Application.evtx")
     channel:
@@ -471,19 +473,19 @@ Sources:
     channel:
       - Microsoft-Windows-DNS Client/Operational
 
-  dns_query/windows/evtx/dns_client:
+  dns_query/windows/evtx-dns_client:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DNS Client Events%4Operational.evtx")
     channel:
       - Microsoft-Windows-DNS Client Events/Operational
 
-  dns_query/windows/evtx/dns_server:
+  dns_query/windows/evtx-dns_server:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DNSServer.evtx")
     channel:
       - DNS Server
 
-  process_creation/windows/evtx/execution:
+  process_creation/windows/evtx-execution:
     query: |
       SELECT * FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
@@ -491,19 +493,19 @@ Sources:
       ])
       WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688
 
-  '*/windows/evtx/msexchange-management':
+  '*/windows/evtx-msexchange-management':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/MSExchange Management.evtx")
     channel:
       - MSExchange Management
 
-  '*/windows/evtx/openssh':
+  '*/windows/evtx-openssh':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/OpenSSH%4Operational.evtx")
     channel:
       - OpenSSH/Operational
 
-  '*/windows/evtx/powershell':
+  '*/windows/evtx-powershell':
     query: |
       SELECT * FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
@@ -513,23 +515,23 @@ Sources:
       - Microsoft-Windows-PowerShell/Operational
       - PowerShellCore/Operational
 
-  ps_classic_start/windows/evtx/powershell:
+  ps_classic_start/windows/evtx-powershell:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
       WHERE System.EventID.Value = 400
   
-  ps_classic_provider_start/windows/evtx/powershell:
+  ps_classic_provider_start/windows/evtx-powershell:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
       WHERE System.EventID.Value = 600
   
-  '*/windows/evtx/powershell_classic':
+  '*/windows/evtx-powershell_classic':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
     channel:
       - Windows PowerShell
 
-  ps_module/windows/evtx/powershell:
+  ps_module/windows/evtx-powershell:
     query: |
       SELECT * FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
@@ -545,7 +547,7 @@ Sources:
       ])
       WHERE System.EventID.Value = 4103
 
-  ps_script/windows/evtx/powershell:
+  ps_script/windows/evtx-powershell:
     query: |
       SELECT * FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
@@ -561,85 +563,90 @@ Sources:
       ])
       WHERE System.EventID.Value = 4104
 
-  '*/windows/evtx/security':
+  '*/windows/evtx-security':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Security.evtx")
     channel:
       - Security
 
-  process_creation/windows/evtx/security:
+  process_creation/windows/evtx-security:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Security.evtx")
       WHERE System.EventID.Value = 4688
 
-  registry_set/windows/evtx/security:
+  registry_set/windows/evtx-security:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Security.evtx")
       WHERE System.EventID.Value in (4657)
 
-  '*/windows/evtx/sysmon':
+  '*/windows/evtx-sysmon':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
 
-  process_creation/windows/evtx/sysmon:
+  process_creation/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 1
   
-  create_remote_thread/windows/evtx/sysmon:
+  create_remote_thread/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 8
 
-  registry_set/windows/evtx/sysmon:
+  registry_set/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value in (12, 13, 14)
 
-  pipe_created/windows/evtx/sysmon:
+  pipe_created/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value in (17, 18)
 
-  file_event/windows/evtx/sysmon:
+  file_event/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value in (9, 11, 23, 26)
 
-  dns_query/windows/evtx/sysmon:
+  dns_query/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 22
 
-  driver_load/windows/evtx/sysmon:
+  driver_load/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 6
 
-  image_load/windows/evtx/sysmon:
+  image_load/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 7
 
-  '*/windows/evtx/system':
+  network_connection/windows/evtx-sysmon:
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
+      WHERE System.EventID.Value = 3
+
+  '*/windows/evtx-system':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/System.evtx")
     channel:
       - System
 
-  '*/windows/evtx/task_scheduler':
+  '*/windows/evtx-task_scheduler':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-TaskScheduler%4Operational.evtx")
     channel:
       - Microsoft-Windows-TaskScheduler/Operational
 
-  '*/windows/evtx/windefend':
+  '*/windows/evtx-windefend':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:
       - Microsoft-Windows-Windows Defender/Operational
   
-  'antivirus/windows/evtx/windefend':
+  'antivirus/windows/evtx-windefend':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:

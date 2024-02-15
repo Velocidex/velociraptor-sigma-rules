@@ -27,7 +27,7 @@ tags:
     - evtx
 logsource:
     product: windows
-    service: evtx/security
+    service:  evtx-security
 detection:
     security:
         Channel: Security

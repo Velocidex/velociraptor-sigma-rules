@@ -22,7 +22,7 @@ tags:
 logsource:
     category: process_creation
     product: windows
-    service: evtx/sysmon
+    service:  evtx-sysmon
 detection:
     process_creation:
         EventID: 1

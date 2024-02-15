@@ -30,7 +30,7 @@ tags:
 logsource:
     category: ps_module
     product: windows
-    service: evtx/powershell
+    service:  evtx-powershell
     definition: 0ad03ef1-f21b-4a79-8ce8-e6900c54b65b
 detection:
     ps_module:

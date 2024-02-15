@@ -17,7 +17,7 @@ tags:
     - apt.Cozy-Bear
 logsource:
     product: windows
-    service: evtx/security
+    service:  evtx-security
 detection:
     selection:
         EventID:

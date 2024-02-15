@@ -17,7 +17,7 @@ tags:
     - software.mssql
 logsource:
     product: windows
-    service: evtx/application
+    service:  evtx-application
     definition: MSSQL audit policy to monitor for 'sp_procoption' must be enabled
         in order to receive this event in the application log
 detection:

@@ -14,7 +14,7 @@ tags:
 logsource:
     category: antivirus
     product: windows
-    service: evtx/windefend
+    service:  evtx-windefend
 detection:
     selection:
         EventID: 5007 # The antimalware platform configuration changed.

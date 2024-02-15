@@ -30,7 +30,7 @@ jobs:
 
     - name: Run tests
       run: |
-        make gotest
+        go test -v ./src/
 
     - name: Build Artifacts
       run: |

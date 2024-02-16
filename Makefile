@@ -8,6 +8,9 @@ linux:
 windows:
 	GOOS=windows go build -o velosigmac.exe .\src\
 
+windows2:
+	go build -o velosigmac.exe .\src\
+
 compile: compileThirdParty compileCurated
 
 compileThirdParty:
@@ -24,3 +27,6 @@ test: compile
 
 golden: linux compile
 	./tests/velociraptor -v --definitions ./output/ golden ./tests/testcases/ --config tests/golden.config.yaml --env testDir=`pwd`/tests/  --filter=${GOLDEN}
+
+goldenw: windows2 compile
+	./tests/velociraptor.exe -v --definitions ./output/ golden ./tests/testcases/ --config tests/golden.config.yaml --env testDir=`pwd`/tests/  --filter=${GOLDEN}

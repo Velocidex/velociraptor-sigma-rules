@@ -1,5 +1,56 @@
+Parameters:
+  ModulesMock: |
+    [{
+        "ProcessID": 1732,
+        "ModuleBaseAddress": 140701690101760,
+        "ModuleBaseSize": 73728,
+        "ModuleName": "lsass.exe",
+        "ExePath": "C:\\Windows\\system32\\lsass.exe"
+      },
+      {
+        "ProcessID": 1732,
+        "ModuleBaseAddress": 140730032128000,
+        "ModuleBaseSize": 2191360,
+        "ModuleName": "ntdll.dll",
+        "ExePath": "C:\\Windows\\SYSTEM32\\ntdll.dll"
+    }]
+  WMIMock: |
+    [{
+        "AcceptPause": "false",
+        "AcceptStop": "false",
+        "Caption": "AllJoyn Router Service",
+        "CheckPoint": 0,
+        "CreationClassName": "Win32_Service",
+        "DelayedAutoStart": "false",
+        "Description": "Routes AllJoyn messages for the local AllJoyn clients. If this service is stopped the AllJoyn clients that do not have their own bundled routers will be unable to run.",
+        "DesktopInteract": "false",
+        "DisplayName": "AllJoyn Router Service",
+        "ErrorControl": "Normal",
+        "ExitCode": 1077,
+        "InstallDate": "",
+        "Name": "AJRouter",
+        "PathName": "C:\\Windows\\system32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+        "ProcessId": 0,
+        "ServiceSpecificExitCode": 0,
+        "ServiceType": "Share Process",
+        "Started": "false",
+        "StartMode": "Manual",
+        "StartName": "NT AUTHORITY\\LocalService",
+        "State": "Stopped",
+        "Status": "OK",
+        "SystemCreationClassName": "Win32_ComputerSystem",
+        "SystemName": "DEVLP",
+        "TagId": 0,
+        "WaitHint": 0
+    }]
+
+
 Queries:
   - LET temp <= tempdir()
+  - LET _ <= SELECT
+        mock(plugin="wmi", results=parse_json_array(data=WMIMock)),
+        mock(plugin="modules", results=parse_json_array(data=ModulesMock)
+    FROM scope()
   - LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK-SAMPLES/Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx",
       dest=temp + "/Microsoft-Windows-Sysmon%4Operational.evtx")
   - SELECT * FROM Artifact.Sigma.Windows.Curated(ROOT=temp,

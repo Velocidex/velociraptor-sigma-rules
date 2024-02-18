@@ -931,12 +931,13 @@ Sources:
         row={
             SELECT Pid, CommandLine, Exe AS Image, 
                 process_tracker_get(id=Ppid).Data AS P,
-                hash(path=Exe) AS H, Username AS User
+                if(condition=Exe, then=hash(path=Exe), else=Exe) AS H,
+                Username AS User
             FROM process_tracker_pslist()},
         query={
             SELECT Image, CommandLine, H.MD5 AS MD5, H.SHA1 AS SHA1, H.SHA256 AS SHA256,
-                User, P.Exe AS ParentImage, hash(path=P.Exe) AS PH,
-                P.CommandLine AS ParentCommandLine, 
+                User, P.Exe AS ParentImage, P.CommandLine AS ParentCommandLine, 
+                if(condition=P.Exe, then=hash(path=P.Exe), else=P.Exe) AS PH,
                 process_tracker_get(id=P.Ppid).Data AS GP
             FROM scope()}
       )
@@ -967,12 +968,14 @@ Sources:
           row={
               SELECT Pid, CommandLine, Exe AS Image, 
                   process_tracker_get(id=Ppid).Data AS P,
-                  hash(path=Exe) AS H
+                  if(condition=Exe, then=hash(path=Exe), else=Exe) AS H,
+                  Username AS User
               FROM process_tracker_pslist()},
           query={
               SELECT Image, CommandLine, H.MD5 AS MD5, H.SHA1 AS SHA1, H.SHA256 AS SHA256,
-                  P.Exe AS ParentImage, hash(path=P.Exe) AS PH,
-                  P.CommandLine AS ParentCommandLine, ModuleName, ExePath AS ModulePath, 
+                  P.Exe AS ParentImage, P.CommandLine AS ParentCommandLine,
+                  if(condition=P.Exe, then=hash(path=P.Exe), else=P.Exe) AS PH,
+                  ModuleName, ExePath AS ModulePath, 
                   process_tracker_get(id=P.Ppid).Data AS GP
               FROM modules(pid=int(int=Pid))}
       )

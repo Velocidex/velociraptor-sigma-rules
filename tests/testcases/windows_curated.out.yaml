@@ -1,4 +1,4 @@
-LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK-SAMPLES/Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx", dest=temp + "/Microsoft-Windows-Sysmon%4Operational.evtx")[]SELECT * FROM Artifact.Sigma.Windows.Curated(ROOT=temp, RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=".") ORDER BY Timestamp[
+LET temp <= tempdir()[]LET _ <= SELECT mock(plugin="wmi", results=parse_json_array(data=WMIMock)), mock(plugin="modules", results=parse_json_array(data=ModulesMock)) FROM scope()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK-SAMPLES/Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx", dest=temp + "/Microsoft-Windows-Sysmon%4Operational.evtx")[]SELECT * FROM Artifact.Sigma.Windows.Curated(ROOT=temp, RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=".") ORDER BY Timestamp[
  {
   "Timestamp": "2019-04-30T22:49:09.760851144Z",
   "Computer": "IEWIN7",

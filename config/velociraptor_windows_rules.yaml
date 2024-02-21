@@ -59,11 +59,6 @@ Preamble: |
         `%%1937`= 'ELEVATED_TOKEN',
         `%%1938`= 'LIMITED_TOKEN')
 
-      LET Nets = SELECT * , process_tracker_get(id=Pid) AS pt
-        FROM netstat()
-
-      LET Process = SELECT *, process_tracker_get(id=Ppid).Data AS Data, hash(path=Exe) AS Hash FROM pslist()
-
 FieldMappings:
   MandatoryLabel: |
     x=>get(item=MandatoryLabelLookup, member=x.EventData.MandatoryLabel || "-")
@@ -929,13 +924,14 @@ Sources:
         PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
       FROM foreach(
         row={
-            SELECT Pid, CommandLine, Exe AS Image, 
+            SELECT CreateTime AS Timestamp, Pid, CommandLine, Exe AS Image, 
                 process_tracker_get(id=Ppid).Data AS P,
                 if(condition=Exe, then=hash(path=Exe), else=Exe) AS H,
                 Username AS User
             FROM process_tracker_pslist()},
         query={
-            SELECT Image, CommandLine, H.MD5 AS MD5, H.SHA1 AS SHA1, H.SHA256 AS SHA256,
+            SELECT Timestamp, Image, CommandLine, H.MD5 AS MD5, 
+                H.SHA1 AS SHA1, H.SHA256 AS SHA256,
                 User, P.Exe AS ParentImage, P.CommandLine AS ParentCommandLine, 
                 if(condition=P.Exe, then=hash(path=P.Exe), else=P.Exe) AS PH,
                 process_tracker_get(id=P.Ppid).Data AS GP
@@ -962,48 +958,58 @@ Sources:
   image_load/windows/pslist:
     query: |
       SELECT *,
-          GP.Exe AS GrandParentImage, GP.CommandLine AS GrandParentCommandLine,
-          PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
+        MH.MD5 AS ModuleMD5, MH.SHA1 AS ModuleSHA1, MH.SHA256 AS ModuleSHA256,
+        GP.Exe AS GrandParentImage, GP.CommandLine AS GrandParentCommandLine,
+        PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
       FROM foreach(
-          row={
-              SELECT Pid, CommandLine, Exe AS Image, 
-                  process_tracker_get(id=Ppid).Data AS P,
-                  if(condition=Exe, then=hash(path=Exe), else=Exe) AS H,
-                  Username AS User
-              FROM process_tracker_pslist()},
-          query={
-              SELECT Image, CommandLine, H.MD5 AS MD5, H.SHA1 AS SHA1, H.SHA256 AS SHA256,
-                  P.Exe AS ParentImage, P.CommandLine AS ParentCommandLine,
-                  if(condition=P.Exe, then=hash(path=P.Exe), else=P.Exe) AS PH,
-                  ModuleName, ExePath AS ModulePath, 
-                  process_tracker_get(id=P.Ppid).Data AS GP
-              FROM modules(pid=int(int=Pid))}
+        row={
+            SELECT CreateTime AS Timestamp, Pid, CommandLine, Exe AS Image, 
+                process_tracker_get(id=Ppid).Data AS P,
+                if(condition=Exe, then=hash(path=Exe), else=Exe) AS H,
+                Username AS User
+            FROM process_tracker_pslist()},
+        query={
+            SELECT Timestamp, Image, CommandLine, H.MD5 AS ProcessMD5, 
+                H.SHA1 AS ProcessSHA1, H.SHA256 AS ProcessSHA256,
+                P.Exe AS ParentImage, P.CommandLine AS ParentCommandLine,
+                if(condition=P.Exe, then=hash(path=P.Exe), else=P.Exe) AS PH,
+                ModuleName, ExePath AS ModulePath, 
+                if(condition=ExePath, then=hash(path=ExePath), else=ExePath) AS MH,
+                process_tracker_get(id=P.Ppid).Data AS GP
+            FROM modules(pid=int(int=Pid))}
       )
     fields:
       - CommandLine
       - GrandParentCommandLine
       - GrandParentImage
       - Image
-      - MD5
+      - ModuleMD5
       - ModuleName
       - ModulePath
+      - ModuleSHA1
+      - ModuleSHA256
       - ParentCommandLine
       - ParentImage
       - ParentMD5
       - ParentSHA1
       - ParentSHA256
-      - SHA1
-      - SHA256
+      - ProcessMD5
+      - ProcessSHA1
+      - ProcessSHA256
+      - User
 
   network_connection/windows/netstat:
     query: |
-      SELECT 
-          Laddr.IP as LocalIP, Laddr.Port AS LocalPort, 
-          Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort, 
-          Pid, TypeString AS Protocol, pt.Data.Exe AS Image,
-          pt.Data.CommandLine as CommandLine, 
-          process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
-      FROM Nets
+      SELECT * FROM foreach(
+          row={SELECT * , process_tracker_get(id=Pid) AS pt FROM netstat()},
+          query={
+              SELECT Timestamp,
+                Laddr.IP as LocalIP, Laddr.Port AS LocalPort, 
+                Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort, 
+                Pid, TypeString AS Protocol, Status, pt.Data.Exe AS Image,
+                pt.Data.CommandLine as CommandLine, 
+                process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
+              FROM scope()})
     fields:
       - CommandLine
       - Image
@@ -1013,6 +1019,8 @@ Sources:
       - RemotePort
       - ParentImage
       - Protocol
+      - Status
+      
       
 
 QueryTemplate: |
@@ -1021,15 +1029,10 @@ QueryTemplate: |
    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
    LET X = scope()
 
-   SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
-          System.Computer AS Computer,
-          System.Channel AS Channel,
-          System.EventID.Value AS EID,
+   SELECT if(condition=Timestamp, then=Timestamp, else=timestamp(epoch=System.TimeCreated.SystemTime)) AS Timestamp,
           _Rule.Level AS Level,
           _Rule.Title AS Title,
-          System.EventRecordID AS RecordID,
-          Details,
-          dict(System=System, EventData=X.EventData || X.UserData, Message=X.Message) AS _Event
+          Details, if(condition=Debug, then=_Match, else=False) AS Match
     FROM sigma(
       rules=split(string= Rules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,

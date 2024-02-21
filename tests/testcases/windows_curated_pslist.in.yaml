@@ -1,0 +1,84 @@
+Parameters:
+  PsListMock: |
+    [{
+        "Pid": "10112",
+        "Ppid": "1676",
+        "Name": "bad.exe",
+        "Username": "NT AUTHORITY\\SYSTEM",
+        "OwnerSid": "S-1-5-18",
+        "CommandLine": "\"C:\\bad\\bad.exe\" /test -p \"C:\\bad\\bad.dit\"",
+        "Exe": "C:\\bad\\bad.exe",
+        "TokenIsElevated": "true",
+        "CreateTime": "2024-02-17T04:26:13.6996281Z",
+        "StartTime": "2024-02-17T04:26:13.6996281Z",
+        "EndTime": "0001-01-01T00:00:00Z"
+    }]
+  ProcessTrackerGet: |
+    [{
+        "Pid": 1676,
+        "Ppid": 812,
+        "Name": "pwsh.exe",
+        "Username": "devlp\\baduser",
+        "OwnerSid": "S-1-5-21-1358900473-4088580517-2270787746-1002",
+        "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
+        "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "CreateTime": "2024-02-18T22:57:07.1145654Z",
+    }]
+  HashMock: |
+    [{
+        "MD5": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "SHA1": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "SHA256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }]
+  Rules: |
+    title: Golden Test - pslist
+    logsource:
+      category: process_creation
+      product: windows
+      service: pslist
+    detection:
+      condition: selection_1 and selection_2 and selection_3 and selection_4 and selection_5 and selection_6 and selection_7 and selection_8 and selection_9 and selection_10 and selection_11 and selection_12 and selection_13
+      selection_1:
+        CommandLine: "\"C:\\bad\\bad.exe\" /test -p \"C:\\bad\\bad.dit\""
+      selection_2:
+        GrandParentCommandLine: "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+      selection_3:
+        GrandParentImage: "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+      selection_4:
+        Image: "C:\\bad\\bad.exe"
+      selection_5:
+        MD5: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      selection_6:
+        ParentCommandLine: "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+      selection_7:
+        ParentImage: "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+      selection_8:
+        ParentMD5: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      selection_9:
+        ParentSHA1: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      selection_10:
+        ParentSHA256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      selection_11:
+        SHA1:  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      selection_12:
+        SHA256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      selection_13:
+        User: "NT AUTHORITY\\SYSTEM"
+    status: test
+    author: test
+    level: high
+    references:
+      - https://github.com/Velocidex/velociraptor
+
+
+Queries:
+  - LET temp <= "C:\\tmp\\"
+  - LET _ <= SELECT
+        mock(plugin="process_tracker_pslist", results=parse_json_array(data=PsListMock)),
+        mock(function="process_tracker_get", results=parse_json_array(data=ProcessTrackerGet)),
+        mock(function="hash", results=parse_json_array(data=HashMock))
+      FROM scope()
+  - SELECT * FROM Artifact.Sigma.Windows.Curated(ROOT=temp,
+      SigmaRules=Rules, Debug=True,
+      RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=".")
+    ORDER BY Timestamp

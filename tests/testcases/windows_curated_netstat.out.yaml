@@ -11,6 +11,7 @@ LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="wmi", results=parse_json_a
    "RemotePort": 0,
    "Pid": 10112,
    "Protocol": "TCP",
+   "Status": "ESTAB",
    "Image": null,
    "CommandLine": null,
    "ParentImage": null

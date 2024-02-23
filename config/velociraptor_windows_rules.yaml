@@ -1028,10 +1028,13 @@ QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+   LET I = SELECT * FROM info()
    LET X = scope()
 
    SELECT Timestamp || System.TimeCreated.SystemTime AS Timestamp,
           _Rule.Title AS Title,
+          _Rule.Logsource AS Logsource,
+          I.Hostname[0] AS Hostname,
           _Rule.Level AS Level,
           _Rule.Title AS Title,
           _Rule.References AS References,

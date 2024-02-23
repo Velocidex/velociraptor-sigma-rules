@@ -23,14 +23,24 @@ Parameters:
     }]
   ProcessTrackerGet: |
     [{
-        "Pid": 1676,
-        "Ppid": 812,
-        "Name": "pwsh.exe",
-        "Username": "devlp\\baduser",
-        "OwnerSid": "S-1-5-21-1358900473-4088580517-2270787746-1002",
-        "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
-        "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
-        "CreateTime": "2024-02-18T22:57:07.1145654Z"
+        "Id": "1676",
+        "ParentId": "1740",
+        "RealParentId": "",
+        "UpdateType": "",
+        "StartTime": "2024-02-22T09:25:59.2051994Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "Data": {
+          "Pid": 1676,
+          "Ppid": 1740,
+          "Name": "pwsh.exe",
+          "Threads": 29,
+          "Username": "NT AUTHORITY\\SYSTEM",
+          "OwnerSid": "S-1-5-18",
+          "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
+          "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+          "TokenIsElevated": true,
+          "CreateTime": "2024-02-22T09:25:59.2051994Z"
+        }
     }]
   HashMock: |
     [{
@@ -41,7 +51,7 @@ Parameters:
   Rules: |
     title: Golden Test - pslist
     logsource:
-      category: process_creation
+      category: image_load
       product: windows
       service: pslist
     detection:

@@ -17,35 +17,68 @@ LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="process_tracker_pslist", r
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
    ],
    "User": "NT AUTHORITY\\SYSTEM",
-   "ParentImage": null,
-   "ParentCommandLine": null,
-   "PH": null,
-   "GP": null,
-   "GrandParentImage": null,
-   "GrandParentCommandLine": null,
-   "ParentMD5": null,
-   "ParentSHA1": null,
-   "ParentSHA256": null
+   "ParentImage": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "ParentCommandLine": [
+    "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+   ],
+   "PH": [
+    {
+     "MD5": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "SHA1": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+     "SHA256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+   ],
+   "GP": [
+    {
+     "Pid": 1676,
+     "Ppid": 1740,
+     "Name": "pwsh.exe",
+     "Threads": 29,
+     "Username": "NT AUTHORITY\\SYSTEM",
+     "OwnerSid": "S-1-5-18",
+     "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
+     "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+     "TokenIsElevated": true,
+     "CreateTime": "2024-02-22T09:25:59.2051994Z"
+    }
+   ],
+   "GrandParentImage": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "GrandParentCommandLine": [
+    "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+   ],
+   "ParentMD5": [
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+   ],
+   "ParentSHA1": [
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+   ],
+   "ParentSHA256": [
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+   ]
   },
   "Match": {
-   "Match": false,
+   "Match": true,
    "SearchResults": {
     "selection_1": true,
-    "selection_10": false,
+    "selection_10": true,
     "selection_11": true,
     "selection_12": true,
     "selection_13": true,
-    "selection_2": false,
-    "selection_3": false,
+    "selection_2": true,
+    "selection_3": true,
     "selection_4": true,
     "selection_5": true,
-    "selection_6": false,
-    "selection_7": false,
-    "selection_8": false,
-    "selection_9": false
+    "selection_6": true,
+    "selection_7": true,
+    "selection_8": true,
+    "selection_9": true
    },
    "ConditionResults": [
-    false
+    true
    ]
   },
   "_Source": "Sigma.Windows.Curated"

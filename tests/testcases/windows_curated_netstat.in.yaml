@@ -83,39 +83,24 @@ Parameters:
     }]
   ProcessTrackerGet: |
     [{
-        "Pid": 1676,
-        "Ppid": 812,
-        "Name": "pwsh.exe",
-        "Threads": 17,
-        "Username": "devlp\\baduser",
-        "OwnerSid": "S-1-5-21-1358900473-4088580517-2270787746-1002",
-        "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
-        "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
-        "TokenIsElevated": false,
-        "CreateTime": "2024-02-18T22:57:07.1145654Z",
-        "User": 0.84375,
-        "System": 1.25,
-        "IoCounters": {
-          "ReadOperationCount": 188,
-          "WriteOperationCount": 18779,
-          "OtherOperationCount": 9984,
-          "ReadTransferCount": 769625,
-          "WriteTransferCount": 87536,
-          "OtherTransferCount": 2499514
-        },
-        "Memory": {
-          "PageFaultCount": 37217,
-          "PeakWorkingSetSize": 113373184,
-          "WorkingSetSize": 112181248,
-          "QuotaPeakPagedPoolUsage": 500296,
-          "QuotaPagedPoolUsage": 475144,
-          "QuotaPeakNonPagedPoolUsage": 165896,
-          "QuotaNonPagedPoolUsage": 79864,
-          "PagefileUsage": 42758144,
-          "PeakPagefileUsage": 44290048
-        },
-        "PebBaseAddress": 838541602816,
-        "IsWow64": false
+        "Id": "1676",
+        "ParentId": "1740",
+        "RealParentId": "",
+        "UpdateType": "",
+        "StartTime": "2024-02-22T09:25:59.2051994Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "Data": {
+          "Pid": 1676,
+          "Ppid": 1740,
+          "Name": "pwsh.exe",
+          "Threads": 29,
+          "Username": "NT AUTHORITY\\SYSTEM",
+          "OwnerSid": "S-1-5-18",
+          "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
+          "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+          "TokenIsElevated": true,
+          "CreateTime": "2024-02-22T09:25:59.2051994Z"
+        }
     }]
   HashMock: |
     [{
@@ -165,9 +150,9 @@ Parameters:
       selection_7:
         ParentImage: "C:\\Program Files\\PowerShell\\7\\pwsh.exe" 
       selection_8:
-        Protocol: TCP
+        Protocol: "TCP"
       selection_9:
-        Status: ESTAB
+        Status: "ESTAB"
     status: test
     author: test
     level: high

@@ -198,7 +198,7 @@ FieldMappings:
   param4: "x=>x.EventData.param4"
   param5: "x=>x.EventData.param5"
   ParentCommandLine: "x=>x.EventData.ParentCommandLine || x.ParentCommandLine"
-  ParentImage: "x=>x.EventData.ParentImage"
+  ParentImage: "x=>x.EventData.ParentImage || x.ParentImage"
   ParentIntegrityLevel: "x=>x.EventData.ParentIntegrityLevel"
   ParentProcessName: "x=>x.EventData.ParentProcessName"
   ParentProcessImage: "x=>x.EventData.ParentImage"
@@ -217,7 +217,7 @@ FieldMappings:
   ProcessName: "x=>x.EventData.ProcessName"
   Product: "x=>x.EventData.Product"
   Properties: "x=>x.EventData.Properties"
-  Protocol: "x=>x.EventData.Protocol"
+  Protocol: "x=>x.EventData.Protocol || x.Protocol"
   Provider: "x=>x.UserData.Provider"
   ProviderName: "x=>x.System.Provider_attributes.Name"
   Provider_Name: "x=>x.System.Provider_attributes.Name"
@@ -268,7 +268,7 @@ FieldMappings:
   StartModule: "x=>x.EventData.StartModule"
   StartType: "x=>x.EventData.StartType"
   State: "x=>x.EventData.State"
-  Status: "x=>x.EventData.Status"
+  Status: "x=>x.EventData.Status || x.Status"
   SubcategoryGuid: "x=>x.EventData.SubcategoryGuid"
   SubStatus: "x=>x.EventData.SubStatus"
   service_Name: "x=>x.Name"
@@ -1008,7 +1008,8 @@ Sources:
                 Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort, 
                 Pid, TypeString AS Protocol, Status, pt.Data.Exe AS Image,
                 pt.Data.CommandLine as CommandLine, 
-                process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
+                process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage,
+                pt
               FROM scope()})
     fields:
       - CommandLine

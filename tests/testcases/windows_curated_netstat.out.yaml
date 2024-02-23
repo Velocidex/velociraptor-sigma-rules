@@ -12,25 +12,53 @@ LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="wmi", results=parse_json_a
    "Pid": 10112,
    "Protocol": "TCP",
    "Status": "ESTAB",
-   "Image": null,
-   "CommandLine": null,
-   "ParentImage": null
+   "Image": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "CommandLine": [
+    "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+   ],
+   "ParentImage": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "pt": [
+    {
+     "Id": "1676",
+     "ParentId": "1740",
+     "RealParentId": "",
+     "UpdateType": "",
+     "StartTime": "2024-02-22T09:25:59.2051994Z",
+     "EndTime": "0001-01-01T00:00:00Z",
+     "Data": {
+      "Pid": 1676,
+      "Ppid": 1740,
+      "Name": "pwsh.exe",
+      "Threads": 29,
+      "Username": "NT AUTHORITY\\SYSTEM",
+      "OwnerSid": "S-1-5-18",
+      "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
+      "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "TokenIsElevated": true,
+      "CreateTime": "2024-02-22T09:25:59.2051994Z"
+     }
+    }
+   ]
   },
   "Match": {
-   "Match": false,
+   "Match": true,
    "SearchResults": {
-    "selection_1": false,
-    "selection_2": false,
+    "selection_1": true,
+    "selection_2": true,
     "selection_3": true,
     "selection_4": true,
     "selection_5": true,
     "selection_6": true,
-    "selection_7": false,
-    "selection_8": false,
-    "selection_9": false
+    "selection_7": true,
+    "selection_8": true,
+    "selection_9": true
    },
    "ConditionResults": [
-    false
+    true
    ]
   },
   "_Source": "Sigma.Windows.Curated"

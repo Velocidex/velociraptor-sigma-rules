@@ -3,6 +3,9 @@ LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="process_tracker_pslist", r
   "Timestamp": "2024-02-17T04:26:13.6996281Z",
   "Level": "high",
   "Title": "Golden Test - pslist",
+  "References": [
+   "https://github.com/Velocidex/velociraptor"
+  ],
   "Details": {
    "Timestamp": "2024-02-17T04:26:13.6996281Z",
    "Image": "C:\\bad\\bad.exe",
@@ -60,7 +63,7 @@ LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="process_tracker_pslist", r
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
    ]
   },
-  "Match": {
+  "Debug": {
    "Match": true,
    "SearchResults": {
     "selection_1": true,

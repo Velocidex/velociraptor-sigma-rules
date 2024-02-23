@@ -3,6 +3,9 @@ LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="wmi", results=parse_json_a
   "Timestamp": "2024-02-17T04:26:11Z",
   "Level": "high",
   "Title": "Golden Test - netstat",
+  "References": [
+   "https://github.com/Velocidex/velociraptor"
+  ],
   "Details": {
    "Timestamp": "2024-02-17T04:26:11Z",
    "LocalIP": "192.168.0.1",
@@ -44,7 +47,7 @@ LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="wmi", results=parse_json_a
     }
    ]
   },
-  "Match": {
+  "Debug": {
    "Match": true,
    "SearchResults": {
     "selection_1": true,

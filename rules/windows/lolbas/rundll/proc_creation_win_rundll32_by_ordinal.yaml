@@ -21,12 +21,8 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_img:
         -   NewProcessName|endswith: \rundll32.exe
-        -   OriginalFileName: RUNDLL32.EXE
     selection_cli:
         CommandLine|contains:
             - ',#'
@@ -47,7 +43,7 @@ detection:
             - \Msbuild\Current\Bin\
             - \VC\Tools\MSVC\
             - \Tracker.exe
-    condition: process_creation and (all of selection_* and not 1 of filter_*)
+    condition: all of selection_* and not 1 of filter_*
 falsepositives:
     - False positives depend on scripts and administrative tools used in the monitored
         environment

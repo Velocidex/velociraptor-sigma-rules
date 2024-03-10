@@ -25,9 +25,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_main:
         -   CommandLine|contains|all:
                 - 'localgroup '
@@ -40,7 +37,7 @@ detection:
             - Remote Desktop Users
             - "Utilisateurs du Bureau \xE0 distance"
             - Usuarios de escritorio remoto
-    condition: process_creation and (all of selection_*)
+    condition: all of selection_*
 fields:
     - CommandLine
     - ParentCommandLine

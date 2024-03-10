@@ -22,9 +22,6 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    process_creation:
-        EventID: 1
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection_img:
         -   Image|endswith: \ntdsutil.exe
         -   OriginalFileName: ntdsutil.exe
@@ -36,7 +33,7 @@ detection:
                 - ac
                 - ' i'
                 - ' ntds'
-    condition: process_creation and (all of selection_*)
+    condition: all of selection_*
 falsepositives:
     - Legitimate usage to restore snapshots
     - Legitimate admin activity

@@ -21,7 +21,7 @@ logsource:
     definition: 'The Advanced Audit Policy setting Object Access > Audit Other Object Access Events has to be configured to allow this detection. We also recommend extracting the Command field from the embedded XML in the event data.'
 detection:
     selection_paths:
-        OSPath|contains:
+        Image|contains:
             - '\AppData\Local\Temp\'
             - '\AppData\Roaming\'
             - '\Users\Public\'
@@ -33,7 +33,7 @@ detection:
             - 'C:\ProgramData\'
             - 'C:\Perflogs\'
     selection_commands:
-        Command|contains:
+        CommandLine|contains:
             - 'regsvr32'
             - 'rundll32'
             - 'cmd.exe</Command>'

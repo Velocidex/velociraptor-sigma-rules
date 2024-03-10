@@ -95,8 +95,8 @@ func (self *CompilerContext) CompileDirs() error {
 						self.config_obj.BaseReferenceURL + path}
 				}
 
-				self.normalize_logsource(&new_rule, path)
-				err = self.walk_fields(&new_rule, path)
+				logsource := self.normalize_logsource(&new_rule, path)
+				err = self.walk_fields(&new_rule, path, logsource)
 				if err != nil {
 					return nil
 				}

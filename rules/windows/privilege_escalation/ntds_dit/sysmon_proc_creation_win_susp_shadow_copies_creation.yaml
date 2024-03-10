@@ -22,9 +22,6 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    process_creation:
-        EventID: 1
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection_img:
         -   Image|endswith:
                 - \powershell.exe
@@ -40,7 +37,7 @@ detection:
         CommandLine|contains|all:
             - shadow
             - create
-    condition: process_creation and (all of selection_*)
+    condition: all of selection_*
 falsepositives:
     - Legitimate administrator working with shadow copies, access for backup purposes
 level: medium

@@ -21,12 +21,8 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_img:
         -   NewProcessName|endswith: \esentutl.exe
-        -   OriginalFileName: esentutl.exe
     selection_flag:
         CommandLine|contains:
             - /r

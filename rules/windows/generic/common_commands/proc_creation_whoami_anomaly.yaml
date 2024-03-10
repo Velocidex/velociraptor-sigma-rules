@@ -23,20 +23,19 @@ logsource:
 detection:
     selection:
         - Image|endswith: '\whoami.exe'
-        - OriginalFileName: 'whoami.exe'
     filter_generic:
         # This list can be any legitimate shell or application that you expect whoami to run from
-        ParentImage|endswith:
+        ParentProcessName|endswith:
             - '\cmd.exe'
             - '\powershell.exe'
             - '\pwsh.exe'
             - '\powershell_ise.exe'
     filter_ms_monitoring_agent:
-        ParentImage: 'C:\Program Files\Microsoft Monitoring Agent\Agent\MonitoringHost.exe'
+        ParentProcessName: 'C:\Program Files\Microsoft Monitoring Agent\Agent\MonitoringHost.exe'
     filter_parent_null:
-        ParentImage: null
+        ParentProcessName: null
     filter_parent_empty:
-        ParentImage: ''
+        ParentProcessName: ''
     condition: selection and not 1 of filter_*
 falsepositives:
     - Admin activity

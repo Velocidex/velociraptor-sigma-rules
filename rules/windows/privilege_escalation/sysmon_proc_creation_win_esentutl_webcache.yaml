@@ -21,19 +21,15 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 1
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection_img:
-        -   Image|endswith: \esentutl.exe
-        -   OriginalFileName: esentutl.exe
+        -   Image|endswith: esentutl.exe
     selection_flag:
         CommandLine|contains:
             - /r
             - -r
     selection_webcache:
         CommandLine|contains: \Windows\WebCache
-    condition: process_creation and (all of selection*)
+    condition: all of selection*
 falsepositives:
     - Legitimate use
 level: medium

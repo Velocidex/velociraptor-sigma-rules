@@ -25,9 +25,6 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    create_remote_thread:
-        EventID: 8
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         SourceImage|endswith:
             - \powershell.exe
@@ -35,7 +32,7 @@ detection:
         TargetImage|endswith:
             - \rundll32.exe
             - \regsvr32.exe
-    condition: create_remote_thread and selection
+    condition: selection
 falsepositives:
     - Unknown
 level: medium

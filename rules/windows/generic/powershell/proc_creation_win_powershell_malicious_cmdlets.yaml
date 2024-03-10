@@ -49,9 +49,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection:
         CommandLine|contains:
             - Add-Exfiltration
@@ -244,7 +241,7 @@ detection:
             - Start-CaptureServer
             - Start-WebcamRecorder
             - VolumeShadowCopyTools
-    condition: process_creation and selection
+    condition: selection
 falsepositives:
     - Unknown
 level: high

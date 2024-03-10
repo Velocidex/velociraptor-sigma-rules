@@ -28,8 +28,6 @@ detection:
             - '\winring00x64.sys'
     selection_sysmon:
         Hashes|contains: 'IMPHASH=D41FA95D4642DC981F10DE36F4DC8CD7'
-    selection_other:
-        Imphash: 'd41fa95d4642dc981f10de36f4dc8cd7'
     condition: 1 of selection*
 falsepositives:
     - Unknown

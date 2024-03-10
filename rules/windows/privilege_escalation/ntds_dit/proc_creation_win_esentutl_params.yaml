@@ -24,14 +24,11 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection:
         CommandLine|contains|all:
             - esentutl
             - ' /p'
-    condition: process_creation and selection
+    condition: selection
 fields:
     - SubjectUserName
     - CommandLine

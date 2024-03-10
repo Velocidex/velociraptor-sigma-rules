@@ -22,9 +22,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_parent:
         -   ParentProcessName|contains: tomcat
         -   ParentProcessName|endswith:
@@ -58,12 +55,7 @@ detection:
         -   CommandLine|contains:
                 - /c powershell
                 - /c pwsh
-        -   Description: Windows PowerShell
-        -   Product: PowerShell Core 6
-        -   OriginalFileName:
-                - PowerShell.EXE
-                - pwsh.dll
-    condition: process_creation and (all of selection_*)
+    condition: all of selection_*
 falsepositives:
     - Other scripts
 level: high

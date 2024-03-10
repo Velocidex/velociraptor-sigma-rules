@@ -24,9 +24,6 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    create_remote_thread:
-        EventID: 8
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         SourceImage|endswith:
             - \System32\cscript.exe
@@ -36,7 +33,7 @@ detection:
             - \excel.exe
         TargetImage|contains: \SysWOW64\
         StartModule: null
-    condition: create_remote_thread and selection
+    condition: selection
 falsepositives:
     - Unknown
 level: high

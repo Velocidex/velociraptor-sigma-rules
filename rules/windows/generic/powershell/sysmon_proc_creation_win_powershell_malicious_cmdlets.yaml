@@ -50,9 +50,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 1
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         CommandLine|contains:
             - Add-Exfiltration
@@ -245,7 +242,7 @@ detection:
             - Start-CaptureServer
             - Start-WebcamRecorder
             - VolumeShadowCopyTools
-    condition: process_creation and selection
+    condition: selection
 falsepositives:
     - Unknown
 level: high

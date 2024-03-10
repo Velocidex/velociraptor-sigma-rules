@@ -18,19 +18,15 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_call_img:
         -   NewProcessName|endswith: \rundll32.exe
-        -   OriginalFileName: RUNDLL32.EXE
     selection_call_parent:
         ParentProcessName|endswith: \cmd.exe
     selection_call_cli:
         CommandLine|contains: user32.dll,
     selection_function:
         CommandLine|contains: LockWorkStation
-    condition: process_creation and (all of selection_*)
+    condition: all of selection_*
 fields:
     - NewProcessName
     - ParentProcessName

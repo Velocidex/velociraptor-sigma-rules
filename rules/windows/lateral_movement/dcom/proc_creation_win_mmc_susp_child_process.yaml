@@ -18,9 +18,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection1:
         ParentProcessName|endswith: \mmc.exe
     selection2:
@@ -35,7 +32,7 @@ detection:
                 - \reg.exe
                 - \regsvr32.exe
         -   NewProcessName|contains: \BITSADMIN
-    condition: process_creation and (all of selection*)
+    condition: all of selection*
 fields:
     - NewProcessName
     - CommandLine

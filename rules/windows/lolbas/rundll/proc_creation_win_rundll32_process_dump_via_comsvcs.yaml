@@ -31,12 +31,8 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_img:
         -   NewProcessName|endswith: \rundll32.exe
-        -   OriginalFileName: RUNDLL32.EXE
         -   CommandLine|contains: rundll32
     selection_cli_1:
         CommandLine|contains|all:
@@ -57,7 +53,7 @@ detection:
             - ' #'
             - ',#'
             - ', #'
-    condition: process_creation and ((selection_img and 1 of selection_cli_*) or selection_generic)
+    condition: (selection_img and 1 of selection_cli_*) or selection_generic
 falsepositives:
     - Unlikely
 level: high

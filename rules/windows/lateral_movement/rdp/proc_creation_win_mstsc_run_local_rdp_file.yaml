@@ -18,12 +18,8 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_img:
         -   NewProcessName|endswith: \mstsc.exe
-        -   OriginalFileName: mstsc.exe
     selection_cli:
         CommandLine|endswith:
             - .rdp
@@ -31,7 +27,7 @@ detection:
     filter_optional_wsl:
         CommandLine|contains: C:\ProgramData\Microsoft\WSL\wslg.rdp
         ParentProcessName: C:\Windows\System32\lxss\wslhost.exe
-    condition: process_creation and (all of selection_* and not 1 of filter_optional_*)
+    condition: all of selection_* and not 1 of filter_optional_*
 falsepositives:
     - Likely with legitimate usage of ".rdp" files
 level: low

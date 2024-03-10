@@ -23,9 +23,6 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    create_remote_thread:
-        EventID: 8
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         TargetImage|endswith: \mstsc.exe
         SourceImage|contains:
@@ -35,7 +32,7 @@ detection:
             - :\Temp\
             - :\Windows\Temp\
             - :\AppData\Local\Temp\
-    condition: create_remote_thread and selection
+    condition: selection
 falsepositives:
     - Unknown
 level: high

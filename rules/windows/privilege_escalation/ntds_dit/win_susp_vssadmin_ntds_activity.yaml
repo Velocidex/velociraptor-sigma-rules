@@ -22,9 +22,6 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection:
         CommandLine:
             - vssadmin.exe Delete Shadows

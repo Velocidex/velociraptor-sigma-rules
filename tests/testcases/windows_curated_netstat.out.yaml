@@ -1,0 +1,75 @@
+LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="wmi", results=parse_json_array(data=WMIMock)), mock(plugin="modules", results=parse_json_array(data=ModulesMock)), mock(plugin="process_tracker_pslist", results=parse_json_array(data=PsListMock)), mock(function="process_tracker_get", results=parse_json_array(data=ProcessTrackerGet)), mock(function="hash", results=parse_json_array(data=HashMock)), mock(plugin="netstat", results=parse_json_array(data=NetstatMock)), mock(plugin="info", results=parse_json_array(data=InfoMock)) FROM scope()[]SELECT * FROM Artifact.Sigma.Windows.Curated(ROOT=temp, SigmaRules=Rules, Debug=True, RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=".") ORDER BY Timestamp[
+ {
+  "Timestamp": "2024-02-17T04:26:11Z",
+  "Logsource": {
+   "Category": "network_connection",
+   "Product": "windows",
+   "Service": "netstat"
+  },
+  "Hostname": "devlp",
+  "Level": "high",
+  "Title": "Golden Test - netstat",
+  "References": [
+   "https://github.com/Velocidex/velociraptor"
+  ],
+  "Details": {
+   "Timestamp": "2024-02-17T04:26:11Z",
+   "LocalIP": "192.168.0.1",
+   "LocalPort": 445,
+   "RemoteIP": "123.45.56.78",
+   "RemotePort": 0,
+   "Pid": 10112,
+   "Protocol": "TCP",
+   "Status": "ESTAB",
+   "Image": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "CommandLine": [
+    "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+   ],
+   "ParentImage": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "pt": [
+    {
+     "Id": "1676",
+     "ParentId": "1740",
+     "RealParentId": "",
+     "UpdateType": "",
+     "StartTime": "2024-02-22T09:25:59.2051994Z",
+     "EndTime": "0001-01-01T00:00:00Z",
+     "Data": {
+      "Pid": 1676,
+      "Ppid": 1740,
+      "Name": "pwsh.exe",
+      "Threads": 29,
+      "Username": "NT AUTHORITY\\SYSTEM",
+      "OwnerSid": "S-1-5-18",
+      "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
+      "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "TokenIsElevated": true,
+      "CreateTime": "2024-02-22T09:25:59.2051994Z"
+     }
+    }
+   ]
+  },
+  "Debug": {
+   "Match": true,
+   "SearchResults": {
+    "selection_1": true,
+    "selection_2": true,
+    "selection_3": true,
+    "selection_4": true,
+    "selection_5": true,
+    "selection_6": true,
+    "selection_7": true,
+    "selection_8": true,
+    "selection_9": true
+   },
+   "ConditionResults": [
+    true
+   ]
+  },
+  "_Source": "Sigma.Windows.Curated"
+ }
+]

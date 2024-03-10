@@ -19,12 +19,9 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    process_creation:
-        EventID: 1
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         Image|endswith: \ntdsutil.exe
-    condition: process_creation and selection
+    condition: selection
 falsepositives:
     - NTDS maintenance
 level: medium

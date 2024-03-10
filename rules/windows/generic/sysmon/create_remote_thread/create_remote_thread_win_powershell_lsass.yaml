@@ -24,15 +24,12 @@ logsource:
     product: windows
     service:  evtx-sysmon
 detection:
-    create_remote_thread:
-        EventID: 8
-        Channel: Microsoft-Windows-Sysmon/Operational
     selection:
         SourceImage|endswith:
             - \powershell.exe
             - \pwsh.exe
         TargetImage|endswith: \lsass.exe
-    condition: create_remote_thread and selection
+    condition: selection
 falsepositives:
     - Unknown
 level: high

@@ -33,11 +33,6 @@ logsource:
     service:  evtx-powershell
     definition: 0ad03ef1-f21b-4a79-8ce8-e6900c54b65b
 detection:
-    ps_module:
-        EventID: 4103
-        Channel:
-            - Microsoft-Windows-PowerShell/Operational
-            - PowerShellCore/Operational
     selection_4103:
         Payload|contains:
             - $DoIt
@@ -46,7 +41,7 @@ detection:
             - _RastaMouse
             - tifkin_
             - '0xdeadbeef'
-    condition: ps_module and selection_4103
+    condition: selection_4103
 falsepositives:
     - Moderate-to-low; Despite the shorter length/lower entropy for some of these,
         because of high specificity, fp appears to be fairly limited in many environments.

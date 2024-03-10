@@ -19,12 +19,8 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection_img:
         -   NewProcessName|endswith: \mstsc.exe
-        -   OriginalFileName: mstsc.exe
     selection_extension:
         CommandLine|endswith:
             - .rdp

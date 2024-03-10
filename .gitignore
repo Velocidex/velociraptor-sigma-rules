@@ -10,3 +10,5 @@ velosigmac
 velosigmac.exe
 .wordlist.dict
 tests/velociraptor
+tests/velociraptor.exe
+.vscode/

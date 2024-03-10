@@ -19,11 +19,6 @@ logsource:
     service:  evtx-powershell
     definition: 'Requirements: Script Block Logging must be enabled'
 detection:
-    ps_script:
-        EventID: 4104
-        Channel:
-            - Microsoft-Windows-PowerShell/Operational
-            - PowerShellCore/Operational
     selection:
         ScriptBlockText|contains|all:
             - New-PSDrive
@@ -32,7 +27,7 @@ detection:
             - '-root '
             - \\\\
             - $
-    condition: ps_script and selection
+    condition: selection
 falsepositives:
     - Unknown
 level: medium

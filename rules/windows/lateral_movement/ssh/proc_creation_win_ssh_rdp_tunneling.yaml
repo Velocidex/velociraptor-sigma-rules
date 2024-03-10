@@ -21,13 +21,10 @@ logsource:
     product: windows
     service:  evtx-security
 detection:
-    process_creation:
-        EventID: 4688
-        Channel: Security
     selection:
         CommandLine|contains: :3389
         NewProcessName|endswith: \ssh.exe
-    condition: process_creation and selection
+    condition: selection
 falsepositives:
     - Administrative activity
 level: high

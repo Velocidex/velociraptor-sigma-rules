@@ -24,8 +24,8 @@ jobs:
       id: velociraptor
       with:
         repository: velocidex/velociraptor
-        latest: true
-        fileName: "*-linux-amd64"
+        tag: v0.7.1
+        fileName: "*v0.7.1-2-linux-amd64"
         out-file-path: tests
 
     - name: Run tests

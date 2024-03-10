@@ -127,7 +127,7 @@ FieldMappings:
   EventID: "x=>x.System.EventID.Value"
   EventType: "x=>x.EventData.EventType"
   ExceptionCode: "x=>x.EventData.ExceptionCode"
-  ExecutionProcessID: "x=>x.System.Execution_attributes.ProcessID"
+  ExecutionProcessID: "x=>x.System.Execution.ProcessID"
   FailureCode: "x=>x.EventData.FailureCode"
   FilePath: "x=>x.EventData.FilePath"
   FileVersion: "x=>x.EventData.FileVersion"
@@ -219,8 +219,8 @@ FieldMappings:
   Properties: "x=>x.EventData.Properties"
   Protocol: "x=>x.EventData.Protocol || x.Protocol"
   Provider: "x=>x.UserData.Provider"
-  ProviderName: "x=>x.System.Provider_attributes.Name"
-  Provider_Name: "x=>x.System.Provider_attributes.Name"
+  ProviderName: "x=>x.System.Provider.Name"
+  Provider_Name: "x=>x.System.Provider.Name"
   QNAME: "x=>x.EventData.QNAME"
   query: "x=>x.EventData.Query"
   Query: "x=>x.UserData.Query"
@@ -235,7 +235,7 @@ FieldMappings:
   SamAccountName: "x=>x.EventData.SamAccountName"
   ScriptBlockText: "x=>x.EventData.ScriptBlockText"
   SearchFilter: "x=>x.System.SearchFilter"
-  SecurityUserID: "x=>x.System.Security_attributes.UserID"
+  SecurityUserID: "x=>x.System.Security.UserID"
   ServerName: "x=>x.System.ServerName"
   Service: "x=>x.EventData.Service"
   ServiceFileName: "x=>x.EventData.ServiceFileName"
@@ -452,14 +452,14 @@ DefaultDetails:
     Microsoft-Windows-Ntfs/98: "Drive: %DriveName% ¦ Device: %DeviceName%"
 
 Sources:
-# Evtx 
+# Evtx
   '*/windows/evtx-application':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Application.evtx")
     channel:
       - Application
 
-  dns_query_windows/evtx: 
+  dns_query_windows/evtx:
     query: |
       SELECT * FROM parse_evtx(filename=[
         ROOT + "/Microsoft-Windows-DNS-Client.evtx",
@@ -522,12 +522,12 @@ Sources:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
       WHERE System.EventID.Value = 400
-  
+
   ps_classic_provider_start/windows/evtx-powershell:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
       WHERE System.EventID.Value = 600
-  
+
   '*/windows/evtx-powershell_classic':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
@@ -575,7 +575,7 @@ Sources:
       - ScriptBlockText
       - TimeCreated
       - UserID
-  
+
   ps_script/windows/*:
     query: |
       SELECT * FROM parse_evtx(filename=[
@@ -590,7 +590,7 @@ Sources:
       - ScriptBlockText
       - TimeCreated
       - UserID
- 
+
 
   '*/windows/evtx-security':
     query: |
@@ -634,7 +634,7 @@ Sources:
   '*/windows/evtx-sysmon':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
-    fields: 
+    fields:
       - CommandLine
       - Company
       - CreationTime
@@ -701,7 +701,7 @@ Sources:
       - TimeCreated
       - User
       - UserName
-  
+
   create_remote_thread/windows/evtx-sysmon:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
@@ -846,12 +846,12 @@ Sources:
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:
       - Microsoft-Windows-Windows Defender/Operational
-  
+
   'antivirus/windows/evtx-windefend':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:
-      - Microsoft-Windows-Windows Defender/Operational    
+      - Microsoft-Windows-Windows Defender/Operational
 
 # System Artifacts
   '*/windows/schtasks':
@@ -866,9 +866,9 @@ Sources:
 
   '*/windows/services':
     query: |
-      SELECT *, 
-          PathName AS CommandLine, ServiceDll AS Image, 
-          UserAccount AS User 
+      SELECT *,
+          PathName AS CommandLine, ServiceDll AS Image,
+          UserAccount AS User
       FROM Artifact.Windows.System.Services()
     fields:
       - CommandLine
@@ -886,8 +886,8 @@ Sources:
   persistence/windows/services:
     query: |
       SELECT *,
-          PathName AS CommandLine, ServiceDll AS Image, 
-          UserAccount AS User 
+          PathName AS CommandLine, ServiceDll AS Image,
+          UserAccount AS User
       FROM Artifact.Windows.System.Services()
     fields:
       - CommandLine
@@ -918,21 +918,21 @@ Sources:
 # Volatile Artifacts
 
   process_creation/windows/pslist:
-    query: | 
+    query: |
       SELECT *,
         GP.Exe AS GrandParentImage, GP.CommandLine AS GrandParentCommandLine,
         PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
       FROM foreach(
         row={
-            SELECT CreateTime AS Timestamp, Pid, CommandLine, Exe AS Image, 
+            SELECT CreateTime AS Timestamp, Pid, CommandLine, Exe AS Image,
                 process_tracker_get(id=Ppid).Data AS P,
                 if(condition=Exe, then=hash(path=Exe), else=Exe) AS H,
                 Username AS User
             FROM process_tracker_pslist()},
         query={
-            SELECT Timestamp, Image, CommandLine, H.MD5 AS MD5, 
+            SELECT Timestamp, Image, CommandLine, H.MD5 AS MD5,
                 H.SHA1 AS SHA1, H.SHA256 AS SHA256,
-                User, P.Exe AS ParentImage, P.CommandLine AS ParentCommandLine, 
+                User, P.Exe AS ParentImage, P.CommandLine AS ParentCommandLine,
                 if(condition=P.Exe, then=hash(path=P.Exe), else=P.Exe) AS PH,
                 process_tracker_get(id=P.Ppid).Data AS GP
             FROM scope()}
@@ -963,17 +963,17 @@ Sources:
         PH.MD5 AS ParentMD5, PH.SHA1 AS ParentSHA1, PH.SHA256 AS ParentSHA256
       FROM foreach(
         row={
-            SELECT CreateTime AS Timestamp, Pid, CommandLine, Exe AS Image, 
+            SELECT CreateTime AS Timestamp, Pid, CommandLine, Exe AS Image,
                 process_tracker_get(id=Ppid).Data AS P,
                 if(condition=Exe, then=hash(path=Exe), else=Exe) AS H,
                 Username AS User
             FROM process_tracker_pslist()},
         query={
-            SELECT Timestamp, Image, CommandLine, H.MD5 AS ProcessMD5, 
+            SELECT Timestamp, Image, CommandLine, H.MD5 AS ProcessMD5,
                 H.SHA1 AS ProcessSHA1, H.SHA256 AS ProcessSHA256,
                 P.Exe AS ParentImage, P.CommandLine AS ParentCommandLine,
                 if(condition=P.Exe, then=hash(path=P.Exe), else=P.Exe) AS PH,
-                ModuleName, ExePath AS ModulePath, 
+                ModuleName, ExePath AS ModulePath,
                 if(condition=ExePath, then=hash(path=ExePath), else=ExePath) AS MH,
                 process_tracker_get(id=P.Ppid).Data AS GP
             FROM modules(pid=int(int=Pid))}
@@ -1004,10 +1004,10 @@ Sources:
           row={SELECT * , process_tracker_get(id=Pid) AS pt FROM netstat()},
           query={
               SELECT Timestamp,
-                Laddr.IP as LocalIP, Laddr.Port AS LocalPort, 
-                Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort, 
+                Laddr.IP as LocalIP, Laddr.Port AS LocalPort,
+                Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort,
                 Pid, TypeString AS Protocol, Status, pt.Data.Exe AS Image,
-                pt.Data.CommandLine as CommandLine, 
+                pt.Data.CommandLine as CommandLine,
                 process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage,
                 pt
               FROM scope()})
@@ -1021,8 +1021,8 @@ Sources:
       - ParentImage
       - Protocol
       - Status
-      
-      
+
+
 
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))

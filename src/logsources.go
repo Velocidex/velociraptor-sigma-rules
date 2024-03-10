@@ -7,18 +7,20 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
-	"slices"
 	"sort"
 	"strings"
+
+	"golang.org/x/exp/slices"
 
 	"github.com/Velocidex/yaml/v2"
 	"github.com/bradleyjkemp/sigma-go"
 )
 
 type CompilerContext struct {
-	logsources     map[string][]string
+	logsources     map[string]int
 	fields         map[string]int
 	missing_fields map[string][]string
+
 	// Invalid fields are available fields, but not for its logsource
 	invalid_fields map[string][]string
 
@@ -35,7 +37,7 @@ type CompilerContext struct {
 
 func NewCompilerContext() *CompilerContext {
 	return &CompilerContext{
-		logsources:    make(map[string][]string),
+		logsources:    make(map[string]int),
 		errored_rules: make(map[string][]string),
 
 		fields:         make(map[string]int),
@@ -74,6 +76,11 @@ func (self *CompilerContext) Resolve(source_spec string) bool {
 		return false
 	}
 
+	count, _ := self.logsources[source_spec]
+	count++
+
+	self.logsources[source_spec] = count
+
 	return true
 }
 
@@ -86,7 +93,9 @@ func (self *CompilerContext) Stats() {
 	sort.Strings(sources)
 	fmt.Printf("The following log sources will be used:\n")
 	for _, v := range sources {
-		fmt.Printf("  %v\n", v)
+		count, _ := self.logsources[v]
+
+		fmt.Printf("  %v (%v rules)\n", v, count)
 	}
 
 	if len(self.errored_rules) > 0 {
@@ -120,7 +129,8 @@ func (self *CompilerContext) Stats() {
 	}
 }
 
-func (self *CompilerContext) getSourceFromChannel(channel string) string {
+func (self *CompilerContext) getSourceFromChannel(
+	channel string) string {
 	for source, query := range self.config_obj.Sources {
 		for _, c := range query.Channel {
 			if c == channel {
@@ -131,7 +141,10 @@ func (self *CompilerContext) getSourceFromChannel(channel string) string {
 	return ""
 }
 
-func (self *CompilerContext) guessLogSource(rule *sigma.Rule, category, product, service string) (string, string) {
+func (self *CompilerContext) guessLogSource(
+	rule *sigma.Rule,
+	category, product, service string) (string, string) {
+
 	// Try to find a Channel match
 	for _, search := range rule.Detection.Searches {
 		for _, event_matcher := range search.EventMatchers {
@@ -157,7 +170,8 @@ func (self *CompilerContext) guessLogSource(rule *sigma.Rule, category, product,
 	return fmt.Sprintf("%v/%v/%v", category, product, service), service
 }
 
-func (self *CompilerContext) walk_fields(rule *sigma.Rule, path string, logsource string) error {
+func (self *CompilerContext) walk_fields(
+	rule *sigma.Rule, path string, logsource string) error {
 	for _, search := range rule.Detection.Searches {
 		for _, event_matcher := range search.EventMatchers {
 			for _, matcher := range event_matcher {
@@ -176,7 +190,8 @@ func (self *CompilerContext) walk_fields(rule *sigma.Rule, path string, logsourc
 					continue
 				}
 
-				pres = slices.Contains(self.config_obj.Sources[logsource].Fields, matcher.Field)
+				pres = slices.Contains(
+					self.config_obj.Sources[logsource].Fields, matcher.Field)
 				if !pres {
 					invalid := self.invalid_fields[matcher.Field]
 					invalid = append(invalid, path)
@@ -189,7 +204,8 @@ func (self *CompilerContext) walk_fields(rule *sigma.Rule, path string, logsourc
 	return nil
 }
 
-func (self *CompilerContext) normalize_logsource(rule *sigma.Rule, path string) string {
+func (self *CompilerContext) normalize_logsource(
+	rule *sigma.Rule, path string) string {
 	source := rule.Logsource
 	category := source.Category
 	if category == "" {

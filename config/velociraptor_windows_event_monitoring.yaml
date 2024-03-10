@@ -132,7 +132,7 @@ FieldMappings:
   ErrorCode: "x=>x.EventData.ErrorCode"
   EventID: "x=>x.System.EventID.Value"
   EventType: "x=>x.EventData.EventType"
-  ExecutionProcessID: "x=>x.System.Execution_attributes.ProcessID"
+  ExecutionProcessID: "x=>x.System.Execution.ProcessID"
   FailureCode: "x=>x.EventData.FailureCode"
   FilePath: "x=>x.EventData.FilePath"
   FileVersion: "x=>x.EventData.FileVersion"
@@ -222,8 +222,8 @@ FieldMappings:
   Product: "x=>x.EventData.Product"
   Properties: "x=>x.EventData.Properties"
   Provider: "x=>x.UserData.Provider"
-  ProviderName: "x=>x.System.Provider_attributes.Name"
-  Provider_Name: "x=>x.System.Provider_attributes.Name"
+  ProviderName: "x=>x.System.Provider.Name"
+  Provider_Name: "x=>x.System.Provider.Name"
   QNAME: "x=>x.EventData.QNAME"
   query: "x=>x.EventData.Query"
   Query: "x=>x.UserData.Query"
@@ -238,7 +238,7 @@ FieldMappings:
   SamAccountName: "x=>x.EventData.SamAccountName"
   ScriptBlockText: "x=>x.EventData.ScriptBlockText"
   SearchFilter: "x=>x.System.SearchFilter"
-  SecurityUserID: "x=>x.System.Security_attributes.UserID"
+  SecurityUserID: "x=>x.System.Security.UserID"
   ServerName: "x=>x.System.ServerName"
   Service: "x=>x.EventData.Service"
   ServiceFileName: "x=>x.EventData.ServiceFileName"
@@ -455,14 +455,14 @@ DefaultDetails:
     Microsoft-Windows-Ntfs/98: "Drive: %DriveName% ¦ Device: %DeviceName%"
 
 Sources:
-# Evtx 
+# Evtx
   '*/windows/evtx/application':
     query: |
       SELECT * FROM watch_evtx(filename=ROOT + "/Application.evtx")
     channel:
       - Application
 
-  dns_query_windows/evtx: 
+  dns_query_windows/evtx:
     query: |
       SELECT * FROM watch_evtx(filename=[
         ROOT + "/Microsoft-Windows-DNS-Client.evtx",
@@ -517,12 +517,12 @@ Sources:
     query: |
       SELECT * FROM watch_evtx(filename=ROOT + "/Windows PowerShell.evtx")
       WHERE System.EventID.Value = 400
-  
+
   ps_classic_provider_start/windows/evtx/powershell:
     query: |
       SELECT * FROM watch_evtx(filename=ROOT + "/Windows PowerShell.evtx")
       WHERE System.EventID.Value = 600
-  
+
   '*/windows/evtx/powershell_classic':
     query: |
       SELECT * FROM watch_evtx(filename=ROOT + "/Windows PowerShell.evtx")
@@ -552,7 +552,7 @@ Sources:
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
       WHERE System.EventID.Value = 4104
-  
+
   ps_script/windows/*:
     query: |
       SELECT * FROM watch_evtx(filename=[
@@ -585,7 +585,7 @@ Sources:
     query: |
       SELECT * FROM watch_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
       WHERE System.EventID.Value = 1
-  
+
   create_remote_thread/windows/evtx/sysmon:
     query: |
       SELECT * FROM watch_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
@@ -638,12 +638,12 @@ Sources:
       SELECT * FROM watch_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:
       - Microsoft-Windows-Windows Defender/Operational
-  
+
   'antivirus/windows/evtx/windefend':
     query: |
       SELECT * FROM watch_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:
-      - Microsoft-Windows-Windows Defender/Operational    
+      - Microsoft-Windows-Windows Defender/Operational
 
 # System Artifacts
   '*/windows/schtasks':
@@ -673,7 +673,7 @@ Sources:
         row={SELECT * FROM clock(period=SleepCounter)},
         query={SELECT * FROM Artifact.Windows.Analysis.EvidenceOfExecution()}
       )
-      
+
 
   webserver/windows/*:
     query: |
@@ -681,15 +681,15 @@ Sources:
         row={SELECT * FROM clock(period=SleepCounter)},
         query={SELECT * FROM Artifact.Windows.Applications.IISLogs()}
       )
-      
+
 
 # Volatile Artifacts
 
   process_creation/windows/pslist:
-    query: | 
+    query: |
       LET P = SELECT *, process_tracker_get(id=Ppid).Data AS Data, hash(path=Exe) AS Hash FROM pslist()
 
-      SELECT 
+      SELECT
           Name, CommandLine, Exe AS Image, Data.Exe AS ParentImage,
           process_tracker_get(id=Data.Ppid).Data.Exe AS GrandParentImage,
           Hash.MD5 AS MD5, Hash.SHA1 AS SHA1, Hash.SHA256 AS SHA256, Username
@@ -699,13 +699,13 @@ Sources:
     query: |
       LET q = SELECT *, process_tracker_get(id=GPPid).Data.Exe AS GrandParentImage FROM foreach(
         row={
-            SELECT Pid, CommandLine, Exe AS Image, 
-                process_tracker_get(id=Ppid).Data AS P 
+            SELECT Pid, CommandLine, Exe AS Image,
+                process_tracker_get(id=Ppid).Data AS P
             FROM pslist()},
         query={
             SELECT Image, CommandLine, P.Exe AS ParentImage,
                 P.Ppid AS GPPid,
-                ModuleName, ExePath AS ModulePath 
+                ModuleName, ExePath AS ModulePath
             FROM modules(pid=Pid)}
       )
 
@@ -716,15 +716,15 @@ Sources:
 
   network_connection/windows/netstat:
     query: |
-      LET nt = SELECT 
+      LET nt = SELECT
           * , process_tracker_get(id=Pid) AS pt
       FROM netstat()
 
-      LEt q = SELECT 
-          Laddr.IP as LocalIP, Laddr.Port AS LocalPort, 
-          Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort, 
+      LEt q = SELECT
+          Laddr.IP as LocalIP, Laddr.Port AS LocalPort,
+          Raddr.IP AS RemoteIP, Raddr.Port AS RemotePort,
           Pid, TypeString AS Protocol, pt.Data.Exe AS Image,
-          pt.Data.CommandLine as CommandLine, 
+          pt.Data.CommandLine as CommandLine,
           process_tracker_get(id=pt.Data.Ppid).Data.Exe AS ParentImage
       FROM nt
 

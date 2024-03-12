@@ -605,6 +605,7 @@ Sources:
       SELECT * FROM parse_evtx(filename=ROOT + "/System.evtx")
     channel:
       - System
+
   '*/windows/taskscheduler':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-TaskScheduler%4Operational.evtx")
@@ -740,4 +741,4 @@ RuleDirectories:
   - hayabusa/hayabusa/builtin/
   - hayabusa/hayabusa/sysmon/
   - hayabusa/sigma/builtin/
-  - hayabusa/sigma/builtin/sysmon
+  - hayabusa/sigma/sysmon/

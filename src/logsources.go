@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -17,18 +16,27 @@ import (
 )
 
 type CompilerContext struct {
-	logsources     map[string]int
+	logsources map[string]int
+
+	// Keep track of fields seen for each log source that are not
+	// already known and defined by the config file.
+	missing_fields_in_logsources map[string]map[string][]string
+
 	fields         map[string]int
 	missing_fields map[string][]string
 
 	// Invalid fields are available fields, but not for its logsource
 	invalid_fields map[string][]string
 
+	// Map between error reason and the files that were rejected for
+	// it.
 	errored_rules map[string][]string
 	config_obj    *Config
 
 	rules       bytes.Buffer
 	level_regex *regexp.Regexp
+
+	total_visited_rules int
 
 	vql bytes.Buffer
 
@@ -37,8 +45,9 @@ type CompilerContext struct {
 
 func NewCompilerContext() *CompilerContext {
 	return &CompilerContext{
-		logsources:    make(map[string]int),
-		errored_rules: make(map[string][]string),
+		logsources:                   make(map[string]int),
+		missing_fields_in_logsources: make(map[string]map[string][]string),
+		errored_rules:                make(map[string][]string),
 
 		fields:         make(map[string]int),
 		missing_fields: make(map[string][]string),
@@ -58,55 +67,89 @@ func (self *CompilerContext) LoadConfig(filename string) error {
 		return err
 	}
 
+	return self.LoadConfigFromString(string(data))
+}
+
+func (self *CompilerContext) LoadConfigFromString(data string) error {
+
 	config_obj := &Config{}
-	err = yaml.Unmarshal(data, config_obj)
+	err := yaml.Unmarshal([]byte(data), config_obj)
 	if err != nil {
 		return err
 	}
 	self.config_obj = config_obj
-
-	Dump(self.config_obj)
 
 	return nil
 }
 
 func (self *CompilerContext) Resolve(source_spec string) bool {
 	_, pres := self.config_obj.Sources[source_spec]
-	if !pres {
-		return false
-	}
+	return pres
+}
 
+func (self *CompilerContext) incLogSource(source_spec string) {
 	count, _ := self.logsources[source_spec]
 	count++
 
 	self.logsources[source_spec] = count
-
-	return true
 }
 
 func (self *CompilerContext) Stats() {
+	total_rules := 0
 	sources := []string{}
 	for k := range self.logsources {
 		sources = append(sources, k)
 	}
 
 	sort.Strings(sources)
-	fmt.Printf("The following log sources will be used:\n")
+	fmt.Printf("\nThe following log sources will be used:\n")
 	for _, v := range sources {
 		count, _ := self.logsources[v]
 
 		fmt.Printf("  %v (%v rules)\n", v, count)
+		total_rules += count
 	}
 
+	total_reject_rules := 0
 	if len(self.errored_rules) > 0 {
-		fmt.Printf("\nErrored Rules without a valid log soure:\n")
+		fmt.Printf("\nErrored Rules which were rejected:\n")
 		for k, v := range self.errored_rules {
 			fmt.Printf("  %v:\n", k)
 			for _, i := range v {
 				fmt.Printf("     %v\n", i)
+				total_reject_rules++
 			}
 		}
 	}
+
+	if len(self.missing_fields_in_logsources) > 0 {
+		/*
+			fmt.Printf("\nRules that reference unknown fields in each log source:\n")
+			for logsource, field_map := range self.missing_fields_in_logsources {
+				fmt.Printf("  %v:\n", logsource)
+				for field, path_list := range field_map {
+					fmt.Printf("     %v:\n", field)
+
+					for _, path := range path_list {
+						fmt.Printf("         %v\n", path)
+					}
+				}
+			}
+		*/
+		fmt.Printf("\nFields by Log source:\n")
+		for logsource, field_map := range self.missing_fields_in_logsources {
+			fmt.Printf("%v:\n", logsource)
+			for field, _ := range field_map {
+				fmt.Printf("  - %v\n", field)
+			}
+		}
+
+	}
+
+	fmt.Printf("\nTotal rules added: %v from %v visited files and %v rejected rules\n",
+		total_rules, self.total_visited_rules, total_reject_rules)
+
+	return
 
 	if len(self.missing_fields) > 0 {
 		fmt.Printf("\nMissing field mappings:\n")
@@ -141,9 +184,23 @@ func (self *CompilerContext) getSourceFromChannel(
 	return ""
 }
 
+// Update the rule's log source to specify the logsource
+func (self *CompilerContext) updateRuleLogSources(source_spec string, rule *sigma.Rule) {
+	parts := strings.Split(source_spec, "/")
+	if len(parts) == 3 {
+		if parts[0] == "*" {
+			parts[0] = ""
+		}
+
+		rule.Logsource.Category = parts[0]
+		rule.Logsource.Product = parts[1]
+		rule.Logsource.Service = parts[2]
+	}
+}
+
 func (self *CompilerContext) guessLogSource(
 	rule *sigma.Rule,
-	category, product, service string) (string, string) {
+	category, product, service string) (reason string, source string) {
 
 	// Try to find a Channel match
 	for _, search := range rule.Detection.Searches {
@@ -155,10 +212,9 @@ func (self *CompilerContext) guessLogSource(
 						if ok {
 							source := self.getSourceFromChannel(v_str)
 							if source != "" {
-								parts := strings.Split(source, "/")
-								if len(parts) == 3 {
-									return source, parts[2]
-								}
+								self.updateRuleLogSources(source, rule)
+								return fmt.Sprintf(
+									"Found Channel %v", v_str), source
 							}
 						}
 					}
@@ -167,45 +223,64 @@ func (self *CompilerContext) guessLogSource(
 		}
 	}
 
-	return fmt.Sprintf("%v/%v/%v", category, product, service), service
+	return "", fmt.Sprintf("%v/%v/%v", category, product, service)
+}
+
+// Keep track of Sigma rules that refer to a field which is not
+// defined in the field mapping.
+func (self *CompilerContext) incMissingFieldMap(field, path string) {
+	missing, _ := self.missing_fields[field]
+	missing = append(missing, path)
+	self.missing_fields[field] = missing
+}
+
+// Keep track of fields in sigma rules that refer to underfined fields
+// for their specified log source.
+func (self *CompilerContext) incMissingFieldInLogSource(
+	field, logsource, path string) {
+
+	field_map, pres := self.missing_fields_in_logsources[logsource]
+	if !pres {
+		field_map = make(map[string][]string)
+	}
+	self.missing_fields_in_logsources[logsource] = field_map
+
+	path_list, _ := field_map[field]
+	path_list = append(path_list, path)
+	field_map[field] = path_list
 }
 
 func (self *CompilerContext) walk_fields(
-	rule *sigma.Rule, path string, logsource string) error {
+	rule *sigma.Rule, path string, logsource string) (err error) {
 	for _, search := range rule.Detection.Searches {
 		for _, event_matcher := range search.EventMatchers {
 			for _, matcher := range event_matcher {
 				// Check if there is a field mapping
 				_, pres := self.config_obj.FieldMappings[matcher.Field]
 				if !pres {
-					missing, _ := self.missing_fields[matcher.Field]
-					missing = append(missing, path)
-					self.missing_fields[matcher.Field] = missing
-					return errors.New("Missing field")
+					self.incMissingFieldMap(matcher.Field, path)
+					return fmt.Errorf(
+						"Missing field mapping '%v' in %v", matcher.Field, logsource)
 				}
 
-				// Check if the field is in the source
-				// Not all logsources have fields, so we need to check.
-				if len(self.config_obj.Sources[logsource].Fields) == 0 {
-					continue
-				}
-
+				// Just report an unknown field but do not reject the
+				// rule - this is just a warning that the rule is
+				// using a field on this log source which is not known
+				// to belong to this log source.
 				pres = slices.Contains(
 					self.config_obj.Sources[logsource].Fields, matcher.Field)
 				if !pres {
-					invalid := self.invalid_fields[matcher.Field]
-					invalid = append(invalid, path)
-					self.invalid_fields[matcher.Field] = invalid
-					return errors.New("Invalid field")
+					self.incMissingFieldInLogSource(matcher.Field,
+						logsource, path)
 				}
 			}
 		}
 	}
-	return nil
+	return err
 }
 
 func (self *CompilerContext) normalize_logsource(
-	rule *sigma.Rule, path string) string {
+	rule *sigma.Rule, path string) (string, error) {
 	source := rule.Logsource
 	category := source.Category
 	if category == "" {
@@ -223,22 +298,30 @@ func (self *CompilerContext) normalize_logsource(
 	}
 
 	source_spec := fmt.Sprintf("%v/%v/%v", category, product, service)
-	if !self.Resolve(source_spec) {
-		// Try to guess the source spec
-		guessed_source_spec, guessed_service := self.guessLogSource(rule, category, product, service)
-		if !self.Resolve(guessed_source_spec) {
-			fmt.Printf("**** Log Source '%v' not found!\n", guessed_source_spec)
-			failed, _ := self.errored_rules[guessed_source_spec]
-			failed = append(failed, path)
-			self.errored_rules[guessed_source_spec] = failed
-		} else {
-			fmt.Printf(
-				"** Substitute guess source %v for %v with rule %v\n",
-				guessed_source_spec, source_spec, path)
-			rule.Logsource.Service = guessed_service
-			service = guessed_service
-		}
+
+	// Try to find a suitable log source based on rule inspection itself.
+	reason, guessed_source_spec := self.guessLogSource(rule, category, product, service)
+	if self.Resolve(guessed_source_spec) &&
+		guessed_source_spec != source_spec {
+		DebugPrint("** Substitute guess source %v for %v with rule %v %v\n",
+			guessed_source_spec, source_spec, path, reason)
+		return guessed_source_spec, nil
 	}
 
-	return source_spec
+	// Otherwise see if we have a direct log source defined.
+	if self.Resolve(source_spec) {
+		return source_spec, nil
+
+	}
+	// Try to guess the source spec
+	DebugPrint("**** Log Source '%v' not found!\n", guessed_source_spec)
+	return source_spec, fmt.Errorf(
+		"Missing Source: '%v'", source_spec)
+}
+
+func (self *CompilerContext) addError(reason string, path string) {
+	failed, _ := self.errored_rules[reason]
+	failed = append(failed, path)
+	self.errored_rules[reason] = failed
+
 }

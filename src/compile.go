@@ -26,6 +26,8 @@ var (
 	config          = compile_cmd.Flag("config", "Config file to use").Required().ExistingFile()
 	level_regex_str = compile_cmd.Flag("level_regex", "A regex to select rule Levels").Default(".").String()
 
+	debug = app.Flag("debug", "Print more details").Bool()
+
 	command_handlers []CommandHandler
 )
 
@@ -62,9 +64,6 @@ func (self *CompilerContext) CompileDirs() error {
 					return err
 				}
 
-				self.original_rules.Write(data)
-				self.original_rules.Write([]byte("\n---\n"))
-
 				rule, err := sigma.ParseRule(data)
 				if err != nil {
 					return nil
@@ -95,9 +94,19 @@ func (self *CompilerContext) CompileDirs() error {
 						self.config_obj.BaseReferenceURL + path}
 				}
 
-				logsource := self.normalize_logsource(&new_rule, path)
+				// Record all the rules we added
+				self.total_visited_rules++
+
+				// Skip errored rules.
+				logsource, err := self.normalize_logsource(&new_rule, path)
+				if err != nil {
+					self.addError(err.Error(), path)
+					return nil
+				}
+
 				err = self.walk_fields(&new_rule, path, logsource)
 				if err != nil {
+					self.addError(err.Error(), path)
 					return nil
 				}
 
@@ -105,13 +114,20 @@ func (self *CompilerContext) CompileDirs() error {
 				yamlEncoder.SetIndent(2)
 				err = yamlEncoder.Encode(new_rule)
 				if err != nil {
+					self.addError(err.Error(), path)
 					return nil
 				}
 
-				fmt.Printf("Processing %v\n", path)
+				DebugPrint("Processing %v\n", path)
 				self.rules.Write([]byte("\n---\n"))
+				self.incLogSource(logsource)
 
-				return err
+				// Only write the original_rules we actually added -
+				// rejected rules will not be added to the zip file.
+				self.original_rules.Write(data)
+				self.original_rules.Write([]byte("\n---\n"))
+
+				return nil
 			})
 		if err != nil {
 			return err
@@ -139,7 +155,7 @@ func doCompile() error {
 	}
 
 	defer func() {
-		fmt.Printf("Generated rules with level %v into %v\n",
+		fmt.Printf("\nGenerated rules with level %v into %v\n",
 			*level_regex_str, *output)
 		context.Stats()
 	}()

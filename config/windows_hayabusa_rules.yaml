@@ -187,7 +187,16 @@ FieldMappings:
   param5: "x=>x.EventData.param5"
   ParentCommandLine: "x=>x.EventData.ParentCommandLine"
   ParentImage: "x=>x.EventData.ParentImage"
-  ParentIntegrityLevel: "x=>x.EventData.ParentIntegrityLevel"
+
+  # Field does not exist in Sysmon
+  # ParentIntegrityLevel: "x=>x.EventData.ParentIntegrityLevel"
+  Protocol: "x=>x.EventData.Protocol"
+  Contents: "x=>x.EventData.Contents"
+  Hash: "x=>x.EventData.Hash"
+  Type: "x=>x.EventData.Type"
+  md5: "x=>x.EventData.Hash"
+  SourceIp: "x=>x.EventData.SourceIp"
+
   ParentProcessName: "x=>x.EventData.ParentProcessName"
   ParentUser: "x=>x.EventData.ParentUser"
   PasswordLastSet: "x=>x.EventData.PasswordLastSet"
@@ -282,7 +291,7 @@ FieldMappings:
   param1: "x=>x.EventData.param1"
   param2: "x=>x.EventData.param2"
   service: "x=>x.EventData.Service"
-  sha1: "x=>x.EventData.Hashes_sha1"
+  sha1: "x=>x.EventData.Hashes"
   UserDataProviderName: "x=>x.UserData.Operation_StartedOperational.ProviderName"
   UserDataCode: "x=>x.UserData.Operation_StartedOperational.Code"
   UserDataHostProcess: "x=>x.UserData.Operation_StartedOperational.HostProcess"
@@ -312,6 +321,7 @@ FieldMappings:
   DvrFmwkInstanceId: "x=>x.UserData.UMDFHostDeviceRequest.InstanceId"
   DvrFmwk2003InstanceId: "x=>x.UserData.UMDFHostDeviceArrivalBegin.InstanceId"
   PackageFullName: "x=>x.UserData.PackageFullName"
+  VhdType: "x=>x.EventData.VhdType"
 
 DefaultDetails:
   Query: |
@@ -426,6 +436,9 @@ Sources:
       SELECT * FROM parse_evtx(filename=ROOT + "/Application.evtx")
     channel:
       - Application
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/applocker':
     query: |
@@ -440,36 +453,64 @@ Sources:
       - Microsoft-Windows-AppLocker/EXE and DLL
       - Microsoft-Windows-AppLocker/Packaged app-Deployment
       - Microsoft-Windows-AppLocker/Packaged app-Execution
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/appmodel-runtime':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppModel-Runtime%4Admin.evtx")
     channel:
       - Microsoft-Windows-AppModel-Runtime/Admin
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/appxdeployment-server':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppxPackaging%4Operational.evtx")
     channel:
       - Microsoft-Windows-AppxPackaging/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/appxpackaging-om':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppxPackaging%4Operational.evtx")
     channel:
       - Microsoft-Windows-AppxPackaging/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/bits-client':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Bits-Client%4Operational.evtx")
     channel:
       - Microsoft-Windows-Bits-Client/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/capi2':
-    query: ""
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-CAPI2/Operational")
+    channel:
+      - Microsoft-Windows-CAPI2/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/certificateservicesclient-lifecycle-system':
-    query: ""
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-CertificateServicesClient-Lifecycle-System/Operational")
+    channel:
+      - Microsoft-Windows-CertificateServicesClient-Lifecycle-System/Operational
+    fields:
+      - Channel
+      - EventID
+
 
   '*/windows/codeintegrity-operational':
     query: |
@@ -477,77 +518,117 @@ Sources:
          filename=ROOT + "/Microsoft-Windows-CodeIntegrity%4Operational.evtx")
     channel:
       - Microsoft-Windows-CodeIntegrity/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/diagnosis-scripted':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Diagnosis-Scripted%4Operational.evtx")
     channel:
       - Microsoft-Windows-Diagnosis-Scripted/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/dns-client':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DNS Client Events%4Operational.evtx")
     channel:
       - Microsoft-Windows-DNS Client Events/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/dns-server':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/DNS Server.evtx")
     channel:
       - DNS Server
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/dns-server-analytic':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DNS-Server%4Analytical.evtx")
     channel:
       - Microsoft-Windows-DNS-Server/Analytical
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/driver-framework':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DriverFrameworks-UserMode%4Operational.evtx")
     channel:
       - Microsoft-Windows-DriverFrameworks-UserMode/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/firewall-as':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Firewall With Advanced Security%4Firewall.evtx")
     channel:
       - Microsoft-Windows-Windows Firewall With Advanced Security/Firewall
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/ldap_debug':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-LDAP-Client%4Debug.evtx")
     channel:
       - Microsoft-Windows-LDAP-Client/Debug
+    fields:
+      - Channel
+      - EventID
+
   '*/windows/lsa-server':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-LSA%4Operational.evtx")
     channel:
       - Microsoft-Windows-LSA/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/microsoft-servicebus-client':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-ServiceBus-Client.evtx")
     channel:
       - Microsoft-ServiceBus-Client
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/msexchange-management':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/MSExchange Management.evtx")
     channel:
       - MSExchange Management
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/ntlm':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-NTLM%4Operational.evtx")
     channel:
       - Microsoft-Windows-NTLM/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/openssh':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/OpenSSH%4Operational.evtx")
     channel:
       - OpenSSH/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/powershell':
     query: |
@@ -558,22 +639,41 @@ Sources:
     channel:
       - Microsoft-Windows-PowerShell/Operational
       - PowerShellCore/Operational
+    fields:
+      - Channel
+      - EventID
+      - MessageNumber
+      - MessageTotal
+      - ScriptBlockText
+      - ScriptBlockId
+      - ContextInfo
+      - UserData
+      - Payload
 
   '*/windows/powershell-classic':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
     channel:
       - Windows PowerShell
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/printservice-admin':
-    query: ""
+    query:
+
   '*/windows/printservice-operational':
     query: ""
+
   '*/windows/security':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Security.evtx")
     channel:
       - Security
+    fields:
+      - Channel
+      - EventID
+
   '*/windows/security-mitigations':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Security-Mitigations.evtx")
@@ -585,6 +685,9 @@ Sources:
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Shell-Core%4Operational.evtx")
     channel:
       - Microsoft-Windows-Shell-Core/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/smbclient-connectivity':
     query: ""
@@ -593,48 +696,398 @@ Sources:
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-SmbClient%4Security.evtx")
     channel:
       - Microsoft-Windows-SmbClient/Security
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/sysmon':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
     channel:
       - Microsoft-Windows-Sysmon/Operational
+    fields:
+      # Common
+      - Channel
+      - EventID
+      - Provider_Name
+
+      # Aliases
+      - Imphash
+      - sha1
+      - ImagePath
+      - TargetParentImage
+
+      # The following are generated from sysmon64 /s > schema.xml
+      # LET Events <= parse_xml(file='''sysmon.xml''')
+      # LET Schema = SELECT * FROM foreach(row=Events.manifest.events.event, column="_value")
+      # LET AllFields = SELECT Attrname AS EventType, {
+      #    SELECT Attrname FROM data } AS Fields
+      # FROM Schema
+      # SELECT copy(accessor="data", filename=serialize(format="yaml", item=AllFields),
+      #   dest="C:/schema.txt") FROM scope()
+
+      # SYSMONEVENT_ERROR
+      - UtcTime
+      - ID
+      - Description
+
+      # SYSMONEVENT_CREATE_PROCESS
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - FileVersion
+      - Description
+      - Product
+      - Company
+      - OriginalFileName
+      - CommandLine
+      - CurrentDirectory
+      - User
+      - LogonGuid
+      - LogonId
+      - TerminalSessionId
+      - IntegrityLevel
+      - Hashes
+      - ParentProcessGuid
+      - ParentProcessId
+      - ParentImage
+      - ParentCommandLine
+      - ParentUser
+      # SYSMONEVENT_FILE_TIME
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - TargetFilename
+      - CreationUtcTime
+      - PreviousCreationUtcTime
+      - User
+      # SYSMONEVENT_NETWORK_CONNECT
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - User
+      - Protocol
+      - Initiated
+      - SourceIsIpv6
+      - SourceIp
+      - SourceHostname
+      - SourcePort
+      - SourcePortName
+      - DestinationIsIpv6
+      - DestinationIp
+      - DestinationHostname
+      - DestinationPort
+      - DestinationPortName
+      # SYSMONEVENT_SERVICE_STATE_CHANGE
+      - UtcTime
+      - State
+      - Version
+      - SchemaVersion
+      # SYSMONEVENT_PROCESS_TERMINATE
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - User
+      # SYSMONEVENT_DRIVER_LOAD
+      - RuleName
+      - UtcTime
+      - ImageLoaded
+      - Hashes
+      - Signed
+      - Signature
+      - SignatureStatus
+      # SYSMONEVENT_IMAGE_LOAD
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - ImageLoaded
+      - FileVersion
+      - Description
+      - Product
+      - Company
+      - OriginalFileName
+      - Hashes
+      - Signed
+      - Signature
+      - SignatureStatus
+      - User
+      # SYSMONEVENT_CREATE_REMOTE_THREAD
+      - RuleName
+      - UtcTime
+      - SourceProcessGuid
+      - SourceProcessId
+      - SourceImage
+      - TargetProcessGuid
+      - TargetProcessId
+      - TargetImage
+      - NewThreadId
+      - StartAddress
+      - StartModule
+      - StartFunction
+      - SourceUser
+      - TargetUser
+      # SYSMONEVENT_RAWACCESS_READ
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - Device
+      - User
+      # SYSMONEVENT_ACCESS_PROCESS
+      - RuleName
+      - UtcTime
+      - SourceProcessGUID
+      - SourceProcessId
+      - SourceThreadId
+      - SourceImage
+      - TargetProcessGUID
+      - TargetProcessId
+      - TargetImage
+      - GrantedAccess
+      - CallTrace
+      - SourceUser
+      - TargetUser
+      # SYSMONEVENT_FILE_CREATE
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - TargetFilename
+      - CreationUtcTime
+      - User
+      # SYSMONEVENT_REG_KEY
+      - RuleName
+      - EventType
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - TargetObject
+      - User
+      # SYSMONEVENT_REG_SETVALUE
+      - RuleName
+      - EventType
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - TargetObject
+      - Details
+      - User
+      # SYSMONEVENT_REG_NAME
+      - RuleName
+      - EventType
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - TargetObject
+      - NewName
+      - User
+      # SYSMONEVENT_FILE_CREATE_STREAM_HASH
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - TargetFilename
+      - CreationUtcTime
+      - Hash
+      - Contents
+      - User
+      # SYSMONEVENT_SERVICE_CONFIGURATION_CHANGE
+      - UtcTime
+      - Configuration
+      - ConfigurationFileHash
+      # SYSMONEVENT_CREATE_NAMEDPIPE
+      - RuleName
+      - EventType
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - PipeName
+      - Image
+      - User
+      # SYSMONEVENT_CONNECT_NAMEDPIPE
+      - RuleName
+      - EventType
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - PipeName
+      - Image
+      - User
+      # SYSMONEVENT_WMI_FILTER
+      - RuleName
+      - EventType
+      - UtcTime
+      - Operation
+      - User
+      - EventNamespace
+      - Name
+      - Query
+      # SYSMONEVENT_WMI_CONSUMER
+      - RuleName
+      - EventType
+      - UtcTime
+      - Operation
+      - User
+      - Name
+      - Type
+      - Destination
+      # SYSMONEVENT_WMI_BINDING
+      - RuleName
+      - EventType
+      - UtcTime
+      - Operation
+      - User
+      - Consumer
+      - Filter
+      # SYSMONEVENT_DNS_QUERY
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - QueryName
+      - QueryStatus
+      - QueryResults
+      - Image
+      - User
+      # SYSMONEVENT_FILE_DELETE
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - User
+      - Image
+      - TargetFilename
+      - Hashes
+      - IsExecutable
+      - Archived
+      # SYSMONEVENT_CLIPBOARD
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - Session
+      - ClientInfo
+      - Hashes
+      - Archived
+      - User
+      # SYSMONEVENT_PROCESS_IMAGE_TAMPERING
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - Image
+      - Type
+      - User
+      # SYSMONEVENT_FILE_DELETE_DETECTED
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - User
+      - Image
+      - TargetFilename
+      - Hashes
+      - IsExecutable
+      # SYSMONEVENT_FILE_BLOCK_EXE
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - User
+      - Image
+      - TargetFilename
+      - Hashes
+      # SYSMONEVENT_FILE_BLOCK_SHREDDING
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - User
+      - Image
+      - TargetFilename
+      - Hashes
+      - IsExecutable
+      # SYSMONEVENT_FILE_EXE_DETECTED
+      - RuleName
+      - UtcTime
+      - ProcessGuid
+      - ProcessId
+      - User
+      - Image
+      - TargetFilename
+      - Hashes
 
   '*/windows/system':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/System.evtx")
     channel:
       - System
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/taskscheduler':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-TaskScheduler%4Operational.evtx")
     channel:
       - Microsoft-Windows-TaskScheduler/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/terminalservices-localsessionmanager':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx")
     channel:
       - Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/vhdmp':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-VHDMP%4Operational.evtx")
     channel:
       - Microsoft-Windows-VHDMP/Operational
+    fields:
+      - EventID
+      - VhdType
+      - Channel
 
   '*/windows/windefend':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:
       - Microsoft-Windows-Windows Defender/Operational
+    fields:
+      - Channel
+      - EventID
 
   '*/windows/wmi':
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-WMI-Activity%4Operational.evtx")
     channel:
       - Microsoft-Windows-WMI-Activity/Operational
+    fields:
+      - Channel
+      - EventID
 
   process_creation/windows/*:
     query: |
@@ -643,16 +1096,25 @@ Sources:
          ROOT + "/Security.evtx"
       ])
       WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688
+    fields:
+      - Channel
+      - EventID
 
   ps_classic_provider_start/windows/*:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
       WHERE System.EventID.Value = 600
+    fields:
+      - Channel
+      - EventID
 
   ps_classic_start/windows/*:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
       WHERE System.EventID.Value = 400
+    fields:
+      - Channel
+      - EventID
 
   ps_module/windows/*:
     query: |
@@ -661,6 +1123,9 @@ Sources:
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
       WHERE System.EventID.Value = 4103
+    fields:
+      - Channel
+      - EventID
 
   ps_script/windows/*:
     query: |
@@ -669,6 +1134,9 @@ Sources:
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
       WHERE System.EventID.Value = 4104
+    fields:
+      - Channel
+      - EventID
 
   registry_add/windows/*:
     query: |
@@ -677,6 +1145,9 @@ Sources:
          ROOT + "/Security.evtx"
       ])
       WHERE System.EventID.Value = 12 OR System.EventID.Value = 4657
+    fields:
+      - Channel
+      - EventID
 
   registry_event/windows/*:
     query: |
@@ -685,6 +1156,9 @@ Sources:
          ROOT + "/Security.evtx"
       ])
       WHERE System.EventID.Value IN (12, 13, 14) OR System.EventID.Value = 4657
+    fields:
+      - Channel
+      - EventID
 
   registry_set/windows/*:
     query: |
@@ -693,12 +1167,18 @@ Sources:
          ROOT + "/Security.evtx"
       ])
       WHERE System.EventID.Value = 13 OR System.EventID.Value = 4657
+    fields:
+      - Channel
+      - EventID
 
   antivirus/windows/windefend:
     query: |
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
     channel:
       - Microsoft-Windows-Windows Defender/Operational
+    fields:
+      - Channel
+      - EventID
 
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))

@@ -6,3 +6,4 @@ Queries:
 
 - SELECT * FROM Artifact.Windows.Hayabusa.Rules(
     RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter="Defender Alert")
+  LIMIT 1

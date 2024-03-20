@@ -48,6 +48,7 @@ func NewCompilerContext() *CompilerContext {
 		logsources:                   make(map[string]int),
 		missing_fields_in_logsources: make(map[string]map[string][]string),
 		errored_rules:                make(map[string][]string),
+		level_regex:                  regexp.MustCompile(".*"),
 
 		fields:         make(map[string]int),
 		missing_fields: make(map[string][]string),
@@ -198,6 +199,24 @@ func (self *CompilerContext) updateRuleLogSources(source_spec string, rule *sigm
 	}
 }
 
+func (self *CompilerContext) check_condition(rule *sigma.Rule) error {
+	// If a condition is missing make it up
+	if len(rule.Detection.Conditions) == 0 {
+		fields := []string{}
+		for k := range rule.Detection.Searches {
+			fields = append(fields, k)
+		}
+
+		rule.Detection.Conditions = append(rule.Detection.Conditions,
+			sigma.Condition{
+				Search: sigma.SearchIdentifier{
+					Name: strings.Join(fields, " and "),
+				},
+			})
+	}
+	return nil
+}
+
 func (self *CompilerContext) guessLogSource(
 	rule *sigma.Rule,
 	category, product, service string) (reason string, source string) {
@@ -250,11 +269,46 @@ func (self *CompilerContext) incMissingFieldInLogSource(
 	field_map[field] = path_list
 }
 
+var valid_modifiers = map[string]bool{
+	"all":        true,
+	"any":        true,
+	"re":         true,
+	"contains":   true,
+	"endswith":   true,
+	"startswith": true,
+	"cidr":       true,
+	"gt":         true,
+	"gte":        true,
+	"lt":         true,
+	"lte":        true,
+	"vql":        true,
+}
+
+func (self *CompilerContext) check_modifiers(
+	matcher sigma.FieldMatcher, path string) error {
+	for _, m := range matcher.Modifiers {
+		_, pres := valid_modifiers[m]
+		if !pres {
+			err := fmt.Errorf("Invalid modifier %v", m)
+			self.addError(err.Error(), path)
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (self *CompilerContext) walk_fields(
 	rule *sigma.Rule, path string, logsource string) (err error) {
 	for _, search := range rule.Detection.Searches {
 		for _, event_matcher := range search.EventMatchers {
 			for _, matcher := range event_matcher {
+				// Check if modifiers are valid.
+				err := self.check_modifiers(matcher, path)
+				if err != nil {
+					return err
+				}
+
 				// Check if there is a field mapping
 				_, pres := self.config_obj.FieldMappings[matcher.Field]
 				if !pres {
@@ -323,5 +377,4 @@ func (self *CompilerContext) addError(reason string, path string) {
 	failed, _ := self.errored_rules[reason]
 	failed = append(failed, path)
 	self.errored_rules[reason] = failed
-
 }

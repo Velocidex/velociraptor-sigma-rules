@@ -1,0 +1,12 @@
+Parameters:
+  EID2006: /testcases/fixtures/firewall_eid2006.json
+  Title: A Rule Has Been Deleted From The Windows Firewall Exception List
+
+Queries:
+- LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ EID2006)),]) FROM scope()
+
+# This rule relies on a null value implemented in
+# https://github.com/Velocidex/velociraptor/pull/3356 Disabled until
+# this makes a release.
+#- SELECT * FROM Artifact.Windows.Hayabusa.Rules(
+#    RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=Title)

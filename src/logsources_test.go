@@ -132,7 +132,7 @@ detection:
 			// of valid fields **for each log source**. We can use
 			// this list to flag errors in the rule due to typos or
 			// just invalid rules.
-			description: ".",
+			description: "Checking fields per log source.",
 			config: `
 FieldMappings:
   field_name: "x=>x.field_name"
@@ -165,6 +165,29 @@ detection:
 				assert.Equal(t, missing_fields,
 					`{"*/windows/test_service":{"invalid_field":["/rules/test.yml"]}}`)
 			},
+		},
+		{
+			description: "Invalid field modifiers.",
+			config: `
+FieldMappings:
+  field_name: "x=>x.field_name"
+
+Sources:
+ "*/windows/test_service":
+   query: SELECT * FROM info()
+`,
+			rule: `
+logsource:
+  product: windows
+  service: test_service
+
+detection:
+  search:
+    field_name|somemodifier:
+       - XX
+  condition: search
+`,
+			err: "Invalid modifier somemodifier.",
 		},
 	}
 )

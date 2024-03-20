@@ -1,0 +1,8 @@
+Parameters:
+  EID1116: /testcases/fixtures/defender_eid1116.json
+
+Queries:
+- LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ EID1116)),]) FROM scope()
+
+- SELECT * FROM Artifact.Windows.Hayabusa.Rules(
+    RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter="Defender Alert")

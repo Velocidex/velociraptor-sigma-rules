@@ -64,75 +64,85 @@ func (self *CompilerContext) CompileDirs() error {
 					return err
 				}
 
-				rule, err := sigma.ParseRule(data)
-				if err != nil {
-					return nil
-				}
-
-				if !self.level_regex.MatchString(rule.Level) {
-					return nil
-				}
-
-				additional_fields := make(map[string]interface{})
-				details := rule.AdditionalFields["details"]
-				if details != nil {
-					additional_fields["details"] = details
-				}
-
-				new_rule := sigma.Rule{
-					Title:            rule.Title,
-					Author:           rule.Author,
-					Level:            rule.Level,
-					Status:           rule.Status,
-					Logsource:        rule.Logsource,
-					Detection:        rule.Detection,
-					AdditionalFields: additional_fields,
-				}
-
-				if self.config_obj.BaseReferenceURL != "" {
-					new_rule.References = []string{
-						self.config_obj.BaseReferenceURL + path}
-				}
-
-				// Record all the rules we added
-				self.total_visited_rules++
-
-				// Skip errored rules.
-				logsource, err := self.normalize_logsource(&new_rule, path)
-				if err != nil {
-					self.addError(err.Error(), path)
-					return nil
-				}
-
-				err = self.walk_fields(&new_rule, path, logsource)
-				if err != nil {
-					self.addError(err.Error(), path)
-					return nil
-				}
-
-				yamlEncoder := yaml.NewEncoder(&self.rules)
-				yamlEncoder.SetIndent(2)
-				err = yamlEncoder.Encode(new_rule)
-				if err != nil {
-					self.addError(err.Error(), path)
-					return nil
-				}
-
-				DebugPrint("Processing %v\n", path)
-				self.rules.Write([]byte("\n---\n"))
-				self.incLogSource(logsource)
-
-				// Only write the original_rules we actually added -
-				// rejected rules will not be added to the zip file.
-				self.original_rules.Write(data)
-				self.original_rules.Write([]byte("\n---\n"))
-
-				return nil
+				return self.CompileRule(string(data), path)
 			})
 		if err != nil {
 			return err
 		}
 	}
+	return nil
+}
+
+func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
+	rule, err := sigma.ParseRule([]byte(rule_yaml))
+	if err != nil {
+		return nil
+	}
+
+	if !self.level_regex.MatchString(rule.Level) {
+		return nil
+	}
+
+	additional_fields := make(map[string]interface{})
+	details := rule.AdditionalFields["details"]
+	if details != nil {
+		additional_fields["details"] = details
+	}
+
+	new_rule := sigma.Rule{
+		Title:            rule.Title,
+		Author:           rule.Author,
+		Level:            rule.Level,
+		Status:           rule.Status,
+		Logsource:        rule.Logsource,
+		Detection:        rule.Detection,
+		AdditionalFields: additional_fields,
+	}
+
+	if self.config_obj.BaseReferenceURL != "" {
+		new_rule.References = []string{
+			self.config_obj.BaseReferenceURL + path}
+	}
+
+	// Record all the rules we added
+	self.total_visited_rules++
+
+	// Skip errored rules.
+	logsource, err := self.normalize_logsource(&new_rule, path)
+	if err != nil {
+		self.addError(err.Error(), path)
+		return nil
+	}
+
+	err = self.walk_fields(&new_rule, path, logsource)
+	if err != nil {
+		self.addError(err.Error(), path)
+		return nil
+	}
+
+	err = self.check_condition(&new_rule)
+	if err != nil {
+		self.addError(err.Error(), path)
+		return nil
+	}
+
+	yamlEncoder := yaml.NewEncoder(&self.rules)
+	yamlEncoder.SetIndent(2)
+	err = yamlEncoder.Encode(new_rule)
+	if err != nil {
+		self.addError(err.Error(), path)
+		return nil
+	}
+
+	DebugPrint("Processing %v\n", path)
+	self.rules.Write([]byte("\n---\n"))
+	self.incLogSource(logsource)
+
+	// Only write the original_rules we actually added -
+	// rejected rules will not be added to the zip file.
+	self.original_rules.Write([]byte(rule_yaml))
+	self.original_rules.Write([]byte("\n---\n"))
+
 	return nil
 }
 

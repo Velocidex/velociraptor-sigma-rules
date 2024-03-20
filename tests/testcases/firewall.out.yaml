@@ -1,0 +1,1 @@
+LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ EID2006)),]) FROM scope()[]SELECT * FROM Artifact.Windows.Hayabusa.Rules( RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=Title)[]

@@ -1,0 +1,22 @@
+title: Update log source based on Channel check
+logsource:
+  product: windows
+  service: first_service
+detection:
+  condition: channel_check
+  channel_check:
+    Channel: SomeChannel
+
+---
+title: No condition present in rule
+logsource:
+  product: windows
+  service: first_service
+detection:
+  condition: channel_check and selection
+  channel_check:
+    Channel: SomeChannel
+  selection:
+    SomeField: XXXX
+
+---

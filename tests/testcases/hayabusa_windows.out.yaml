@@ -413,7 +413,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Computer": "IEWIN7",
   "Channel": "Microsoft-Windows-Sysmon/Operational",
   "EID": 1,
-  "Level": "medium",
+  "Level": "low",
   "Title": "Whoami Utility Execution",
   "RecordID": 10154,
   "Details": "Cmdline: whoami ¦ Proc: C:\\Windows\\System32\\whoami.exe ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: cmd ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 1372 ¦ PGUID: 365ABB72-D1AB-5CC8-0000-0010DB1E4400 ¦ ParentPID: ParentProcessId ¦ ParentPGUID: ParentProcessGuid ¦ Description: whoami - displays logged on user information ¦ Product: Microsoft® Windows® Operating System ¦ Company: Microsoft Corporation ¦ Hashes: SHA1=DC058F52AD8ACBD316827B6DCAC2434AB3CC515C,MD5=0EBF71E33EF09CA65D9683AFA999C473,SHA256=599EFD455AEEEFE2044A9B597061F271595033F5D0DF2C99DFDBCA8394BBCEC3,IMPHASH=C5352B949915AB8CD5E1844790D19274",

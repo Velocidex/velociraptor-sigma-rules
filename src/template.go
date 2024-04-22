@@ -22,6 +22,7 @@ func BuildLogSource(config_obj *Config) string {
 }
 
 type ArtifactContent struct {
+	Time                       string
 	Base64CompressedRules      string
 	Base64FieldMapping         string
 	Base64DefaultDetailsLookup string

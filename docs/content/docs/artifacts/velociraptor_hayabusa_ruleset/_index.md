@@ -11,7 +11,7 @@ project](https://github.com/Yamato-Security/hayabusa) and
 [SigmaHQ](https://github.com/SigmaHQ/sigma).
 
 Rules are automatically compiled using the [configuation
-file](https://github.com/Velocidex/velociraptor-sigma-rules/blob/master/config/velociraptor_windows_rules.yaml)
+file](https://github.com/Velocidex/velociraptor-sigma-rules/blob/master/config/windows_hayabusa_rules.yaml)
 into an artifact pack.
 
 To download the latest version of the artifact pack [click

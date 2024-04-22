@@ -6,6 +6,7 @@ import (
 	"compress/gzip"
 	"encoding/base64"
 	"text/template"
+	"time"
 )
 
 func encode(in []byte) string {
@@ -21,6 +22,7 @@ func (self *CompilerContext) GetArtifact() (string, error) {
 	vql := BuildLogSource(self.config_obj)
 
 	params := &ArtifactContent{
+		Time:                       time.Now().UTC().Format(time.RFC3339),
 		Base64CompressedRules:      encode(self.rules.Bytes()),
 		Base64FieldMapping:         encode(MustMarshal(self.config_obj.FieldMappings)),
 		Base64DefaultDetailsLookup: encode(MustMarshal(self.config_obj.DefaultDetails.Lookup)),
@@ -40,7 +42,18 @@ func (self *CompilerContext) GetArtifact() (string, error) {
 
 	vql += string(b.Bytes())
 
-	return self.config_obj.Preamble + indent(vql, 4), nil
+	preamble_template, err := template.New("").Parse(self.config_obj.Preamble)
+	if err != nil {
+		return "", err
+	}
+
+	b = &bytes.Buffer{}
+	err = preamble_template.Execute(b, params)
+	if err != nil {
+		return "", err
+	}
+
+	return string(b.Bytes()) + indent(vql, 4), nil
 }
 
 func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {

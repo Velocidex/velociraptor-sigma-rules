@@ -1,12 +1,21 @@
 Preamble: |
   name: Windows.Hayabusa.Rules
+  description: |
+    This artifact compiles the Hayabusa rulese into a Velociraptor
+    artifact using the internal Velociraptor sigma engine.
+
+    To read more about this artifact see
+    https://sigma.velocidex.com/docs/artifacts/velociraptor_hayabusa_ruleset/
+
   parameters:
     - name: ROOT
       description: The Event Log Directory we use to read all logs
       default: C:/Windows/System32/WinEvt/Logs/
+
     - name: Debug
       type: bool
       description: Enable full debug trace
+
     - name: RuleLevel
       type: choices
       default: Critical

@@ -45,3 +45,7 @@ ChopChopGo
 
 # docs/content/docs/indexes/Velociraptor/_index.md
 triaging
+
+SigmaHQ
+configuation
+syslog

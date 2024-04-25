@@ -7,6 +7,8 @@ Preamble: |
     To read more about this artifact see
     https://sigma.velocidex.com/docs/artifacts/velociraptor_hayabusa_ruleset/
 
+    This artifact was built on {{ .Time }}
+
   parameters:
     - name: ROOT
       description: The Event Log Directory we use to read all logs

@@ -9,6 +9,8 @@ Preamble: |
 
     This artifact was built on {{ .Time }}
 
+  type: CLIENT
+
   parameters:
     - name: ROOT
       description: The Event Log Directory we use to read all logs
@@ -42,6 +44,11 @@ Preamble: |
 
     - name: SigmaRules
       description: If provided we use these rules instead of the built in set.
+
+    - name: NTFS_CACHE_TIME
+      type: int
+      description: How often to flush the NTFS cache. (Default is never).
+      default: "1000000"
 
   sources:
   - query: |
@@ -205,7 +212,17 @@ FieldMappings:
   Contents: "x=>x.EventData.Contents"
   Hash: "x=>x.EventData.Hash"
   Type: "x=>x.EventData.Type"
-  md5: "x=>x.EventData.Hash"
+
+  ## Sysmon hashes are all in the same line
+  md5: "x=>parse_string_with_regex(string=x.EventData.Hash || '', regex='MD5=([^,]+)').g1"
+  sha1: "x=>parse_string_with_regex(string=x.EventData.Hash || '', regex='SHA1=([^,]+)').g1"
+  sha256: "x=>parse_string_with_regex(string=x.EventData.Hash || '', regex='SHA256=([^,]+)').g1"
+
+  ## Sysmon EID 3
+  SourceHostname: "x=>x.EventData.SourceHostname"
+  SourceIsIpv6: "x=>x.EventData.SourceIsIpv6"
+  PreviousCreationUtcTime: "x=>x.EventData.PreviousCreationUtcTime"
+
   SourceIp: "x=>x.EventData.SourceIp"
 
   ParentProcessName: "x=>x.EventData.ParentProcessName"
@@ -333,6 +350,20 @@ FieldMappings:
   DvrFmwk2003InstanceId: "x=>x.UserData.UMDFHostDeviceArrivalBegin.InstanceId"
   PackageFullName: "x=>x.UserData.PackageFullName"
   VhdType: "x=>x.EventData.VhdType"
+
+  processPath: "x=>x.EventData.processPath"
+  RemoteName:  "x=>x.EventData.RemoteName"
+  Address: "x=>x.EventData.Address"
+
+  # Mostly used by "|all" type rules.
+  "": "x=>serialize(item=x.EventData)"
+
+  # Application Error - Not verified
+  AppName: "x=>x.EventData.Data[0]"
+  Caption: "x=>x.EventData.Caption"
+
+  # antivirus/windows/windefend
+  Feature_Name: "x=>x.EventData.`Feature Name`"
 
 DefaultDetails:
   Query: |
@@ -503,6 +534,8 @@ Sources:
     fields:
       - Channel
       - EventID
+      - processPath
+      - RemoteName
 
   '*/windows/capi2':
     query: |
@@ -716,6 +749,7 @@ Sources:
       SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
     channel:
       - Microsoft-Windows-Sysmon/Operational
+
     fields:
       # Common
       - Channel
@@ -725,325 +759,10 @@ Sources:
       # Aliases
       - Imphash
       - sha1
+      - sha256
+      - md5
       - ImagePath
       - TargetParentImage
-
-      # The following are generated from sysmon64 /s > schema.xml
-      # LET Events <= parse_xml(file='''sysmon.xml''')
-      # LET Schema = SELECT * FROM foreach(row=Events.manifest.events.event, column="_value")
-      # LET AllFields = SELECT Attrname AS EventType, {
-      #    SELECT Attrname FROM data } AS Fields
-      # FROM Schema
-      # SELECT copy(accessor="data", filename=serialize(format="yaml", item=AllFields),
-      #   dest="C:/schema.txt") FROM scope()
-
-      # SYSMONEVENT_ERROR
-      - UtcTime
-      - ID
-      - Description
-
-      # SYSMONEVENT_CREATE_PROCESS
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - FileVersion
-      - Description
-      - Product
-      - Company
-      - OriginalFileName
-      - CommandLine
-      - CurrentDirectory
-      - User
-      - LogonGuid
-      - LogonId
-      - TerminalSessionId
-      - IntegrityLevel
-      - Hashes
-      - ParentProcessGuid
-      - ParentProcessId
-      - ParentImage
-      - ParentCommandLine
-      - ParentUser
-      # SYSMONEVENT_FILE_TIME
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - TargetFilename
-      - CreationUtcTime
-      - PreviousCreationUtcTime
-      - User
-      # SYSMONEVENT_NETWORK_CONNECT
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - User
-      - Protocol
-      - Initiated
-      - SourceIsIpv6
-      - SourceIp
-      - SourceHostname
-      - SourcePort
-      - SourcePortName
-      - DestinationIsIpv6
-      - DestinationIp
-      - DestinationHostname
-      - DestinationPort
-      - DestinationPortName
-      # SYSMONEVENT_SERVICE_STATE_CHANGE
-      - UtcTime
-      - State
-      - Version
-      - SchemaVersion
-      # SYSMONEVENT_PROCESS_TERMINATE
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - User
-      # SYSMONEVENT_DRIVER_LOAD
-      - RuleName
-      - UtcTime
-      - ImageLoaded
-      - Hashes
-      - Signed
-      - Signature
-      - SignatureStatus
-      # SYSMONEVENT_IMAGE_LOAD
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - ImageLoaded
-      - FileVersion
-      - Description
-      - Product
-      - Company
-      - OriginalFileName
-      - Hashes
-      - Signed
-      - Signature
-      - SignatureStatus
-      - User
-      # SYSMONEVENT_CREATE_REMOTE_THREAD
-      - RuleName
-      - UtcTime
-      - SourceProcessGuid
-      - SourceProcessId
-      - SourceImage
-      - TargetProcessGuid
-      - TargetProcessId
-      - TargetImage
-      - NewThreadId
-      - StartAddress
-      - StartModule
-      - StartFunction
-      - SourceUser
-      - TargetUser
-      # SYSMONEVENT_RAWACCESS_READ
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - Device
-      - User
-      # SYSMONEVENT_ACCESS_PROCESS
-      - RuleName
-      - UtcTime
-      - SourceProcessGUID
-      - SourceProcessId
-      - SourceThreadId
-      - SourceImage
-      - TargetProcessGUID
-      - TargetProcessId
-      - TargetImage
-      - GrantedAccess
-      - CallTrace
-      - SourceUser
-      - TargetUser
-      # SYSMONEVENT_FILE_CREATE
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - TargetFilename
-      - CreationUtcTime
-      - User
-      # SYSMONEVENT_REG_KEY
-      - RuleName
-      - EventType
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - TargetObject
-      - User
-      # SYSMONEVENT_REG_SETVALUE
-      - RuleName
-      - EventType
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - TargetObject
-      - Details
-      - User
-      # SYSMONEVENT_REG_NAME
-      - RuleName
-      - EventType
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - TargetObject
-      - NewName
-      - User
-      # SYSMONEVENT_FILE_CREATE_STREAM_HASH
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - TargetFilename
-      - CreationUtcTime
-      - Hash
-      - Contents
-      - User
-      # SYSMONEVENT_SERVICE_CONFIGURATION_CHANGE
-      - UtcTime
-      - Configuration
-      - ConfigurationFileHash
-      # SYSMONEVENT_CREATE_NAMEDPIPE
-      - RuleName
-      - EventType
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - PipeName
-      - Image
-      - User
-      # SYSMONEVENT_CONNECT_NAMEDPIPE
-      - RuleName
-      - EventType
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - PipeName
-      - Image
-      - User
-      # SYSMONEVENT_WMI_FILTER
-      - RuleName
-      - EventType
-      - UtcTime
-      - Operation
-      - User
-      - EventNamespace
-      - Name
-      - Query
-      # SYSMONEVENT_WMI_CONSUMER
-      - RuleName
-      - EventType
-      - UtcTime
-      - Operation
-      - User
-      - Name
-      - Type
-      - Destination
-      # SYSMONEVENT_WMI_BINDING
-      - RuleName
-      - EventType
-      - UtcTime
-      - Operation
-      - User
-      - Consumer
-      - Filter
-      # SYSMONEVENT_DNS_QUERY
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - QueryName
-      - QueryStatus
-      - QueryResults
-      - Image
-      - User
-      # SYSMONEVENT_FILE_DELETE
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - User
-      - Image
-      - TargetFilename
-      - Hashes
-      - IsExecutable
-      - Archived
-      # SYSMONEVENT_CLIPBOARD
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - Session
-      - ClientInfo
-      - Hashes
-      - Archived
-      - User
-      # SYSMONEVENT_PROCESS_IMAGE_TAMPERING
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - Image
-      - Type
-      - User
-      # SYSMONEVENT_FILE_DELETE_DETECTED
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - User
-      - Image
-      - TargetFilename
-      - Hashes
-      - IsExecutable
-      # SYSMONEVENT_FILE_BLOCK_EXE
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - User
-      - Image
-      - TargetFilename
-      - Hashes
-      # SYSMONEVENT_FILE_BLOCK_SHREDDING
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - User
-      - Image
-      - TargetFilename
-      - Hashes
-      - IsExecutable
-      # SYSMONEVENT_FILE_EXE_DETECTED
-      - RuleName
-      - UtcTime
-      - ProcessGuid
-      - ProcessId
-      - User
-      - Image
-      - TargetFilename
-      - Hashes
 
   '*/windows/system':
     query: |
@@ -1053,6 +772,9 @@ Sources:
     fields:
       - Channel
       - EventID
+
+  # Application Popup
+      - Caption
 
   '*/windows/taskscheduler':
     query: |
@@ -1071,6 +793,7 @@ Sources:
     fields:
       - Channel
       - EventID
+      - Address
 
   '*/windows/vhdmp':
     query: |
@@ -1090,6 +813,8 @@ Sources:
     fields:
       - Channel
       - EventID
+      - SeverityID
+      - ThreatName
 
   '*/windows/wmi':
     query: |
@@ -1224,9 +949,43 @@ QueryTemplate: |
       FROM Result
     })
 
+# Many rules are broken and have bad field mappings. The following
+# list suppresses these warnings (but the rules are still rejected)
+BadFieldMappings:
+- SourceCommandLine
+- ParentOfParentImage
+
+# hayabusa/sigma/sysmon/threat-hunting/create_remote_thread/create_remote_thread_win_powershell_generic.yml
+- SourceParentImage
+- TargetParentProcessId
+- OperationType
+- CountOfCredentialsReturned
+
+# Unsupported sysmon extras
+- FileMagicBytes
+- ParentIntegrityLevel
+- GrandParentImage
+
+# hayabusa/sigma/builtin/emerging-threats/2023/Exploits/CVE-2023-23397/win_smbclient_connectivity_exploit_cve_2023_23397_outlook_remote_file.yml
+- ServerAddress
+
+# hayabusa/sigma/builtin/security/win_security_rdp_reverse_tunnel.yml
+- FilterOrigin
+
+
+# Many rules are broken and have bad log source section. The following
+# list suppresses these warnings (but the rules are still rejected)
+BadSources:
+- "*/windows/*"
+
+# The following are nonstandard and unsupported modifiers
+- endswithfield
+- equalsfield
 
 BaseReferenceURL:
   https://github.com/Yamato-Security/hayabusa-rules/tree/main/
+
+EventResolver: rules/data/EventLog.jsonl
 
 RuleDirectories:
   - hayabusa/hayabusa/builtin/

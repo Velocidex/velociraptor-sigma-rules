@@ -7,7 +7,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Level": "low",
   "Title": "Possible Timestomping",
   "RecordID": 10147,
-  "Details": "Path: C:\\Users\\IEUser\\AppData\\Local\\Temp\\302a23.msi ¦ Proc: C:\\Windows\\System32\\msiexec.exe ¦ User: null ¦ CreateTime: CreationUtcTime ¦ PrevTime: PreviousCreationUtcTime ¦ PID: PID ¦ PGUID: 365ABB72-D0DA-5CC8-0000-00109B5A3C00",
+  "Details": "Path: C:\\Users\\IEUser\\AppData\\Local\\Temp\\302a23.msi ¦ Proc: C:\\Windows\\System32\\msiexec.exe ¦ User: null ¦ CreateTime: 2019-04-30 22:43:38.892 ¦ PrevTime: 2019-04-30 22:48:58.901 ¦ PID: PID ¦ PGUID: 365ABB72-D0DA-5CC8-0000-00109B5A3C00",
   "_Event": {
    "System": {
     "Provider": {
@@ -59,7 +59,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Level": "low",
   "Title": "Possible Timestomping",
   "RecordID": 10149,
-  "Details": "Path: C:\\Windows\\Installer\\304d1c.msi ¦ Proc: C:\\Windows\\system32\\msiexec.exe ¦ User: null ¦ CreateTime: CreationUtcTime ¦ PrevTime: PreviousCreationUtcTime ¦ PID: PID ¦ PGUID: 365ABB72-D0DA-5CC8-0000-0010216F3C00",
+  "Details": "Path: C:\\Windows\\Installer\\304d1c.msi ¦ Proc: C:\\Windows\\system32\\msiexec.exe ¦ User: null ¦ CreateTime: 2019-04-30 22:43:38.892 ¦ PrevTime: 2019-04-30 22:49:07.854 ¦ PID: PID ¦ PGUID: 365ABB72-D0DA-5CC8-0000-0010216F3C00",
   "_Event": {
    "System": {
     "Provider": {
@@ -163,7 +163,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Level": "high",
   "Title": "Proc Exec (Non-Exe Filetype)",
   "RecordID": 10151,
-  "Details": "Cmdline: \"C:\\Windows\\Installer\\MSI4FFD.tmp\" ¦ Proc: C:\\Windows\\Installer\\MSI4FFD.tmp ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: C:\\Windows\\system32\\msiexec.exe /V ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 3680 ¦ PGUID: 365ABB72-D0E4-5CC8-0000-00103CB73E00 ¦ ParentPID: ParentProcessId ¦ ParentPGUID: ParentProcessGuid ¦ Description: ApacheBench command line utility ¦ Product: Apache HTTP Server ¦ Company: Apache Software Foundation ¦ Hashes: SHA1=06B1640F88EDC6A7CE3303CB14A505A86B061616,MD5=E40CF1CC132F25719F86F0FC5870910D,SHA256=A89385CCD4BE489CD069C65DA10A0B952CB3DE9090EF4C9F02E1368392CD66C5,IMPHASH=481F47BBB2C9C21E108D65F52B04C448",
+  "Details": "Cmdline: \"C:\\Windows\\Installer\\MSI4FFD.tmp\" ¦ Proc: C:\\Windows\\Installer\\MSI4FFD.tmp ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: C:\\Windows\\system32\\msiexec.exe /V ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 3680 ¦ PGUID: 365ABB72-D0E4-5CC8-0000-00103CB73E00 ¦ ParentPID: 2080 ¦ ParentPGUID: ParentProcessGuid ¦ Description: ApacheBench command line utility ¦ Product: Apache HTTP Server ¦ Company: Apache Software Foundation ¦ Hashes: SHA1=06B1640F88EDC6A7CE3303CB14A505A86B061616,MD5=E40CF1CC132F25719F86F0FC5870910D,SHA256=A89385CCD4BE489CD069C65DA10A0B952CB3DE9090EF4C9F02E1368392CD66C5,IMPHASH=481F47BBB2C9C21E108D65F52B04C448",
   "_Event": {
    "System": {
     "Provider": {
@@ -286,7 +286,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Level": "medium",
   "Title": "Always Install Elevated MSI Spawned Cmd And Powershell",
   "RecordID": 10153,
-  "Details": "Cmdline: cmd ¦ Proc: C:\\Windows\\System32\\cmd.exe ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: \"C:\\Windows\\Installer\\MSI4FFD.tmp\" ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 2892 ¦ PGUID: 365ABB72-D0E5-5CC8-0000-0010DADF3E00 ¦ ParentPID: ParentProcessId ¦ ParentPGUID: ParentProcessGuid ¦ Description: Windows Command Processor ¦ Product: Microsoft® Windows® Operating System ¦ Company: Microsoft Corporation ¦ Hashes: SHA1=EE8CBF12D87C4D388F09B4F69BED2E91682920B5,MD5=AD7B9C14083B52BC532FBA5948342B98,SHA256=17F746D82695FA9B35493B41859D39D786D32B23A9D2E00F4011DEC7A02402AE,IMPHASH=CEEFB55F764020CC5C5F8F23349AB163",
+  "Details": "Cmdline: cmd ¦ Proc: C:\\Windows\\System32\\cmd.exe ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: \"C:\\Windows\\Installer\\MSI4FFD.tmp\" ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 2892 ¦ PGUID: 365ABB72-D0E5-5CC8-0000-0010DADF3E00 ¦ ParentPID: 3680 ¦ ParentPGUID: ParentProcessGuid ¦ Description: Windows Command Processor ¦ Product: Microsoft® Windows® Operating System ¦ Company: Microsoft Corporation ¦ Hashes: SHA1=EE8CBF12D87C4D388F09B4F69BED2E91682920B5,MD5=AD7B9C14083B52BC532FBA5948342B98,SHA256=17F746D82695FA9B35493B41859D39D786D32B23A9D2E00F4011DEC7A02402AE,IMPHASH=CEEFB55F764020CC5C5F8F23349AB163",
   "_Event": {
    "System": {
     "Provider": {
@@ -351,7 +351,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Level": "low",
   "Title": "Local Accounts Discovery",
   "RecordID": 10154,
-  "Details": "Cmdline: whoami ¦ Proc: C:\\Windows\\System32\\whoami.exe ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: cmd ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 1372 ¦ PGUID: 365ABB72-D1AB-5CC8-0000-0010DB1E4400 ¦ ParentPID: ParentProcessId ¦ ParentPGUID: ParentProcessGuid ¦ Description: whoami - displays logged on user information ¦ Product: Microsoft® Windows® Operating System ¦ Company: Microsoft Corporation ¦ Hashes: SHA1=DC058F52AD8ACBD316827B6DCAC2434AB3CC515C,MD5=0EBF71E33EF09CA65D9683AFA999C473,SHA256=599EFD455AEEEFE2044A9B597061F271595033F5D0DF2C99DFDBCA8394BBCEC3,IMPHASH=C5352B949915AB8CD5E1844790D19274",
+  "Details": "Cmdline: whoami ¦ Proc: C:\\Windows\\System32\\whoami.exe ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: cmd ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 1372 ¦ PGUID: 365ABB72-D1AB-5CC8-0000-0010DB1E4400 ¦ ParentPID: 2892 ¦ ParentPGUID: ParentProcessGuid ¦ Description: whoami - displays logged on user information ¦ Product: Microsoft® Windows® Operating System ¦ Company: Microsoft Corporation ¦ Hashes: SHA1=DC058F52AD8ACBD316827B6DCAC2434AB3CC515C,MD5=0EBF71E33EF09CA65D9683AFA999C473,SHA256=599EFD455AEEEFE2044A9B597061F271595033F5D0DF2C99DFDBCA8394BBCEC3,IMPHASH=C5352B949915AB8CD5E1844790D19274",
   "_Event": {
    "System": {
     "Provider": {
@@ -416,7 +416,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Level": "low",
   "Title": "Whoami Utility Execution",
   "RecordID": 10154,
-  "Details": "Cmdline: whoami ¦ Proc: C:\\Windows\\System32\\whoami.exe ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: cmd ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 1372 ¦ PGUID: 365ABB72-D1AB-5CC8-0000-0010DB1E4400 ¦ ParentPID: ParentProcessId ¦ ParentPGUID: ParentProcessGuid ¦ Description: whoami - displays logged on user information ¦ Product: Microsoft® Windows® Operating System ¦ Company: Microsoft Corporation ¦ Hashes: SHA1=DC058F52AD8ACBD316827B6DCAC2434AB3CC515C,MD5=0EBF71E33EF09CA65D9683AFA999C473,SHA256=599EFD455AEEEFE2044A9B597061F271595033F5D0DF2C99DFDBCA8394BBCEC3,IMPHASH=C5352B949915AB8CD5E1844790D19274",
+  "Details": "Cmdline: whoami ¦ Proc: C:\\Windows\\System32\\whoami.exe ¦ User: IEWIN7\\IEUser ¦ ParentCmdline: cmd ¦ LID: 65508 ¦ LGUID: LogonGuid ¦ PID: 1372 ¦ PGUID: 365ABB72-D1AB-5CC8-0000-0010DB1E4400 ¦ ParentPID: 2892 ¦ ParentPGUID: ParentProcessGuid ¦ Description: whoami - displays logged on user information ¦ Product: Microsoft® Windows® Operating System ¦ Company: Microsoft Corporation ¦ Hashes: SHA1=DC058F52AD8ACBD316827B6DCAC2434AB3CC515C,MD5=0EBF71E33EF09CA65D9683AFA999C473,SHA256=599EFD455AEEEFE2044A9B597061F271595033F5D0DF2C99DFDBCA8394BBCEC3,IMPHASH=C5352B949915AB8CD5E1844790D19274",
   "_Event": {
    "System": {
     "Provider": {

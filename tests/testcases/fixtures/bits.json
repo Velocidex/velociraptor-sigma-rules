@@ -1,0 +1,22 @@
+{
+    "Timestamp": "2024-03-31 08:00:54.876 +09:00",
+    "RuleTitle": "BITS Transfer Job With Uncommon Or Suspicious Remote TLD",
+    "Level": "med",
+    "Computer": "mouse",
+    "Channel": "BitsCli",
+    "EventID": 16403,
+    "RecordID": 7602,
+    "Details": {
+    },
+    "ExtraFieldInfo": {
+        "ClientProcessStartKey": 20547673299883310,
+        "LocalName": "C:\\Windows\\TEMP\\v64_16.0.17328.20184CheckReachableDE4BF1F9-5DB1-43E9-B2D7-57B8C82E0BA4",
+        "RemoteName": "http://f.c2r.ts.cdn.office.net/pr/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/Office/Data/v64_16.0.17328.20184.cab",
+        "User": "NT AUTHORITY\\SYSTEM",
+        "fileCount": 1,
+        "jobId": "58DD3DA8-D6AF-4B7F-85BF-42968B4466CF",
+        "jobOwner": "NT AUTHORITY\\SYSTEM",
+        "jobTitle": "Microsoft Office Click-to-Run",
+        "processId": 11848
+    }
+}

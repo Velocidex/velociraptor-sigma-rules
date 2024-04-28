@@ -31,17 +31,18 @@ required_permissions:
 - SERVER_ADMIN
 
 parameters:
-  - name: PackageName
-    type: choices
-    default: Velociraptor Hayabusa Ruleset
+  - name: PackageNames
+    type: multichoice
+    default: '["Velociraptor Hayabusa Ruleset"]'
     choices:
       - Velociraptor Hayabusa Ruleset
       - Velociraptor Hayabusa Live Detection
       - Velociraptor ChopChopGo Ruleset (Linux)
+      - Velociraptor Curated Windows Ruleset
 
   - name: Prefix
-    description: Add artifacts with this prefix
-    default: Sigma.
+    description: Add this prefix to imported artifacts
+    validating_regex: '^[a-zA-Z0-9_.]*$'
 
 sources:
   - query: |
@@ -50,7 +51,9 @@ sources:
         `Velociraptor Hayabusa Ruleset`="https://sigma.velocidex.com/Velociraptor-Hayabusa-Rules.zip",
         `Velociraptor Hayabusa Live Detection`="https://sigma.velocidex.com/Velociraptor-Hayabusa-Monitoring.zip")
 
-      SELECT * FROM Artifact.Server.Import.ArtifactExchange(
-        Prefix=Prefix,
-        ExchangeURL=get(item= URLlookup, member= PackageName))
+      SELECT * FROM foreach(row=PackageNames,
+                            query={SELECT * FROM
+                                Artifact.Server.Import.ArtifactExchange(
+                                Prefix=Prefix,
+                                ExchangeURL=get(item= URLlookup, member= _value))})
 ```

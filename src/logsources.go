@@ -9,8 +9,6 @@ import (
 	"sort"
 	"strings"
 
-	"golang.org/x/exp/slices"
-
 	"github.com/Velocidex/yaml/v2"
 	"github.com/bradleyjkemp/sigma-go"
 )
@@ -41,6 +39,8 @@ type CompilerContext struct {
 	vql bytes.Buffer
 
 	original_rules *bytes.Buffer
+
+	event_resolver *EventResolver
 }
 
 func NewCompilerContext() *CompilerContext {
@@ -54,6 +54,7 @@ func NewCompilerContext() *CompilerContext {
 		missing_fields: make(map[string][]string),
 		invalid_fields: make(map[string][]string),
 		original_rules: &bytes.Buffer{},
+		event_resolver: &EventResolver{},
 	}
 }
 
@@ -80,6 +81,15 @@ func (self *CompilerContext) LoadConfigFromString(data string) error {
 	}
 	self.config_obj = config_obj
 
+	if config_obj.EventResolver != "" {
+		err = self.event_resolver.Load(config_obj.EventResolver)
+		if err != nil {
+			return err
+		}
+	}
+
+	self.event_resolver.config_obj = config_obj
+
 	return nil
 }
 
@@ -93,6 +103,21 @@ func (self *CompilerContext) incLogSource(source_spec string) {
 	count++
 
 	self.logsources[source_spec] = count
+}
+
+func (self *CompilerContext) shouldSuppressError(err_msg string) bool {
+	for _, m := range self.config_obj.BadFieldMappings {
+		if strings.Contains(err_msg, m) {
+			return true
+		}
+	}
+
+	for _, m := range self.config_obj.BadSources {
+		if strings.Contains(err_msg, m) {
+			return true
+		}
+	}
+	return false
 }
 
 func (self *CompilerContext) Stats() {
@@ -115,6 +140,9 @@ func (self *CompilerContext) Stats() {
 	if len(self.errored_rules) > 0 {
 		fmt.Printf("\nErrored Rules which were rejected:\n")
 		for k, v := range self.errored_rules {
+			if self.shouldSuppressError(k) {
+				continue
+			}
 			fmt.Printf("  %v:\n", k)
 			for _, i := range v {
 				fmt.Printf("     %v\n", i)
@@ -270,18 +298,20 @@ func (self *CompilerContext) incMissingFieldInLogSource(
 }
 
 var valid_modifiers = map[string]bool{
-	"all":        true,
-	"any":        true,
-	"re":         true,
-	"contains":   true,
-	"endswith":   true,
-	"startswith": true,
-	"cidr":       true,
-	"gt":         true,
-	"gte":        true,
-	"lt":         true,
-	"lte":        true,
-	"vql":        true,
+	"all":          true,
+	"any":          true,
+	"re":           true,
+	"contains":     true,
+	"endswith":     true,
+	"startswith":   true,
+	"cidr":         true,
+	"gt":           true,
+	"gte":          true,
+	"lt":           true,
+	"lte":          true,
+	"vql":          true,
+	"base64":       true,
+	"base64offset": true,
 }
 
 func (self *CompilerContext) check_modifiers(
@@ -310,8 +340,7 @@ func (self *CompilerContext) walk_fields(
 				}
 
 				// Check if there is a field mapping
-				_, pres := self.config_obj.FieldMappings[matcher.Field]
-				if !pres {
+				if !self.event_resolver.CheckFieldMapping(matcher.Field) {
 					self.incMissingFieldMap(matcher.Field, path)
 					return fmt.Errorf(
 						"Missing field mapping '%v' in %v", matcher.Field, logsource)
@@ -321,8 +350,8 @@ func (self *CompilerContext) walk_fields(
 				// rule - this is just a warning that the rule is
 				// using a field on this log source which is not known
 				// to belong to this log source.
-				pres = slices.Contains(
-					self.config_obj.Sources[logsource].Fields, matcher.Field)
+				pres := self.event_resolver.CheckFieldOnLogSource(
+					matcher.Field, logsource)
 				if !pres {
 					self.incMissingFieldInLogSource(matcher.Field,
 						logsource, path)

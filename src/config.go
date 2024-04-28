@@ -32,4 +32,12 @@ type Config struct {
 	// If this is set then we generate a reference URL for each rule.
 	BaseReferenceURL string   `json:"BaseReferenceURL"`
 	RuleDirectories  []string `json:"RuleDirectories"`
+
+	// Many rules are broken and have bad field mappings or log
+	// sources. The following list suppresses these warnings (but the
+	// rules are still rejected)
+	BadFieldMappings []string `json:"BadFieldMappings"`
+	BadSources       []string `json:"BadSources"`
+
+	EventResolver string `json:"EventResolver"`
 }

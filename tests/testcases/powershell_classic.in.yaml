@@ -1,0 +1,11 @@
+Parameters:
+  fixture: /testcases/fixtures/powershell_classic.json
+
+Queries:
+- LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ fixture)),]) FROM scope()
+
+# Check for Details field working correctly - the log source should
+# extract the HostApplication field.
+- SELECT * FROM Artifact.Windows.Hayabusa.Rules(
+    RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter="PwSh Engine Started")
+  LIMIT 1

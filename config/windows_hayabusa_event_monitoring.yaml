@@ -704,7 +704,12 @@ Sources:
 
   '*/windows/powershell-classic':
     query: |
-      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Windows PowerShell.evtx")
+      SELECT *, EventData + dict(
+         Data=EventData.Data[2],
+         HostApplication=parse_string_with_regex(
+           regex="HostApplication=([^\\r\\n]+)",
+           string=EventData.Data[2]).g1) AS EventData
+      FROM watch_evtx(accessor='file', filename=ROOT + "/Windows PowerShell.evtx")
     channel:
       - Windows PowerShell
     fields:

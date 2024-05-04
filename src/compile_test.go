@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/sebdah/goldie"
+	"github.com/sebdah/goldie/v2"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -90,5 +90,11 @@ func TestCompilation(t *testing.T) {
 		golden += string(context.rules.Bytes())
 	}
 
-	goldie.Assert(t, "TestCompilation", []byte(golden))
+	g := goldie.New(
+		t,
+		goldie.WithFixtureDir("fixtures"),
+		goldie.WithDiffEngine(goldie.ClassicDiff),
+	)
+
+	g.Assert(t, "TestCompilation", []byte(golden))
 }

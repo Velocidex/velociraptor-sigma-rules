@@ -1,0 +1,132 @@
+{
+ "Rejects": [
+  {
+   "Path": "ChopChopGo/rules/linux/auditd/lnx_auditd_binary_padding.yml",
+   "Error": "Missing field mapping '' in */linux/auditd"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/auditd/lnx_auditd_disable_system_firewall.yml",
+   "Error": "Missing field mapping 'unit' in */linux/auditd"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/auditd/lnx_auditd_find_cred_in_files.yml",
+   "Error": "Missing field mapping '' in */linux/auditd"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/auditd/lnx_auditd_network_service_scanning.yml",
+   "Error": "Missing field mapping 'key' in */linux/auditd"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/auditd/lnx_auditd_omigod_scx_runasprovider_executeshellcommand.yml",
+   "Error": "Missing field mapping 'uid' in */linux/auditd"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/auditd/lnx_auditd_susp_c2_commands.yml",
+   "Error": "Missing field mapping 'key' in */linux/auditd"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/auditd/lnx_auditd_web_rce.yml",
+   "Error": "Missing field mapping 'key' in */linux/auditd"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/builtin/auth/lnx_auth_pwnkit_local_privilege_escalation.yml",
+   "Error": "Missing field mapping '' in */linux/auth"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/builtin/clamav/lnx_clamav_relevant_message.yml",
+   "Error": "Missing Source: '*/linux/clamav'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/builtin/guacamole/lnx_guacamole_susp_guacamole.yml",
+   "Error": "Missing Source: '*/linux/guacamole'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/builtin/lnx_nimbuspwn_privilege_escalation_exploit.yml",
+   "Error": "Missing field mapping '' in */linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/builtin/sudo/lnx_sudo_cve_2019_14287_user.yml",
+   "Error": "Missing field mapping 'USER' in */linux/sudo"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/builtin/vsftpd/lnx_vsftpd_susp_error_messages.yml",
+   "Error": "Missing Source: '*/linux/vsftpd'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/file_event/file_event_lnx_doas_conf_creation.yml",
+   "Error": "Missing Source: 'file_event/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/file_event/file_event_lnx_persistence_cron_files.yml",
+   "Error": "Missing Source: 'file_event/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/file_event/file_event_lnx_persistence_sudoers_files.yml",
+   "Error": "Missing Source: 'file_event/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/file_event/file_event_lnx_susp_shell_script_under_profile_directory.yml",
+   "Error": "Missing Source: 'file_event/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/file_event/file_event_lnx_triple_cross_rootkit_lock_file.yml",
+   "Error": "Missing Source: 'file_event/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/file_event/file_event_lnx_triple_cross_rootkit_persistence.yml",
+   "Error": "Missing Source: 'file_event/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/file_event/file_event_lnx_wget_download_file_in_tmp_dir.yml",
+   "Error": "Missing Source: 'file_event/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/network_connection/net_connection_lnx_back_connect_shell_dev.yml",
+   "Error": "Missing Source: 'network_connection/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/network_connection/net_connection_lnx_crypto_mining_indicators.yml",
+   "Error": "Missing Source: 'network_connection/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/network_connection/net_connection_lnx_ngrok_tunnel.yml",
+   "Error": "Missing Source: 'network_connection/linux/*'"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_cve_2022_26134_atlassian_confluence.yml",
+   "Error": "Missing field mapping 'ParentImage' in process_creation/linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_cve_2022_33891_spark_shell_command_injection.yml",
+   "Error": "Missing field mapping 'ParentImage' in process_creation/linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_omigod_scx_runasprovider_executescript.yml",
+   "Error": "Missing field mapping 'User' in process_creation/linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_omigod_scx_runasprovider_executeshellcommand.yml",
+   "Error": "Missing field mapping 'User' in process_creation/linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_susp_interactive_bash.yml",
+   "Error": "Missing field mapping 'ParentCommandLine' in process_creation/linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_susp_java_children.yml",
+   "Error": "Missing field mapping 'ParentImage' in process_creation/linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_susp_shell_child_process_from_parent_tmp_folder.yml",
+   "Error": "Missing field mapping 'ParentImage' in process_creation/linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_system_network_connections_discovery.yml",
+   "Error": "Missing field mapping 'ParentCommandLine' in process_creation/linux/*"
+  },
+  {
+   "Path": "ChopChopGo/rules/linux/process_creation/proc_creation_lnx_webshell_detection.yml",
+   "Error": "Missing field mapping 'ParentImage' in process_creation/linux/*"
+  }
+ ]
+}

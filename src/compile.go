@@ -180,7 +180,7 @@ func doCompile() (err error) {
 
 	if *ignore_previous_rejects && *rejects_output != "" {
 		err := context.LoadRejectSupporessions(*rejects_output)
-		if err != nil {
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
 			return fmt.Errorf("Reading Rejects: %w", err)
 		}
 	}

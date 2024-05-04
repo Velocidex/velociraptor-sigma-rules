@@ -392,7 +392,9 @@ func (self *CompilerContext) check_modifiers(
 
 func (self *CompilerContext) walk_fields(
 	rule *sigma.Rule, path string, logsource string) (err error) {
-	for _, search := range rule.Detection.Searches {
+
+	// This needs to be stable so the errors are consistent
+	for _, search := range ValuesInOrder(rule.Detection.Searches) {
 		for _, event_matcher := range search.EventMatchers {
 			for _, matcher := range event_matcher {
 				// Check if modifiers are valid.

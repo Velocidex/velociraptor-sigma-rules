@@ -60,7 +60,7 @@ detection:
           - 'ScreenConnect'
           - 'SplashTop'
           - 'OpenSSH'
-    condition: any
+      condition: any
 falsepositives:
     - Legitimate usage of the tool
 level: informational

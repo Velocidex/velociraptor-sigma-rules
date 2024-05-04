@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strings"
 )
 
@@ -28,4 +29,19 @@ func MustMarshalIndent(in interface{}) []byte {
 func Dump(in interface{}) {
 	data, _ := json.MarshalIndent(in, "", " ")
 	fmt.Printf("%v", string(data))
+}
+
+func ValuesInOrder[V interface{}](in map[string]V) (res []V) {
+	keys := []string{}
+	for k := range in {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+	for _, k := range keys {
+		v, _ := in[k]
+		res = append(res, v)
+	}
+
+	return res
 }

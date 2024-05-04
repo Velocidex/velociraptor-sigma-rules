@@ -184,6 +184,7 @@ FieldMappings:
   LogonID: "x=>x.EventData.LogonID"
   LogonProcessName: "x=>x.EventData.LogonProcessName"
   LogonType: "x=>x.EventData.LogonType"
+  Logon_Type: "x=>x.EventData.LogonType"
   Logon_Account: "x=>x.EventData.Logon_Account"
   MachineName: "x=>x.EventData.MachineName"
   MemberName: "x=>x.EventData.MemberName"

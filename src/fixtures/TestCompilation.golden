@@ -6,6 +6,7 @@ detection:
   condition: channel_check
   channel_check:
     Channel: SomeChannel
+level: default
 
 ---
 title: No condition present in rule
@@ -18,5 +19,6 @@ detection:
     Channel: SomeChannel
   selection:
     SomeField: XXXX
+level: default
 
 ---

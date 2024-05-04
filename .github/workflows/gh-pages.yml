@@ -30,9 +30,9 @@ jobs:
       - name: Prepare
         run: |
           make linux
-          ./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip ; cd .
-          ./velosigmac compile --config ./config/windows_hayabusa_event_monitoring.yaml --output ./output/Velociraptor-Hayabusa-Monitoring.zip ; cd .
-          ./velosigmac compile --config ./config/ChopChopGo_rules.yaml --output ./output/Velociraptor-ChopChopGo-Rules.zip ; cd .
+          ./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --rejects ./rejected/windows_hayabusa_rejects.json --ignore_previous_rejects
+          ./velosigmac compile --config ./config/windows_hayabusa_event_monitoring.yaml --output ./output/Velociraptor-Hayabusa-Monitoring.zip --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects
+          ./velosigmac compile --config ./config/ChopChopGo_rules.yaml --output ./output/Velociraptor-ChopChopGo-Rules.zip --rejects rejected/ChopChopGo_rules_rejects.json --ignore_previous_rejects
           cp output/*.zip docs/static/
 
       - name: Build

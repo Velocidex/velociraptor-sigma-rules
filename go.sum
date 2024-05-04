@@ -1,3 +1,5 @@
+github.com/Velocidex/sigma-go v0.0.0-20240505024531-e8ce54ec3aed h1:zqhuWeg6oqO3jNabjKJaGO7DreiGhbVfeyqleICMAZk=
+github.com/Velocidex/sigma-go v0.0.0-20240505024531-e8ce54ec3aed/go.mod h1:fHCN8y8cC1l5CYY7oOhPIznHmj/yeGxUvU+vAV7alr4=
 github.com/Velocidex/yaml/v2 v2.2.8 h1:GUrSy4SBJ6RjGt43k6MeBKtw2z/27gh4A3hfFmFY3No=
 github.com/Velocidex/yaml/v2 v2.2.8/go.mod h1:PlXIg/Pxmoja48C1vMHo7C5pauAZvLq/UEPOQ3DsjS4=
 github.com/alecthomas/kingpin/v2 v2.3.2 h1:H0aULhgmSzN8xQ3nX1uxtdlTHYoPLu5AhHxWrKI6ocU=
@@ -8,8 +10,6 @@ github.com/alecthomas/repr v0.0.0-20181024024818-d37bc2a10ba1/go.mod h1:xTS7Pm1p
 github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 h1:s6gZFSlWYmbqAuRjVTiNNhvNRfY2Wxp9nhfyel4rklc=
 github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137/go.mod h1:OMCwj8VM1Kc9e19TLln2VL61YJF0x1XFtfdL4JdbSyE=
 github.com/bradleyjkemp/cupaloy/v2 v2.6.0 h1:knToPYa2xtfg42U3I6punFEjaGFKWQRXJwj0JTv4mTs=
-github.com/bradleyjkemp/sigma-go v0.6.4 h1:J6Sqwbgv7wsEuP7xbsG8dvTrTc9lhkf5BvYF+gO9vzc=
-github.com/bradleyjkemp/sigma-go v0.6.4/go.mod h1:fHCN8y8cC1l5CYY7oOhPIznHmj/yeGxUvU+vAV7alr4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

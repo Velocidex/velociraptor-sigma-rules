@@ -92,5 +92,11 @@ func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
 	}
 	fd.Write(MustMarshal(self.config_obj.DefaultDetails.Lookup))
 
+	fd, err = zip.Create("rejected.json")
+	if err != nil {
+		return err
+	}
+	fd.Write(MustMarshalIndent(self.GetRejected()))
+
 	return nil
 }

@@ -1,0 +1,204 @@
+{
+ "Rejects": [
+  {
+   "Path": "hayabusa/hayabusa/builtin/Partition_Diagnostic/PartitionDiagnostic_1006_Info_DeviceConn.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml",
+   "Error": "Invalid modifier equalsfield"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml",
+   "Error": "Invalid modifier equalsfield"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_UsrGuessing_Cnt.yml",
+   "Error": "yaml: unmarshal errors:\n  line 27: cannot unmarshal !!str `https:/...` into []string"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_WrongPW_PW-Guessing_Cnt.yml",
+   "Error": "yaml: unmarshal errors:\n  line 29: cannot unmarshal !!str `https:/...` into []string"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_PW-Spray_Cnt.yml",
+   "Error": "yaml: unmarshal errors:\n  line 27: cannot unmarshal !!str `https:/...` into []string"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1024_Info_ConnAttempt.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1102_Info_ConnAttempt.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_1149_Info_RDS-Logon.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_261_Info_RDS-Conn_Noisy.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/UnkwnChannEID_Med_PossibleHiddenShellcode.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/WLAN-AutoConfig/Sec_8001_Info_Wifi-AP-Conn.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/WinRM_Op/WinRM_6_Info_SessCreated.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_Info_ProcExec.yml",
+   "Error": "yaml: unmarshal errors:\n  line 32: mapping key \"sample-evtx\" already defined at line 29"
+  },
+  {
+   "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_Low_ExeFileRenamed.yml",
+   "Error": "Invalid modifier endswithfield"
+  },
+  {
+   "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_Low_ExeFileRenamed.yml",
+   "Error": "Invalid modifier endswithfield"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/emerging-threats/2023/Exploits/CVE-2023-23397/win_smbclient_connectivity_exploit_cve_2023_23397_outlook_remote_file.yml",
+   "Error": "Missing field mapping 'ServerAddress' in */windows/smbclient-connectivity"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/emerging-threats/2023/Malware/Pikabot/proc_creation_win_malware_pikabot_discovery.yml",
+   "Error": "Missing field mapping 'GrandParentImage' in */windows/security"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/security/win_security_rdp_reverse_tunnel.yml",
+   "Error": "Missing field mapping 'FilterOrigin' in */windows/security"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/proc_creation_win_correlation_multiple_susp_cli.yml",
+   "Error": "In rule Quick Execution of a Series of Suspicious Commands: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/proc_creation_win_correlation_susp_builtin_commands_recon.yml",
+   "Error": "In rule Reconnaissance Activity Using BuiltIn Commands: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/sysmon_always_install_elevated_msi_spawned_cmd_and_powershell_spawned_processes.yml",
+   "Error": "Missing field mapping 'ParentOfParentImage' in */windows/security"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_kernel_and_3rd_party_drivers_exploits_token_stealing.yml",
+   "Error": "Missing field mapping 'ParentIntegrityLevel' in */windows/security"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_remote_schtask.yml",
+   "Error": "In rule Remote Schtasks Creation: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_global_catalog_enumeration.yml",
+   "Error": "In rule Enumeration via the Global Catalog: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_rare_schtasks_creations.yml",
+   "Error": "In rule Rare Schtasks Creations: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_logons_explicit_credentials.yml",
+   "Error": "In rule Password Spraying via Explicit Credentials: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_logons_single_process.yml",
+   "Error": "In rule Multiple Users Failing to Authenticate from Single Process: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_logons_single_source2.yml",
+   "Error": "In rule Failed NTLM Logins with Different Accounts from Single Source System: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_logons_single_source_kerberos.yml",
+   "Error": "In rule Valid Users Failing to Authenticate From Single Source Using Kerberos: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_logons_single_source_kerberos2.yml",
+   "Error": "In rule Disabled Users Failing To Authenticate From Source Using Kerberos: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_logons_single_source_kerberos3.yml",
+   "Error": "In rule Invalid Users Failing To Authenticate From Source Using Kerberos: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_logons_single_source_ntlm.yml",
+   "Error": "In rule Valid Users Failing to Authenticate from Single Source Using NTLM: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_logons_single_source_ntlm2.yml",
+   "Error": "In rule Invalid Users Failing To Authenticate From Single Source Using NTLM: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_failed_remote_logons_single_source.yml",
+   "Error": "In rule Multiple Users Remotely Failing To Authenticate From Single Source: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_security_susp_multiple_files_renamed_or_deleted.yml",
+   "Error": "In rule Suspicious Multiple File Rename Or Delete Occurred: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_susp_failed_hidden_share_mount.yml",
+   "Error": "In rule Failed Mounting of Hidden Share: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_system_rare_service_installs.yml",
+   "Error": "In rule Rare Service Installations: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/unsupported/win_taskscheduler_rare_schtask_creation.yml",
+   "Error": "In rule Rare Scheduled Task Creations: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/win_alert_mimikatz_keywords.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/create_remote_thread/create_remote_thread_win_susp_uncommon_source_image.yml",
+   "Error": "Missing field mapping 'TargetParentProcessId' in */windows/sysmon"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/emerging-threats/2023/Malware/Pikabot/proc_creation_win_malware_pikabot_discovery.yml",
+   "Error": "Missing field mapping 'GrandParentImage' in */windows/sysmon"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/threat-hunting/create_remote_thread/create_remote_thread_win_powershell_generic.yml",
+   "Error": "Missing field mapping 'SourceParentImage' in */windows/sysmon"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/threat-hunting/process_access/proc_access_win_lsass_uncommon_access_flag.yml",
+   "Error": "Missing field mapping 'SourceCommandLine' in */windows/sysmon"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/unsupported/dns_query_win_possible_dns_rebinding.yml",
+   "Error": "In rule Possible DNS Rebinding: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/unsupported/file_event_executable_and_script_creation_by_office_using_file_ext.yml",
+   "Error": "Missing field mapping 'FileMagicBytes' in */windows/sysmon"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/unsupported/proc_creation_win_correlation_multiple_susp_cli.yml",
+   "Error": "In rule Quick Execution of a Series of Suspicious Commands: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/unsupported/proc_creation_win_correlation_susp_builtin_commands_recon.yml",
+   "Error": "In rule Reconnaissance Activity Using BuiltIn Commands: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/unsupported/sysmon_always_install_elevated_msi_spawned_cmd_and_powershell_spawned_processes.yml",
+   "Error": "Missing field mapping 'ParentOfParentImage' in */windows/sysmon"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/unsupported/win_kernel_and_3rd_party_drivers_exploits_token_stealing.yml",
+   "Error": "Missing field mapping 'ParentIntegrityLevel' in */windows/sysmon"
+  }
+ ]
+}

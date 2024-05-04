@@ -13,7 +13,7 @@ compile: compileThirdParty compileCurated
 compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo
 
 compileHayabusa:
-	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor-Hayabusa-Rules.yaml
+	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor-Hayabusa-Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects
 
 debugHayabusa:
 	dlv debug ./src -- compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor-Hayabusa-Rules.yaml

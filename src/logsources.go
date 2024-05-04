@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -12,6 +13,13 @@ import (
 	"github.com/Velocidex/yaml/v2"
 	"github.com/bradleyjkemp/sigma-go"
 )
+
+type Stats struct {
+	TotalUnhandledErrors int
+	TotalErrors          int
+	TotalRules           int
+	TotalVisitedRules    int
+}
 
 type CompilerContext struct {
 	logsources map[string]int
@@ -29,7 +37,12 @@ type CompilerContext struct {
 	// Map between error reason and the files that were rejected for
 	// it.
 	errored_rules map[string][]string
-	config_obj    *Config
+
+	// We load the previous run's rejected rules to only show
+	// incremental failures
+	ignored_rules map[string]bool
+
+	config_obj *Config
 
 	rules       bytes.Buffer
 	level_regex *regexp.Regexp
@@ -48,6 +61,7 @@ func NewCompilerContext() *CompilerContext {
 		logsources:                   make(map[string]int),
 		missing_fields_in_logsources: make(map[string]map[string][]string),
 		errored_rules:                make(map[string][]string),
+		ignored_rules:                make(map[string]bool),
 		level_regex:                  regexp.MustCompile(".*"),
 
 		fields:         make(map[string]int),
@@ -93,6 +107,31 @@ func (self *CompilerContext) LoadConfigFromString(data string) error {
 	return nil
 }
 
+func (self *CompilerContext) LoadRejectSupporessions(filename string) error {
+	fd, err := os.Open(filename)
+	if err != nil {
+		return err
+	}
+	defer fd.Close()
+
+	data, err := ioutil.ReadAll(fd)
+	if err != nil {
+		return err
+	}
+
+	rejects := &Rejected{}
+	err = json.Unmarshal(data, rejects)
+	if err != nil {
+		return err
+	}
+
+	for _, item := range rejects.Rejects {
+		self.ignored_rules[item.String()] = true
+	}
+
+	return nil
+}
+
 func (self *CompilerContext) Resolve(source_spec string) bool {
 	_, pres := self.config_obj.Sources[source_spec]
 	return pres
@@ -105,7 +144,7 @@ func (self *CompilerContext) incLogSource(source_spec string) {
 	self.logsources[source_spec] = count
 }
 
-func (self *CompilerContext) shouldSuppressError(err_msg string) bool {
+func (self *CompilerContext) shouldSuppressError(err_msg string, path string) bool {
 	for _, m := range self.config_obj.BadFieldMappings {
 		if strings.Contains(err_msg, m) {
 			return true
@@ -117,11 +156,21 @@ func (self *CompilerContext) shouldSuppressError(err_msg string) bool {
 			return true
 		}
 	}
+
+	key := path + err_msg
+	_, pres := self.ignored_rules[key]
+	if pres {
+		return true
+	}
+
 	return false
 }
 
-func (self *CompilerContext) Stats() {
-	total_rules := 0
+func (self *CompilerContext) Stats() Stats {
+	result := Stats{
+		TotalVisitedRules: self.total_visited_rules,
+	}
+
 	sources := []string{}
 	for k := range self.logsources {
 		sources = append(sources, k)
@@ -133,20 +182,28 @@ func (self *CompilerContext) Stats() {
 		count, _ := self.logsources[v]
 
 		fmt.Printf("  %v (%v rules)\n", v, count)
-		total_rules += count
+		result.TotalRules += count
 	}
 
-	total_reject_rules := 0
 	if len(self.errored_rules) > 0 {
 		fmt.Printf("\nErrored Rules which were rejected:\n")
 		for k, v := range self.errored_rules {
-			if self.shouldSuppressError(k) {
-				continue
+			messages := []string{}
+			for _, path := range v {
+				if self.shouldSuppressError(k, path) {
+					result.TotalErrors += len(v)
+					continue
+				}
+
+				messages = append(messages, fmt.Sprintf("     %v", path))
+				result.TotalUnhandledErrors++
 			}
-			fmt.Printf("  %v:\n", k)
-			for _, i := range v {
-				fmt.Printf("     %v\n", i)
-				total_reject_rules++
+
+			if len(messages) > 0 {
+				fmt.Printf("  %v:\n", k)
+				for _, m := range messages {
+					fmt.Println(m)
+				}
 			}
 		}
 	}
@@ -175,10 +232,7 @@ func (self *CompilerContext) Stats() {
 
 	}
 
-	fmt.Printf("\nTotal rules added: %v from %v visited files and %v rejected rules\n",
-		total_rules, self.total_visited_rules, total_reject_rules)
-
-	return
+	return result
 
 	if len(self.missing_fields) > 0 {
 		fmt.Printf("\nMissing field mappings:\n")
@@ -199,6 +253,8 @@ func (self *CompilerContext) Stats() {
 			}
 		}
 	}
+
+	return result
 }
 
 func (self *CompilerContext) getSourceFromChannel(
@@ -242,6 +298,12 @@ func (self *CompilerContext) check_condition(rule *sigma.Rule) error {
 				},
 			})
 	}
+
+	if rule.Detection.Timeframe != "" {
+		return fmt.Errorf("In rule %v: Timeframe detections not supported",
+			rule.Title)
+	}
+
 	return nil
 }
 

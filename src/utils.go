@@ -20,6 +20,11 @@ func MustMarshal(in interface{}) []byte {
 	return data
 }
 
+func MustMarshalIndent(in interface{}) []byte {
+	data, _ := json.MarshalIndent(in, "", " ")
+	return data
+}
+
 func Dump(in interface{}) {
 	data, _ := json.MarshalIndent(in, "", " ")
 	fmt.Printf("%v", string(data))

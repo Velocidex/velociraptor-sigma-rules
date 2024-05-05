@@ -1,7 +1,7 @@
 Preamble: |
   name: Windows.Hayabusa.Rules
   description: |
-    This artifact compiles the Hayabusa rulese into a Velociraptor
+    This artifact compiles the Hayabusa ruleset into a Velociraptor
     artifact using the internal Velociraptor sigma engine.
 
     To read more about this artifact see
@@ -76,6 +76,16 @@ Preamble: |
         `%%1936`= 'FULL_TOKEN',
         `%%1937`= 'ELEVATED_TOKEN',
         `%%1938`= 'LIMITED_TOKEN')
+
+      // Helpers for VQL rules
+      LET FetchKeyValues(OSPath) = to_dict(item={
+        SELECT Name AS _key, Data.value AS _value
+        FROM glob(globs="*", accessor="registry", root=OSPath)
+      })
+
+      LET GetValue(OSPath) = stat(filename=OSPath, accessor="registry").Data.value
+      LET Hostname <= dict(H={ SELECT Hostname FROM info()}).H[0].Hostname
+
 
 FieldMappings:
   MandatoryLabel: |
@@ -176,6 +186,7 @@ FieldMappings:
   LogonID: "x=>x.EventData.LogonID"
   LogonProcessName: "x=>x.EventData.LogonProcessName"
   LogonType: "x=>x.EventData.LogonType"
+  Logon_Type: "x=>x.EventData.LogonType"
   Logon_Account: "x=>x.EventData.Logon_Account"
   MachineName: "x=>x.EventData.MachineName"
   MemberName: "x=>x.EventData.MemberName"
@@ -364,6 +375,8 @@ FieldMappings:
 
   # antivirus/windows/windefend
   Feature_Name: "x=>x.EventData.`Feature Name`"
+
+  EventData: "x=>x.EventData"
 
 DefaultDetails:
   Query: |
@@ -921,6 +934,16 @@ Sources:
       - Channel
       - EventID
 
+  vql/windows/*:
+    query: |
+      SELECT dict(
+          Computer=Hostname,
+          Channel="VQL Evaluation",
+          TimeCreated=dict(SystemTime=now())
+        ) AS System,
+        dict() AS EventData
+      FROM scope()
+
 QueryTemplate: |
    LET Rules <= SigmaRules || gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
@@ -938,7 +961,7 @@ QueryTemplate: |
           dict(System=System,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match
+          _Match, *
     FROM sigma(
       rules=split(string= Rules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,
@@ -977,6 +1000,10 @@ BadFieldMappings:
 # hayabusa/sigma/builtin/security/win_security_rdp_reverse_tunnel.yml
 - FilterOrigin
 
+# We do not currently support rules with Timeframe in them so we
+# silently drop these.
+- Timeframe detections not supported
+
 
 # Many rules are broken and have bad log source section. The following
 # list suppresses these warnings (but the rules are still rejected)
@@ -997,3 +1024,4 @@ RuleDirectories:
   - hayabusa/hayabusa/sysmon/
   - hayabusa/sigma/builtin/
   - hayabusa/sigma/sysmon/
+  - rules/vql/

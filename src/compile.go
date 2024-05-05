@@ -20,15 +20,19 @@ var (
 	app = kingpin.New("velosigma",
 		"A tool for manipulating sigma files.")
 
-	compile_cmd     = app.Command("compile", "Compile all the rules into one rule.")
-	output          = compile_cmd.Flag("output", "File to write the artifact bundle to").String()
-	yaml_output     = compile_cmd.Flag("yaml", "File to write the artifact yaml to").String()
-	config          = compile_cmd.Flag("config", "Config file to use").Required().ExistingFile()
-	level_regex_str = compile_cmd.Flag("level_regex", "A regex to select rule Levels").Default(".").String()
+	compile_cmd             = app.Command("compile", "Compile all the rules into one rule.")
+	output                  = compile_cmd.Flag("output", "File to write the artifact bundle to").String()
+	yaml_output             = compile_cmd.Flag("yaml", "File to write the artifact yaml to").String()
+	rejects_output          = compile_cmd.Flag("rejects", "File to write the rejected rules to").String()
+	ignore_previous_rejects = compile_cmd.Flag("ignore_previous_rejects", "Read the rejects file and ignore any previously known rejected rules").Bool()
+	config                  = compile_cmd.Flag("config", "Config file to use").Required().ExistingFile()
+	level_regex_str         = compile_cmd.Flag("level_regex", "A regex to select rule Levels").Default(".").String()
 
 	debug = app.Flag("debug", "Print more details").Bool()
 
 	command_handlers []CommandHandler
+
+	allowed_additional_fields = []string{"details", "vql", "vql_args"}
 )
 
 type CommandHandler func(command string) bool
@@ -76,7 +80,15 @@ func (self *CompilerContext) CompileDirs() error {
 func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	rule, err := sigma.ParseRule([]byte(rule_yaml))
 	if err != nil {
+		self.addError(err.Error(), path)
+		if !self.shouldSuppressError(err.Error(), path) {
+			fmt.Printf("While compiling rule %v: %v\n", path, err)
+		}
 		return nil
+	}
+
+	if rule.Level == "" {
+		rule.Level = "default"
 	}
 
 	if !self.level_regex.MatchString(rule.Level) {
@@ -84,9 +96,11 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	}
 
 	additional_fields := make(map[string]interface{})
-	details := rule.AdditionalFields["details"]
-	if details != nil {
-		additional_fields["details"] = details
+	for _, f := range allowed_additional_fields {
+		v := rule.AdditionalFields[f]
+		if v != nil {
+			additional_fields[f] = v
+		}
 	}
 
 	new_rule := sigma.Rule{
@@ -146,7 +160,7 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	return nil
 }
 
-func doCompile() error {
+func doCompile() (err error) {
 	if *yaml_output == "" && *output == "" {
 		return errors.New("Must provide either --output or --yaml")
 	}
@@ -164,10 +178,24 @@ func doCompile() error {
 		return fmt.Errorf("Reading Config: %w", err)
 	}
 
+	if *ignore_previous_rejects && *rejects_output != "" {
+		err := context.LoadRejectSupporessions(*rejects_output)
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("Reading Rejects: %w", err)
+		}
+	}
+
 	defer func() {
 		fmt.Printf("\nGenerated rules with level %v into %v\n",
 			*level_regex_str, *output)
-		context.Stats()
+		stats := context.Stats()
+
+		fmt.Printf("\nTotal rules added: %v from %v visited files and %v rejected rules\n",
+			stats.TotalRules, stats.TotalVisitedRules, stats.TotalErrors)
+
+		if stats.TotalUnhandledErrors > 0 {
+			err = fmt.Errorf("Unhandled errors %v", stats.TotalUnhandledErrors)
+		}
 	}()
 
 	err = context.CompileDirs()
@@ -208,6 +236,18 @@ func doCompile() error {
 
 		out_fd.Write([]byte(artifact))
 	}
+
+	if *rejects_output != "" {
+		out_fd, err := os.OpenFile(*rejects_output,
+			os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		if err != nil {
+			return fmt.Errorf("Creating yaml output: %w", err)
+		}
+		defer out_fd.Close()
+
+		out_fd.Write(MustMarshalIndent(context.GetRejected()))
+	}
+
 	return nil
 }
 

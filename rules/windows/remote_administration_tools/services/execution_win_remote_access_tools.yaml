@@ -21,7 +21,7 @@ logsource:
     product: windows
     service: execution
 detection:
-      execution_Name|contains:
+    execution_Name|contains:
           - 'TeamViewer'
           - 'GoToAssist'
           - 'LogMeIn'

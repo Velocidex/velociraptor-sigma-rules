@@ -37,9 +37,11 @@ jobs:
         make linux
         make compile
 
+    # For now we get the latest build from GCP until the 0.72.1 release.
     - name: Run Velociraptor
       run: |
         mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor
+        curl -o ./tests/velociraptor https://storage.googleapis.com/releases.velocidex.com/velociraptor/velociraptor-v0.72.1-linux-amd64-musl
         chmod +x ./tests/velociraptor
         make golden
 

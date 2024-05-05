@@ -480,6 +480,17 @@ Sources:
     channel:
       - DNS Server
 
+  process_creation/windows/*:
+    query: |
+      SELECT * FROM parse_evtx(filename=[
+         ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
+         ROOT + "/Security.evtx"
+      ])
+      WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688
+    fields:
+      - Channel
+      - EventID
+
   process_creation/windows/evtx-execution:
     query: |
       SELECT * FROM parse_evtx(filename=[

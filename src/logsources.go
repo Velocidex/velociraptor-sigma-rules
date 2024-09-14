@@ -374,6 +374,7 @@ var valid_modifiers = map[string]bool{
 	"vql":          true,
 	"base64":       true,
 	"base64offset": true,
+	"windash":      true,
 }
 
 func (self *CompilerContext) check_modifiers(

@@ -1,6 +1,10 @@
 {
  "Rejects": [
   {
+   "Path": "hayabusa/hayabusa/builtin/Crypto-DPAPI_Debug/CryptoDPAPI_16385_Info_DPAPI-Access.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
    "Path": "hayabusa/hayabusa/builtin/Partition_Diagnostic/PartitionDiagnostic_1006_Info_DeviceConn.yml",
    "Error": "Missing Source: '*/windows/*'"
   },
@@ -18,11 +22,19 @@
   },
   {
    "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_WrongPW_PW-Guessing_Cnt.yml",
-   "Error": "yaml: unmarshal errors:\n  line 29: cannot unmarshal !!str `https:/...` into []string"
+   "Error": "yaml: unmarshal errors:\n  line 28: cannot unmarshal !!str `https:/...` into []string"
   },
   {
    "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_PW-Spray_Cnt.yml",
    "Error": "yaml: unmarshal errors:\n  line 27: cannot unmarshal !!str `https:/...` into []string"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-Gateway_Op/RDS_Gateway_Disconnect.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-Gateway_Op/RDS_Gateway_Logon.yml",
+   "Error": "Missing Source: '*/windows/*'"
   },
   {
    "Path": "hayabusa/hayabusa/builtin/TerminalServices-RDPClient_Op/RDP-Client_1024_Info_ConnAttempt.yml",
@@ -51,10 +63,6 @@
   {
    "Path": "hayabusa/hayabusa/builtin/WinRM_Op/WinRM_6_Info_SessCreated.yml",
    "Error": "Missing Source: '*/windows/*'"
-  },
-  {
-   "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_Info_ProcExec.yml",
-   "Error": "yaml: unmarshal errors:\n  line 32: mapping key \"sample-evtx\" already defined at line 29"
   },
   {
    "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_Low_ExeFileRenamed.yml",

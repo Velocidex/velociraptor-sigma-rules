@@ -194,11 +194,11 @@
   },
   {
    "Path": "hayabusa/sigma/sysmon/unsupported/proc_creation_win_correlation_multiple_susp_cli.yml",
-   "Error": "In rule Quick Execution of a Series of Suspicious Commands: Timeframe detections not supported"
+   "Error": "In rule Quick Execution of a Series of Suspicious Commands 2: Timeframe detections not supported"
   },
   {
    "Path": "hayabusa/sigma/sysmon/unsupported/proc_creation_win_correlation_susp_builtin_commands_recon.yml",
-   "Error": "In rule Reconnaissance Activity Using BuiltIn Commands: Timeframe detections not supported"
+   "Error": "In rule Reconnaissance Activity Using BuiltIn Commands 2: Timeframe detections not supported"
   },
   {
    "Path": "hayabusa/sigma/sysmon/unsupported/sysmon_always_install_elevated_msi_spawned_cmd_and_powershell_spawned_processes.yml",

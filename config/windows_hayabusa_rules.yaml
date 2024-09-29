@@ -42,6 +42,14 @@ Preamble: |
       default: .
       description: Use this to filter only some rules to match
 
+    - name: DateAfter
+      description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+    - name: DateBefore
+      description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
     - name: SigmaRules
       description: If provided we use these rules instead of the built in set.
 
@@ -52,6 +60,9 @@ Preamble: |
 
   sources:
   - query: |
+      LET DateAfterTime <= DateAfter || timestamp(epoch="1600-01-01")
+      LET DateBeforeTime <= DateBefore || timestamp(epoch="2200-01-01")
+
       LET RuleStatusRegex <= get(item=dict(
          `Stable`="stable",
          `Stable and Experimental`="stable|experimental",
@@ -315,7 +326,7 @@ FieldMappings:
   TaskDate: "x=>x.EventData.TaskContent"
   TaskName: "x=>x.EventData.TaskName"
   TemplateContent: "x=>x.EventData.TemplateContent"
-  Timestamp: "x=>x.System.TimeCreated.SystemTime"
+  Timestamp: "x=>x.Timestamp"
   ThreatName: "x=>x.EventData.`Threat Name`"
   TicketEncryptionType: "x=>x.EventData.TicketEncryptionType"
   TicketOptions: "x=>x.EventData.TicketOptions"
@@ -488,7 +499,9 @@ DefaultDetails:
 Sources:
   '*/windows/application':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Application.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Application.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Application
     fields:
@@ -497,12 +510,14 @@ Sources:
 
   '*/windows/applocker':
     query: |
-      SELECT * FROM parse_evtx(filename=[
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=[
         ROOT + "/Microsoft-Windows-AppLocker%4MSI and Script.evtx",
         ROOT + "/Microsoft-Windows-AppLocker%4EXE and DLL.evtx",
         ROOT + "/Microsoft-Windows-AppLocker%4Packaged app-Deployment.evtx",
         ROOT + "/Microsoft-Windows-AppLocker%4Packaged app-Execution.evtx",
       ])
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-AppLocker/MSI and Script
       - Microsoft-Windows-AppLocker/EXE and DLL
@@ -514,7 +529,9 @@ Sources:
 
   '*/windows/appmodel-runtime':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppModel-Runtime%4Admin.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppModel-Runtime%4Admin.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-AppModel-Runtime/Admin
     fields:
@@ -523,7 +540,9 @@ Sources:
 
   '*/windows/appxdeployment-server':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppxPackaging%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppxPackaging%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-AppxPackaging/Operational
     fields:
@@ -532,7 +551,9 @@ Sources:
 
   '*/windows/appxpackaging-om':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppxPackaging%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppxPackaging%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-AppxPackaging/Operational
     fields:
@@ -541,7 +562,9 @@ Sources:
 
   '*/windows/bits-client':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Bits-Client%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Bits-Client%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-Bits-Client/Operational
     fields:
@@ -552,7 +575,9 @@ Sources:
 
   '*/windows/capi2':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-CAPI2/Operational")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-CAPI2/Operational")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-CAPI2/Operational
     fields:
@@ -561,18 +586,20 @@ Sources:
 
   '*/windows/certificateservicesclient-lifecycle-system':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-CertificateServicesClient-Lifecycle-System/Operational")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-CertificateServicesClient-Lifecycle-System/Operational")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-CertificateServicesClient-Lifecycle-System/Operational
     fields:
       - Channel
       - EventID
 
-
   '*/windows/codeintegrity-operational':
     query: |
-      SELECT * FROM parse_evtx(
-         filename=ROOT + "/Microsoft-Windows-CodeIntegrity%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-CodeIntegrity%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-CodeIntegrity/Operational
     fields:
@@ -581,7 +608,9 @@ Sources:
 
   '*/windows/diagnosis-scripted':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Diagnosis-Scripted%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Diagnosis-Scripted%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-Diagnosis-Scripted/Operational
     fields:
@@ -590,7 +619,9 @@ Sources:
 
   '*/windows/dns-client':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DNS Client Events%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DNS Client Events%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-DNS Client Events/Operational
     fields:
@@ -599,7 +630,9 @@ Sources:
 
   '*/windows/dns-server':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/DNS Server.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/DNS Server.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - DNS Server
     fields:
@@ -608,7 +641,9 @@ Sources:
 
   '*/windows/dns-server-analytic':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DNS-Server%4Analytical.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DNS-Server%4Analytical.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-DNS-Server/Analytical
     fields:
@@ -617,7 +652,9 @@ Sources:
 
   '*/windows/driver-framework':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DriverFrameworks-UserMode%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DriverFrameworks-UserMode%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-DriverFrameworks-UserMode/Operational
     fields:
@@ -626,7 +663,9 @@ Sources:
 
   '*/windows/firewall-as':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Firewall With Advanced Security%4Firewall.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Firewall With Advanced Security%4Firewall.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-Windows Firewall With Advanced Security/Firewall
     fields:
@@ -635,7 +674,9 @@ Sources:
 
   '*/windows/ldap_debug':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-LDAP-Client%4Debug.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-LDAP-Client%4Debug.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-LDAP-Client/Debug
     fields:
@@ -644,7 +685,9 @@ Sources:
 
   '*/windows/lsa-server':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-LSA%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-LSA%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-LSA/Operational
     fields:
@@ -653,7 +696,9 @@ Sources:
 
   '*/windows/microsoft-servicebus-client':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-ServiceBus-Client.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-ServiceBus-Client.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-ServiceBus-Client
     fields:
@@ -662,7 +707,9 @@ Sources:
 
   '*/windows/msexchange-management':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/MSExchange Management.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/MSExchange Management.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - MSExchange Management
     fields:
@@ -671,7 +718,9 @@ Sources:
 
   '*/windows/ntlm':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-NTLM%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-NTLM%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-NTLM/Operational
     fields:
@@ -680,7 +729,9 @@ Sources:
 
   '*/windows/openssh':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/OpenSSH%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/OpenSSH%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - OpenSSH/Operational
     fields:
@@ -689,10 +740,12 @@ Sources:
 
   '*/windows/powershell':
     query: |
-      SELECT * FROM parse_evtx(filename=[
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
          ROOT + "/PowerShellCore%4Operational.evtx",
       ])
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-PowerShell/Operational
       - PowerShellCore/Operational
@@ -709,12 +762,13 @@ Sources:
 
   '*/windows/powershell-classic':
     query: |
-      SELECT *, EventData + dict(
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *, EventData + dict(
          Data=EventData.Data[2],
          HostApplication=parse_string_with_regex(
            regex="HostApplication=([^\\r\\n]+)",
            string=EventData.Data[2]).g1) AS EventData
       FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Windows PowerShell
     fields:
@@ -729,7 +783,9 @@ Sources:
 
   '*/windows/security':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Security.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Security.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Security
     fields:
@@ -738,13 +794,17 @@ Sources:
 
   '*/windows/security-mitigations':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Security-Mitigations.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Security-Mitigations.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-Security-Mitigations
 
   '*/windows/shell-core':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Shell-Core%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Shell-Core%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-Shell-Core/Operational
     fields:
@@ -755,7 +815,9 @@ Sources:
     query: ""
   '*/windows/smbclient-security':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-SmbClient%4Security.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-SmbClient%4Security.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-SmbClient/Security
     fields:
@@ -764,7 +826,9 @@ Sources:
 
   '*/windows/sysmon':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-Sysmon/Operational
 
@@ -784,7 +848,9 @@ Sources:
 
   '*/windows/system':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/System.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/System.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - System
     fields:
@@ -796,7 +862,9 @@ Sources:
 
   '*/windows/taskscheduler':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-TaskScheduler%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-TaskScheduler%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-TaskScheduler/Operational
     fields:
@@ -805,7 +873,9 @@ Sources:
 
   '*/windows/terminalservices-localsessionmanager':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
     fields:
@@ -815,7 +885,9 @@ Sources:
 
   '*/windows/vhdmp':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-VHDMP%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-VHDMP%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-VHDMP/Operational
     fields:
@@ -825,7 +897,9 @@ Sources:
 
   '*/windows/windefend':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-Windows Defender/Operational
     fields:
@@ -836,7 +910,9 @@ Sources:
 
   '*/windows/wmi':
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-WMI-Activity%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-WMI-Activity%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-WMI-Activity/Operational
     fields:
@@ -845,89 +921,103 @@ Sources:
 
   process_creation/windows/*:
     query: |
-      SELECT * FROM parse_evtx(filename=[
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
          ROOT + "/Security.evtx"
       ])
-      WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
+        AND System.EventID.Value = 1 OR System.EventID.Value = 4688
+
     fields:
       - Channel
       - EventID
 
   ps_classic_provider_start/windows/*:
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
-      WHERE System.EventID.Value = 600
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime AND System.EventID.Value = 600
     fields:
       - Channel
       - EventID
 
   ps_classic_start/windows/*:
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
-      WHERE System.EventID.Value = 400
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Windows PowerShell.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime AND System.EventID.Value = 400
     fields:
       - Channel
       - EventID
 
   ps_module/windows/*:
     query: |
-      SELECT * FROM parse_evtx(filename=[
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
-      WHERE System.EventID.Value = 4103
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime AND System.EventID.Value = 4103
     fields:
       - Channel
       - EventID
 
   ps_script/windows/*:
     query: |
-      SELECT * FROM parse_evtx(filename=[
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
          ROOT + "/PowerShellCore%4Operational.evtx"
       ])
-      WHERE System.EventID.Value = 4104
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime AND System.EventID.Value = 4104
     fields:
       - Channel
       - EventID
 
   registry_add/windows/*:
     query: |
-      SELECT * FROM parse_evtx(filename=[
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
          ROOT + "/Security.evtx"
       ])
-      WHERE System.EventID.Value = 12 OR System.EventID.Value = 4657
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime AND System.EventID.Value = 12 OR System.EventID.Value = 4657
     fields:
       - Channel
       - EventID
 
   registry_event/windows/*:
     query: |
-      SELECT * FROM parse_evtx(filename=[
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
          ROOT + "/Security.evtx"
       ])
-      WHERE System.EventID.Value IN (12, 13, 14) OR System.EventID.Value = 4657
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
+        AND System.EventID.Value IN (12, 13, 14) OR System.EventID.Value = 4657
     fields:
       - Channel
       - EventID
 
   registry_set/windows/*:
     query: |
-      SELECT * FROM parse_evtx(filename=[
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=[
          ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
          ROOT + "/Security.evtx"
       ])
-      WHERE System.EventID.Value = 13 OR System.EventID.Value = 4657
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
+        AND System.EventID.Value = 13 OR System.EventID.Value = 4657
     fields:
       - Channel
       - EventID
 
   antivirus/windows/windefend:
     query: |
-      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
     channel:
       - Microsoft-Windows-Windows Defender/Operational
     fields:
@@ -950,7 +1040,7 @@ QueryTemplate: |
    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
    LET X = scope()
 
-   LET Result = SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
+   LET Result = SELECT Timestamp,
           System.Computer AS Computer,
           System.Channel AS Channel,
           System.EventID.Value AS EID,

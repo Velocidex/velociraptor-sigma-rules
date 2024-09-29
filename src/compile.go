@@ -87,6 +87,16 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 		return nil
 	}
 
+	// Sometimes rules have the same title so we make the title
+	// unique.
+	count, pres := self.seen_rules[rule.Title]
+	if pres {
+		self.seen_rules[rule.Title] = count + 1
+		rule.Title = fmt.Sprintf("%v %d", rule.Title, count+1)
+	} else {
+		self.seen_rules[rule.Title] = 1
+	}
+
 	if rule.Level == "" {
 		rule.Level = "default"
 	}

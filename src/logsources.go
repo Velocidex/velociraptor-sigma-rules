@@ -41,6 +41,7 @@ type CompilerContext struct {
 	// We load the previous run's rejected rules to only show
 	// incremental failures
 	ignored_rules map[string]bool
+	seen_rules    map[string]int
 
 	config_obj *Config
 
@@ -60,6 +61,7 @@ func NewCompilerContext() *CompilerContext {
 	return &CompilerContext{
 		logsources:                   make(map[string]int),
 		missing_fields_in_logsources: make(map[string]map[string][]string),
+		seen_rules:                   make(map[string]int),
 		errored_rules:                make(map[string][]string),
 		ignored_rules:                make(map[string]bool),
 		level_regex:                  regexp.MustCompile(".*"),

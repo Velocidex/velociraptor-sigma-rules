@@ -1,4 +1,4 @@
-LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK-SAMPLES/Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx", dest=temp + "/Microsoft-Windows-Sysmon%4Operational.evtx")[]SELECT * FROM Artifact.Windows.Hayabusa.Rules(ROOT=temp, RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=".") ORDER BY Timestamp[
+LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK-SAMPLES/Execution/Exec_sysmon_meterpreter_reversetcp_msipackage.evtx", dest=temp + "/Microsoft-Windows-Sysmon%4Operational.evtx")[]SELECT * FROM Artifact.Windows.Hayabusa.Rules(ROOT=temp, RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=".", RuleExclusions=NULL) ORDER BY Timestamp[
  {
   "Timestamp": "2019-04-30T22:48:58.901475191Z",
   "Computer": "IEWIN7",

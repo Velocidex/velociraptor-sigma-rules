@@ -24,9 +24,10 @@ Preamble: |
       type: choices
       default: Critical
       choices:
-        - Critical
-        - Critical and High
-        - All
+        - "Critical"
+        - "Critical and High"
+        - "Critical, High, and Medium"
+        - "All"
 
     - name: RuleStatus
       type: choices
@@ -41,6 +42,23 @@ Preamble: |
       type: regex
       default: .
       description: Use this to filter only some rules to match
+
+    - name: RuleExclusions
+      type: csv
+      description: |
+        Some rules in the Hayabusa set are extremely noisy, so they
+        are disabled by default.
+      default: |
+        RuleTitleRegex,Reason
+        Proc Exec,Fires on every Process Execution EID 1
+        File Created,Fires on every Sysmon EID 11
+        Reg Key Value Set,Fires on every Sysmon EID 13
+        DNS Query,Fires on every Sysmon EID 22
+        Proc Terminated$,Fires on every Sysmon EID 5
+        Proc Injection$,Fires on every Sysmon EID 8
+        Reg Key Create/Delete,Fires on every Sysmon EID 12
+        WMI Provider Started,Fires on every Microsoft-Windows-WMI-Activity/Operational EID 5857
+        noisy,All rules marked noisy should be disabled by default.
 
     - name: SigmaRules
       description: If provided we use these rules instead of the built in set.
@@ -60,6 +78,10 @@ Preamble: |
 
   sources:
   - query: |
+      LET ExcludeRegex <= if(condition=RuleExclusions,
+         then=join(array=RuleExclusions.RuleTitleRegex, sep="|"),
+         else="XXXXXXX")
+
       LET RuleStatusRegex <= get(item=dict(
          `Stable`="stable",
          `Stable and Experimental`="stable|experimental",
@@ -67,8 +89,9 @@ Preamble: |
          `All Rules`="."), member=RuleStatus)
 
       LET RuleLevelRegex <= get(item=dict(
-         Critical="critical",
+         `Critical`="critical",
          `Critical and High`="critical|high",
+         `Critical, High, and Medium`="critical|high|medium|default",
          `All`="."), member=RuleLevel)
 
       LET MandatoryLabelLookup <= dict(
@@ -952,7 +975,7 @@ QueryTemplate: |
       rules=split(string= Rules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,
       default_details='''{{.Base64DefaultDetailsQuery}}''',
-      rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter",
+      rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex",
       field_mapping= FieldMapping)
 
     SELECT * FROM if(condition=Debug, then={

@@ -41,7 +41,7 @@ jobs:
     - name: Run Velociraptor
       run: |
         mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor
-        curl -o ./tests/velociraptor https://storage.googleapis.com/releases.velocidex.com/velociraptor/velociraptor-v0.72.1-linux-amd64-musl
+        curl -o ./tests/velociraptor https://github.com/Velocidex/velociraptor/releases/download/v0.72/velociraptor-v0.72.4-linux-amd64-musl
         chmod +x ./tests/velociraptor
         make golden
 

@@ -9,18 +9,18 @@ jobs:
     steps:
 
     - name: Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
-        go-version: '^1.20'
+        go-version: '^1.23'
       id: go
 
     - name: Check out code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
 
     - name: Download Latest Velociraptor
-      uses: robinraju/release-downloader@v1.8
+      uses: robinraju/release-downloader@v1
       id: velociraptor
       with:
         repository: velocidex/velociraptor
@@ -43,13 +43,13 @@ jobs:
         chmod +x ./tests/velociraptor
         make golden
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: artifact
         path: tests/testcases
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: output

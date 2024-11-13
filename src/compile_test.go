@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/sebdah/goldie/v2"
@@ -77,7 +78,7 @@ detection:
 }
 
 func TestCompilation(t *testing.T) {
-	golden := ""
+	golden := []string{}
 
 	for _, test_case := range compileTestCases {
 		context := NewCompilerContext()
@@ -87,7 +88,7 @@ func TestCompilation(t *testing.T) {
 		err = context.CompileRule(test_case.rule, "/path/to/rule.yml")
 		assert.NoError(t, err)
 
-		golden += string(context.rules.Bytes())
+		golden = append(golden, string(context.getRules()))
 	}
 
 	g := goldie.New(
@@ -96,5 +97,5 @@ func TestCompilation(t *testing.T) {
 		goldie.WithDiffEngine(goldie.ClassicDiff),
 	)
 
-	g.Assert(t, "TestCompilation", []byte(golden))
+	g.Assert(t, "TestCompilation", []byte(strings.Join(golden, "\n---\n")))
 }

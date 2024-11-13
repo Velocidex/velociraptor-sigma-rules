@@ -1,74 +1,74 @@
- {
+{
     "System": {
-      "Provider": {
-        "Name": "Microsoft-Windows-Windows Defender",
-        "Guid": "11CD958A-C507-4EF3-B3F2-5FD9DFBD2C78"
-      },
-      "EventID": {
-        "Value": 1116
-      },
-      "Version": 0,
-      "Level": 3,
-      "Task": 0,
-      "Opcode": 0,
-      "Keywords": 9223372036854776000,
-      "TimeCreated": {
-        "SystemTime": 1710906544.516384
-      },
-      "EventRecordID": 1929,
-      "Correlation": {},
-      "Execution": {
-        "ProcessID": 3456,
-        "ThreadID": 9072
-      },
-      "Channel": "Microsoft-Windows-Windows Defender/Operational",
-      "Computer": "WIN-2VKA2DK38DT",
-      "Security": {
-        "UserID": "S-1-5-18"
-      }
+        "Provider": {
+            "Name": "Microsoft-Windows-Windows Defender",
+            "Guid": "11CD958A-C507-4EF3-B3F2-5FD9DFBD2C78"
+        },
+        "EventID": {
+            "Value": 1116
+        },
+        "Version": 0,
+        "Level": 3,
+        "Task": 0,
+        "Opcode": 0,
+        "Keywords": 9223372036854776000,
+        "TimeCreated": {
+            "SystemTime": 1710906544.516384
+        },
+        "EventRecordID": 1929,
+        "Correlation": {},
+        "Execution": {
+            "ProcessID": 3456,
+            "ThreadID": 9072
+        },
+        "Channel": "Microsoft-Windows-Windows Defender/Operational",
+        "Computer": "WIN-2VKA2DK38DT",
+        "Security": {
+            "UserID": "S-1-5-18"
+        }
     },
     "EventData": {
-      "Product Name": "Microsoft Defender Antivirus",
-      "Product Version": "4.18.24020.7",
-      "Detection ID": "{5A544AF7-A324-4B69-80F9-713C2B8A87AB}",
-      "Detection Time": "2024-03-20T03:49:04.457Z",
-      "Unused": "",
-      "Unused2": "",
-      "Threat ID": "2147686744",
-      "Threat Name": "HackTool:Win32/Mimikatz",
-      "Severity ID": "4",
-      "Severity Name": "High",
-      "Category ID": "34",
-      "Category Name": "Tool",
-      "FWLink": "https://go.microsoft.com/fwlink/?linkid=37020&name=HackTool:Win32/Mimikatz&threatid=2147686744&enterprise=0",
-      "Status Code": "1",
-      "Status Description": "",
-      "State": "1",
-      "Source ID": "3",
-      "Source Name": "Real-Time Protection",
-      "Process Name": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-      "Detection User": "WIN-2VKA2DK38DT\\Administrator",
-      "Unused3": "",
-      "Path": "file:\\\\Users\\administrator\\mimidrv.sys",
-      "Origin ID": "2",
-      "Origin Name": "Network share",
-      "Execution ID": "1",
-      "Execution Name": "Suspended",
-      "Type ID": "0",
-      "Type Name": "Concrete",
-      "Pre Execution Status": "0",
-      "Action ID": "9",
-      "Action Name": "Not Applicable",
-      "Unused4": "",
-      "Error Code": "0x00000000",
-      "Error Description": "The operation completed successfully. ",
-      "Unused5": "",
-      "Post Clean Status": "0",
-      "Additional Actions ID": "0",
-      "Additional Actions String": "No additional actions required",
-      "Remediation User": "",
-      "Unused6": "",
-      "Security intelligence Version": "AV: 1.407.508.0, AS: 1.407.508.0, NIS: 1.407.508.0",
-      "Engine Version": "AM: 1.1.24020.9, NIS: 1.1.24020.9"
+        "Product Name": "Microsoft Defender Antivirus",
+        "Product Version": "4.18.24020.7",
+        "Detection ID": "{5A544AF7-A324-4B69-80F9-713C2B8A87AB}",
+        "Detection Time": "2024-03-20T03:49:04.457Z",
+        "Unused": "",
+        "Unused2": "",
+        "Threat ID": "2147686744",
+        "Threat Name": "HackTool:Win32/Mimikatz",
+        "Severity ID": "4",
+        "Severity Name": "High",
+        "Category ID": "34",
+        "Category Name": "Tool",
+        "FWLink": "https://go.microsoft.com/fwlink/?linkid=37020&name=HackTool:Win32/Mimikatz&threatid=2147686744&enterprise=0",
+        "Status Code": "1",
+        "Status Description": "",
+        "State": "1",
+        "Source ID": "3",
+        "Source Name": "Real-Time Protection",
+        "Process Name": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "Detection User": "WIN-2VKA2DK38DT\\Administrator",
+        "Unused3": "",
+        "Path": "file:\\\\Users\\administrator\\mimidrv.sys",
+        "Origin ID": "2",
+        "Origin Name": "Network share",
+        "Execution ID": "1",
+        "Execution Name": "Suspended",
+        "Type ID": "0",
+        "Type Name": "Concrete",
+        "Pre Execution Status": "0",
+        "Action ID": "9",
+        "Action Name": "Not Applicable",
+        "Unused4": "",
+        "Error Code": "0x00000000",
+        "Error Description": "The operation completed successfully. ",
+        "Unused5": "",
+        "Post Clean Status": "0",
+        "Additional Actions ID": "0",
+        "Additional Actions String": "No additional actions required",
+        "Remediation User": "",
+        "Unused6": "",
+        "Security intelligence Version": "AV: 1.407.508.0, AS: 1.407.508.0, NIS: 1.407.508.0",
+        "Engine Version": "AM: 1.1.24020.9, NIS: 1.1.24020.9"
     }
 }

@@ -7,7 +7,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Level": "low",
   "Title": "Possible Timestomping",
   "RecordID": 10147,
-  "Details": "Path: C:\\Users\\IEUser\\AppData\\Local\\Temp\\302a23.msi ¦ Proc: C:\\Windows\\System32\\msiexec.exe ¦ User: null ¦ CreateTime: 2019-04-30 22:43:38.892 ¦ PrevTime: 2019-04-30 22:48:58.901 ¦ PID: PID ¦ PGUID: 365ABB72-D0DA-5CC8-0000-00109B5A3C00",
+  "Details": "Path: C:\\Users\\IEUser\\AppData\\Local\\Temp\\302a23.msi ¦ Proc: C:\\Windows\\System32\\msiexec.exe ¦ User: null ¦ CreateTime: 2019-04-30 22:43:38.892 ¦ PrevTime: 2019-04-30 22:48:58.901 ¦ PID: 868 ¦ PGUID: 365ABB72-D0DA-5CC8-0000-00109B5A3C00",
   "_Event": {
    "System": {
     "Provider": {
@@ -124,7 +124,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
   "Level": "low",
   "Title": "Possible Timestomping",
   "RecordID": 10149,
-  "Details": "Path: C:\\Windows\\Installer\\304d1c.msi ¦ Proc: C:\\Windows\\system32\\msiexec.exe ¦ User: null ¦ CreateTime: 2019-04-30 22:43:38.892 ¦ PrevTime: 2019-04-30 22:49:07.854 ¦ PID: PID ¦ PGUID: 365ABB72-D0DA-5CC8-0000-0010216F3C00",
+  "Details": "Path: C:\\Windows\\Installer\\304d1c.msi ¦ Proc: C:\\Windows\\system32\\msiexec.exe ¦ User: null ¦ CreateTime: 2019-04-30 22:43:38.892 ¦ PrevTime: 2019-04-30 22:49:07.854 ¦ PID: 2080 ¦ PGUID: 365ABB72-D0DA-5CC8-0000-0010216F3C00",
   "_Event": {
    "System": {
     "Provider": {

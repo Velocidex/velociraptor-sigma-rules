@@ -1,1 +1,55 @@
-LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ EID2006)),]) FROM scope()[]
+LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ EID2006)),]) FROM scope()[]SELECT * FROM Artifact.Windows.Hayabusa.Rules( RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=Title)[
+ {
+  "Timestamp": "2024-03-15T12:53:53.333499193Z",
+  "Computer": "WIN-2VKA2DK38DT",
+  "Channel": "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall",
+  "EID": 2006,
+  "Level": "medium",
+  "Title": "A Rule Has Been Deleted From The Windows Firewall Exception List",
+  "RecordID": 7418,
+  "Details": {
+   "RuleId": "{D7B81251-9069-467C-A54A-3AD41CE559FC}",
+   "RuleName": "b380f8ff-020d-464a-ad92-63d548cfc877",
+   "ModifyingUser": "S-1-5-18",
+   "ModifyingApplication": "C:\\Windows\\SystemTemp\\chrome_Unpacker_BeginUnzipping4360_1830454617\\CR_8BAC2.tmp\\setup.exe"
+  },
+  "_Event": {
+   "System": {
+    "Provider": {
+     "Name": "Microsoft-Windows-Windows Firewall With Advanced Security",
+     "Guid": "D1BC9AFF-2ABF-4D71-9146-ECB2A986EB85"
+    },
+    "EventID": {
+     "Value": 2006
+    },
+    "Version": 0,
+    "Level": 4,
+    "Task": 0,
+    "Opcode": 0,
+    "Keywords": 9223374235878031000,
+    "TimeCreated": {
+     "SystemTime": 1710507233.3334992
+    },
+    "EventRecordID": 7418,
+    "Correlation": {},
+    "Execution": {
+     "ProcessID": 2872,
+     "ThreadID": 7932
+    },
+    "Channel": "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall",
+    "Computer": "WIN-2VKA2DK38DT",
+    "Security": {
+     "UserID": "S-1-5-19"
+    }
+   },
+   "EventData": {
+    "RuleId": "{D7B81251-9069-467C-A54A-3AD41CE559FC}",
+    "RuleName": "b380f8ff-020d-464a-ad92-63d548cfc877",
+    "ModifyingUser": "S-1-5-18",
+    "ModifyingApplication": "C:\\Windows\\SystemTemp\\chrome_Unpacker_BeginUnzipping4360_1830454617\\CR_8BAC2.tmp\\setup.exe"
+   },
+   "Message": null
+  },
+  "_Source": "Windows.Hayabusa.Rules"
+ }
+]

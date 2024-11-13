@@ -8,5 +8,5 @@ Queries:
 # This rule relies on a null value implemented in
 # https://github.com/Velocidex/velociraptor/pull/3356 Disabled until
 # this makes a release.
-#- SELECT * FROM Artifact.Windows.Hayabusa.Rules(
-#    RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=Title)
+- SELECT * FROM Artifact.Windows.Hayabusa.Rules(
+    RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=Title)

@@ -8,10 +8,11 @@ import (
 )
 
 func indent(in string, indent int) string {
+	indent_str := strings.Repeat(" ", indent)
 	lines := strings.Split(in, "\n")
 	result := []string{}
 	for _, l := range lines {
-		result = append(result, strings.Repeat(" ", indent)+l)
+		result = append(result, indent_str+l)
 	}
 	return strings.Join(result, "\n")
 }

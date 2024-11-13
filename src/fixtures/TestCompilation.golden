@@ -20,5 +20,3 @@ detection:
   selection:
     SomeField: XXXX
 level: default
-
----

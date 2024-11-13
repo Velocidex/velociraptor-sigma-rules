@@ -5,6 +5,10 @@
    "Error": "Missing Source: '*/windows/*'"
   },
   {
+   "Path": "hayabusa/hayabusa/builtin/NTFS_Op/NTFS_4_info_volume_mount.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
    "Path": "hayabusa/hayabusa/builtin/Partition_Diagnostic/PartitionDiagnostic_1006_Info_DeviceConn.yml",
    "Error": "Missing Source: '*/windows/*'"
   },
@@ -17,23 +21,39 @@
    "Error": "Invalid modifier equalsfield"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_UsrGuessing_Cnt.yml",
-   "Error": "yaml: unmarshal errors:\n  line 27: cannot unmarshal !!str `https:/...` into []string"
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_UserGuessing_Cnt_Deprecated.yml",
+   "Error": "In rule User Guessing: Timeframe detections not supported"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_WrongPW_PW-Guessing_Cnt.yml",
-   "Error": "yaml: unmarshal errors:\n  line 28: cannot unmarshal !!str `https:/...` into []string"
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_UserGuessing_Correlation.yml",
+   "Error": "Missing Source: '*/*/*'"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_PW-Spray_Cnt.yml",
-   "Error": "yaml: unmarshal errors:\n  line 27: cannot unmarshal !!str `https:/...` into []string"
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_WrongPW_PW-Guessing_Cnt_Deprecated.yml",
+   "Error": "In rule PW Guessing: Timeframe detections not supported"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/TerminalServices-Gateway_Op/RDS_Gateway_Disconnect.yml",
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_WrongPW_PW-Guessing_Correlation.yml",
+   "Error": "Missing Source: '*/*/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_PW-Spray_Cnt_Deprecated.yml",
+   "Error": "In rule PW Spray: Timeframe detections not supported"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_PW-Spray_Correlation.yml",
+   "Error": "Missing Source: '*/*/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-Gateway_Op/RDS_Gateway_302_Info_LogonSuccess.yml",
    "Error": "Missing Source: '*/windows/*'"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/TerminalServices-Gateway_Op/RDS_Gateway_Logon.yml",
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-Gateway_Op/RDS_Gateway_302_Low_LogonError.yml",
+   "Error": "Missing Source: '*/windows/*'"
+  },
+  {
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-Gateway_Op/RDS_Gateway_303_Info_Logoff.yml",
    "Error": "Missing Source: '*/windows/*'"
   },
   {
@@ -45,11 +65,11 @@
    "Error": "Missing Source: '*/windows/*'"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_1149_Info_RDS-Logon.yml",
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_1149_Info_RDP-LogonAttempt.yml",
    "Error": "Missing Source: '*/windows/*'"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_261_Info_RDS-Conn_Noisy.yml",
+   "Path": "hayabusa/hayabusa/builtin/TerminalServices-RemoteConnectionManager_Op/RemoteConnManger_261_Info_RDP-Conn_Noisy.yml",
    "Error": "Missing Source: '*/windows/*'"
   },
   {
@@ -70,6 +90,14 @@
   },
   {
    "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_Low_ExeFileRenamed.yml",
+   "Error": "Invalid modifier endswithfield"
+  },
+  {
+   "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_ProcExec_High_LOLBAS-Rename.yml",
+   "Error": "Invalid modifier endswithfield"
+  },
+  {
+   "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_ProcExec_High_LOLBAS-Rename.yml",
    "Error": "Invalid modifier endswithfield"
   },
   {
@@ -175,6 +203,14 @@
   {
    "Path": "hayabusa/sigma/sysmon/emerging-threats/2023/Malware/Pikabot/proc_creation_win_malware_pikabot_discovery.yml",
    "Error": "Missing field mapping 'GrandParentImage' in */windows/sysmon"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/file/file_delete/file_delete_win_delete_own_image.yml",
+   "Error": "Invalid modifier equalsfield"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/file/file_delete/file_delete_win_delete_own_image.yml",
+   "Error": "Invalid modifier equalsfield"
   },
   {
    "Path": "hayabusa/sigma/sysmon/threat-hunting/create_remote_thread/create_remote_thread_win_powershell_generic.yml",

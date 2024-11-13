@@ -5,7 +5,10 @@ import (
 	"bytes"
 	"compress/gzip"
 	"encoding/base64"
-	"text/template"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -18,42 +21,42 @@ func encode(in []byte) string {
 	return base64.StdEncoding.EncodeToString(b.Bytes())
 }
 
-func (self *CompilerContext) GetArtifact() (string, error) {
-	vql := BuildLogSource(self.config_obj)
+func (self *CompilerContext) getRules() []byte {
+	return []byte(strings.Join(self.rules, "\n---\n"))
+}
 
+func (self *CompilerContext) GetArtifact() (string, error) {
 	params := &ArtifactContent{
 		Time:                       time.Now().UTC().Format(time.RFC3339),
-		Base64CompressedRules:      encode(self.rules.Bytes()),
+		Base64CompressedRules:      encode(self.getRules()),
 		Base64FieldMapping:         encode(MustMarshal(self.config_obj.FieldMappings)),
 		Base64DefaultDetailsLookup: encode(MustMarshal(self.config_obj.DefaultDetails.Lookup)),
-		Base64DefaultDetailsQuery:  self.config_obj.DefaultDetails.Query,
+		Base64DefaultDetailsQuery:  strings.TrimSpace(self.config_obj.DefaultDetails.Query),
+		LogSources:                 BuildLogSource(self.config_obj),
 	}
 
-	templ, err := template.New("").Parse(self.config_obj.QueryTemplate)
+	// Allow the artifact to export functions to other artifacts.
+	export_templ, err := calculateTemplate(self.config_obj.ExportTemplate, params)
 	if err != nil {
 		return "", err
 	}
 
-	b := &bytes.Buffer{}
-	err = templ.Execute(b, params)
+	preamble_templ, err := calculateTemplate(self.config_obj.Preamble, params)
 	if err != nil {
 		return "", err
 	}
 
-	vql += string(b.Bytes())
-
-	preamble_template, err := template.New("").Parse(self.config_obj.Preamble)
+	query_templ, err := calculateTemplate(self.config_obj.QueryTemplate, params)
 	if err != nil {
 		return "", err
 	}
 
-	b = &bytes.Buffer{}
-	err = preamble_template.Execute(b, params)
+	postscript_temp, err := calculateTemplate(self.config_obj.Postscript, params)
 	if err != nil {
 		return "", err
 	}
 
-	return string(b.Bytes()) + indent(vql, 4), nil
+	return preamble_templ + export_templ + query_templ + postscript_temp, nil
 }
 
 func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
@@ -61,7 +64,12 @@ func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
 	if err != nil {
 		return err
 	}
-	fd, err := zip.Create("artifact.yaml")
+	artifact_name := self.config_obj.Name
+	if artifact_name == "" {
+		artifact_name = "artifact"
+	}
+
+	fd, err := zip.Create(artifact_name + ".yaml")
 	if err != nil {
 		return err
 	}
@@ -72,7 +80,7 @@ func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
 	if err != nil {
 		return err
 	}
-	fd.Write(self.rules.Bytes())
+	fd.Write(self.getRules())
 
 	fd, err = zip.Create("original_sigma_rules.yml")
 	if err != nil {
@@ -84,7 +92,7 @@ func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
 	if err != nil {
 		return err
 	}
-	fd.Write(MustMarshal(self.config_obj.FieldMappings))
+	fd.Write(MustMarshal(self.config_obj.field_mappings))
 
 	fd, err = zip.Create("default_details.json")
 	if err != nil {
@@ -97,6 +105,25 @@ func (self *CompilerContext) WriteArtifact(zip *zip.Writer) error {
 		return err
 	}
 	fd.Write(MustMarshalIndent(self.GetRejected()))
+
+	for _, inc := range self.config_obj.IncludeArtifacts {
+		fd, err := os.Open(inc)
+		if err != nil {
+			return err
+		}
+		data, err := ioutil.ReadAll(fd)
+		if err != nil {
+			return err
+		}
+		fd.Close()
+
+		out_fd, err := zip.Create(filepath.Base(inc))
+		if err != nil {
+			return err
+		}
+
+		out_fd.Write(data)
+	}
 
 	return nil
 }

@@ -1,0 +1,247 @@
+LET temp <= "C:\\tmp\\"[]LET _ <= SELECT mock(plugin="wmi", results=parse_json_array(data=WMIMock)), mock(plugin="modules", results=parse_json_array(data=ModulesMock)), mock(plugin="process_tracker_pslist", results=parse_json_array(data=PsListMock)), mock(function="process_tracker_get", results=parse_json_array(data=ProcessTrackerGet)), mock(function="hash", results=parse_json_array(data=HashMock)), mock(plugin="netstat", results=parse_json_array(data=NetstatMock)), mock(plugin="info", results=parse_json_array(data=InfoMock)) FROM scope()[]SELECT * FROM Artifact.Windows.Sigma.Base(ROOT=temp, SigmaRules=Rules, Debug=True, RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=".") ORDER BY Timestamp[
+ {
+  "Timestamp": null,
+  "Computer": "devlp",
+  "Channel": "Velociraptor",
+  "EID": null,
+  "Level": "high",
+  "Title": "Golden Test - netstat",
+  "RecordID": null,
+  "Details": {
+   "CommandLine": [
+    "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+   ],
+   "Status": "ESTAB",
+   "Image": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "LocalIP": "192.168.0.1",
+   "LocalPort": 445,
+   "RemoteIP": "123.45.56.78",
+   "RemotePort": 0,
+   "ParentImage": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "Protocol": "TCP"
+  },
+  "_Event": {
+   "System": {
+    "Computer": "devlp",
+    "Channel": "Velociraptor"
+   },
+   "EventData": {
+    "CommandLine": [
+     "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+    ],
+    "Status": "ESTAB",
+    "Image": [
+     "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+    ],
+    "LocalIP": "192.168.0.1",
+    "LocalPort": 445,
+    "RemoteIP": "123.45.56.78",
+    "RemotePort": 0,
+    "ParentImage": [
+     "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+    ],
+    "Protocol": "TCP"
+   },
+   "Message": null
+  },
+  "_Match": {
+   "match": true,
+   "search_results": {
+    "selection_1": true,
+    "selection_2": true,
+    "selection_3": true,
+    "selection_4": true,
+    "selection_5": true,
+    "selection_6": true,
+    "selection_7": true,
+    "selection_8": true,
+    "selection_9": true
+   },
+   "condition_results": [
+    true
+   ]
+  },
+  "System": {
+   "Computer": "devlp",
+   "Channel": "Velociraptor"
+  },
+  "EventData": {
+   "CommandLine": [
+    "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+   ],
+   "Status": "ESTAB",
+   "Image": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "LocalIP": "192.168.0.1",
+   "LocalPort": 445,
+   "RemoteIP": "123.45.56.78",
+   "RemotePort": 0,
+   "ParentImage": [
+    "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+   ],
+   "Protocol": "TCP"
+  },
+  "_Rule": {
+   "Title": "Golden Test - netstat",
+   "Logsource": {
+    "Category": "network_connection",
+    "Product": "windows",
+    "Service": "netstat"
+   },
+   "Detection": {
+    "Searches": {
+     "selection_1": {
+      "event_matchers": [
+       [
+        {
+         "field": "CommandLine",
+         "values": [
+          "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+         ]
+        }
+       ]
+      ]
+     },
+     "selection_2": {
+      "event_matchers": [
+       [
+        {
+         "field": "Image",
+         "values": [
+          "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+         ]
+        }
+       ]
+      ]
+     },
+     "selection_3": {
+      "event_matchers": [
+       [
+        {
+         "field": "LocalIP",
+         "values": [
+          "192.168.0.1"
+         ]
+        }
+       ]
+      ]
+     },
+     "selection_4": {
+      "event_matchers": [
+       [
+        {
+         "field": "LocalPort",
+         "values": [
+          445
+         ]
+        }
+       ]
+      ]
+     },
+     "selection_5": {
+      "event_matchers": [
+       [
+        {
+         "field": "RemoteIP",
+         "values": [
+          "123.45.56.78"
+         ]
+        }
+       ]
+      ]
+     },
+     "selection_6": {
+      "event_matchers": [
+       [
+        {
+         "field": "RemotePort",
+         "values": [
+          0
+         ]
+        }
+       ]
+      ]
+     },
+     "selection_7": {
+      "event_matchers": [
+       [
+        {
+         "field": "ParentImage",
+         "values": [
+          "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+         ]
+        }
+       ]
+      ]
+     },
+     "selection_8": {
+      "event_matchers": [
+       [
+        {
+         "field": "Protocol",
+         "values": [
+          "TCP"
+         ]
+        }
+       ]
+      ]
+     },
+     "selection_9": {
+      "event_matchers": [
+       [
+        {
+         "field": "Status",
+         "values": [
+          "ESTAB"
+         ]
+        }
+       ]
+      ]
+     }
+    },
+    "Condition": [
+     {
+      "Search": [
+       {
+        "Name": "selection_1"
+       },
+       {
+        "Name": "selection_2"
+       },
+       {
+        "Name": "selection_3"
+       },
+       {
+        "Name": "selection_4"
+       },
+       {
+        "Name": "selection_5"
+       },
+       {
+        "Name": "selection_6"
+       },
+       {
+        "Name": "selection_7"
+       },
+       {
+        "Name": "selection_8"
+       }
+      ]
+     }
+    ]
+   },
+   "status": "test",
+   "Author": "test",
+   "Level": "high",
+   "References": [
+    "https://github.com/Velocidex/velociraptor"
+   ]
+  },
+  "_Source": "Windows.Sigma.Base"
+ }
+]

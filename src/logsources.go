@@ -10,8 +10,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Velocidex/sigma-go"
 	"github.com/Velocidex/yaml/v2"
-	"github.com/bradleyjkemp/sigma-go"
 )
 
 type Stats struct {
@@ -45,7 +45,7 @@ type CompilerContext struct {
 
 	config_obj *Config
 
-	rules       bytes.Buffer
+	rules       []string
 	level_regex *regexp.Regexp
 
 	total_visited_rules int
@@ -55,6 +55,8 @@ type CompilerContext struct {
 	original_rules *bytes.Buffer
 
 	event_resolver *EventResolver
+
+	imported_configs []*Config
 }
 
 func NewCompilerContext() *CompilerContext {
@@ -106,6 +108,33 @@ func (self *CompilerContext) LoadConfigFromString(data string) error {
 
 	self.event_resolver.config_obj = config_obj
 
+	for _, path := range config_obj.ImportConfigs {
+		fd, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+
+		data, err := ioutil.ReadAll(fd)
+		if err != nil {
+			return err
+		}
+		config_obj = &Config{}
+		err = yaml.Unmarshal(data, config_obj)
+		if err != nil {
+			return err
+		}
+
+		// Now try again to overlay the original config data.
+		err = yaml.Unmarshal([]byte(data), config_obj)
+		if err != nil {
+			return err
+		}
+
+		self.imported_configs = append(self.imported_configs, config_obj)
+		self.config_obj.mergeConfig(config_obj)
+	}
+	self.config_obj.mergeConfig(self.config_obj)
+
 	return nil
 }
 
@@ -134,8 +163,9 @@ func (self *CompilerContext) LoadRejectSupporessions(filename string) error {
 	return nil
 }
 
+// Get the source_spec from either this config or imported_configs
 func (self *CompilerContext) Resolve(source_spec string) bool {
-	_, pres := self.config_obj.Sources[source_spec]
+	_, pres := self.config_obj.sources[source_spec]
 	return pres
 }
 
@@ -261,7 +291,7 @@ func (self *CompilerContext) Stats() Stats {
 
 func (self *CompilerContext) getSourceFromChannel(
 	channel string) string {
-	for source, query := range self.config_obj.Sources {
+	for source, query := range self.config_obj.sources {
 		for _, c := range query.Channel {
 			if c == channel {
 				return source

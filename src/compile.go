@@ -2,6 +2,7 @@ package main
 
 import (
 	"archive/zip"
+	"bytes"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -11,8 +12,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Velocidex/sigma-go"
 	kingpin "github.com/alecthomas/kingpin/v2"
-	"github.com/bradleyjkemp/sigma-go"
 	"gopkg.in/yaml.v3"
 )
 
@@ -87,6 +88,11 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 		return nil
 	}
 
+	if rule.Title == "" {
+		self.addError("Rule without Title", path)
+		return nil
+	}
+
 	// Sometimes rules have the same title so we make the title
 	// unique.
 	count, pres := self.seen_rules[rule.Title]
@@ -150,7 +156,8 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 		return nil
 	}
 
-	yamlEncoder := yaml.NewEncoder(&self.rules)
+	buf := &bytes.Buffer{}
+	yamlEncoder := yaml.NewEncoder(buf)
 	yamlEncoder.SetIndent(2)
 	err = yamlEncoder.Encode(new_rule)
 	if err != nil {
@@ -159,7 +166,8 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	}
 
 	DebugPrint("Processing %v\n", path)
-	self.rules.Write([]byte("\n---\n"))
+	self.rules = append(self.rules, string(buf.Bytes()))
+
 	self.incLogSource(logsource)
 
 	// Only write the original_rules we actually added -

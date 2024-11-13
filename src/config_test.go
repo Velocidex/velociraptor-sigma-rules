@@ -16,7 +16,7 @@ func TestConfig(t *testing.T) {
 		expectedInvalidFields int
 	}{
 		"CuratedRulesTest": {
-			configFile:            "../config/velociraptor_windows_rules.yaml",
+			configFile:            "../config/windows_base.yaml",
 			configLoadError:       "",
 			doCompileError:        "",
 			expectedMissingFields: 0,

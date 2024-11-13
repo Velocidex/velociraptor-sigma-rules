@@ -38,7 +38,7 @@ func (self *EventResolver) CheckFieldOnLogSource(field, logsource string) bool {
 		return true
 	}
 
-	log_def, pres := self.config_obj.Sources[logsource]
+	log_def, pres := self.config_obj.sources[logsource]
 	if !pres {
 		return false
 	}
@@ -74,7 +74,7 @@ func (self *EventResolver) CheckFieldOnLogSource(field, logsource string) bool {
 
 func (self *EventResolver) CheckFieldMapping(field string) bool {
 	// Is the fields mapping defined in the config file?
-	_, pres := self.config_obj.FieldMappings[field]
+	_, pres := self.config_obj.field_mappings[field]
 	if pres {
 		return true
 	}
@@ -83,7 +83,7 @@ func (self *EventResolver) CheckFieldMapping(field string) bool {
 	_, pres = self.all_fields[field]
 	if pres {
 		// Add an automatic log source
-		self.config_obj.FieldMappings[field] = fmt.Sprintf("x=>x.EventData.%s", field)
+		self.config_obj.field_mappings[field] = fmt.Sprintf("x=>x.EventData.%s", field)
 		return true
 	}
 

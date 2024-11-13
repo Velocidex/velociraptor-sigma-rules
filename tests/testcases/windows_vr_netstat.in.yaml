@@ -1,0 +1,180 @@
+Parameters:
+  ModulesMock: |
+    [{
+        "ProcessID": 10112,
+        "ModuleBaseAddress": 140701690101760,
+        "ModuleBaseSize": 73728,
+        "ModuleName": "lsass.exe",
+        "ExePath": "C:\\Windows\\system32\\lsass.exe"
+      },
+      {
+        "ProcessID": 10112,
+        "ModuleBaseAddress": 140730032128000,
+        "ModuleBaseSize": 2191360,
+        "ModuleName": "ntdll.dll",
+        "ExePath": "C:\\Windows\\SYSTEM32\\ntdll.dll"
+    }]
+  WMIMock: |
+    [{
+        "AcceptPause": "false",
+        "AcceptStop": "false",
+        "Caption": "AllJoyn Router Service",
+        "CheckPoint": 0,
+        "CreationClassName": "Win32_Service",
+        "DelayedAutoStart": "false",
+        "Description": "Routes AllJoyn messages for the local AllJoyn clients. If this service is stopped the AllJoyn clients that do not have their own bundled routers will be unable to run.",
+        "DesktopInteract": "false",
+        "DisplayName": "AllJoyn Router Service",
+        "ErrorControl": "Normal",
+        "ExitCode": 1077,
+        "InstallDate": "",
+        "Name": "AJRouter",
+        "PathName": "C:\\Windows\\system32\\svchost.exe -k LocalServiceNetworkRestricted -p",
+        "ProcessId": 0,
+        "ServiceSpecificExitCode": 0,
+        "ServiceType": "Share Process",
+        "Started": "false",
+        "StartMode": "Manual",
+        "StartName": "NT AUTHORITY\\LocalService",
+        "State": "Stopped",
+        "Status": "OK",
+        "SystemCreationClassName": "Win32_ComputerSystem",
+        "SystemName": "DEVLP",
+        "TagId": 0,
+        "WaitHint": 0
+    }]
+  PsListMock: |
+    [{
+        "Pid": "10112",
+        "Ppid": "1676",
+        "Name": "bad.exe",
+        "Threads": 24,
+        "Username": "NT AUTHORITY\\SYSTEM",
+        "OwnerSid": "S-1-5-18",
+        "CommandLine": "\"C:\\bad\\bad.exe\" /test -p \"C:\\bad\\bad.dit\"",
+        "Exe": "C:\\bad\\bad.exe",
+        "TokenIsElevated": "true",
+        "CreateTime": "2024-02-17T04:26:13.6996281Z",
+        "User": "4.828125",
+        "System": "2.265625",
+        "IoCounters": {
+          "ReadOperationCount": 2894,
+          "WriteOperationCount": 1722,
+          "OtherOperationCount": 4445,
+          "ReadTransferCount": 21496655,
+          "WriteTransferCount": 257900,
+          "OtherTransferCount": 167224
+        },
+        "Memory": {
+          "PageFaultCount": 36336,
+          "PeakWorkingSetSize": 58355712,
+          "WorkingSetSize": 57643008,
+          "QuotaPeakPagedPoolUsage": 300056,
+          "QuotaPagedPoolUsage": 278888,
+          "QuotaPeakNonPagedPoolUsage": 95608,
+          "QuotaNonPagedPoolUsage": 36344,
+          "PagefileUsage": 36741120,
+          "PeakPagefileUsage": 38678528
+        },
+        "PebBaseAddress": 55668736,
+        "IsWow64": "true",
+        "StartTime": "2024-02-17T04:26:13.6996281Z",
+        "EndTime": "0001-01-01T00:00:00Z"
+    }]
+  ProcessTrackerGet: |
+    [{
+        "Id": "1676",
+        "ParentId": "1740",
+        "RealParentId": "",
+        "UpdateType": "",
+        "StartTime": "2024-02-22T09:25:59.2051994Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "Data": {
+          "Pid": 1676,
+          "Ppid": 1740,
+          "Name": "pwsh.exe",
+          "Threads": 29,
+          "Username": "NT AUTHORITY\\SYSTEM",
+          "OwnerSid": "S-1-5-18",
+          "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\"",
+          "Exe": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+          "TokenIsElevated": true,
+          "CreateTime": "2024-02-22T09:25:59.2051994Z"
+        }
+    }]
+  HashMock: |
+    [{
+        "MD5": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "SHA1": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "SHA256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }]
+  NetstatMock: |
+    [{
+        "Fd": 0,
+        "Family": 2,
+        "Type": 1,
+        "Laddr": {
+          "IP": "192.168.0.1",
+          "Port": 445
+        },
+        "Raddr": {
+          "IP": "123.45.56.78",
+          "Port": 0
+        },
+        "Status": "ESTAB",
+        "Pid": 10112,
+        "FamilyString": "IPv4",
+        "Timestamp": "2024-02-17T04:26:11Z",
+        "TypeString": "TCP"
+    }]
+  InfoMock: |
+    [{
+        "Hostname": "devlp"
+    }]
+  Rules: |
+    title: Golden Test - netstat
+    logsource:
+      category: network_connection
+      product: windows
+      service: netstat
+    detection:
+      condition: selection_1 and selection_2 and selection_3 and selection_4 and selection_5 and selection_6 and selection_7 and selection_8
+      selection_1:
+        CommandLine: "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -noexit -command \"try { . \\\"c:\\bad\\bad.ps1\\\" } catch {}\""
+      selection_2:
+        Image: "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+      selection_3:
+        LocalIP: "192.168.0.1"
+      selection_4:
+        LocalPort: 445
+      selection_5:
+        RemoteIP: "123.45.56.78"
+      selection_6:
+        RemotePort: 0
+      selection_7:
+        ParentImage: "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+      selection_8:
+        Protocol: "TCP"
+      selection_9:
+        Status: "ESTAB"
+    status: test
+    author: test
+    level: high
+    references:
+      - https://github.com/Velocidex/velociraptor
+
+Queries:
+  - LET temp <= "C:\\tmp\\"
+  - LET _ <= SELECT
+        mock(plugin="wmi", results=parse_json_array(data=WMIMock)),
+        mock(plugin="modules", results=parse_json_array(data=ModulesMock)),
+        mock(plugin="process_tracker_pslist", results=parse_json_array(data=PsListMock)),
+        mock(function="process_tracker_get", results=parse_json_array(data=ProcessTrackerGet)),
+        mock(function="hash", results=parse_json_array(data=HashMock)),
+        mock(plugin="netstat", results=parse_json_array(data=NetstatMock)),
+        mock(plugin="info", results=parse_json_array(data=InfoMock))
+      FROM scope()
+  - SELECT * FROM Artifact.Windows.Sigma.Base(ROOT=temp,
+      SigmaRules=Rules, Debug=True,
+      RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=".")
+    ORDER BY Timestamp

@@ -1,0 +1,998 @@
+Name: Windows.Sigma.BaseEvents
+
+Preamble: |
+  name: Windows.Sigma.BaseEvents
+  description: |
+    This artifact builds the basic set of log sources and field
+    mappings used for Event driven Sigma rules on Windows.
+
+    This artifact was built on {{ .Time }}
+
+  type: CLIENT_EVENT
+
+  parameters:
+    - name: ROOT
+      description: The Event Log Directory we use to read all logs
+      default: C:/Windows/System32/WinEvt/Logs/
+
+    - name: Debug
+      type: bool
+      description: Enable full debug trace
+
+    - name: RuleLevel
+      type: choices
+      default: Critical
+      choices:
+        - "Critical"
+        - "Critical and High"
+        - "Critical, High, and Medium"
+        - "All"
+
+    - name: RuleStatus
+      type: choices
+      default: Stable
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+    - name: RuleExclusions
+      type: csv
+      description: |
+        Some rules in the Hayabusa set are extremely noisy, so they
+        are disabled by default.
+      default: |
+        RuleTitleRegex,Reason
+        noisy,All rules marked noisy should be disabled by default.
+
+    - name: SigmaRules
+      description: If provided we use these rules instead of the built in set.
+
+    - name: NTFS_CACHE_TIME
+      type: int
+      description: How often to flush the NTFS cache. (Default is 10 Min).
+      default: "600"
+
+    - name: EVTX_FREQUENCY
+      type: int
+      default: 60
+      description: |
+        How often in seconds to check for event log changes. Lower
+        number means more real time detection but potentially higher
+        CPU utilization.
+
+ExportTemplate: |
+  export: |
+    LET ExcludeRegex <= if(condition=RuleExclusions,
+         then=join(array=RuleExclusions.RuleTitleRegex, sep="|"),
+         else="XXXXXXX")
+
+    LET RuleStatusRegex <= get(item=dict(
+         `Stable`="stable",
+         `Stable and Experimental`="stable|experimental",
+         `Stable and Test`="stable|test",
+         `All Rules`="."), member=RuleStatus)
+
+    LET RuleLevelRegex <= get(item=dict(
+         `Critical`="critical",
+         `Critical and High`="critical|high",
+         `Critical, High, and Medium`="critical|high|medium|default",
+         `All`="."), member=RuleLevel)
+
+    LET MandatoryLabelLookup <= dict(
+        `S-1-16-0`= 'UNTRUSTED',
+        `S-1-16-4096`= 'LOW_INTEGRITY',
+        `S-1-16-8192`= 'MEDIUM_INTEGRITY',
+        `S-1-16-8448`= 'MEDIUM_HIGH_INTEGRITY',
+        `S-1-16-12288`= 'HIGH_INTEGRITY',
+        `S-1-16-16384`= 'SYSTEM_INTEGRITY',
+        `S-1-16-20480`= 'PROTECTED_PROCESS')
+
+    LET TokenElevationTypeLookup <= dict(
+        `%%1936`= 'FULL_TOKEN',
+        `%%1937`= 'ELEVATED_TOKEN',
+        `%%1938`= 'LIMITED_TOKEN')
+    LET GetValue(OSPath) = stat(filename=OSPath, accessor="registry").Data.value
+    LET Hostname <= dict(H={ SELECT Hostname FROM info()}).H[0].Hostname
+
+    {{ if .LogSources }}
+    LET LogSources <= sigma_log_sources(
+    {{ range .LogSources }}
+    {{- if .Description }}// {{ .Description }}
+    {{ end }}
+      `{{ .Name }}`={
+  {{ Indent .Query 5 }}
+      },
+    {{- end -}}
+    `velociraptor/info/*`={ SELECT * FROM info() })
+    {{ end }}
+
+    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
+
+    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+
+    LET DefaultDetailsLambda = '''{{.Base64DefaultDetailsQuery}}'''
+    LET RuleFilterLambda = '''x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex'''
+
+    LET X = scope()
+
+FieldMappings:
+  MandatoryLabel: |
+    x=>get(item=MandatoryLabelLookup, member=x.EventData.MandatoryLabel || "-")
+
+  TokenElevationType:
+    x=>get(item=TokenElevationTypeLookup, member=x.EventData.TokenElevationType || "-")
+
+  AccessList: "x=>x.EventData.AccessList"
+  AccessMask: "x=>x.EventData.AccessMask"
+  Accesses: "x=>x.EventData.Accesses"
+  AccountDomain: "x=>x.EventData.AccountDomain"
+  AccountName: "x=>x.EventData.AccountName"
+  Account_Name: "x=>x.EventData.Account_Name"
+  Action: "x=>x.EventData.Action"
+  AllowedToDelegateTo: "x=>x.EventData.AllowedToDelegateTo"
+  ApplicationPath: "x=>x.EventData.ApplicationPath"
+  AttributeLDAPDisplayName: "x=>x.EventData.AttributeLDAPDisplayName"
+  AttributeValue: "x=>x.EventData.AttributeValue"
+  AuditPolicyChanges: "x=>x.EventData.AuditPolicyChanges"
+  AuditSourceName: "x=>x.EventData.AuditSourceName"
+  AuthenticationPackageName: "x=>x.EventData.AuthenticationPackageName"
+  CallTrace: "x=>x.EventData.CallTrace"
+  CallerProcessName: "x=>x.EventData.CallerProcessName"
+  Caller_Process_Name: "x=>x.EventData.Caller_Process_Name"
+  CallingProcessName: "x=>x.EventData.CallingProcessName"
+  CategoryName: "x=>x.EventData.`Category Name`"
+  CertThumbprint: "x=>x.EventData.CertThumbprint"
+  Channel: "x=>x.System.Channel"
+  ClassName: "x=>x.EventData.ClassName"
+  ClientAddress: "x=>x.EventData.ClientAddress"
+  Client_Address: "x=>x.EventData.Client_Address"
+  ClientName: "x=>x.EventData.ClientName"
+  CommandLine: "x=>x.EventData.CommandLine"
+  Company: "x=>x.EventData.Company"
+  Computer: "x=>x.System.Computer"
+  ComputerName: "x=>x.System.Computer"
+  ContextInfo: "x=>x.EventData.ContextInfo"
+  CurrentDirectory: "x=>x.EventData.CurrentDirectory"
+  Data: "x=>serialize(item=x.EventData)"
+  Description: "x=>x.EventData.Description"
+  DestAddress: "x=>x.EventData.DestAddress"
+  DestPort: "x=>x.EventData.DestPort"
+  Destination: "x=>x.EventData.Destination"
+  DestinationAddress: "x=>x.EventData.DestinationAddress"
+  DestinationHostname: "x=>x.EventData.DestinationHostname"
+  DestinationIp: "x=>x.EventData.DestinationIp"
+  DestinationIsIpv6: "x=>x.EventData.DestinationIsIpv6"
+  DestinationPort: "x=>x.EventData.DestinationPort"
+  Details: "x=>x.EventData.Details"
+  DetectionSource: "x=>x.EventData.DetectionSource"
+  DetectionUser: "x=>x.EventData.`Detection User`"
+  Device: "x=>x.EventData.Device"
+  DeviceClassName: "x=>x.EventData.DeviceClassName"
+  DeviceDescription: "x=>x.EventData.DeviceDescription"
+  DeviceInstanceID: "x=>x.UserData.InstallDeviceID.DeviceInstanceID"
+  DeviceName: "x=>x.EventData.DeviceName"
+  DomainName: "x=>x.EventData.SubjectDomainName"
+  DriverDescription: "x=>x.UserData.InstallDeviceID.DriverDescription"
+  DriverProvider: "x=>x.UserData.InstallDeviceID.DriverProvider"
+  InstallStatus: "x=>x.UserData.InstallDeviceID.InstallStatus"
+  EngineVersion: "x=>x.EventData.EngineVersion"
+  ErrorCode: "x=>x.EventData.ErrorCode"
+  EventID: "x=>x.System.EventID.Value"
+  EventType: "x=>x.EventData.EventType"
+  ExecutionProcessID: "x=>x.System.Execution.ProcessID"
+  FailureCode: "x=>x.EventData.FailureCode"
+  FilePath: "x=>x.EventData.FilePath"
+  FileVersion: "x=>x.EventData.FileVersion"
+  Filename: "x=>x.EventData.Filename"
+  GrantedAccess: "x=>x.EventData.GrantedAccess"
+  GroupName: "x=>x.EventData.GroupName"
+  GroupSid: "x=>x.EventData.GroupSid"
+  Hashes: "x=>x.EventData.Hashes"
+  HiveName: "x=>x.EventData.HiveName"
+  HostApplication: "x=>x.EventData.HostApplication"
+  HostName: "x=>x.EventData.HostName"
+  HostVersion: "x=>x.EventData.HostVersion"
+  Image: "x=>x.EventData.Image"
+  image: "x=>x.EventData.Image"
+  ImageLoaded: "x=>x.EventData.ImageLoaded"
+  ImagePath: "x=>x.EventData.ImagePath"
+  Imphash: "x=>x.EventData.Hashes"
+  Initiated: "x=>x.EventData.Initiated"
+  InstanceID: "x=>x.UserData.UMDFHostDeviceArrivalBegin.InstanceId"
+  IntegrityLevel: "x=>x.EventData.IntegrityLevel"
+  IpAddress: "x=>x.EventData.IpAddress"
+  IpPort: "x=>x.EventData.IpPort"
+  JobTitle: "x=>x.EventData.name"
+  KeyLength: "x=>x.EventData.KeyLength"
+  Keywords: "x=>x.System.Keywords"
+  LDAPDisplayName: "x=>x.EventData.LDAPDisplayName"
+  LayerRTID: "x=>x.EventData.LayerRTID"
+  Level: "x=>x.System.Level"
+  LogFileClearedChannel: "x=>x.UserData.LogFileCleared.Channel"
+  LogFileClearedSubjectUserName: "x=>x.UserData.LogFileCleared.SubjectUserName"
+  LogonId: "x=>x.EventData.LogonId"
+  LogonID: "x=>x.EventData.LogonID"
+  LogonProcessName: "x=>x.EventData.LogonProcessName"
+  LogonType: "x=>x.EventData.LogonType"
+  Logon_Type: "x=>x.EventData.LogonType"
+  Logon_Account: "x=>x.EventData.Logon_Account"
+  MachineName: "x=>x.EventData.MachineName"
+  MemberName: "x=>x.EventData.MemberName"
+  MemberSid: "x=>x.EventData.MemberSid"
+  Message: "x=>x.EventData"
+  ModifyingApplication: "x=>x.EventData.ModifyingApplication"
+  NewName: "x=>x.EventData.NewName"
+  NewTemplateContent: "x=> x.EventData.NewTemplateContent"
+  NewUacValue: "x=>x.EventData.NewUacValue"
+  NewValue: "x=>x.EventData.NewValue"
+  New_Value: "x=>x.EventData.`New Value`"
+  NewProcessName: "x=>x.EventData.NewProcessName"
+  NewProcessId: "x=>x.EventData.NewProcessId"
+  ObjectClass: "x=>x.EventData.ObjectClass"
+  ObjectName: "x=>x.EventData.ObjectName"
+  ObjectServer: "x=>x.EventData.ObjectServer"
+  ObjectType: "x=>x.EventData.ObjectType"
+  ObjectValueName: "x=>x.EventData.ObjectValueName"
+  OldUacValue: "x=>x.EventData.OldUacValue"
+  Origin: "x=>x.EventData.Origin"
+  OriginalFileName: "x=>x.EventData.OriginalFileName"
+  OriginalFilename: "x=>x.EventData.OriginalFileName"
+  param1: "x=>x.EventData.param1"
+  param2: "x=>x.EventData.param2"
+  param3: "x=>x.EventData.param3"
+  param4: "x=>x.EventData.param4"
+  param5: "x=>x.EventData.param5"
+  ParentCommandLine: "x=>x.EventData.ParentCommandLine"
+  ParentImage: "x=>x.EventData.ParentImage"
+
+  # Field does not exist in Sysmon
+  # ParentIntegrityLevel: "x=>x.EventData.ParentIntegrityLevel"
+  Protocol: "x=>x.EventData.Protocol"
+  Contents: "x=>x.EventData.Contents"
+  Hash: "x=>x.EventData.Hash"
+  Type: "x=>x.EventData.Type"
+
+  ## Sysmon hashes are all in the same line
+  md5: "x=>parse_string_with_regex(string=x.EventData.Hash || '', regex='MD5=([^,]+)').g1"
+  sha1: "x=>parse_string_with_regex(string=x.EventData.Hash || '', regex='SHA1=([^,]+)').g1"
+  sha256: "x=>parse_string_with_regex(string=x.EventData.Hash || '', regex='SHA256=([^,]+)').g1"
+
+  ## Sysmon EID 3
+  SourceHostname: "x=>x.EventData.SourceHostname"
+  SourceIsIpv6: "x=>x.EventData.SourceIsIpv6"
+  PreviousCreationUtcTime: "x=>x.EventData.PreviousCreationUtcTime"
+
+  SourceIp: "x=>x.EventData.SourceIp"
+
+  ParentProcessName: "x=>x.EventData.ParentProcessName"
+  ParentUser: "x=>x.EventData.ParentUser"
+  PasswordLastSet: "x=>x.EventData.PasswordLastSet"
+  Path: "x=>x.EventData.Path"
+  Payload: "x=>x.EventData.Payload"
+  PipeName: "x=>x.EventData.PipeName"
+  PossibleCause: "x=>x.UserData.PossibleCause"
+  PreAuthType: "x=>x.EventData.PreAuthType"
+  PrivilegeList: "x=>x.EventData.PrivilegeList"
+  ProcessCommandLine: "x=>x.EventData.ProcessCommandLine"
+  ProcessGuid: "x=>x.EventData.ProcessGuid"
+  ProcessId: "x=>x.EventData.ProcessId"
+  ProcessName: "x=>x.EventData.ProcessName"
+  Product: "x=>x.EventData.Product"
+  Properties: "x=>x.EventData.Properties"
+  Provider: "x=>x.UserData.Provider"
+  ProviderName: "x=>x.System.Provider.Name"
+  Provider_Name: "x=>x.System.Provider.Name"
+  QNAME: "x=>x.EventData.QNAME"
+  query: "x=>x.EventData.Query"
+  Query: "x=>x.UserData.Query"
+  QueryName: "x=>x.EventData.QueryName"
+  QueryResults: "x=>x.EventData.QueryResults"
+  QueryStatus: "x=>x.EventData.QueryStatus"
+  RelativeTargetName: "x=>x.EventData.RelativeTargetName"
+  RuleName: "x=>x.EventData.RuleName"
+  SAMAccountName: "x=>x.EventData.SamAccountName"
+  SamAccountName: "x=>x.EventData.SamAccountName"
+  ScriptBlockText: "x=>x.EventData.ScriptBlockText"
+  SearchFilter: "x=>x.System.SearchFilter"
+  SecurityUserID: "x=>x.System.Security.UserID"
+  ServerName: "x=>x.System.ServerName"
+  Service: "x=>x.EventData.Service"
+  ServiceFileName: "x=>x.EventData.ServiceFileName"
+  ServiceName: "x=>x.EventData.ServiceName"
+  ServicePrincipalNames: "x=>x.EventData.ServicePrincipalNames"
+  ServiceStartType: "x=>x.EventData.ServiceStartType"
+  ServiceType: "x=>x.EventData.ServiceType"
+  SeverityID: "x=>x.EventData.`Severity ID`"
+  SeverityName: "x=>x.EventData.`Severity Name`"
+  ShareLocalPath: "x=>x.EventData.ShareLocalPath"
+  ShareName: "x=>x.EventData.ShareName"
+  SidHistory: "x=>x.EventData.SidHistory"
+  Signature: "x=>x.EventData.Signature"
+  SignatureStatus: "x=>x.EventData.SignatureStatus"
+  Signed: "x=>x.EventData.Signed"
+  Source: "x=>x.System.Provider_Name"
+  SourceAddress: "x=>x.EventData.SourceAddress"
+  SourceImage: "x=>x.EventData.SourceImage"
+  SourceNetworkAddress: "x=>x.EventData.SourceNetworkAddress"
+  SourcePort: "x=>x.EventData.SourcePort"
+  Source_Name: "x=>x.EventData.`Source Name`"
+  Source_Network_Address: "x=>x.EventData.Source_Network_Address"
+  Source_WorkStation: "x=>x.EventData.Source_WorkStation"
+  StartAddress: "x=>x.EventData.StartAddress"
+  StartFunction: "x=>x.EventData.StartFunction"
+  StartModule: "x=>x.EventData.StartModule"
+  StartType: "x=>x.EventData.StartType"
+  State: "x=>x.EventData.State"
+  Status: "x=>x.EventData.Status"
+  SubStatus: "x=>x.EventData.SubStatus"
+  SubjectDomainName: "x=>x.EventData.SubjectDomainName"
+  SubjectLogonId: "x=>x.EventData.SubjectLogonId"
+  SubjectUserName: "x=>x.EventData.SubjectUserName"
+  SubjectUserSid: "x=>x.EventData.SubjectUserSid"
+  TargetDomainName: "x=>x.EventData.TargetDomainName"
+  TargetFilename: "x=>x.EventData.TargetFilename"
+  TargetInfo: "x=>x.EventData.TargetInfo"
+  TargetImage: "x=>x.EventData.TargetImage"
+  TargetLogonId: "x=>x.EventData.TargetLogonId"
+  TargetObject: "x=>x.EventData.TargetObject"
+  TargetProcessAddress: "x=>x.EventData.TargetProcessAddress"
+  TargetOutboundUserName: "x=>x.EventData.TargetOutboundUserName"
+  TargetServerName: "x=>x.EventData.TargetServerName"
+  TargetSid: "x=>x.EventData.TargetSid"
+  TargetUserName: "x=>x.EventData.TargetUserName"
+  TaskDate: "x=>x.EventData.TaskContent"
+  TaskName: "x=>x.EventData.TaskName"
+  TemplateContent: "x=>x.EventData.TemplateContent"
+  Timestamp: "x=>x.System.TimeCreated.SystemTime"
+  ThreatName: "x=>x.EventData.`Threat Name`"
+  TicketEncryptionType: "x=>x.EventData.TicketEncryptionType"
+  TicketOptions: "x=>x.EventData.TicketOptions"
+  Url: "x=>x.EventData.url"
+  User: "x=>x.EventData.User"
+  UserName: "x=>x.EventData.UserName"
+  Value: "x=>x.EventData.Value"
+  Version: "x=>x.System.Version"
+  WindowsDefenderProcessName: "x=>x.EventData.`Process Name`"
+  Workstation: "x=>x.EventData.Workstation"
+  WorkstationName: "x=>x.EventData.WorkstationName"
+  param1: "x=>x.EventData.param1"
+  param2: "x=>x.EventData.param2"
+  service: "x=>x.EventData.Service"
+  sha1: "x=>x.EventData.Hashes"
+  UserDataProviderName: "x=>x.UserData.Operation_StartedOperational.ProviderName"
+  UserDataCode: "x=>x.UserData.Operation_StartedOperational.Code"
+  UserDataHostProcess: "x=>x.UserData.Operation_StartedOperational.HostProcess"
+  UserDataProviderPath: "x=>x.UserData.Operation_StartedOperational.ProviderPath"
+  UserDataProcessID: "x=>x.UserData.Operation_StartedOperational.ProcessID"
+  UserDataNamespace: "x=>x.UserData.Operation_ESStoConsumerBinding.Namespace"
+  UserDataNamespaceName: "x=>x.UserData.Operation_TemporaryEssStarted.NamespaceName"
+  UserDataQuery: "x=>x.UserData.Operation_TemporaryEssStarted.Query"
+  UserDataUser: "x=>x.UserData.Operation_TemporaryEssStarted.User"
+  UserDataProcessid: "x=>x.UserData.Operation_TemporaryEssStarted.Processid"
+  UserDataConsumer: "x=>x.UserData.Operation_ESStoConsumerBinding.CONSUMER"
+  UserDataESS: "x=>x.UserData.Operation_ESStoConsumerBinding.ESS"
+  UserDataPossibleCause: "x=>x.UserData.Operation_ESStoConsumerBinding.PossibleCause"
+  UserDataParam1: "x=>x.UserData.EventXML.Param1"
+  UserDataParam2: "x=>x.UserData.EventXML.Param2"
+  UserDataParam3: "x=>x.UserData.EventXML.Param3"
+  UserDataUser: "x=>x.UserData.EventXML.User"
+  UserDataSessionID: "x=>x.UserData.EventXML.SessionID"
+  UserDataAddress: "x=>x.UserData.EventXML.Address"
+  SysmonVersion: "x=>x.EventData.SysmonVersion"
+  OperationEssStartedNamespaceName: "x=>x.UserData.Operation_EssStarted.NamespaceName"
+  OperationEssStartedQuery: "x=>x.UserData.Operation_EssStarted.Query"
+  OperationEssStartedUser: "x=>x.UserData.Operation_EssStarted.User"
+  OperationEssStartedProcessid: "x=>x.UserData.Operation_EssStarted.Processid"
+  OperationEssStartedProvider: "x=>x.UserData.Operation_EssStarted.Provider"
+  OperationEssStartedPossibleCause: "x=>x.UserData.Operation_EssStarted.PossibleCause"
+  DvrFmwkInstanceId: "x=>x.UserData.UMDFHostDeviceRequest.InstanceId"
+  DvrFmwk2003InstanceId: "x=>x.UserData.UMDFHostDeviceArrivalBegin.InstanceId"
+  PackageFullName: "x=>x.UserData.PackageFullName"
+  VhdType: "x=>x.EventData.VhdType"
+
+  processPath: "x=>x.EventData.processPath"
+  RemoteName:  "x=>x.EventData.RemoteName"
+  Address: "x=>x.EventData.Address"
+
+  # Mostly used by "|all" type rules.
+  "": "x=>serialize(item=x.EventData)"
+
+  # Application Error - Not verified
+  AppName: "x=>x.EventData.Data[0]"
+  Caption: "x=>x.EventData.Caption"
+
+  # antivirus/windows/windefend
+  Feature_Name: "x=>x.EventData.`Feature Name`"
+
+DefaultDetails:
+  Query: |
+    x=>get(item=DefaultDetails,
+           member=format(format="%v/%v",
+              args=[x.System.Provider.Name, x.System.EventID.Value])
+          ) || x.Message || x.UserData || x.EventData
+  Lookup:
+    Microsoft-Windows-Bits-Client/3: "JobTitle: %jobTitle% ¦ JobID: %jobId% ¦ JobOwner: %jobOwner% ¦ Proc: %processPath% ¦ PID: %ProcessId%"
+    PowerShellCore/4103: "Payload: %Payload%"
+    PowerShellCore/4104: "ScriptBlock: %ScriptBlockText%"
+    Microsoft-Windows-PowerShell/4103: "Payload: %Payload%"
+    Microsoft-Windows-PowerShell/4104: "ScriptBlock: %ScriptBlockText%"
+    Microsoft-Windows-Security-Auditing/1102: "User: %LogFileClearedSubjectUserName%"
+    Microsoft-Windows-Security-Auditing/4624: "Type: %LogonType% ¦ TgtUser: %TargetUserName% ¦ SrcComp: %WorkstationName% ¦ SrcIP: %IpAddress% ¦ LID: %TargetLogonId%"
+    Microsoft-Windows-Security-Auditing/4625: "Type: %LogonType% ¦ TgtUser: %TargetUserName% ¦ SrcComp: %WorkstationName% ¦ SrcIP: %IpAddress% ¦ AuthPkg: %AuthenticationPackageName% ¦ Proc: %ProcessName%"
+    Microsoft-Windows-Security-Auditing/4648: "TgtUser: %TargetUserName% ¦ SrcUser: %SubjectUserName% ¦ SrcIP: %IpAddress% ¦ Proc: %ProcessName% ¦ TgtSvr: %TargetInfo%"
+    Microsoft-Windows-Security-Auditing/4672: "TgtUser: %SubjectUserName% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4673: "Proc: %ProcessName% ¦ User: %SubjectUserName% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4674: "Svc: %ObjectName% ¦ User: %SubjectUserName% ¦ AccessMask: %AccessMask% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4688: "Cmdline: %CommandLine% ¦ Proc: %NewProcessName% ¦ PID: %NewProcessId% ¦ User: %SubjectUserName% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4698: "Name: %TaskName% ¦ Content: %TaskContent% ¦ User: %SubjectUserName% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4699: "Name: %TaskName% ¦ User: %SubjectUserName% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4720: "TgtUser: %TargetUserName% ¦ TgtSID: %TargetSid%"
+    Microsoft-Windows-Security-Auditing/4728: "SrcSID: %MemberSid% ¦ TgtGrp: %TargetUserName% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4732: "SrcSID: %MemberSid% ¦ TgtGrp: %TargetUserName% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4768: "TgtUser: %TargetUserName% ¦ Svc: %ServiceName% ¦ SrcIP: %IpAddress% ¦ Status: %Status% ¦ PreAuthType: %PreAuthType%"
+    Microsoft-Windows-Security-Auditing/4769: "TgtUser: %TargetUserName% ¦ Svc: %ServiceName% ¦ SrcIP: %IpAddress% ¦ Status: %Status%"
+    Microsoft-Windows-Security-Auditing/4776: "TgtUser: %TargetUserName% ¦ SrcComp: %Workstation% ¦ Status: %Status%"
+    Microsoft-Windows-Security-Auditing/4778: "SrcUser: %AccountName% ¦ Domain: %AccountDomain% ¦ SrcIP: %ClientAddress% ¦ SrcComp: %ClientName% ¦ LID: %LogonID%"
+    Microsoft-Windows-Security-Auditing/4779: "SrcUser: %AccountName% ¦ Domain: %AccountDomain% ¦ SrcIP: %ClientAddress% ¦ SrcComp: %ClientName% ¦ LID: %LogonID%"
+    Microsoft-Windows-Security-Auditing/5136: "User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ ObjDN: %ObjectDN% ¦ AttrLDAPName: %AttributeLDAPDisplayName% ¦ OpType: %OperationType% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/5140: "SrcUser: %SubjectUserName% ¦ ShareName: %ShareName% ¦ SharePath: %ShareLocalPath% ¦ SrcIP: %IpAddress% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/5145: "SrcUser: %SubjectUserName% ¦ ShareName: %ShareName% ¦ SharePath: %ShareLocalPath% ¦ Path: %RelativeTargetName% ¦ SrcIP: %IpAddress% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4616: "PrevTime: %PreviousTime% ¦ NewTime: %NewTime% ¦ User: %SubjectUserName% ¦ Proc: %ProcessName% ¦ PID: %ProcessId% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4697: "Svc: %ServiceName% ¦ Path: %ServiceFileName% ¦ User: %SubjectUserName% ¦ SvcAcct: %ServiceAccount% ¦ SvcType: %ServiceType% ¦ SvcStartType: %ServiceStartType% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4661: "User: %SubjectUserName% ¦ ObjSvr: %ObjectServer% ¦ ObjType: %ObjectType% ¦ ObjName: %ObjectName% ¦ Proc: %ProcessName% ¦ PID: %ProcessId% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4662: "User: %SubjectUserName% ¦ ObjSvr: %ObjectServer% ¦ ObjName: %ObjectName% ¦ OpType: %OperationType% ¦ HID: %HandleId% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4663: "User: %SubjectUserName% ¦ ObjSvr: %ObjectServer% ¦ ObjName: %ObjectName% ¦ ObjType: %ObjectType% ¦ Proc: %ProcessName% ¦ PID: %ProcessId% ¦ HID: %HandleId% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4656: "User: %SubjectUserName% ¦ ObjSvr: %ObjectServer% ¦ ObjName: %ObjectName% ¦ ObjType: %ObjectType% ¦ AccessReason: %AccessReason% ¦ Proc: %ProcessName% ¦ PID: %ProcessId% ¦ HID: %HandleId% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4738: "User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ TgtUser: %TargetUserName% ¦ TgtSID: %TargetSid% ¦ Domain: %SubjectDomainName% ¦ TgtDomain: %TargetDomainName% ¦ SamUser: %SamAccountName% ¦ DisplayName: %DisplayName% ¦ UAC: %UserAccountControl% ¦ OldUAC: %OldUacValue% ¦ NewUAC: %NewUacValue% ¦ AcctExpires: %AccountExpires% ¦ AllowedToDelegateTo: %AllowedToDelegateTo% ¦ HomeDir: %HomeDirectory% ¦ HomePath: %HomePath% ¦ LogonHours: %LogonHours% ¦  PwLastSet: %PasswordLastSet% ¦ PrimaryGrpID: %PrimaryGroupId% ¦ PrivList: %PrivilegeList% ¦ ProfilePath: %ProfilePath% ¦ ScriptPath: %ScriptPath% ¦ SidHistory: %SidHistory% ¦ UserParams: %UserParameters% ¦ UPN: %UserPrincipalName% ¦ SrcComp: %UserWorkstations% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4825: "Domain: %AccountDomain% ¦ User: %AccountName% ¦ SrcIP: %ClientAddress% ¦ LID: %LogonID%"
+    Microsoft-Windows-Security-Auditing/4904: "AuditSrcName: %AuditSourceName% ¦ EventSrcID: %EventSourceId% ¦ User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ Domain: %SubjectDomainName% ¦ Proc: %ProcessName% ¦ PID: %ProcessId% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4905: "AuditSrcName: %AuditSourceName% ¦ User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ Proc: %ProcessName% ¦ PID: %ProcessId% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4719: "User: %SubjectUserName% ¦ AuditPolicyChanges: %AuditPolicyChanges% ¦ CategoryId: %CategoryId% ¦ SubcategoryGuid: %SubcategoryGuid% ¦ SubcategoryId: %SubcategoryId% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4742: "SPN: %ServicePrincipalNames% ¦ User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ TgtUser: %TargetUserName% ¦ TgtSID: %TargetSid% ¦ Domain: %SubjectDomainName% ¦ TgtDomain: %TargetDomainName% ¦ SamUser: %SamAccountName% ¦ DisplayName: %DisplayName% ¦ UAC: %UserAccountControl% ¦ OldUAC: %OldUacValue% ¦ NewUAC: %NewUacValue% ¦ AcctExpires: %AccountExpires% ¦ AllowedToDelegateTo: %AllowedToDelegateTo% ¦ HomeDir: %HomeDirectory% ¦ HomePath: %HomePath% ¦ LogonHours: %LogonHours% ¦  PwLastSet: %PasswordLastSet% ¦ PrimaryGrpID: %PrimaryGroupId% ¦ PrivList: %PrivilegeList% ¦ ProfilePath: %ProfilePath% ¦ ScriptPath: %ScriptPath% ¦ SidHistory: %SidHistory% ¦ UserParams: %UserParameters% ¦ UPN: %UserPrincipalName% ¦ SrcComp: %UserWorkstations% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4765: "User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ SrcUser: %SourceUserName% ¦ SrcSID: %SourceSid% ¦ TgtUser: %TargetUserName% ¦ TgtSID: %TargetSid% ¦ Domain: %SubjectDomainName% ¦ TgtDomain: %TargetDomainName% ¦ PrivList: %PrivilegeList% ¦ SidList: %SidList% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4781: "OldTgtUser: %OldTargetUserName% ¦ NewTgtUser: %NewTargetUserName% ¦ TgtSID: %TargetSid% ¦ User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ Domain: %SubjectDomainName% ¦ TgtDomain: %TargetDomainName% ¦ PrivList: %PrivilegeList% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/4794: "User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ Domain: %SubjectDomainName% ¦ Status: %Status% ¦ SrcComp: %Workstation% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/5156: "Proc: %Application% ¦ SrcIP: %SourceAddress% ¦ SrcPort: %SourcePort% ¦ TgtIP: %DestAddress% ¦ TgtPort: %DestPort% ¦ Protocol: %Protocol% ¦ TgtMachineID: %RemoteMachineID% ¦ TgtSID: %RemoteUserID% ¦ PID: %ProcessID%"
+    Microsoft-Windows-Security-Auditing/5157: "Proc: %Application% ¦ SrcIP: %SourceAddress% ¦ SrcPort: %SourcePort% ¦ TgtIP: %DestAddress% ¦ TgtPort: %DestPort% ¦ Protocol: %Protocol% ¦ TgtMachineID: %RemoteMachineID% ¦ TgtSID: %RemoteUserID% ¦ PID: %ProcessID%"
+    Microsoft-Windows-Security-Auditing/5379: "PID: %ClientProcessId% ¦ SrcUser: %SubjectUserName% ¦ Tgt: %TargetName% ¦ CredsReturned: %CountOfCredentialsReturned% ¦ ReturnCode: %ReturnCode% ¦ LID: %SubjectLogonId% ¦ SrcSID: %SubjectUserSid%"
+    Microsoft-Windows-Security-Auditing/6416: "DeviceDescrip: %DeviceDescription% ¦ DeviceID: %DeviceId% ¦ LocInfo: %LocationInformation% ¦ CompatibleIDs: %CompatibleIds% ¦ User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/5142: "User: %SubjectUserName% ¦ ShareName: %ShareName% ¦ ShareLocalPath: %ShareLocalPath% ¦ LID: %SubjectLogonId%"
+    Microsoft-Windows-Security-Auditing/6281: "Path: %param1%"
+    Microsoft-Windows-Security-Auditing/4692: "User: %SubjectUserName% ¦ SID: %SubjectUserSid% ¦ Domain: %SubjectDomainName% ¦ MasterKeyId: %MasterKeyId% ¦ RecoveryServer: %RecoveryServer% ¦ RecoveryKeyId: %RecoveryKeyId% ¦ FailureReason: %FailureReason%"
+    Microsoft-Windows-Security-Auditing/5038: "Path: %param1%"
+    Microsoft-Windows-Sysmon/1: "Cmdline: %CommandLine% ¦ Proc: %Image% ¦ User: %User% ¦ ParentCmdline: %ParentCommandLine% ¦ LID: %LogonId% ¦ LGUID: %LogonGuid% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid% ¦ ParentPID: %ParentProcessId% ¦ ParentPGUID: %ParentProcessGuid% ¦ Description: %Description% ¦ Product: %Product% ¦ Company: %Company% ¦ Hashes: %Hashes%"
+    Microsoft-Windows-Sysmon/2: "Path: %TargetFilename% ¦ Proc: %Image% ¦ User: %User% ¦ CreationTime: %CreationUtcTime% ¦ PreviousTime: %PreviousCreationUtcTime% ¦ PID: %PID% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/3: "Initiated: %Initiated% ¦ Proto: %Protocol% ¦ SrcIP: %SourceIp% ¦ SrcPort: %SourcePort% ¦ SrcHost: %SourceHostname% ¦ TgtIP: %DestinationIp% ¦ TgtPort: %DestinationPort% ¦ TgtHost: %DestinationHostname% ¦ User: %User% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/4: "State: %State% ¦ SysmonVer: %SysmonVersion% ¦ SchemaVer: %SchemaVersion%"
+    Microsoft-Windows-Sysmon/5: "Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/6: "Path: %ImageLoaded% ¦ Sig: %Signature% ¦ Signed: %Signed% ¦ SigStatus: %SignatureStatus% ¦ Hashes: %Hashes%"
+    Microsoft-Windows-Sysmon/7: "Image: %ImageLoaded% ¦ Proc: %Image% ¦ Description: %Description% ¦ Product: %Product% ¦ Company: %Company% ¦ Signed: %Signed% ¦ Sig: %SignatureStatus% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid% ¦ Hash: %Hashes% ¦ OrigFilename: %OriginalFilename%"
+    Microsoft-Windows-Sysmon/8: "SrcProc: %SourceImage% ¦ TgtProc: %TargetImage% ¦ SrcPID: %SourceProcessId% ¦ SrcPGUID: %SourceProcessGuid% ¦ TgtPID: %TargetProcessId% ¦ TgtPGUID: %TargetProcessGuid%"
+    Microsoft-Windows-Sysmon/9: "Proc: %Image% ¦ Device: %Device% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/10: "SrcProc: %SourceImage% ¦ TgtProc: %TargetImage% ¦ SrcUser: %SourceUser% ¦ TgtUser: %TargetUser% ¦ Access: %GrantedAccess% ¦ SrcPID: %SourceProcessId% ¦ SrcPGUID: %SourceProcessGUID% ¦ TgtPID: %TargetProcessId% ¦ TgtPGUID: %TargetProcessGUID%"
+    Microsoft-Windows-Sysmon/11: "Path: %TargetFilename% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/12: "EventType: %EventType% ¦ TgtObj: %TargetObject% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/13: "EventType: %EventType% ¦ TgtObj: %TargetObject%: %Details% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/14: "EventType: %EventType% ¦ TgtObj: %TargetObject%: %Details% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/15: "Path: %TargetFilename% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid% ¦ Hash: %Hash%"
+    Microsoft-Windows-Sysmon/16: "Config: %Configuration%"
+    Microsoft-Windows-Sysmon/17: "Pipe: %PipeName% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/18: "Pipe: %PipeName% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/19: "Op: %Operation% ¦ Namespace: %EventNamespace% ¦ Name: %Name% ¦ Query: %query% ¦ User: %User%"
+    Microsoft-Windows-Sysmon/20: "Op: %Operation% ¦ Type: %Type% ¦ Name: %Name% ¦ Tgt: %Destination% ¦ User: %User%"
+    Microsoft-Windows-Sysmon/21: "Op: %Operation% ¦ Consumer: %Consumer% ¦ Filter: %Filter%"
+    Microsoft-Windows-Sysmon/22: "Query: %QueryName% ¦ Result: %QueryResults% ¦ Proc: %Image% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/23: "Path: %TargetFilename% ¦ Proc: %Image% ¦ User: %User% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/24: "Proc: %Image% ¦ User: %User% ¦ CliInfo: %ClientInfo% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/25: "Proc: %Image% ¦ Type: %Type% ¦ User: %User% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/26: "Path: %TargetFilename% ¦ Proc: %Image% ¦ User: %User% ¦ PID: %ProcessId% ¦ PGUID: %ProcessGuid%"
+    Microsoft-Windows-Sysmon/255: "ID: %ID% ¦ Description: %Description%"
+    Service Control Manager/7031: "Svc: %param1% ¦ CrashCount: %param2% ¦ Action: %param5%"
+    Service Control Manager/7045: "Svc: %ServiceName% ¦ Path: %ImagePath% ¦ Acct: %AccountName% ¦ StartType: %StartType%"
+    Microsoft-Windows-Windows Firewall With Advanced Security/2003: "Profile: %Profiles% ¦ Type: %SettingType% ¦ Value: %SettingValueString% ¦ User: %ModifyingUser% ¦ App: %ModifyingApplication%"
+    Microsoft-Windows-Windows Firewall With Advanced Security/2004: "RuleName: %RuleName% ¦ App: %ApplicationPath% ¦ ModifyingApp: %ModifyingApplication% ¦ User: %ModifyingUser% ¦ Svc: %ServiceName% ¦ Protocol: %Protocol% ¦ LocalAddr: %LocalAddresses% ¦ LocalPort: %LocalPorts% ¦ RemoteAddr: %RemoteAddresses% ¦ RemotePort: %RemotePorts% ¦ Action: %Action%"
+    Microsoft-Windows-DNS-Server-Service/150: "DLL: %param1%"
+    Microsoft-Windows-DNS-Server-Service/770: "Path: %param1% ¦ SrcComp: %param2%"
+    MSExchange CmdletLogs/6: "Data: %Data%"
+    Microsoft-Windows-Windows Defender/1013: "Time: %Timestamp% ¦ User: %User%"
+    Microsoft-Windows-Windows Defender/1116: "Threat: %ThreatName% ¦ Severity: %SeverityName% ¦ Type: %CategoryName% ¦ User: %DetectionUser% ¦ Path: %Path% ¦ Proc: %WindowsDefenderProcessName%"
+    Microsoft-Windows-PrintService/301: "DeletedPrinter: %Param1%"
+    Microsoft-Windows-PrintService/302: "PrinterDeletionPending: %PrinterDeletionPending%"
+    Microsoft-Windows-PrintService/823: "OldDefaultPrinter: %OldDefaultPrinter% ¦ NewDefaultPrinter: %NewDefaultPrinter% ¦ Status: %Status% ¦ Module: %Module%"
+    Microsoft-Windows-PrintService/848: "PrinterName: %PrinterName% ¦ ShareName: %ShareName%"
+    Microsoft-Windows-PrintService/849: "PrinterName: %PrinterName% ¦ ShareName: %ShareName%"
+    Microsoft-Windows-PrintService/354: "Printer: %Param1% ¦ DLL: %Param2% ¦ Error: %Param3%"
+    Microsoft-Windows-PrintService/300: "PrinterCreated: %PrinterCreated%"
+    Microsoft-Windows-WMI-Activity/5859: "Namespace: %OperationEssStartedNamespaceName% ¦ Query: %UserDataQuery% ¦ SID: %OperationEssStartedUser% ¦ PID: %OperationEssStartedProcessid% ¦ Provider: %OperationEssStartedProvider% ¦ PossibleCause: %OperationEssStartedPossibleCause%"
+    Microsoft-Windows-DriverFrameworks-UserMode/2003: "Device: %DvrFmwk2003InstanceId%"
+    Microsoft-Windows-DriverFrameworks-UserMode/2102: "Device: %DvrFmwkInstanceId%"
+    Microsoft-Windows-DriverFrameworks-UserMode/2100: "Device: %DvrFmwkInstanceId%"
+    MsiInstaller/1034: "Product: %Data[1]% ¦ Ver: %Data[2]% ¦ Vendor: %Data[5]% ¦ Status: %Data[4]%"
+    MsiInstaller/11724: "Product: %Data[1]%"
+    Microsoft-Windows-Ntfs/98: "Drive: %DriveName% ¦ Device: %DeviceName%"
+
+Sources:
+  '*/windows/application':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Application.evtx")
+    channel:
+      - Application
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/applocker':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=[
+        ROOT + "/Microsoft-Windows-AppLocker%4MSI and Script.evtx",
+        ROOT + "/Microsoft-Windows-AppLocker%4EXE and DLL.evtx",
+        ROOT + "/Microsoft-Windows-AppLocker%4Packaged app-Deployment.evtx",
+        ROOT + "/Microsoft-Windows-AppLocker%4Packaged app-Execution.evtx",
+      ])
+    channel:
+      - Microsoft-Windows-AppLocker/MSI and Script
+      - Microsoft-Windows-AppLocker/EXE and DLL
+      - Microsoft-Windows-AppLocker/Packaged app-Deployment
+      - Microsoft-Windows-AppLocker/Packaged app-Execution
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/appmodel-runtime':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-AppModel-Runtime%4Admin.evtx")
+    channel:
+      - Microsoft-Windows-AppModel-Runtime/Admin
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/appxdeployment-server':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-AppxPackaging%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-AppxPackaging/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/appxpackaging-om':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-AppxPackaging%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-AppxPackaging/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/bits-client':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-Bits-Client%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-Bits-Client/Operational
+    fields:
+      - Channel
+      - EventID
+      - processPath
+      - RemoteName
+
+  '*/windows/capi2':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-CAPI2/Operational")
+    channel:
+      - Microsoft-Windows-CAPI2/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/certificateservicesclient-lifecycle-system':
+    query: |
+      SELECT * FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-CertificateServicesClient-Lifecycle-System/Operational")
+    channel:
+      - Microsoft-Windows-CertificateServicesClient-Lifecycle-System/Operational
+    fields:
+      - Channel
+      - EventID
+
+
+  '*/windows/codeintegrity-operational':
+    query: |
+      SELECT * FROM watch_evtx(accessor="file",
+         filename=ROOT + "/Microsoft-Windows-CodeIntegrity%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-CodeIntegrity/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/diagnosis-scripted':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-Diagnosis-Scripted%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-Diagnosis-Scripted/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/dns-client':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-DNS Client Events%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-DNS Client Events/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/dns-server':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/DNS Server.evtx")
+    channel:
+      - DNS Server
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/dns-server-analytic':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-DNS-Server%4Analytical.evtx")
+    channel:
+      - Microsoft-Windows-DNS-Server/Analytical
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/driver-framework':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-DriverFrameworks-UserMode%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-DriverFrameworks-UserMode/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/firewall-as':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-Windows Firewall With Advanced Security%4Firewall.evtx")
+    channel:
+      - Microsoft-Windows-Windows Firewall With Advanced Security/Firewall
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/ldap_debug':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-LDAP-Client%4Debug.evtx")
+    channel:
+      - Microsoft-Windows-LDAP-Client/Debug
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/lsa-server':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-LSA%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-LSA/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/microsoft-servicebus-client':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-ServiceBus-Client.evtx")
+    channel:
+      - Microsoft-ServiceBus-Client
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/msexchange-management':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/MSExchange Management.evtx")
+    channel:
+      - MSExchange Management
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/ntlm':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-NTLM%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-NTLM/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/openssh':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/OpenSSH%4Operational.evtx")
+    channel:
+      - OpenSSH/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/powershell':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=[
+         ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
+         ROOT + "/PowerShellCore%4Operational.evtx",
+      ])
+    channel:
+      - Microsoft-Windows-PowerShell/Operational
+      - PowerShellCore/Operational
+    fields:
+      - Channel
+      - EventID
+      - MessageNumber
+      - MessageTotal
+      - ScriptBlockText
+      - ScriptBlockId
+      - ContextInfo
+      - UserData
+      - Payload
+
+  '*/windows/powershell-classic':
+    query: |
+      SELECT *, EventData + dict(
+         Data=EventData.Data[2],
+         HostApplication=parse_string_with_regex(
+           regex="HostApplication=([^\\r\\n]+)",
+           string=EventData.Data[2]).g1) AS EventData
+      FROM watch_evtx(accessor='file', filename=ROOT + "/Windows PowerShell.evtx")
+    channel:
+      - Windows PowerShell
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/printservice-admin':
+    query:
+
+  '*/windows/printservice-operational':
+    query: ""
+
+  '*/windows/security':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Security.evtx")
+    channel:
+      - Security
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/security-mitigations':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-Security-Mitigations.evtx")
+    channel:
+      - Microsoft-Windows-Security-Mitigations
+
+  '*/windows/shell-core':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-Shell-Core%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-Shell-Core/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/smbclient-connectivity':
+    query: ""
+  '*/windows/smbclient-security':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-SmbClient%4Security.evtx")
+    channel:
+      - Microsoft-Windows-SmbClient/Security
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/sysmon':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-Sysmon/Operational
+
+    fields:
+      # Common
+      - Channel
+      - EventID
+      - Provider_Name
+
+      # Aliases
+      - Imphash
+      - sha1
+      - sha256
+      - md5
+      - ImagePath
+      - TargetParentImage
+
+  '*/windows/system':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/System.evtx")
+    channel:
+      - System
+    fields:
+      - Channel
+      - EventID
+
+  # Application Popup
+      - Caption
+
+  '*/windows/taskscheduler':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-TaskScheduler%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-TaskScheduler/Operational
+    fields:
+      - Channel
+      - EventID
+
+  '*/windows/terminalservices-localsessionmanager':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    fields:
+      - Channel
+      - EventID
+      - Address
+
+  '*/windows/vhdmp':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-VHDMP%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-VHDMP/Operational
+    fields:
+      - EventID
+      - VhdType
+      - Channel
+
+  '*/windows/windefend':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-Windows Defender/Operational
+    fields:
+      - Channel
+      - EventID
+      - SeverityID
+      - ThreatName
+
+  '*/windows/wmi':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-WMI-Activity%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-WMI-Activity/Operational
+    fields:
+      - Channel
+      - EventID
+
+  process_creation/windows/*:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=[
+         ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
+         ROOT + "/System.evtx"
+      ])
+      WHERE System.EventID.Value = 1 OR System.EventID.Value = 4688
+    fields:
+      - Channel
+      - EventID
+
+  ps_classic_provider_start/windows/*:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Windows PowerShell.evtx")
+      WHERE System.EventID.Value = 600
+    fields:
+      - Channel
+      - EventID
+
+  ps_classic_start/windows/*:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Windows PowerShell.evtx")
+      WHERE System.EventID.Value = 400
+    fields:
+      - Channel
+      - EventID
+
+  ps_module/windows/*:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=[
+         ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
+         ROOT + "/PowerShellCore%4Operational.evtx"
+      ])
+      WHERE System.EventID.Value = 4103
+    fields:
+      - Channel
+      - EventID
+
+  ps_script/windows/*:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=[
+         ROOT + "/Microsoft-Windows-PowerShell%4Operational.evtx",
+         ROOT + "/PowerShellCore%4Operational.evtx"
+      ])
+      WHERE System.EventID.Value = 4104
+    fields:
+      - Channel
+      - EventID
+
+  registry_add/windows/*:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=[
+         ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
+         ROOT + "/Security.evtx"
+      ])
+      WHERE System.EventID.Value = 12 OR System.EventID.Value = 4657
+    fields:
+      - Channel
+      - EventID
+
+  registry_event/windows/*:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=[
+         ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
+         ROOT + "/Security.evtx"
+      ])
+      WHERE System.EventID.Value IN (12, 13, 14) OR System.EventID.Value = 4657
+    fields:
+      - Channel
+      - EventID
+
+  registry_set/windows/*:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=[
+         ROOT + "/Microsoft-Windows-Sysmon%4Operational.evtx",
+         ROOT + "/Security.evtx"
+      ])
+      WHERE System.EventID.Value = 13 OR System.EventID.Value = 4657
+    fields:
+      - Channel
+      - EventID
+
+  antivirus/windows/windefend:
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-Windows Defender%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-Windows Defender/Operational
+    fields:
+      - Channel
+      - EventID
+
+QueryTemplate: |
+ sources:
+ - query: |
+    LET Result = SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
+          System.Computer AS Computer,
+          System.Channel AS Channel,
+          System.EventID.Value AS EID,
+          _Rule.Level AS Level,
+          _Rule.Title AS Title,
+          System.EventRecordID AS RecordID,
+          Details,
+          dict(System=System,
+               EventData=X.EventData || X.UserData,
+               Message=X.Message) AS _Event,
+          _Match
+    FROM sigma(
+      rules=split(string= Rules, sep_string="\n---\n"),
+      log_sources= LogSources, debug=Debug,
+      default_details='''{{.Base64DefaultDetailsQuery}}''',
+      rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex",
+      field_mapping= FieldMapping)
+
+    SELECT * FROM if(condition=Debug, then={
+      SELECT * FROM Result
+    }, else={
+      SELECT Timestamp, Computer, Channel , EID,
+             Level, Title, RecordID, Details, _Event
+      FROM Result
+    })

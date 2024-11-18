@@ -1,4 +1,9 @@
 Name: Windows.Sigma.Base
+Description: |
+  Standard Velociraptor Sigma Log sources for Windows.
+
+  This profile includes many Windows EVTX log sources as well as
+  multiple artifact based log sources.
 
 # The preamble include the artifact parameters, name, description and
 # type - basically everything that goes at the top of the artifact
@@ -73,10 +78,12 @@ Preamble: |
 # provide. This help in building dependent artifacts.
 ExportTemplate: |
   export: |
-    LET DateAfterTime <= DateAfter || timestamp(epoch="1600-01-01")
-    LET DateBeforeTime <= DateBefore || timestamp(epoch="2200-01-01")
+    LET X = scope()
 
-    LET ExcludeRegex <= if(condition=RuleExclusions,
+    LET DateAfterTime <= X.DateAfter || timestamp(epoch="1600-01-01")
+    LET DateBeforeTime <= X.DateBefore || timestamp(epoch="2200-01-01")
+
+    LET ExcludeRegex <= if(condition=X.RuleExclusions,
          then=join(array=RuleExclusions.RuleTitleRegex, sep="|"),
          else="XXXXXXX")
 
@@ -84,13 +91,13 @@ ExportTemplate: |
          `Stable`="stable",
          `Stable and Experimental`="stable|experimental",
          `Stable and Test`="stable|test",
-         `All Rules`="."), member=RuleStatus)
+         `All Rules`="."), member=X.RuleStatus || "All Rules")
 
     LET RuleLevelRegex <= get(item=dict(
          `Critical`="critical",
          `Critical and High`="critical|high",
          `Critical, High, and Medium`="critical|high|medium|default",
-         `All`="."), member=RuleLevel)
+         `All`="."), member=X.RuleLevel || "All")
 
     LET MandatoryLabelLookup <= dict(
         `S-1-16-0`= 'UNTRUSTED',
@@ -134,7 +141,6 @@ ExportTemplate: |
     LET DefaultDetailsLambda = '''{{.Base64DefaultDetailsQuery}}'''
     LET RuleFilterLambda = '''x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex'''
 
-    LET X = scope()
 
 # FieldMapping are global (i.e. shared between all log sources)
 # mappings between a field name and its corresponding VQL getter.

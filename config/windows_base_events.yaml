@@ -1,4 +1,9 @@
 Name: Windows.Sigma.BaseEvents
+Description: |
+  Standard Velociraptor Sigma Log sources for Windows.
+
+  This is a real time monitoring profile which allows live monitoring
+  of Windows systems using Sigma rules.
 
 Preamble: |
   name: Windows.Sigma.BaseEvents

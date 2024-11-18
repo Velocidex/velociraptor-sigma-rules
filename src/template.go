@@ -17,6 +17,10 @@ func BuildLogSource(config_obj *Config) []Query {
 		return nil
 	}
 
+	if config_obj.sources == nil {
+		config_obj.mergeConfig(config_obj)
+	}
+
 	for k, v := range config_obj.sources {
 		query := strings.TrimSpace(v.Query)
 		if len(query) > 0 {
@@ -41,6 +45,7 @@ type ArtifactContent struct {
 	Base64DefaultDetailsLookup string
 	Base64DefaultDetailsQuery  string
 	LogSources                 []Query
+	ImportedLogSources         []Query
 }
 
 func indentTemplate(args ...interface{}) interface{} {

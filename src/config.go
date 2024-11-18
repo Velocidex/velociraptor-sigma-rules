@@ -2,16 +2,16 @@ package main
 
 type DefaultDetails struct {
 	// A lambda that will be used to get the default description
-	Query  string            `json:"Query"`
-	Lookup map[string]string `json:"Lookup"`
+	Query  string            `json:"Query,omitempty"`
+	Lookup map[string]string `json:"Lookup,omitempty"`
 }
 
 type Query struct {
-	Query       string   `json:"query"`
-	Channel     []string `json:"channel"`
-	Fields      []string `json:"fields"`
-	Description string   `json:"description"`
-	Name        string   `json:"name"`
+	Query       string   `json:"query,omitempty"`
+	Channel     []string `json:"channel,omitempty"`
+	Fields      []string `json:"fields,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Name        string   `json:"name,omitempty"`
 }
 
 // Specify source transformations.
@@ -25,36 +25,37 @@ type SourceRemapping struct {
 }
 
 type Config struct {
-	Name           string            `json:"Name"`
-	Preamble       string            `json:"Preamble"`
-	FieldMappings  map[string]string `json:"FieldMappings"`
-	DefaultDetails DefaultDetails    `json:"DefaultDetails"`
-	Sources        map[string]Query  `json:"Sources"`
-	ExportTemplate string            `json:"ExportTemplate"`
-	QueryTemplate  string            `json:"QueryTemplate"`
-	Postscript     string            `json:"Postscript"`
+	Name           string            `json:"Name,omitempty"`
+	Description    string            `json:"Description,omitempty"`
+	Preamble       string            `json:"Preamble,omitempty"`
+	FieldMappings  map[string]string `json:"FieldMappings,omitempty"`
+	DefaultDetails DefaultDetails    `json:"DefaultDetails,omitempty"`
+	Sources        map[string]Query  `json:"Sources,omitempty"`
+	ExportTemplate string            `json:"ExportTemplate,omitempty"`
+	QueryTemplate  string            `json:"QueryTemplate,omitempty"`
+	Postscript     string            `json:"Postscript,omitempty"`
 
 	// If this is set then we generate a reference URL for each rule.
-	BaseReferenceURL string   `json:"BaseReferenceURL"`
-	RuleDirectories  []string `json:"RuleDirectories"`
+	BaseReferenceURL string   `json:"BaseReferenceURL,omitempty"`
+	RuleDirectories  []string `json:"RuleDirectories,omitempty"`
 
 	// Many rules are broken and have bad field mappings or log
 	// sources. The following list suppresses these warnings (but the
 	// rules are still rejected)
-	BadFieldMappings []string `json:"BadFieldMappings"`
-	BadSources       []string `json:"BadSources"`
+	BadFieldMappings []string `json:"BadFieldMappings,omitempty"`
+	BadSources       []string `json:"BadSources,omitempty"`
 
-	EventResolver string `json:"EventResolver"`
+	EventResolver string `json:"EventResolver,omitempty"`
 
 	// Include these artifacts into the zip bundle as well. There are
 	// relative paths to the included files. These are usually used to
 	// include dependent artifacts.
-	IncludeArtifacts []string `json:"IncludeArtifacts"`
+	IncludeArtifacts []string `json:"IncludeArtifacts,omitempty"`
 
 	// Read these configs also. Many attributes are merged with
 	// included configs (for example FieldMappings, and Sources). This
 	// allows to build derived artifacts based on other artifacts.
-	ImportConfigs []string `json:"ImportConfigs"`
+	ImportConfigs []string `json:"ImportConfigs,omitempty"`
 
 	// Merged results from imported configs
 	sources        map[string]Query

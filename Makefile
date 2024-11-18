@@ -12,6 +12,7 @@ compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo
 
 compileWindowsBase:
 	./velosigmac compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml
+	./velosigmac compile --config ./config/windows_base_test.yaml --yaml ./output/Windows.Sigma.Base.CaptureTestSet.yaml
 
 compileWindowsBaseEvents:
 	./velosigmac compile --config ./config/windows_base_events.yaml --output ./output/Windows-Sigma-BaseEvents.zip --yaml ./output/Windows.Sigma.BaseEvents.yaml

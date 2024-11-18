@@ -1,0 +1,69 @@
+Name: Windows.Sigma.Base.CaptureTestSet
+ImportConfigs:
+  - config/windows_base.yaml
+
+Preamble: |
+  name: Windows.Sigma.Base.CaptureTestSet
+  description: |
+    This artifact captures a test set of the log sources defined by
+    Windows.Sigma.Base. It is used to acquire a dataset for the
+    `SigmaStudio` notebook.
+
+  type: CLIENT
+  parameters:
+    - name: ROOT
+      description: The Event Log Directory we use to read all logs
+      default: C:/Windows/System32/WinEvt/Logs/
+
+    - name: LogSourceFilter
+      description: Only capture log sources that match this regex.
+      type: regex
+      default: .
+
+    - name: SelectedLogSources
+      description: Set to capture only those log sources.
+      type: multichoice
+      choices:
+      {{- range .ImportedLogSources }}
+      - "{{ .Name }}"
+      {{- end }}
+
+    - name: DateAfter
+      description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+    - name: DateBefore
+      description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+    - name: EventRegex
+      description: Only capture events that match this regex (the event is converted to JSON first).
+      type: regex
+      default: .
+
+  imports:
+    - Windows.Sigma.Base
+
+QueryTemplate: |
+   sources:
+   - name: MatchingSources
+     query: |
+       SELECT _key AS SourceName
+       FROM items(item=LogSources)
+       WHERE SourceName =~ LogSourceFilter
+         AND if(condition=SelectedLogSources, then=SourceName in SelectedLogSources, else=TRUE)
+
+   - query: |
+       SELECT * FROM foreach(row={
+         SELECT _key AS SourceName, _value AS Query
+         FROM items(item=LogSources)
+         WHERE SourceName =~ LogSourceFilter
+           AND if(condition=SelectedLogSources, then=SourceName in SelectedLogSources, else=TRUE)
+       }, query={
+         SELECT * FROM foreach(row={
+           SELECT * FROM items(item={
+             SELECT * FROM query(query=Query, copy_env=TRUE)
+           })
+           WHERE _value =~ EventRegex
+         }, column="_value")
+       })

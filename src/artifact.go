@@ -35,6 +35,11 @@ func (self *CompilerContext) GetArtifact() (string, error) {
 		LogSources:                 BuildLogSource(self.config_obj),
 	}
 
+	for _, imp := range self.imported_configs {
+		params.ImportedLogSources = append(params.ImportedLogSources,
+			BuildLogSource(imp)...)
+	}
+
 	// Allow the artifact to export functions to other artifacts.
 	export_templ, err := calculateTemplate(self.config_obj.ExportTemplate, params)
 	if err != nil {

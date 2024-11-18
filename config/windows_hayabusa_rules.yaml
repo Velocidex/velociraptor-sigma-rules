@@ -4,6 +4,7 @@ ImportConfigs:
 
 IncludeArtifacts:
   - output/Windows.Sigma.Base.yaml
+  - output/Windows.Sigma.Base.CaptureTestSet.yaml
 
 Preamble: |
   name: Windows.Hayabusa.Rules

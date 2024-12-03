@@ -86,7 +86,6 @@ QueryTemplate: |
       FROM Artifact.Windows.Sigma.BaseEvents(
          ROOT=ROOT, RuleLevel=RuleLevel, RuleStatus=RuleStatus,
          RuleTitleFilter=RuleTitleFilter, RuleExclusions=RuleExclusions,
-         DateAfter=DateAfter, DateBefore=DateBefore,
          SigmaRules=Rules, NTFS_CACHE_TIME=NTFS_CACHE_TIME)
 
 # Many rules are broken and have bad field mappings. The following

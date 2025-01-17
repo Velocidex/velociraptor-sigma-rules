@@ -11,7 +11,7 @@ After all relevant rules are evaluated, the collection is complete.
 Following is a list of recognized log sources.
 
 
-## */windows/application
+## `*/windows/application`
 
 This Log Source generates events from the Application Channel, usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
 
@@ -19,7 +19,6 @@ The channel stores a wide variety of system events from multiple
 services.
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -30,16 +29,15 @@ log_sources:
 ```
 
 
-## */windows/applocker
+## `*/windows/applocker`
 
-This Log Source generates combined events from the Windows AppLocker service. Events are usually stored in the files:
+This Log Source generates combined events from the Windows `AppLocker service`. Events are usually stored in the files:
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4MSI and Script.evtx`
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4EXE and DLL.evtx`
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4Packaged app-Deployment.evtx`
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4Packaged app-Execution.evtx`
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -50,13 +48,12 @@ log_sources:
 ```
 
 
-## */windows/appmodel-runtime
+## `*/windows/appmodel-runtime`
 
-This Log Source generates combined events from the Windows AppModel Runtime. Events are usually stored in the files:
+This Log Source generates combined events from the Windows `AppModel Runtime`. Events are usually stored in the files:
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppModel-Runtime%4Admin.evtx`
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -67,11 +64,10 @@ log_sources:
 ```
 
 
-## */windows/appxdeployment-server
+## `*/windows/appxdeployment-server`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -82,11 +78,10 @@ log_sources:
 ```
 
 
-## */windows/appxpackaging-om
+## `*/windows/appxpackaging-om`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -97,7 +92,7 @@ log_sources:
 ```
 
 
-## */windows/bits-client
+## `*/windows/bits-client`
 
 This Log Source generates combined events from the Windows Bits Client service. Events are usually stored in the files:
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx`
@@ -105,14 +100,17 @@ This Log Source generates combined events from the Windows Bits Client service. 
 The BITS service is used to download files and it is often misused by threat actors to download malicious payloads.
 
 
-### Sample Events
+
+#### Sample Events
 
 
-#### EventID 3 - New Job Creation
+##### EventID 3 - New Job Creation
 <pre class="json-renderer">
 {"Timestamp":"2025-01-13T13:48:20.745705604Z","System":{"Provider":{"Name":"Microsoft-Windows-Bits-Client","Guid":"EF1CC15B-46C1-414E-BB95-E76B077BD51E"},"EventID":{"Value":3},"Version":3,"Level":4,"Task":0,"Opcode":0,"Keywords":4611686018427387904,"TimeCreated":{"SystemTime":1736776100.7457056},"EventRecordID":1320,"Correlation":{},"Execution":{"ProcessID":8936,"ThreadID":9100},"Channel":"Microsoft-Windows-Bits-Client/Operational","Computer":"WIN-SJE0CKQO83P","Security":{"UserID":"S-1-5-18"}},"EventData":{"jobTitle":"Chrome Component Updater","jobId":"B73C90F1-5FA7-4445-8E49-6C40870E4502","jobOwner":"WIN-SJE0CKQO83P\\Administrator","processPath":"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe","processId":3616,"ClientProcessStartKey":1407374883553491},"Message":"The BITS service created a new job.\nTransfer job: Chrome Component Updater\nJob ID: B73C90F1-5FA7-4445-8E49-6C40870E4502\nOwner: WIN-SJE0CKQO83P\\Administrator\nProcess Path: C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\nProcess ID: 3616\r\n"}
 
 </pre>
+
+
 
 
 Sample use in a sigma rule:
@@ -123,11 +121,10 @@ log_sources:
 ```
 
 
-## */windows/capi2
+## `*/windows/capi2`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -138,11 +135,10 @@ log_sources:
 ```
 
 
-## */windows/certificateservicesclient-lifecycle-system
+## `*/windows/certificateservicesclient-lifecycle-system`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -153,11 +149,10 @@ log_sources:
 ```
 
 
-## */windows/codeintegrity-operational
+## `*/windows/codeintegrity-operational`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -168,11 +163,10 @@ log_sources:
 ```
 
 
-## */windows/diagnosis-scripted
+## `*/windows/diagnosis-scripted`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -183,11 +177,10 @@ log_sources:
 ```
 
 
-## */windows/dns-client
+## `*/windows/dns-client`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -198,11 +191,10 @@ log_sources:
 ```
 
 
-## */windows/dns-server
+## `*/windows/dns-server`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -213,11 +205,10 @@ log_sources:
 ```
 
 
-## */windows/dns-server-analytic
+## `*/windows/dns-server-analytic`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -228,11 +219,10 @@ log_sources:
 ```
 
 
-## */windows/driver-framework
+## `*/windows/driver-framework`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -243,11 +233,10 @@ log_sources:
 ```
 
 
-## */windows/firewall-as
+## `*/windows/firewall-as`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -258,11 +247,10 @@ log_sources:
 ```
 
 
-## */windows/ldap_debug
+## `*/windows/ldap_debug`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -273,11 +261,10 @@ log_sources:
 ```
 
 
-## */windows/lsa-server
+## `*/windows/lsa-server`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -288,11 +275,10 @@ log_sources:
 ```
 
 
-## */windows/microsoft-servicebus-client
+## `*/windows/microsoft-servicebus-client`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -303,11 +289,10 @@ log_sources:
 ```
 
 
-## */windows/msexchange-management
+## `*/windows/msexchange-management`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -318,11 +303,10 @@ log_sources:
 ```
 
 
-## */windows/ntlm
+## `*/windows/ntlm`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -333,11 +317,10 @@ log_sources:
 ```
 
 
-## */windows/openssh
+## `*/windows/openssh`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -348,11 +331,10 @@ log_sources:
 ```
 
 
-## */windows/powershell
+## `*/windows/powershell`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -363,11 +345,10 @@ log_sources:
 ```
 
 
-## */windows/powershell-classic
+## `*/windows/powershell-classic`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -378,11 +359,10 @@ log_sources:
 ```
 
 
-## */windows/schtasks
+## `*/windows/schtasks`
 
 Enumerates All Scheduled tasks
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -393,11 +373,10 @@ log_sources:
 ```
 
 
-## */windows/security
+## `*/windows/security`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -408,11 +387,10 @@ log_sources:
 ```
 
 
-## */windows/security-mitigations
+## `*/windows/security-mitigations`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -423,11 +401,10 @@ log_sources:
 ```
 
 
-## */windows/services
+## `*/windows/services`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -438,11 +415,10 @@ log_sources:
 ```
 
 
-## */windows/shell-core
+## `*/windows/shell-core`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -453,11 +429,10 @@ log_sources:
 ```
 
 
-## */windows/smbclient-security
+## `*/windows/smbclient-security`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -468,11 +443,10 @@ log_sources:
 ```
 
 
-## */windows/sysmon
+## `*/windows/sysmon`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -483,11 +457,10 @@ log_sources:
 ```
 
 
-## */windows/system
+## `*/windows/system`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -498,11 +471,10 @@ log_sources:
 ```
 
 
-## */windows/taskscheduler
+## `*/windows/taskscheduler`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -513,11 +485,10 @@ log_sources:
 ```
 
 
-## */windows/terminalservices-localsessionmanager
+## `*/windows/terminalservices-localsessionmanager`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -528,11 +499,10 @@ log_sources:
 ```
 
 
-## */windows/vhdmp
+## `*/windows/vhdmp`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -543,11 +513,10 @@ log_sources:
 ```
 
 
-## */windows/windefend
+## `*/windows/windefend`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -558,11 +527,10 @@ log_sources:
 ```
 
 
-## */windows/wmi
+## `*/windows/wmi`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -573,11 +541,10 @@ log_sources:
 ```
 
 
-## antivirus/windows/windefend
+## `antivirus/windows/windefend`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -589,11 +556,10 @@ log_sources:
 ```
 
 
-## image_load/windows/pslist
+## `image_load/windows/pslist`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -605,11 +571,10 @@ log_sources:
 ```
 
 
-## network_connection/windows/netstat
+## `network_connection/windows/netstat`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -621,11 +586,10 @@ log_sources:
 ```
 
 
-## persistence/windows/services
+## `persistence/windows/services`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -637,11 +601,10 @@ log_sources:
 ```
 
 
-## process_creation/windows/*
+## `process_creation/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -653,11 +616,10 @@ log_sources:
 ```
 
 
-## process_creation/windows/execution
+## `process_creation/windows/execution`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -669,11 +631,10 @@ log_sources:
 ```
 
 
-## process_creation/windows/pslist
+## `process_creation/windows/pslist`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -685,11 +646,10 @@ log_sources:
 ```
 
 
-## ps_classic_provider_start/windows/*
+## `ps_classic_provider_start/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -701,11 +661,10 @@ log_sources:
 ```
 
 
-## ps_classic_start/windows/*
+## `ps_classic_start/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -717,11 +676,10 @@ log_sources:
 ```
 
 
-## ps_module/windows/*
+## `ps_module/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -733,11 +691,10 @@ log_sources:
 ```
 
 
-## ps_script/windows/*
+## `ps_script/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -749,11 +706,10 @@ log_sources:
 ```
 
 
-## registry_add/windows/*
+## `registry_add/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -765,11 +721,10 @@ log_sources:
 ```
 
 
-## registry_event/windows/*
+## `registry_event/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -781,11 +736,10 @@ log_sources:
 ```
 
 
-## registry_set/windows/*
+## `registry_set/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -797,11 +751,10 @@ log_sources:
 ```
 
 
-## vql/windows/*
+## `vql/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -813,11 +766,10 @@ log_sources:
 ```
 
 
-## webserver/windows/*
+## `webserver/windows/*`
 
 
 
-### Sample Events
 
 
 Sample use in a sigma rule:
@@ -827,5 +779,3 @@ log_sources:
   product: windows
   service: *
 ```
-
-

@@ -8,7 +8,7 @@ weight: 100
 
 The Sigma standard specifies how to write detection rules in terms of
 abstract `Log Sources`. The standard itself does not specify what log
-sources are avaiable and what kind of events these actually emit.
+sources are available and what kind of events these actually emit.
 
 Therefore it is not enough to consider just a Sigma rule in
 isolation - Sigma rules are always written inside a `Sigma Model`.
@@ -24,7 +24,7 @@ fields to be referenced in the `Sigma Rule`.
 ## What are models used for?
 
 Depending on the use case different `Log Sources` are defined - for
-example in a file centric forensic context (e.g. Forensic file Triage
+example in a file focused forensic context (e.g. Forensic file Triage
 or dead disk image), Log sources extract event data from files such as
 event log files, or other forensic artifacts. Applying Sigma rules on
 a forensic triage can surface interesting events quickly to guide
@@ -33,7 +33,7 @@ investigations.
 On the other hand when applying the Sigma Rules to live events, `Log
 Sources` might include live data such as eBPF events or ETW sourced
 events not usually present in a dead disk image. Sigma rules in such a
-live setting can be used to detect and monitor anomelous conditions in
+live setting can be used to detect and monitor anomalous conditions in
 real time.
 
 In the above two examples, the Sigma rules must be written in context

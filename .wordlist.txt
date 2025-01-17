@@ -49,3 +49,8 @@ triaging
 SigmaHQ
 configuation
 syslog
+
+
+<url-free> docs/content/docs/models/_index.md
+eBPF
+EventID

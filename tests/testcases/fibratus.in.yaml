@@ -1,0 +1,37 @@
+# Test the fibratus live event rules.
+Parameters:
+  RuleFilter: .
+  Debug: N
+
+Queries:
+  - LET KernelFileRows = SELECT * FROM parse_jsonl(
+       filename=testDir + "/test_files/WindowsEvents/KernelFile.json")
+
+  - LET KernelProcessRows = SELECT * FROM parse_jsonl(
+       filename=testDir + "/test_files/WindowsEvents/KernelProcess.json")
+
+  - LET _ <= import(artifact="Windows.Sigma.BaseEvents")
+  - LET _ <= import(artifact="Windows.Hayabusa.Monitoring")
+
+  - LET TestingLogSources <= sigma_log_sources(
+    `etw/windows/file`={
+      SELECT * FROM KernelFileRows
+    },
+    `etw/windows/process`={
+      SELECT * FROM KernelProcessRows
+    })
+
+  - |
+    SELECT  _Rule.Title AS Rule ,
+          Details,
+          dict(System=System,
+               EventData=X.EventData || X.UserData,
+               Message=X.Message) AS Event,
+          _Match AS Match , _Rule
+     FROM sigma(
+       rules=split(string=Rules, sep_string="\n---\n"),
+       log_sources= TestingLogSources, debug=Debug =~ "Y",
+       default_details=DefaultDetailsLambda,
+       rule_filter="x=>x.Title =~ RuleFilter",
+       field_mapping= FieldMapping)
+     ORDER BY Rule

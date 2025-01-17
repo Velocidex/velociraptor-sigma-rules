@@ -1,17 +1,28 @@
 package main
 
+import "github.com/Velocidex/sigma-go"
+
 type DefaultDetails struct {
 	// A lambda that will be used to get the default description
 	Query  string            `json:"Query,omitempty"`
 	Lookup map[string]string `json:"Lookup,omitempty"`
 }
 
+type Sample struct {
+	Name string `json:"name,omitempty"`
+	Json string `json:"json,omitempty"`
+}
+
 type Query struct {
-	Query       string   `json:"query,omitempty"`
-	Channel     []string `json:"channel,omitempty"`
-	Fields      []string `json:"fields,omitempty"`
-	Description string   `json:"description,omitempty"`
-	Name        string   `json:"name,omitempty"`
+	Query       string           `json:"query,omitempty"`
+	Channel     []string         `json:"channel,omitempty"`
+	Fields      []string         `json:"fields,omitempty"`
+	Description string           `json:"description,omitempty"`
+	Name        string           `json:"name,omitempty"`
+	LogSource   *sigma.Logsource `json:"log_source,omitempty"`
+
+	// A set of JSON files with sample events for this log source
+	Samples []Sample `json:"samples,omitempty"`
 }
 
 // Specify source transformations.
@@ -32,6 +43,7 @@ type Config struct {
 	DefaultDetails DefaultDetails    `json:"DefaultDetails,omitempty"`
 	Sources        map[string]Query  `json:"Sources,omitempty"`
 	ExportTemplate string            `json:"ExportTemplate,omitempty"`
+	DocTemplate    string            `json:"DocTemplate,omitempty"`
 	QueryTemplate  string            `json:"QueryTemplate,omitempty"`
 	Postscript     string            `json:"Postscript,omitempty"`
 

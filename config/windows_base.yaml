@@ -125,8 +125,6 @@ ExportTemplate: |
     {{ if .LogSources }}
     LET LogSources <= sigma_log_sources(
     {{ range .LogSources }}
-    {{- if .Description }}// {{ .Description }}
-    {{ end }}
       `{{ .Name }}`={
   {{ Indent .Query 5 }}
       },
@@ -575,6 +573,12 @@ DefaultDetails:
 # queries that feed a particular named source in a Sigma rule.
 Sources:
   '*/windows/application':
+    description: |
+      This Log Source generates events from the Application Channel, usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
+
+      The channel stores a wide variety of system events from multiple
+      services.
+
     query: |
       SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
       FROM parse_evtx(filename=ROOT + "/Application.evtx")
@@ -586,6 +590,13 @@ Sources:
       - EventID
 
   '*/windows/applocker':
+    description: |
+      This Log Source generates combined events from the Windows `AppLocker service`. Events are usually stored in the files:
+        * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4MSI and Script.evtx`
+        * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4EXE and DLL.evtx`
+        * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4Packaged app-Deployment.evtx`
+        * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4Packaged app-Execution.evtx`
+
     query: |
       SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
       FROM parse_evtx(filename=[
@@ -605,6 +616,10 @@ Sources:
       - EventID
 
   '*/windows/appmodel-runtime':
+    description: |
+      This Log Source generates combined events from the Windows `AppModel Runtime`. Events are usually stored in the files:
+        * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppModel-Runtime%4Admin.evtx`
+
     query: |
       SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
       FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-AppModel-Runtime%4Admin.evtx")
@@ -638,6 +653,16 @@ Sources:
       - EventID
 
   '*/windows/bits-client':
+    description: |
+      This Log Source generates combined events from the Windows Bits Client service. Events are usually stored in the files:
+        * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx`
+
+      The BITS service is used to download files and it is often misused by threat actors to download malicious payloads.
+
+    samples:
+      - name: EventID 3 - New Job Creation
+        json: "config/samples/bits_client.json"
+
     query: |
       SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
       FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-Bits-Client%4Operational.evtx")
@@ -1343,3 +1368,49 @@ QueryTemplate: |
              Level, Title, RecordID, Details, _Event
       FROM Result
     })
+
+DocTemplate: |
+  # Windows Base Sigma Model
+
+  This model is designed for triage of dead disk, or file based live
+  analysis. The rules that use this model will be evaluated once on
+  all events.
+
+  After all relevant rules are evaluated, the collection is complete.
+
+  # Log Sources
+
+  Following is a list of recognized log sources.
+
+  {{ range .LogSources }}
+  ## `{{ .Name }}`
+
+  {{ .Description }}
+
+  {{ if .Samples }}
+  #### Sample Events
+  {{ range .Samples }}
+
+  ##### {{ .Name }}
+  <pre class="json-renderer">
+  {{ ReadFile .Json }}
+  </pre>
+  {{ end }}
+
+  {{ end }}
+
+  Sample use in a sigma rule:
+  ```yaml
+  log_sources:
+    {{- if .LogSource.Category }}
+    category: {{ .LogSource.Category }}
+    {{- end }}
+    {{- if .LogSource.Product }}
+    product: {{ .LogSource.Product }}
+    {{- end }}
+    {{- if .LogSource.Service }}
+    service: {{ .LogSource.Service }}
+    {{- end }}
+  ```
+
+  {{ end }}

@@ -62,7 +62,7 @@ QueryTemplate: |
        }, query={
          SELECT * FROM foreach(row={
            SELECT * FROM items(item={
-             SELECT * FROM query(query=Query, copy_env=TRUE)
+             SELECT * FROM query(query=Query, inherit=TRUE)
            })
            WHERE _value =~ EventRegex
          }, column="_value")

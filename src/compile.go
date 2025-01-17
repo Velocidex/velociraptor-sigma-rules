@@ -24,6 +24,7 @@ var (
 	compile_cmd             = app.Command("compile", "Compile all the rules into one rule.")
 	output                  = compile_cmd.Flag("output", "File to write the artifact bundle to").String()
 	yaml_output             = compile_cmd.Flag("yaml", "File to write the artifact yaml to").String()
+	docs_output             = compile_cmd.Flag("docs", "File to write the documentation markdown to").String()
 	rejects_output          = compile_cmd.Flag("rejects", "File to write the rejected rules to").String()
 	ignore_previous_rejects = compile_cmd.Flag("ignore_previous_rejects", "Read the rejects file and ignore any previously known rejected rules").Bool()
 	config                  = compile_cmd.Flag("config", "Config file to use").Required().ExistingFile()
@@ -253,6 +254,22 @@ func doCompile() (err error) {
 		}
 
 		out_fd.Write([]byte(artifact))
+	}
+
+	if *docs_output != "" {
+		out_fd, err := os.OpenFile(*docs_output,
+			os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		if err != nil {
+			return fmt.Errorf("Creating docs output: %w", err)
+		}
+		defer out_fd.Close()
+
+		documentation, err := context.GetDocs()
+		if err != nil {
+			return fmt.Errorf("GetDocs: %w", err)
+		}
+
+		out_fd.Write([]byte(documentation))
 	}
 
 	if *rejects_output != "" {

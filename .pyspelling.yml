@@ -26,6 +26,11 @@ matrix:
             # Bolded words are usually terms
           - open: '[*]+'
             close: '[*]+'
+
+            # Ignore pre tags for json viewer
+          - open: '(?s)^<(?P<open>pre)'
+            close: '^</(?P=open)>$'
+
             # Inside HTML tags
           - open: '(?s)(?P<open>[<])'
             close: '[>]'
@@ -36,6 +41,7 @@ matrix:
             # Inside yaml headers
           - open: '(?s)^(?P<open>---)$'
             close: '^(?P=open)$'
+
 
     - pyspelling.filters.markdown:
     - pyspelling.filters.url:

@@ -14,11 +14,11 @@
   },
   {
    "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml",
-   "Error": "Invalid modifier equalsfield"
+   "Error": "Invalid modifier fieldref"
   },
   {
    "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml",
-   "Error": "Invalid modifier equalsfield"
+   "Error": "Invalid modifier fieldref"
   },
   {
    "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_UserGuessing_Cnt_Deprecated.yml",
@@ -86,19 +86,19 @@
   },
   {
    "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_Low_ExeFileRenamed.yml",
-   "Error": "Invalid modifier endswithfield"
+   "Error": "Invalid modifier fieldref"
   },
   {
    "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_Low_ExeFileRenamed.yml",
-   "Error": "Invalid modifier endswithfield"
+   "Error": "Invalid modifier fieldref"
   },
   {
    "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_ProcExec_High_LOLBAS-Rename.yml",
-   "Error": "Invalid modifier endswithfield"
+   "Error": "Invalid modifier fieldref"
   },
   {
    "Path": "hayabusa/hayabusa/sysmon/Sysmon_1_ProcExec_High_LOLBAS-Rename.yml",
-   "Error": "Invalid modifier endswithfield"
+   "Error": "Invalid modifier fieldref"
   },
   {
    "Path": "hayabusa/sigma/builtin/emerging-threats/2023/Exploits/CVE-2023-23397/win_smbclient_connectivity_exploit_cve_2023_23397_outlook_remote_file.yml",
@@ -107,6 +107,62 @@
   {
    "Path": "hayabusa/sigma/builtin/emerging-threats/2023/Malware/Pikabot/proc_creation_win_malware_pikabot_discovery.yml",
    "Error": "Missing field mapping 'GrandParentImage' in */windows/security"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/network_connection/net_connection_win_susp_rdp_from_domain_controller.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/network_connection/net_connection_win_susp_rdp_from_domain_controller.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/process_creation/proc_creation_win_userdomain_variable_enumeration.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/process_creation/proc_creation_win_userdomain_variable_enumeration.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_admin_logon.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_admin_logon.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_exploit_cve_2020_1472.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_exploit_cve_2020_1472.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_potential_pass_the_hash.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_potential_pass_the_hash.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_remote_registry_management_via_reg.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_remote_registry_management_via_reg.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_susp_interactive_logons.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_susp_interactive_logons.yml",
+   "Error": "Invalid modifier expand"
   },
   {
    "Path": "hayabusa/sigma/builtin/security/win_security_rdp_reverse_tunnel.yml",
@@ -206,11 +262,35 @@
   },
   {
    "Path": "hayabusa/sigma/sysmon/file/file_delete/file_delete_win_delete_own_image.yml",
-   "Error": "Invalid modifier equalsfield"
+   "Error": "Invalid modifier fieldref"
   },
   {
    "Path": "hayabusa/sigma/sysmon/file/file_delete/file_delete_win_delete_own_image.yml",
-   "Error": "Invalid modifier equalsfield"
+   "Error": "Invalid modifier fieldref"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/placeholder/dns_query/dns_query_win_wscript_cscript_resolution.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/placeholder/dns_query/dns_query_win_wscript_cscript_resolution.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/placeholder/network_connection/net_connection_win_susp_rdp_from_domain_controller.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/placeholder/network_connection/net_connection_win_susp_rdp_from_domain_controller.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/placeholder/process_creation/proc_creation_win_userdomain_variable_enumeration.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/placeholder/process_creation/proc_creation_win_userdomain_variable_enumeration.yml",
+   "Error": "Invalid modifier expand"
   },
   {
    "Path": "hayabusa/sigma/sysmon/threat-hunting/create_remote_thread/create_remote_thread_win_powershell_generic.yml",

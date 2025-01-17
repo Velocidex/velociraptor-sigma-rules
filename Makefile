@@ -10,12 +10,17 @@ compile: compileThirdParty
 
 compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo
 
+compileWindowsBaseDebug:
+	dlv debug ./src/ -- compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
+
+
 compileWindowsBase:
-	./velosigmac compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml
+	./velosigmac compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
 	./velosigmac compile --config ./config/windows_base_test.yaml --yaml ./output/Windows.Sigma.Base.CaptureTestSet.yaml
 
 compileWindowsBaseEvents:
 	./velosigmac compile --config ./config/windows_base_events.yaml --output ./output/Windows-Sigma-BaseEvents.zip --yaml ./output/Windows.Sigma.BaseEvents.yaml
+	./velosigmac compile --config ./config/windows_base_event_test.yaml --yaml ./output/Windows.Sigma.BaseEvents.CaptureTestSet.yaml
 
 compileHayabusa: compileWindowsBase
 	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor.Hayabusa.Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects
@@ -34,3 +39,6 @@ test: compile
 
 golden:
 	./tests/velociraptor -v --definitions ./output/ golden ./tests/testcases/ --config tests/golden.config.yaml --env testDir=`pwd`/tests/  --filter=${GOLDEN}
+
+profile:
+	./velosigmac gen_profiles --output ./output/profiles.json ./config/windows_base.yaml ./config/windows_base_events.yaml

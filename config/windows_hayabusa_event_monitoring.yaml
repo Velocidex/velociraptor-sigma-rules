@@ -78,10 +78,13 @@ Preamble: |
   imports:
     - Windows.Sigma.BaseEvents
 
+ExportTemplate: |
+  export: |
+    LET Rules <= gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
+
 QueryTemplate: |
   sources:
   - query: |
-      LET Rules <= gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
       SELECT *
       FROM Artifact.Windows.Sigma.BaseEvents(
          ROOT=ROOT, RuleLevel=RuleLevel, RuleStatus=RuleStatus,
@@ -132,3 +135,4 @@ RuleDirectories:
   - hayabusa/hayabusa/sysmon/
   - hayabusa/sigma/builtin/
   - hayabusa/sigma/sysmon/
+  - rules/fibratus/

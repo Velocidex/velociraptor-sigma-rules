@@ -2,9 +2,13 @@ package main
 
 import (
 	"bytes"
+	"io/ioutil"
+	"os"
 	"sort"
 	"strings"
 	"text/template"
+
+	"github.com/Velocidex/sigma-go"
 )
 
 func BuildLogSource(config_obj *Config) []Query {
@@ -24,10 +28,16 @@ func BuildLogSource(config_obj *Config) []Query {
 	for k, v := range config_obj.sources {
 		query := strings.TrimSpace(v.Query)
 		if len(query) > 0 {
-			sources = append(sources, Query{
+			q := Query{
 				Query:       query,
 				Name:        k,
-				Description: v.Description})
+				Description: v.Description,
+				LogSource:   &sigma.Logsource{},
+				Samples:     v.Samples,
+			}
+			updateRuleLogSources(k, q.LogSource)
+
+			sources = append(sources, q)
 		}
 	}
 
@@ -46,6 +56,32 @@ type ArtifactContent struct {
 	Base64DefaultDetailsQuery  string
 	LogSources                 []Query
 	ImportedLogSources         []Query
+}
+
+func readFile(args ...interface{}) interface{} {
+	result := ""
+
+	for _, arg := range args {
+		path, ok := arg.(string)
+		if !ok {
+			continue
+		}
+
+		fd, err := os.Open(path)
+		if err != nil {
+			continue
+		}
+		defer fd.Close()
+
+		data, err := ioutil.ReadAll(fd)
+		if err != nil {
+			continue
+		}
+
+		result += string(data)
+	}
+
+	return result
 }
 
 func indentTemplate(args ...interface{}) interface{} {
@@ -69,7 +105,8 @@ func indentTemplate(args ...interface{}) interface{} {
 func calculateTemplate(template_str string, params *ArtifactContent) (string, error) {
 	templ, err := template.New("").Funcs(
 		template.FuncMap{
-			"Indent": indentTemplate,
+			"Indent":   indentTemplate,
+			"ReadFile": readFile,
 		}).Parse(template_str)
 	if err != nil {
 		return "", err

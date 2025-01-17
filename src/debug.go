@@ -7,6 +7,8 @@ import (
 	"github.com/davecgh/go-spew/spew"
 )
 
+func DlvBreak() {}
+
 func DebugPrint(msg string, args ...interface{}) {
 	if *debug {
 		fmt.Printf(msg, args...)

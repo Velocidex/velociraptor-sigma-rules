@@ -1,3 +1,15 @@
 <script src="/js/jquery-3.3.1.min.js?1703133391"></script>
+<script src="/js/jquery.json-viewer.js"></script>
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1703133392" rel="stylesheet">
 <link href="/css/theme.css" rel="stylesheet">
+<link href="/css/jquery.json-viewer.css"  rel="stylesheet">
+<script>
+  $(document).ready(function() {
+      $(".json-renderer").each(function() {
+          try {
+              data = JSON.parse($(this).text());
+              $(this).jsonViewer(data, {collapsed: true, rootCollapsable: true});
+          } catch(e) { };
+      });
+  });
+</script>

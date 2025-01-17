@@ -302,16 +302,16 @@ func (self *CompilerContext) getSourceFromChannel(
 }
 
 // Update the rule's log source to specify the logsource
-func (self *CompilerContext) updateRuleLogSources(source_spec string, rule *sigma.Rule) {
+func updateRuleLogSources(source_spec string, log_source *sigma.Logsource) {
 	parts := strings.Split(source_spec, "/")
 	if len(parts) == 3 {
 		if parts[0] == "*" {
 			parts[0] = ""
 		}
 
-		rule.Logsource.Category = parts[0]
-		rule.Logsource.Product = parts[1]
-		rule.Logsource.Service = parts[2]
+		log_source.Category = parts[0]
+		log_source.Product = parts[1]
+		log_source.Service = parts[2]
 	}
 }
 
@@ -353,7 +353,7 @@ func (self *CompilerContext) guessLogSource(
 						if ok {
 							source := self.getSourceFromChannel(v_str)
 							if source != "" {
-								self.updateRuleLogSources(source, rule)
+								updateRuleLogSources(source, &rule.Logsource)
 								return fmt.Sprintf(
 									"Found Channel %v", v_str), source
 							}

@@ -13,6 +13,8 @@ Following is a list of recognized log sources.
 
 ## `etw/windows/kernel`
 
+Events from the `NT Kernel Logger` provider
+
 The `NT Kernel Logger` ETW source is a special purpose ETW
 provider that reports details about network/registry and file.
 
@@ -174,6 +176,12 @@ the `Microsoft-Windows-Kernel-File` or
         }
     }
 }
+
+</pre>
+
+
+##### CreateFile
+<pre class="json-renderer">
 
 </pre>
 

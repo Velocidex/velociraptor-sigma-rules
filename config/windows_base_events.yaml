@@ -139,8 +139,6 @@ ExportTemplate: |
     {{ if .LogSources }}
     LET LogSources <= sigma_log_sources(
     {{ range .LogSources }}
-    {{- if .Description }}// {{ .Description }}
-    {{ end }}
       `{{ .Name }}`={
   {{ Indent .Query 5 }}
       },

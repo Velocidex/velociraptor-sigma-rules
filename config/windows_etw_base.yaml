@@ -122,8 +122,6 @@ ExportTemplate: |
     {{ if .LogSources }}
     LET LogSources <= sigma_log_sources(
     {{ range .LogSources }}
-    {{- if .Description }}// {{ .Description }}
-    {{ end }}
       `{{ .Name }}`={
   {{ Indent .Query 5 }}
       },
@@ -148,7 +146,7 @@ FieldMappings:
   EventType: "x=>x.EventType"
   Computer: "x=>x.System.Computer"
   Channel: "x=>x.System.Channel"
-  FileName: "x=>x.EventData.FileName"
+  FileName: "x=>x.EventData.FileName || x.EventData.OpenPath"
   Offset: "x=>int(int=x.EventData.Offset)"
 
   RegistryPath: "x=>x.EventData.RegistryPath"
@@ -166,6 +164,8 @@ DefaultDetails:
 Sources:
   etw/windows/kernel:
     description: |
+      Events from the `NT Kernel Logger` provider
+
       The `NT Kernel Logger` ETW source is a special purpose ETW
       provider that reports details about network/registry and file.
 
@@ -216,9 +216,10 @@ Sources:
       - name: CreateProcess
         json: "config/samples/Windows-Kernel-Logger-CreateProcess.json"
 
-    query: |
-      LET Hostname <= dict(H={ SELECT Hostname FROM info() }).H[0].Hostname
+      - name: CreateFile
+        json: "config/samples/Windows-Kernel-Logger-CreateFile.json"
 
+    query: |
       SELECT * FROM delay(
         query={
           SELECT timestamp(epoch=now()) AS Timestamp,
@@ -368,7 +369,7 @@ QueryTemplate: |
                Message=X.Message) AS _Event,
           _Match
     FROM sigma(
-      rules=split(string= Rules, sep_string="\n---\n"),
+      rules=split(string= SigmaRules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,
       default_details='''{{.Base64DefaultDetailsQuery}}''',
       rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex",

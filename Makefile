@@ -26,7 +26,7 @@ compileWindowsBaseETW:
 	./velosigmac compile --config ./config/windows_etw_base.yaml --output ./output/Windows-Sigma-ETWBase.zip --yaml ./output/Windows.Sigma.ETWBase.yaml  --docs ./docs/content/docs/models/windows_etw_base/_index.md
 
 compileWindowsETW: compileWindowsBaseETW
-	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Velociraptor-Sigma-Fibratus.zip --yaml ./output/Velociraptor.Sigma.Fibratus.yaml
+	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Windows-Sigma-Fibratus.zip --yaml ./output/Windows.Sigma.Fibratus.yaml
 
 
 compileHayabusa: compileWindowsBase

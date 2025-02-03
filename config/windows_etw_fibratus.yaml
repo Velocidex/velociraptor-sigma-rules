@@ -76,16 +76,19 @@ Preamble: |
   imports:
     - Windows.Sigma.ETWBase
 
+ExportTemplate: |
+  export: |
+       LET SigmaRules <= gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
+
 QueryTemplate: |
    sources:
    - query: |
-       LET Rules <= gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
        SELECT *
        FROM Artifact.Windows.Sigma.ETWBase(
           ROOT=ROOT, RuleLevel=RuleLevel, RuleStatus=RuleStatus,
           RuleTitleFilter=RuleTitleFilter, RuleExclusions=RuleExclusions,
           DateAfter=DateAfter, DateBefore=DateBefore,
-          SigmaRules=Rules)
+          SigmaRules=SigmaRules)
 
 # These rules are manually translated so they are all supported
 RuleDirectories:

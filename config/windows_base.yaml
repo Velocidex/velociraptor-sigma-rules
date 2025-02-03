@@ -14,6 +14,11 @@ Preamble: |
     This artifact builds the basic set of log sources and field
     mappings used for Sigma on Windows.
 
+    NOTE: This artifact does not include any rules. You can launch it
+    with rules provided to the SigmaRules parameter or call it from
+    another artifact with a set of rules passed to the SigmaRules
+    parameter.
+
     This artifact was built on {{ .Time }}
 
   type: CLIENT

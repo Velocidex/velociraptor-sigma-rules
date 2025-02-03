@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
-	"sort"
 	"strings"
 
 	"github.com/Velocidex/sigma-go"
@@ -22,7 +21,8 @@ type Stats struct {
 }
 
 type CompilerContext struct {
-	logsources map[string]int
+	logsources       map[string]int
+	logsources_order []string
 
 	// Keep track of fields seen for each log source that are not
 	// already known and defined by the config file.
@@ -165,7 +165,7 @@ func (self *CompilerContext) LoadRejectSupporessions(filename string) error {
 
 // Get the source_spec from either this config or imported_configs
 func (self *CompilerContext) Resolve(source_spec string) bool {
-	_, pres := self.config_obj.sources[source_spec]
+	_, pres := self.config_obj.sources.Get(source_spec)
 	return pres
 }
 
@@ -203,14 +203,8 @@ func (self *CompilerContext) Stats() Stats {
 		TotalVisitedRules: self.total_visited_rules,
 	}
 
-	sources := []string{}
-	for k := range self.logsources {
-		sources = append(sources, k)
-	}
-
-	sort.Strings(sources)
 	fmt.Printf("\nThe following log sources will be used:\n")
-	for _, v := range sources {
+	for _, v := range self.logsources_order {
 		count, _ := self.logsources[v]
 
 		fmt.Printf("  %v (%v rules)\n", v, count)
@@ -291,7 +285,17 @@ func (self *CompilerContext) Stats() Stats {
 
 func (self *CompilerContext) getSourceFromChannel(
 	channel string) string {
-	for source, query := range self.config_obj.sources {
+	for _, source := range self.config_obj.sources.Keys() {
+		query_any, pres := self.config_obj.sources.Get(source)
+		if !pres {
+			continue
+		}
+
+		query, ok := query_any.(Query)
+		if !ok {
+			continue
+		}
+
 		for _, c := range query.Channel {
 			if c == channel {
 				return source
@@ -308,7 +312,12 @@ func updateRuleLogSources(source_spec string, log_source *sigma.Logsource) {
 		if parts[0] == "*" {
 			parts[0] = ""
 		}
-
+		if parts[1] == "*" {
+			parts[1] = ""
+		}
+		if parts[2] == "*" {
+			parts[2] = ""
+		}
 		log_source.Category = parts[0]
 		log_source.Product = parts[1]
 		log_source.Service = parts[2]

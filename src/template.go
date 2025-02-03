@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"io/ioutil"
 	"os"
-	"sort"
 	"strings"
 	"text/template"
 
@@ -25,25 +24,31 @@ func BuildLogSource(config_obj *Config) []Query {
 		config_obj.mergeConfig(config_obj)
 	}
 
-	for k, v := range config_obj.sources {
-		query := strings.TrimSpace(v.Query)
-		if len(query) > 0 {
+	for _, k := range config_obj.sources.Keys() {
+		query_any, pres := config_obj.sources.Get(k)
+		if !pres {
+			continue
+		}
+
+		query, ok := query_any.(Query)
+		if !ok {
+			continue
+		}
+
+		query_str := strings.TrimSpace(query.Query)
+		if len(query_str) > 0 {
 			q := Query{
-				Query:       query,
+				Query:       query_str,
 				Name:        k,
-				Description: v.Description,
+				Description: query.Description,
 				LogSource:   &sigma.Logsource{},
-				Samples:     v.Samples,
+				Samples:     query.Samples,
 			}
 			updateRuleLogSources(k, q.LogSource)
 
 			sources = append(sources, q)
 		}
 	}
-
-	sort.Slice(sources, func(i, j int) bool {
-		return sources[i].Name < sources[j].Name
-	})
 
 	return sources
 }

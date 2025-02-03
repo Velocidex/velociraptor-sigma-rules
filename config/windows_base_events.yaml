@@ -3,7 +3,11 @@ Description: |
   Standard Velociraptor Sigma Log sources for Windows.
 
   This is a real time monitoring profile which allows live monitoring
-  of Windows systems using Sigma rules.
+  of Windows systems using Sigma rules. This profile only covers event
+  logs by following the EVTX files.
+
+  For more dynamic event monitoring see the Windows.Sigma.ETWBase
+  artifact which uses ETW as the monitoring mechanism.
 
 Preamble: |
   name: Windows.Sigma.BaseEvents
@@ -1003,83 +1007,6 @@ Sources:
       - Channel
       - EventID
 
-# ETW Log Sources
-
-# Log source based on Microsoft-Windows-Kernel-File
-  etw/windows/file:
-    query: |
-      SELECT timestamp(epoch=now()) AS Timestamp,
-             dict(Channel="Microsoft-Windows-Kernel-File",
-                  Computer=Hostname,
-                  EventType=get(item=WindowsKernelFile_EIDLookup,
-                                field=str(str=System.ID)),
-                  EventID=dict(Value=System.ID)) AS System,
-             EventData + dict(ProcInfo=process_tracker_get(
-                 id=System.ProcessID).Data) AS EventData
-      FROM delay(query={
-         SELECT * FROM watch_etw(
-            guid='{edd08927-9cc4-4e65-b970-c2560fb5c289}',
-            description="Microsoft-Windows-Kernel-File",
-            any=WindowsKernelFile_Keyword)
-      }, delay=1)
-    channel:
-      - Microsoft-Windows-Kernel-File
-    fields:
-      - Channel
-      - EventID
-
-  etw/windows/registry:
-    query: |
-      SELECT timestamp(epoch=now()) AS Timestamp,
-             dict(Channel="Microsoft-Windows-Kernel-Registry",
-                  Computer=Hostname,
-                  EventType=get(item=WindowsKernelRegistry_EIDLookup,
-                                field=str(str=System.ID)),
-                  EventID=dict(Value=System.ID)) AS System,
-             EventData + dict(
-                 ProcInfo=process_tracker_get(
-                   id=EventData.ProcessID).Data,
-                 ParentProcInfo=process_tracker_get(
-                   id=System.ProcessID).Data) AS EventData
-      FROM delay(query={
-         SELECT * FROM watch_etw(
-            guid='{70eb4f03-c1de-4f73-a051-33d13d5413bd}',
-            capture_state=TRUE,
-            description="Microsoft-Windows-Kernel-Registry",
-            any=WindowsKernelRegistry_Keyword)
-      }, delay=1)
-    channel:
-      - Microsoft-Windows-Kernel-Registry
-    fields:
-      - Channel
-      - EventID
-
-  etw/windows/process:
-    query: |
-      SELECT timestamp(epoch=now()) AS Timestamp,
-             dict(Channel="Microsoft-Windows-Kernel-Process",
-                  Computer=Hostname,
-                  EventType=get(item=WindowsKernelProcess_EIDLookup,
-                                field=str(str=System.ID)),
-                  EventID=dict(Value=System.ID)) AS System,
-             EventData + dict(
-                 ProcInfo=process_tracker_get(
-                   id=EventData.ProcessID).Data,
-                 ParentProcInfo=process_tracker_get(
-                   id=System.ProcessID).Data) AS EventData
-      FROM delay(query={
-         SELECT * FROM watch_etw(
-            guid='{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}',
-            description="Microsoft-Windows-Kernel-Process",
-            any=WindowsKernelProcess_Keyword)
-      }, delay=1)
-    channel:
-      - Microsoft-Windows-Kernel-Process
-    fields:
-      - Channel
-      - EventID
-
-
 QueryTemplate: |
  sources:
  - query: |
@@ -1109,3 +1036,49 @@ QueryTemplate: |
              Level, Title, RecordID, Details, _Event
       FROM Result
     })
+
+DocTemplate: |
+  # Windows Base Sigma Model
+
+  This model is designed for triage of dead disk, or file based live
+  analysis. The rules that use this model will be evaluated once on
+  all events.
+
+  After all relevant rules are evaluated, the collection is complete.
+
+  # Log Sources
+
+  Following is a list of recognized log sources.
+
+  {{ range .LogSources }}
+  ## `{{ .Name }}`
+
+  {{ .Description }}
+
+  {{ if .Samples }}
+  #### Sample Events
+  {{ range .Samples }}
+
+  ##### {{ .Name }}
+  <pre class="json-renderer">
+  {{ ReadFile .Json }}
+  </pre>
+  {{ end }}
+
+  {{ end }}
+
+  Sample use in a sigma rule:
+  ```yaml
+  log_sources:
+    {{- if .LogSource.Category }}
+    category: {{ .LogSource.Category }}
+    {{- end }}
+    {{- if .LogSource.Product }}
+    product: {{ .LogSource.Product }}
+    {{- end }}
+    {{- if .LogSource.Service }}
+    service: {{ .LogSource.Service }}
+    {{- end }}
+  ```
+
+  {{ end }}

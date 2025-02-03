@@ -1,0 +1,429 @@
+Name: Windows.Sigma.ETWBase
+Description: |
+  Standard Velociraptor Sigma Log sources for Event Tracing for Windows (ETW).
+
+  This is a real time monitoring profile which allows live monitoring
+  of Windows systems using Sigma rules.
+
+Preamble: |
+  name: Windows.Sigma.ETWBase
+  description: |
+    This artifact builds the basic set of log sources and field
+    mappings used for Event driven Sigma rules on Windows.
+
+    This artifact was built on {{ .Time }}
+
+  type: CLIENT_EVENT
+
+  parameters:
+    - name: ROOT
+      description: The Event Log Directory we use to read all logs
+      default: C:/Windows/System32/WinEvt/Logs/
+
+    - name: Debug
+      type: bool
+      description: Enable full debug trace
+
+    - name: RuleLevel
+      type: choices
+      default: Critical
+      choices:
+        - "Critical"
+        - "Critical and High"
+        - "Critical, High, and Medium"
+        - "All"
+
+    - name: RuleStatus
+      type: choices
+      default: Stable
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+    - name: RuleExclusions
+      type: csv
+      description: |
+        Some rules in the Hayabusa set are extremely noisy, so they
+        are disabled by default.
+      default: |
+        RuleTitleRegex,Reason
+        noisy,All rules marked noisy should be disabled by default.
+
+    - name: SigmaRules
+      description: If provided we use these rules instead of the built in set.
+
+    - name: NTFS_CACHE_TIME
+      type: int
+      description: How often to flush the NTFS cache. (Default is 10 Min).
+      default: "600"
+
+    - name: EVTX_FREQUENCY
+      type: int
+      default: 60
+      description: |
+        How often in seconds to check for event log changes. Lower
+        number means more real time detection but potentially higher
+        CPU utilization.
+
+ExportTemplate: |
+  export: |
+    -- Add some defaults
+    LET X = scope()
+    LET RuleLevel <= X.RuleLevel || "All"
+    LET RuleStatus <= X.RuleStatus || "All Rules"
+    LET RuleTitleFilter <= X.RuleTitleFilter || "."
+    LET RuleExclusions <= X.RuleExclusions || NULL
+
+    LET ExcludeRegex <= if(condition=RuleExclusions,
+         then=join(array=RuleExclusions.RuleTitleRegex, sep="|"),
+         else="XXXXXXX")
+
+    LET RuleStatusRegex <= get(item=dict(
+         `Stable`="stable",
+         `Stable and Experimental`="stable|experimental",
+         `Stable and Test`="stable|test",
+         `All Rules`="."), member=RuleStatus)
+
+    LET RuleLevelRegex <= get(item=dict(
+         `Critical`="critical",
+         `Critical and High`="critical|high",
+         `Critical, High, and Medium`="critical|high|medium|default",
+         `All`="."), member=RuleLevel)
+
+    LET GetValue(OSPath) = stat(filename=OSPath, accessor="registry").Data.value
+    LET Hostname <= dict(H={ SELECT Hostname FROM info()}).H[0].Hostname
+
+    LET WindowsKernelFile_EIDLookup <= dict(
+         `10`="NameCreate", `11`="NameDelete", `12`="FileOpen",
+         `19`="Rename", `27`="RenamePath",`30`="CreateNewFile")
+
+    LET WindowsKernelFile_Keyword <= 0x1490
+
+    LET WindowsKernelProcess_EIDLookup <= dict(
+      `1`="ProcessStart", `2`="ProcessStop",
+      `5`="ImageLoad", `6`="ImageUnload")
+
+    LET WindowsKernelProcess_Keyword <= 0x50
+
+    LET WindowsKernelRegistry_EIDLookup <= dict(
+      `2`="OpenKey", `1`="CreateKey", `5`="SetValueKey",
+      `6`="DeleteValueKey", `3`="DeleteKey")
+
+    -- SetValueKey | DeleteValueKey | CreateKey | OpenKey | DeleteKey = 0x100 | 0x200 | 0x1000 | 0x2000 | 0x4000
+    LET WindowsKernelRegistry_Keyword <= 0x7300
+
+    {{ if .LogSources }}
+    LET LogSources <= sigma_log_sources(
+    {{ range .LogSources }}
+    {{- if .Description }}// {{ .Description }}
+    {{ end }}
+      `{{ .Name }}`={
+  {{ Indent .Query 5 }}
+      },
+    {{- end -}}
+    `velociraptor/info/*`={ SELECT * FROM info() })
+    {{ end }}
+
+    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
+
+    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+
+    LET DefaultDetailsLambda = '''{{.Base64DefaultDetailsQuery}}'''
+    LET RuleFilterLambda = '''x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex'''
+
+FieldMappings:
+  # For etw/windows/kernel
+  ProcessExe: "x=>x.EventData.ProcInfo.Exe"
+  ProcessName: "x=>x.EventData.ProcInfo.Name"
+  Username: "x=>x.EventData.ProcInfo.Username"
+  CommandLine: "x=>x.EventData.ProcInfo.CommandLine"
+
+  EventType: "x=>x.EventType"
+  Computer: "x=>x.System.Computer"
+  Channel: "x=>x.System.Channel"
+  FileName: "x=>x.EventData.FileName"
+  Offset: "x=>int(int=x.EventData.Offset)"
+
+  RegistryPath: "x=>x.EventData.RegistryPath"
+  KeyName: "x=>x.EventData.KeyName"
+
+
+DefaultDetails:
+  Query: |
+    x=>get(item=DefaultDetails,
+           member=format(format="%v/%v",
+              args=[x.System.Provider.Name, x.System.EventID.Value])
+          ) || x.Message || x.UserData || x.EventData
+  Lookup:
+
+Sources:
+  etw/windows/kernel:
+    description: |
+      The `NT Kernel Logger` ETW source is a special purpose ETW
+      provider that reports details about network/registry and file.
+
+      This provider enriches events with process information from the
+      process tracker.
+
+      This provider is special: Enabling this provider implicitely
+      triggers many other ETW providers such as File, Process,
+      Registry and Network monitoring. Velociraptor's ETW subsystem
+      recognizes the `Kernel Logger` provider automatically and
+      performs additional processing:
+
+      - Resolves full files paths from kernel space (uses device
+        notation) to regular filesystem paths (e.g. `C:\Windows`).
+
+      - Collects rundown events to determine the initial system
+        state. This allows Velociraptor to resolve file and registry
+        paths from events that refer to kernel object addresses.
+
+      For these reasons it is preferrable to use this provider over
+      the `Microsoft-Windows-Kernel-File` or
+      `Microsoft-Windows-Kernel-Registry` providers.
+
+    samples:
+      - name: WriteFile
+        json: "config/samples/Windows-Kernel-Logger-WriteFile.json"
+      - name: ReadFile
+        json: "config/samples/Windows-Kernel-Logger-ReadFile.json"
+      - name: CloseFile
+        json: "config/samples/Windows-Kernel-Logger-CloseFile.json"
+      - name: ReleaseFile
+        json: "config/samples/Windows-Kernel-Logger-ReleaseFile.json"
+
+      - name: RegQueryValue
+        json: "config/samples/Windows-Kernel-Logger-RegQueryValue.json"
+      - name: RegOpenKey
+        json: "config/samples/Windows-Kernel-Logger-RegOpenKey.json"
+      - name: RegCloseKey
+        json: "config/samples/Windows-Kernel-Logger-RegCloseKey.json"
+      - name: RegCreateKey
+        json: "config/samples/Windows-Kernel-Logger-RegCreateKey.json"
+
+      - name: SendTCPv4
+        json: "config/samples/Windows-Kernel-Logger-SendTCPv4.json"
+      - name: RecvTCPv4
+        json: "config/samples/Windows-Kernel-Logger-RecvTCPv4.json"
+
+      - name: CreateProcess
+        json: "config/samples/Windows-Kernel-Logger-CreateProcess.json"
+
+    query: |
+      LET Hostname <= dict(H={ SELECT Hostname FROM info() }).H[0].Hostname
+
+      SELECT * FROM delay(
+        query={
+          SELECT timestamp(epoch=now()) AS Timestamp,
+                 System.KernelEventType AS EventType,
+                 dict(Channel="NT-Kernel-Logger",
+                      Computer=Hostname,
+                      EventType=System.KernelEventType,
+                      EventID=dict(Value=System.ID)) AS System,
+                 EventData + dict(ProcInfo=process_tracker_get(
+                     id=System.ProcessID).Data) AS EventData
+          FROM watch_etw(guid='{9E814AAD-3204-11D2-9A82-006008A86939}',
+                         capture_state=TRUE,
+                         level=5,
+                         description="NT-Kernel-Logger",
+                         kernel_tracer_type=["registry", "process", "network", "driver", "file"])
+          WHERE EventType
+      }, delay=1)
+
+    channel:
+      - Microsoft-Windows-Kernel-File
+    fields:
+      - Channel
+      - EventID
+
+  etw/windows/file:
+    description: |
+      Log source based on the `Microsoft-Windows-Kernel-File` provider.
+
+      See `etw/windows/kernel` for a better ETW provider.
+
+    samples:
+      - name: FileOpen Event
+        json: "config/samples/Windows-Kernel-File-Sample-FileOpen.json"
+      - name: CreateNewFile Event
+        json: "config/samples/Windows-Kernel-File-Sample-CreateNewFile.json"
+      - name: NameCreate Event
+        json: "config/samples/Windows-Kernel-File-Sample-NameCreate.json"
+
+    query: |
+      SELECT timestamp(epoch=now()) AS Timestamp,
+             dict(Channel="Microsoft-Windows-Kernel-File",
+                  Computer=Hostname,
+                  EventType=get(item=WindowsKernelFile_EIDLookup,
+                                field=str(str=System.ID)),
+                  EventID=dict(Value=System.ID)) AS System,
+             EventData + dict(ProcInfo=process_tracker_get(
+                 id=System.ProcessID).Data) AS EventData
+      FROM delay(query={
+         SELECT * FROM watch_etw(
+            guid='{edd08927-9cc4-4e65-b970-c2560fb5c289}',
+            description="Microsoft-Windows-Kernel-File",
+            any=WindowsKernelFile_Keyword)
+      }, delay=1)
+    channel:
+      - Microsoft-Windows-Kernel-File
+    fields:
+      - Channel
+      - EventID
+
+  etw/windows/registry:
+    description: |
+      Log source based on the `Microsoft-Windows-Kernel-Registry` provider.
+
+      See `etw/windows/kernel` for a better ETW provider.
+
+    samples:
+      - name: CreateKey Event
+        json: "config/samples/Windows-Kernel-Registry-Sample-CreateKey.json"
+      - name: DeleteKey Event
+        json: "config/samples/Windows-Kernel-Registry-Sample-DeleteKey.json"
+      - name: DeleteValueKey Event
+        json: "config/samples/Windows-Kernel-Registry-Sample-DeleteValueKey.json"
+      - name: OpenKey Event
+        json: "config/samples/Windows-Kernel-Registry-Sample-OpenKey.json"
+      - name: SetValueKey Event
+        json: "config/samples/Windows-Kernel-Registry-Sample-SetValueKey.json"
+
+    query: |
+      SELECT timestamp(epoch=now()) AS Timestamp,
+             dict(Channel="Microsoft-Windows-Kernel-Registry",
+                  Computer=Hostname,
+                  EventType=get(item=WindowsKernelRegistry_EIDLookup,
+                                field=str(str=System.ID)),
+                  EventID=dict(Value=System.ID)) AS System,
+             EventData + dict(
+                 ProcInfo=process_tracker_get(
+                   id=EventData.ProcessID).Data,
+                 ParentProcInfo=process_tracker_get(
+                   id=System.ProcessID).Data) AS EventData
+      FROM delay(query={
+         SELECT * FROM watch_etw(
+            guid='{70eb4f03-c1de-4f73-a051-33d13d5413bd}',
+            capture_state=TRUE,
+            description="Microsoft-Windows-Kernel-Registry",
+            any=WindowsKernelRegistry_Keyword)
+      }, delay=1)
+    channel:
+      - Microsoft-Windows-Kernel-Registry
+    fields:
+      - Channel
+      - EventID
+
+  etw/windows/process:
+    description: |
+      Log source based on the `Microsoft-Windows-Kernel-Registry` provider
+
+      See `etw/windows/kernel` for a better ETW provider.
+
+    query: |
+      SELECT timestamp(epoch=now()) AS Timestamp,
+             dict(Channel="Microsoft-Windows-Kernel-Process",
+                  Computer=Hostname,
+                  EventType=get(item=WindowsKernelProcess_EIDLookup,
+                                field=str(str=System.ID)),
+                  EventID=dict(Value=System.ID)) AS System,
+             EventData + dict(
+                 ProcInfo=process_tracker_get(
+                   id=EventData.ProcessID).Data,
+                 ParentProcInfo=process_tracker_get(
+                   id=System.ProcessID).Data) AS EventData
+      FROM delay(query={
+         SELECT * FROM watch_etw(
+            guid='{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}',
+            description="Microsoft-Windows-Kernel-Process",
+            any=WindowsKernelProcess_Keyword)
+      }, delay=1)
+    channel:
+      - Microsoft-Windows-Kernel-Process
+    fields:
+      - Channel
+      - EventID
+
+
+QueryTemplate: |
+ sources:
+ - query: |
+    LET Result = SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
+          System.Computer AS Computer,
+          System.Channel AS Channel,
+          System.EventID.Value AS EID,
+          _Rule.Level AS Level,
+          _Rule.Title AS Title,
+          System.EventRecordID AS RecordID,
+          Details,
+          dict(System=System,
+               EventData=X.EventData || X.UserData,
+               Message=X.Message) AS _Event,
+          _Match
+    FROM sigma(
+      rules=split(string= Rules, sep_string="\n---\n"),
+      log_sources= LogSources, debug=Debug,
+      default_details='''{{.Base64DefaultDetailsQuery}}''',
+      rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex",
+      field_mapping= FieldMapping)
+
+    SELECT * FROM if(condition=Debug, then={
+      SELECT * FROM Result
+    }, else={
+      SELECT Timestamp, Computer, Channel , EID,
+             Level, Title, RecordID, Details, _Event
+      FROM Result
+    })
+
+DocTemplate: |
+  # Windows Base ETW Model
+
+  This model is designed to follow ETW event sources.
+
+  ETW events are provided by various ETW Providers in the Windows
+  Kernel. These events can provide security critical information which
+  can be detected using Sigma Rules.
+
+  # Log Sources
+
+  Following is a list of recognized log sources.
+
+  {{ range .LogSources }}
+  ## `{{ .Name }}`
+
+  {{ .Description }}
+
+  {{ if .Samples }}
+  #### Sample Events
+  {{ range .Samples }}
+
+  ##### {{ .Name }}
+  <pre class="json-renderer">
+  {{ ReadFile .Json }}
+  </pre>
+  {{ end }}
+
+  {{ end }}
+
+  Sample use in a sigma rule:
+  ```yaml
+  log_sources:
+    {{- if .LogSource.Category }}
+    category: {{ .LogSource.Category }}
+    {{- end }}
+    {{- if .LogSource.Product }}
+    product: {{ .LogSource.Product }}
+    {{- end }}
+    {{- if .LogSource.Service }}
+    service: {{ .LogSource.Service }}
+    {{- end }}
+  ```
+
+  {{ end }}

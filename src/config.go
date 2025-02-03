@@ -1,6 +1,9 @@
 package main
 
-import "github.com/Velocidex/sigma-go"
+import (
+	"github.com/Velocidex/ordereddict"
+	"github.com/Velocidex/sigma-go"
+)
 
 type DefaultDetails struct {
 	// A lambda that will be used to get the default description
@@ -69,20 +72,22 @@ type Config struct {
 	// allows to build derived artifacts based on other artifacts.
 	ImportConfigs []string `json:"ImportConfigs,omitempty"`
 
-	// Merged results from imported configs
-	sources        map[string]Query
+	// Merged results from imported configs. Maintains order from
+	// config file definitions.
+	sources *ordereddict.Dict // map[string]Query
+
 	field_mappings map[string]string
 }
 
 // Merge fields from the config into this state object.
 func (self *Config) mergeConfig(config_obj *Config) {
 	if self.sources == nil {
-		self.sources = make(map[string]Query)
+		self.sources = ordereddict.NewDict()
 	}
 
 	if config_obj.Sources != nil {
 		for k, v := range config_obj.Sources {
-			self.sources[k] = v
+			self.sources.Set(k, v)
 		}
 	}
 

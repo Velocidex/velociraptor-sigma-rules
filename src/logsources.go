@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Velocidex/ordereddict"
 	"github.com/Velocidex/sigma-go"
 	"github.com/Velocidex/yaml/v2"
 )
@@ -92,7 +93,7 @@ func (self *CompilerContext) LoadConfig(filename string) error {
 
 func (self *CompilerContext) LoadConfigFromString(data string) error {
 
-	config_obj := &Config{}
+	config_obj := NewConfig()
 	err := yaml.Unmarshal([]byte(data), config_obj)
 	if err != nil {
 		return err
@@ -114,12 +115,12 @@ func (self *CompilerContext) LoadConfigFromString(data string) error {
 			return err
 		}
 
-		data, err := ioutil.ReadAll(fd)
+		secondary_data, err := ioutil.ReadAll(fd)
 		if err != nil {
 			return err
 		}
-		config_obj = &Config{}
-		err = yaml.Unmarshal(data, config_obj)
+		config_obj = NewConfig()
+		err = yaml.Unmarshal(secondary_data, config_obj)
 		if err != nil {
 			return err
 		}
@@ -512,4 +513,41 @@ func (self *CompilerContext) addError(reason string, path string) {
 	failed, _ := self.errored_rules[reason]
 	failed = append(failed, path)
 	self.errored_rules[reason] = failed
+}
+
+type LogSourceCollection struct {
+	*ordereddict.Dict
+}
+
+func (self *LogSourceCollection) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	dict := ordereddict.NewDict()
+
+	mapping := make(map[string]Query)
+	err := unmarshal(mapping)
+	if err != nil {
+		return err
+	}
+
+	err = unmarshal(dict)
+	if err != nil {
+		return err
+	}
+
+	for _, k := range dict.Keys() {
+		v, pres := mapping[k]
+		if pres {
+			dict.Update(k, v)
+		} else {
+			dict.Delete(k)
+		}
+	}
+
+	self.Dict = dict
+	return nil
+}
+
+func NewLogSorceCollection() *LogSourceCollection {
+	return &LogSourceCollection{
+		Dict: ordereddict.NewDict(),
+	}
 }

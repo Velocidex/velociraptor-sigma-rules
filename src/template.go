@@ -16,7 +16,7 @@ func BuildLogSource(config_obj *Config) []Query {
 	// If this artifact does not add any new log sources, we do not
 	// need to emit any log sources, as we will use the one from the
 	// export section of the base artifact.
-	if len(config_obj.Sources) == 0 {
+	if config_obj.Sources.Len() == 0 {
 		return nil
 	}
 

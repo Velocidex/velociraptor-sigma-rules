@@ -54,3 +54,27 @@ syslog
 <url-free> docs/content/docs/models/_index.md
 eBPF
 EventID
+
+
+<url-free> docs/content/docs/models/windows_etw_base/_index.md
+--------------------------------------------------------------------------------
+CloseFile
+CreateKey
+CreateNewFile
+CreateProcess
+DeleteKey
+DeleteValueKey
+FileOpen
+NameCreate
+OpenKey
+ReadFile
+RecvTCPv
+RegCloseKey
+RegCreateKey
+RegOpenKey
+RegQueryValue
+ReleaseFile
+SendTCPv
+SetValueKey
+WriteFile
+filesystem

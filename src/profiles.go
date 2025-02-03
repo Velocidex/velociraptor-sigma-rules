@@ -29,12 +29,11 @@ func doProfile() error {
 			return err
 		}
 
-		conf := &Config{}
+		conf := NewConfig()
 		err = yaml.Unmarshal(data, conf)
 		if err != nil {
 			return err
 		}
-
 		profiles[conf.Name] = conf
 	}
 

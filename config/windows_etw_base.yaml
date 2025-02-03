@@ -172,7 +172,7 @@ Sources:
       This provider enriches events with process information from the
       process tracker.
 
-      This provider is special: Enabling this provider implicitely
+      This provider is special: Enabling this provider implicitly
       triggers many other ETW providers such as File, Process,
       Registry and Network monitoring. Velociraptor's ETW subsystem
       recognizes the `Kernel Logger` provider automatically and
@@ -185,7 +185,7 @@ Sources:
         state. This allows Velociraptor to resolve file and registry
         paths from events that refer to kernel object addresses.
 
-      For these reasons it is preferrable to use this provider over
+      For these reasons it is preferable to use this provider over
       the `Microsoft-Windows-Kernel-File` or
       `Microsoft-Windows-Kernel-Registry` providers.
 

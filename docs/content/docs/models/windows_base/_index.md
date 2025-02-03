@@ -11,22 +11,12 @@ After all relevant rules are evaluated, the collection is complete.
 Following is a list of recognized log sources.
 
 
-## `*/windows/msexchange-management`
+## `*/windows/application`
 
+This Log Source generates events from the Application Channel, usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
 
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: msexchange-management
-```
-
-
-## `*/windows/powershell-classic`
-
+The channel stores a wide variety of system events from multiple
+services.
 
 
 
@@ -35,94 +25,7 @@ Sample use in a sigma rule:
 ```yaml
 log_sources:
   product: windows
-  service: powershell-classic
-```
-
-
-## `process_creation/windows/execution`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: process_creation
-  product: windows
-  service: execution
-```
-
-
-## `*/windows/taskscheduler`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: taskscheduler
-```
-
-
-## `process_creation/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: process_creation
-  product: windows
-```
-
-
-## `persistence/windows/services`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: persistence
-  product: windows
-  service: services
-```
-
-
-## `network_connection/windows/netstat`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: network_connection
-  product: windows
-  service: netstat
-```
-
-
-## `ps_module/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: ps_module
-  product: windows
+  service: application
 ```
 
 
@@ -145,22 +48,10 @@ log_sources:
 ```
 
 
-## `ps_classic_start/windows/*`
+## `*/windows/appmodel-runtime`
 
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: ps_classic_start
-  product: windows
-```
-
-
-## `*/windows/powershell`
-
+This Log Source generates combined events from the Windows `AppModel Runtime`. Events are usually stored in the files:
+  * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppModel-Runtime%4Admin.evtx`
 
 
 
@@ -169,275 +60,7 @@ Sample use in a sigma rule:
 ```yaml
 log_sources:
   product: windows
-  service: powershell
-```
-
-
-## `*/windows/smbclient-security`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: smbclient-security
-```
-
-
-## `ps_classic_provider_start/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: ps_classic_provider_start
-  product: windows
-```
-
-
-## `*/windows/services`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: services
-```
-
-
-## `*/windows/dns-server`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: dns-server
-```
-
-
-## `*/windows/dns-client`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: dns-client
-```
-
-
-## `vql/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: vql
-  product: windows
-```
-
-
-## `*/windows/shell-core`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: shell-core
-```
-
-
-## `*/windows/terminalservices-localsessionmanager`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: terminalservices-localsessionmanager
-```
-
-
-## `*/windows/vhdmp`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: vhdmp
-```
-
-
-## `registry_add/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: registry_add
-  product: windows
-```
-
-
-## `*/windows/openssh`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: openssh
-```
-
-
-## `*/windows/security`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: security
-```
-
-
-## `*/windows/security-mitigations`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: security-mitigations
-```
-
-
-## `*/windows/appxpackaging-om`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: appxpackaging-om
-```
-
-
-## `*/windows/firewall-as`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: firewall-as
-```
-
-
-## `*/windows/dns-server-analytic`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: dns-server-analytic
-```
-
-
-## `*/windows/wmi`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: wmi
-```
-
-
-## `antivirus/windows/windefend`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: antivirus
-  product: windows
-  service: windefend
-```
-
-
-## `image_load/windows/pslist`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: image_load
-  product: windows
-  service: pslist
+  service: appmodel-runtime
 ```
 
 
@@ -455,7 +78,7 @@ log_sources:
 ```
 
 
-## `*/windows/codeintegrity-operational`
+## `*/windows/appxpackaging-om`
 
 
 
@@ -465,162 +88,7 @@ Sample use in a sigma rule:
 ```yaml
 log_sources:
   product: windows
-  service: codeintegrity-operational
-```
-
-
-## `process_creation/windows/pslist`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: process_creation
-  product: windows
-  service: pslist
-```
-
-
-## `*/windows/ntlm`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: ntlm
-```
-
-
-## `webserver/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: webserver
-  product: windows
-```
-
-
-## `*/windows/certificateservicesclient-lifecycle-system`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: certificateservicesclient-lifecycle-system
-```
-
-
-## `*/windows/microsoft-servicebus-client`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: microsoft-servicebus-client
-```
-
-
-## `*/windows/sysmon`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: sysmon
-```
-
-
-## `registry_set/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: registry_set
-  product: windows
-```
-
-
-## `*/windows/capi2`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: capi2
-```
-
-
-## `*/windows/driver-framework`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: driver-framework
-```
-
-
-## `*/windows/lsa-server`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: lsa-server
-```
-
-
-## `*/windows/ldap_debug`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: ldap_debug
+  service: appxpackaging-om
 ```
 
 
@@ -653,6 +121,48 @@ log_sources:
 ```
 
 
+## `*/windows/capi2`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: capi2
+```
+
+
+## `*/windows/certificateservicesclient-lifecycle-system`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: certificateservicesclient-lifecycle-system
+```
+
+
+## `*/windows/codeintegrity-operational`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: codeintegrity-operational
+```
+
+
 ## `*/windows/diagnosis-scripted`
 
 
@@ -664,6 +174,258 @@ Sample use in a sigma rule:
 log_sources:
   product: windows
   service: diagnosis-scripted
+```
+
+
+## `*/windows/dns-client`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: dns-client
+```
+
+
+## `*/windows/dns-server`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: dns-server
+```
+
+
+## `*/windows/dns-server-analytic`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: dns-server-analytic
+```
+
+
+## `*/windows/driver-framework`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: driver-framework
+```
+
+
+## `*/windows/firewall-as`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: firewall-as
+```
+
+
+## `*/windows/ldap_debug`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: ldap_debug
+```
+
+
+## `*/windows/lsa-server`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: lsa-server
+```
+
+
+## `*/windows/microsoft-servicebus-client`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: microsoft-servicebus-client
+```
+
+
+## `*/windows/msexchange-management`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: msexchange-management
+```
+
+
+## `*/windows/ntlm`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: ntlm
+```
+
+
+## `*/windows/openssh`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: openssh
+```
+
+
+## `*/windows/powershell`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: powershell
+```
+
+
+## `*/windows/powershell-classic`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: powershell-classic
+```
+
+
+## `*/windows/security`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: security
+```
+
+
+## `*/windows/security-mitigations`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: security-mitigations
+```
+
+
+## `*/windows/shell-core`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: shell-core
+```
+
+
+## `*/windows/smbclient-security`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: smbclient-security
+```
+
+
+## `*/windows/sysmon`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: sysmon
 ```
 
 
@@ -681,6 +443,48 @@ log_sources:
 ```
 
 
+## `*/windows/taskscheduler`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: taskscheduler
+```
+
+
+## `*/windows/terminalservices-localsessionmanager`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: terminalservices-localsessionmanager
+```
+
+
+## `*/windows/vhdmp`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: vhdmp
+```
+
+
 ## `*/windows/windefend`
 
 
@@ -695,12 +499,8 @@ log_sources:
 ```
 
 
-## `*/windows/application`
+## `*/windows/wmi`
 
-This Log Source generates events from the Application Channel, usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
-
-The channel stores a wide variety of system events from multiple
-services.
 
 
 
@@ -709,14 +509,12 @@ Sample use in a sigma rule:
 ```yaml
 log_sources:
   product: windows
-  service: application
+  service: wmi
 ```
 
 
-## `*/windows/appmodel-runtime`
+## `process_creation/windows/*`
 
-This Log Source generates combined events from the Windows `AppModel Runtime`. Events are usually stored in the files:
-  * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppModel-Runtime%4Admin.evtx`
 
 
 
@@ -724,22 +522,50 @@ This Log Source generates combined events from the Windows `AppModel Runtime`. E
 Sample use in a sigma rule:
 ```yaml
 log_sources:
+  category: process_creation
   product: windows
-  service: appmodel-runtime
 ```
 
 
-## `*/windows/schtasks`
+## `ps_classic_provider_start/windows/*`
 
-Enumerates All Scheduled tasks
+
 
 
 
 Sample use in a sigma rule:
 ```yaml
 log_sources:
+  category: ps_classic_provider_start
   product: windows
-  service: schtasks
+```
+
+
+## `ps_classic_start/windows/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: ps_classic_start
+  product: windows
+```
+
+
+## `ps_module/windows/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: ps_module
+  product: windows
 ```
 
 
@@ -757,6 +583,20 @@ log_sources:
 ```
 
 
+## `registry_add/windows/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: registry_add
+  product: windows
+```
+
+
 ## `registry_event/windows/*`
 
 
@@ -768,6 +608,166 @@ Sample use in a sigma rule:
 log_sources:
   category: registry_event
   product: windows
+```
+
+
+## `registry_set/windows/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: registry_set
+  product: windows
+```
+
+
+## `antivirus/windows/windefend`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: antivirus
+  product: windows
+  service: windefend
+```
+
+
+## `vql/windows/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: vql
+  product: windows
+```
+
+
+## `*/windows/schtasks`
+
+Enumerates All Scheduled tasks
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: schtasks
+```
+
+
+## `*/windows/services`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  product: windows
+  service: services
+```
+
+
+## `persistence/windows/services`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: persistence
+  product: windows
+  service: services
+```
+
+
+## `process_creation/windows/execution`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: process_creation
+  product: windows
+  service: execution
+```
+
+
+## `webserver/windows/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: webserver
+  product: windows
+```
+
+
+## `process_creation/windows/pslist`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: process_creation
+  product: windows
+  service: pslist
+```
+
+
+## `image_load/windows/pslist`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: image_load
+  product: windows
+  service: pslist
+```
+
+
+## `network_connection/windows/netstat`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+log_sources:
+  category: network_connection
+  product: windows
+  service: netstat
 ```
 
 

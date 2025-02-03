@@ -39,16 +39,16 @@ type SourceRemapping struct {
 }
 
 type Config struct {
-	Name           string            `json:"Name,omitempty"`
-	Description    string            `json:"Description,omitempty"`
-	Preamble       string            `json:"Preamble,omitempty"`
-	FieldMappings  map[string]string `json:"FieldMappings,omitempty"`
-	DefaultDetails DefaultDetails    `json:"DefaultDetails,omitempty"`
-	Sources        map[string]Query  `json:"Sources,omitempty"`
-	ExportTemplate string            `json:"ExportTemplate,omitempty"`
-	DocTemplate    string            `json:"DocTemplate,omitempty"`
-	QueryTemplate  string            `json:"QueryTemplate,omitempty"`
-	Postscript     string            `json:"Postscript,omitempty"`
+	Name           string               `json:"Name,omitempty"`
+	Description    string               `json:"Description,omitempty"`
+	Preamble       string               `json:"Preamble,omitempty"`
+	FieldMappings  map[string]string    `json:"FieldMappings,omitempty"`
+	DefaultDetails DefaultDetails       `json:"DefaultDetails,omitempty"`
+	Sources        *LogSourceCollection `json:"Sources,omitempty"` // map[string]Query
+	ExportTemplate string               `json:"ExportTemplate,omitempty"`
+	DocTemplate    string               `json:"DocTemplate,omitempty"`
+	QueryTemplate  string               `json:"QueryTemplate,omitempty"`
+	Postscript     string               `json:"Postscript,omitempty"`
 
 	// If this is set then we generate a reference URL for each rule.
 	BaseReferenceURL string   `json:"BaseReferenceURL,omitempty"`
@@ -81,12 +81,9 @@ type Config struct {
 
 // Merge fields from the config into this state object.
 func (self *Config) mergeConfig(config_obj *Config) {
-	if self.sources == nil {
-		self.sources = ordereddict.NewDict()
-	}
-
-	if config_obj.Sources != nil {
-		for k, v := range config_obj.Sources {
+	if config_obj.Sources.Len() != 0 {
+		for _, k := range config_obj.Sources.Keys() {
+			v, _ := config_obj.Sources.Get(k)
 			self.sources.Set(k, v)
 		}
 	}
@@ -99,5 +96,12 @@ func (self *Config) mergeConfig(config_obj *Config) {
 		for k, v := range config_obj.FieldMappings {
 			self.field_mappings[k] = v
 		}
+	}
+}
+
+func NewConfig() *Config {
+	return &Config{
+		Sources: NewLogSorceCollection(),
+		sources: ordereddict.NewDict(),
 	}
 }

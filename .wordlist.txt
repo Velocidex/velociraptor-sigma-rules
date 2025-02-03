@@ -78,3 +78,4 @@ SendTCPv
 SetValueKey
 WriteFile
 filesystem
+CreateFile

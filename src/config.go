@@ -1,6 +1,9 @@
 package main
 
-import "github.com/Velocidex/sigma-go"
+import (
+	"github.com/Velocidex/ordereddict"
+	"github.com/Velocidex/sigma-go"
+)
 
 type DefaultDetails struct {
 	// A lambda that will be used to get the default description
@@ -36,16 +39,16 @@ type SourceRemapping struct {
 }
 
 type Config struct {
-	Name           string            `json:"Name,omitempty"`
-	Description    string            `json:"Description,omitempty"`
-	Preamble       string            `json:"Preamble,omitempty"`
-	FieldMappings  map[string]string `json:"FieldMappings,omitempty"`
-	DefaultDetails DefaultDetails    `json:"DefaultDetails,omitempty"`
-	Sources        map[string]Query  `json:"Sources,omitempty"`
-	ExportTemplate string            `json:"ExportTemplate,omitempty"`
-	DocTemplate    string            `json:"DocTemplate,omitempty"`
-	QueryTemplate  string            `json:"QueryTemplate,omitempty"`
-	Postscript     string            `json:"Postscript,omitempty"`
+	Name           string               `json:"Name,omitempty"`
+	Description    string               `json:"Description,omitempty"`
+	Preamble       string               `json:"Preamble,omitempty"`
+	FieldMappings  map[string]string    `json:"FieldMappings,omitempty"`
+	DefaultDetails DefaultDetails       `json:"DefaultDetails,omitempty"`
+	Sources        *LogSourceCollection `json:"Sources,omitempty"` // map[string]Query
+	ExportTemplate string               `json:"ExportTemplate,omitempty"`
+	DocTemplate    string               `json:"DocTemplate,omitempty"`
+	QueryTemplate  string               `json:"QueryTemplate,omitempty"`
+	Postscript     string               `json:"Postscript,omitempty"`
 
 	// If this is set then we generate a reference URL for each rule.
 	BaseReferenceURL string   `json:"BaseReferenceURL,omitempty"`
@@ -69,20 +72,19 @@ type Config struct {
 	// allows to build derived artifacts based on other artifacts.
 	ImportConfigs []string `json:"ImportConfigs,omitempty"`
 
-	// Merged results from imported configs
-	sources        map[string]Query
+	// Merged results from imported configs. Maintains order from
+	// config file definitions.
+	sources *ordereddict.Dict // map[string]Query
+
 	field_mappings map[string]string
 }
 
 // Merge fields from the config into this state object.
 func (self *Config) mergeConfig(config_obj *Config) {
-	if self.sources == nil {
-		self.sources = make(map[string]Query)
-	}
-
-	if config_obj.Sources != nil {
-		for k, v := range config_obj.Sources {
-			self.sources[k] = v
+	if config_obj.Sources.Len() != 0 {
+		for _, k := range config_obj.Sources.Keys() {
+			v, _ := config_obj.Sources.Get(k)
+			self.sources.Set(k, v)
 		}
 	}
 
@@ -94,5 +96,12 @@ func (self *Config) mergeConfig(config_obj *Config) {
 		for k, v := range config_obj.FieldMappings {
 			self.field_mappings[k] = v
 		}
+	}
+}
+
+func NewConfig() *Config {
+	return &Config{
+		Sources: NewLogSorceCollection(),
+		sources: ordereddict.NewDict(),
 	}
 }

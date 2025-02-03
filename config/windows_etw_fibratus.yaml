@@ -1,0 +1,95 @@
+Name: Windows.Sigma.Fibratus
+ImportConfigs:
+  - config/windows_etw_base.yaml
+
+IncludeArtifacts:
+  - output/Windows.Sigma.ETWBase.yaml
+
+Preamble: |
+  name: Windows.Sigma.Fibratus
+  description: |
+    Fibratus https://www.fibratus.io/ is an open source detection
+    engine based on ETW technology. The Fibratus project contains its
+    own rule engine with its own unique language including its own set
+    of detection rules.
+
+    This artifact packages some of the Fibratus rules translated to
+    the Sigma rule format and using Velociraptor's ETW Sigma model.
+
+    This artifact was built on {{ .Time }}
+
+  type: CLIENT
+
+  parameters:
+    - name: ROOT
+      description: The Event Log Directory we use to read all logs
+      default: C:/Windows/System32/WinEvt/Logs/
+
+    - name: RuleLevel
+      type: choices
+      default: Critical
+      choices:
+        - "Critical"
+        - "Critical and High"
+        - "Critical, High, and Medium"
+        - "All"
+
+    - name: RuleStatus
+      type: choices
+      default: Stable
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+    - name: RuleExclusions
+      type: csv
+      description: |
+        Some rules in the Hayabusa set are extremely noisy, so they
+        are disabled by default.
+      default: |
+        RuleTitleRegex,Reason
+        Proc Exec,Fires on every Process Execution EID 1
+        File Created,Fires on every Sysmon EID 11
+        Reg Key Value Set,Fires on every Sysmon EID 13
+        DNS Query,Fires on every Sysmon EID 22
+        Proc Terminated$,Fires on every Sysmon EID 5
+        Proc Injection$,Fires on every Sysmon EID 8
+        Reg Key Create/Delete,Fires on every Sysmon EID 12
+        WMI Provider Started,Fires on every Microsoft-Windows-WMI-Activity/Operational EID 5857
+        noisy,All rules marked noisy should be disabled by default.
+
+    - name: DateAfter
+      description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+    - name: DateBefore
+      description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+  imports:
+    - Windows.Sigma.ETWBase
+
+ExportTemplate: |
+  export: |
+       LET SigmaRules <= gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
+
+QueryTemplate: |
+   sources:
+   - query: |
+       SELECT *
+       FROM Artifact.Windows.Sigma.ETWBase(
+          ROOT=ROOT, RuleLevel=RuleLevel, RuleStatus=RuleStatus,
+          RuleTitleFilter=RuleTitleFilter, RuleExclusions=RuleExclusions,
+          DateAfter=DateAfter, DateBefore=DateBefore,
+          SigmaRules=SigmaRules)
+
+# These rules are manually translated so they are all supported
+RuleDirectories:
+  - rules/fibratus/

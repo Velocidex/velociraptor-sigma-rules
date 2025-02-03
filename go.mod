@@ -5,6 +5,7 @@ go 1.21
 toolchain go1.23.2
 
 require (
+	github.com/Velocidex/ordereddict v0.0.0-20230909174157-2aa49cc5d11d
 	github.com/Velocidex/sigma-go v0.0.0-20241113062227-c1c5ea4b5250
 	github.com/Velocidex/yaml/v2 v2.2.8
 	github.com/alecthomas/kingpin/v2 v2.3.2
@@ -16,6 +17,7 @@ require (
 )
 
 require (
+	github.com/Velocidex/json v0.0.0-20220224052537-92f3c0326e5a // indirect
 	github.com/alecthomas/participle v0.7.1 // indirect
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
 	github.com/kr/pretty v0.1.0 // indirect

@@ -13,10 +13,6 @@ Following is a list of recognized log sources.
 
 ## `*/windows/application`
 
-This Log Source generates events from the Application Channel, usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
-
-The channel stores a wide variety of system events from multiple
-services.
 
 
 
@@ -31,11 +27,6 @@ log_sources:
 
 ## `*/windows/applocker`
 
-This Log Source generates combined events from the Windows `AppLocker service`. Events are usually stored in the files:
-  * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4MSI and Script.evtx`
-  * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4EXE and DLL.evtx`
-  * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4Packaged app-Deployment.evtx`
-  * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4Packaged app-Execution.evtx`
 
 
 
@@ -50,8 +41,6 @@ log_sources:
 
 ## `*/windows/appmodel-runtime`
 
-This Log Source generates combined events from the Windows `AppModel Runtime`. Events are usually stored in the files:
-  * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppModel-Runtime%4Admin.evtx`
 
 
 
@@ -94,21 +83,6 @@ log_sources:
 
 ## `*/windows/bits-client`
 
-This Log Source generates combined events from the Windows Bits Client service. Events are usually stored in the files:
-  * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx`
-
-The BITS service is used to download files and it is often misused by threat actors to download malicious payloads.
-
-
-
-#### Sample Events
-
-
-##### EventID 3 - New Job Creation
-<pre class="json-renderer">
-{"Timestamp":"2025-01-13T13:48:20.745705604Z","System":{"Provider":{"Name":"Microsoft-Windows-Bits-Client","Guid":"EF1CC15B-46C1-414E-BB95-E76B077BD51E"},"EventID":{"Value":3},"Version":3,"Level":4,"Task":0,"Opcode":0,"Keywords":4611686018427387904,"TimeCreated":{"SystemTime":1736776100.7457056},"EventRecordID":1320,"Correlation":{},"Execution":{"ProcessID":8936,"ThreadID":9100},"Channel":"Microsoft-Windows-Bits-Client/Operational","Computer":"WIN-SJE0CKQO83P","Security":{"UserID":"S-1-5-18"}},"EventData":{"jobTitle":"Chrome Component Updater","jobId":"B73C90F1-5FA7-4445-8E49-6C40870E4502","jobOwner":"WIN-SJE0CKQO83P\\Administrator","processPath":"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe","processId":3616,"ClientProcessStartKey":1407374883553491},"Message":"The BITS service created a new job.\nTransfer job: Chrome Component Updater\nJob ID: B73C90F1-5FA7-4445-8E49-6C40870E4502\nOwner: WIN-SJE0CKQO83P\\Administrator\nProcess Path: C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\nProcess ID: 3616\r\n"}
-
-</pre>
 
 
 
@@ -637,137 +611,6 @@ log_sources:
   category: antivirus
   product: windows
   service: windefend
-```
-
-
-## `vql/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: vql
-  product: windows
-```
-
-
-## `*/windows/schtasks`
-
-Enumerates All Scheduled tasks
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: schtasks
-```
-
-
-## `*/windows/services`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  product: windows
-  service: services
-```
-
-
-## `persistence/windows/services`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: persistence
-  product: windows
-  service: services
-```
-
-
-## `process_creation/windows/execution`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: process_creation
-  product: windows
-  service: execution
-```
-
-
-## `webserver/windows/*`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: webserver
-  product: windows
-```
-
-
-## `process_creation/windows/pslist`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: process_creation
-  product: windows
-  service: pslist
-```
-
-
-## `image_load/windows/pslist`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: image_load
-  product: windows
-  service: pslist
-```
-
-
-## `network_connection/windows/netstat`
-
-
-
-
-
-Sample use in a sigma rule:
-```yaml
-log_sources:
-  category: network_connection
-  product: windows
-  service: netstat
 ```
 
 

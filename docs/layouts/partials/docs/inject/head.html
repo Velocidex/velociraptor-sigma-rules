@@ -8,7 +8,7 @@
       $(".json-renderer").each(function() {
           try {
               data = JSON.parse($(this).text());
-              $(this).jsonViewer(data, {collapsed: true, rootCollapsable: true});
+              $(this).jsonViewer(data, {collapsed: true, rootCollapsable: false});
           } catch(e) { };
       });
   });

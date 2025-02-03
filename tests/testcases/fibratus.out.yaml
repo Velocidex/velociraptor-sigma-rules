@@ -1,11 +1,11 @@
-LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/WindowsEvents/KernelFile.json")[]LET KernelProcessRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/WindowsEvents/KernelProcess.json")[]LET _ <= import(artifact="Windows.Sigma.BaseEvents")[]LET _ <= import(artifact="Windows.Hayabusa.Monitoring")[]LET TestingLogSources <= sigma_log_sources( `etw/windows/file`={ SELECT * FROM KernelFileRows }, `etw/windows/process`={ SELECT * FROM KernelProcessRows })[]SELECT  _Rule.Title AS Rule ,
+LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=testDir + "/test_files/WindowsEvents/KernelLogger.json"))[]LET _ <= import(artifact="Windows.Sigma.ETWBase")[]LET _ <= import(artifact="Windows.Sigma.Fibratus")[]LET TestingLogSources <= sigma_log_sources( `etw/windows/kernel`={ SELECT * FROM KernelLoggerRows })[]SELECT  _Rule.Title AS Rule ,
       Details,
       dict(System=System,
            EventData=X.EventData || X.UserData,
            Message=X.Message) AS Event,
       _Match AS Match , _Rule
  FROM sigma(
-   rules=split(string=Rules, sep_string="\n---\n"),
+   rules=split(string=SigmaRules, sep_string="\n---\n"),
    log_sources= TestingLogSources, debug=Debug =~ "Y",
    default_details=DefaultDetailsLambda,
    rule_filter="x=>x.Title =~ RuleFilter",
@@ -13,62 +13,41 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
  ORDER BY Rule
 [
  {
-  "Rule": "Credentials access from backups via Rundll32",
-  "Details": "Process rundll32.exe launched \"C:\\Windows\\system32\\rundll32.exe\" keymgr.dll,KRShowKeyMgr",
+  "Rule": "Credential discovery via VaultCmd.exe",
+  "Details": "Process VaultCmd.exe launched C:\\Windows\\system32\\VaultCmd.exe /listcreds:Windows Credentials",
   "Event": {
    "System": {
-    "Channel": "Microsoft-Windows-Kernel-Process",
+    "Channel": "NT Kernel Logger",
     "Computer": "WIN-SJE0CKQO83P",
-    "EventType": "ProcessStart",
+    "EventType": "CreateProcess",
     "EventID": {
-     "Value": 1
+     "Value": 0
     }
    },
    "EventData": {
-    "ImageChecksum": "0x16293",
-    "PackageFullName": "",
-    "PackageRelativeAppId": "",
-    "ProcessTokenElevationType": "1",
-    "TimeDateStamp": "0x99CD6868",
-    "ImageName": "\\Device\\HarddiskVolume3\\Windows\\System32\\rundll32.exe",
-    "ParentProcessID": "5916",
-    "ParentProcessSequenceNumber": "3280",
+    "UniqueProcessKey": "0xFFFF82035F210380",
+    "ProcessId": "0x1C5C",
+    "ParentId": "0x524",
+    "SessionId": "0",
+    "ExitStatus": "259",
+    "DirectoryTableBase": "0x1050BD000",
     "Flags": "0",
-    "ProcessTokenIsElevated": "1",
-    "ProcessSequenceNumber": "13463",
-    "CreateTime": "‎2024‎-‎12‎-‎19T08:10:41.597027800Z",
-    "SessionID": "2",
-    "MandatoryLabel": "S-1-16-12288",
-    "ProcessID": "888",
+    "UserSID": "\\\\NT AUTHORITY\\SYSTEM",
+    "ImageFileName": "WmiPrvSE.exe",
+    "CommandLine": "C:\\Windows\\system32\\wbem\\wmiprvse.exe -Embedding",
+    "PackageFullName": "",
+    "ApplicationId": "",
     "ProcInfo": {
-     "Pid": "888",
-     "Ppid": "5916",
-     "Name": "rundll32.exe",
-     "StartTime": "2024-12-19 08:10:41.597",
-     "EndTime": null,
-     "Username": "WIN-SJE0CKQO83P\\Administrator",
-     "Exe": "C:\\Windows\\System32\\rundll32.exe",
-     "CommandLine": "\"C:\\Windows\\system32\\rundll32.exe\" keymgr.dll,KRShowKeyMgr",
-     "CurrentDirectory": "C:\\Users\\Administrator\\Downloads\\",
-     "FileVersion": "10.0.20348.2582 (WinBuild.160101.0800)",
-     "Description": "Windows host process (Rundll32)",
-     "Company": "Microsoft Corporation",
-     "Product": "Microsoft® Windows® Operating System",
-     "ParentImage": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-     "ParentCommandLine": "powershell",
-     "TerminalSessionId": "2",
-     "IntegrityLevel": "High",
-     "Hashes": {
-      "SHA256": "26B1A027BA0581AE6448C03A4C842F6D94B672F4C3024AABD8993C64BC181163",
-      "MD5": "4ED94002301EE4AE46DDF33E076C8DBA",
-      "IMPHASH": "A8A8E3395664BA9CFC8A096EB7AD9869"
-     }
-    },
-    "ParentProcInfo": {
-     "Name": "powershell.exe",
-     "Username": "WIN-SJE0CKQO83P\\Administrator",
-     "Exe": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-     "CommandLine": "powershell"
+     "Pid": 1316,
+     "Ppid": 1172,
+     "Name": "VaultCmd.exe",
+     "Threads": 14,
+     "Username": "NT AUTHORITY\\SYSTEM",
+     "OwnerSid": "S-1-5-18",
+     "CommandLine": "C:\\Windows\\system32\\VaultCmd.exe /listcreds:Windows Credentials",
+     "Exe": "C:\\Windows\\System32\\VaultCmd.exe",
+     "TokenIsElevated": true,
+     "CreateTime": "2025-01-03T15:14:38.8669202Z"
     }
    },
    "Message": null
@@ -85,11 +64,11 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
    ]
   },
   "_Rule": {
-   "Title": "Credentials access from backups via Rundll32",
+   "Title": "Credential discovery via VaultCmd.exe",
    "Logsource": {
     "Category": "etw",
     "Product": "windows",
-    "Service": "process"
+    "Service": "kernel"
    },
    "Detection": {
     "Searches": {
@@ -97,13 +76,13 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
       "event_matchers": [
        [
         {
-         "field": "ProcessCommandLine",
+         "field": "CommandLine",
          "modifiers": [
           "re"
          ],
          "values": [
-          "KRShowKeyMgr",
-          "keymgr.dll"
+          "/listcreds:Windows Credentials",
+          "/listcreds:Web Credentials"
          ]
         }
        ]
@@ -113,21 +92,9 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
       "event_matchers": [
        [
         {
-         "field": "EventID",
-         "values": [
-          1
-         ]
-        },
-        {
-         "field": "Channel",
-         "values": [
-          "Microsoft-Windows-Kernel-Process"
-         ]
-        },
-        {
          "field": "EventType",
          "values": [
-          "ProcessStart"
+          "CreateProcess"
          ]
         }
        ]
@@ -142,7 +109,7 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
           "re"
          ],
          "values": [
-          "rundll32.exe"
+          "VaultCmd.exe"
          ]
         }
        ]
@@ -166,39 +133,42 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
     ]
    },
    "Level": "default",
-   "References": [
-    "https://github.com/Yamato-Security/hayabusa-rules/tree/main/rules/fibratus/credential_access_credential_access_from_backups_via_rundll32.yml"
-   ],
    "AdditionalFields": {
-    "details": "Process %ProcessName% launched %ProcessCommandLine%"
+    "details": "Process %ProcessName% launched %CommandLine%"
    }
   }
  },
  {
   "Rule": "File access to SAM database",
-  "Details": "Process C:\\Windows\\Temp\\procdump.exe accessed file \\Device\\HarddiskVolume3\\WINDOWS\\SYSTEM32\\CONFIG\\SAM",
+  "Details": "Process C:\\velociraptor.exe accessed file OpenFile",
   "Event": {
    "System": {
-    "Channel": "Microsoft-Windows-Kernel-File",
+    "Channel": "NT Kernel Logger",
     "Computer": "WIN-SJE0CKQO83P",
-    "EventType": "FileOpen",
+    "EventType": "CreateFile",
     "EventID": {
-     "Value": 12
+     "Value": 0
     }
    },
    "EventData": {
-    "Irp": "0xFFFF830E2BC60B08",
-    "FileObject": "0xFFFF830E2B704A80",
-    "IssuingThreadId": "10012",
-    "CreateOptions": "0x1000020",
-    "CreateAttributes": "0x1",
-    "ShareAccess": "0x3",
-    "FileName": "\\Device\\HarddiskVolume3\\WINDOWS\\SYSTEM32\\CONFIG\\SAM",
+    "IrpPtr": "0xFFFFD50BC2790C88",
+    "FileObject": "0xFFFFD50BC5E093F0",
+    "TTID": "9524",
+    "CreateOptions": "18874368",
+    "FileAttributes": "0",
+    "ShareAccess": "7",
+    "OpenPath": "C:\\WINDOWS\\SYSTEM32\\CONFIG\\SAM",
     "ProcInfo": {
-     "Name": "procdump.exe",
-     "Username": "NT AUTHORITY\\SYSTEM",
-     "Exe": "C:\\Windows\\Temp\\procdump.exe",
-     "CommandLine": "C:\\Windows\\Temp\\procdump.exe lsass.exe"
+     "Pid": 9420,
+     "Ppid": 8072,
+     "Name": "velociraptor.exe",
+     "Threads": 51,
+     "Username": "WIN-SJE0CKQO83P\\Administrator",
+     "OwnerSid": "S-1-5-21-241402409-3571345782-2557608070-500",
+     "CommandLine": "c:\\velociraptor.exe  gui --nobrowser --debug -v",
+     "Exe": "C:\\velociraptor.exe",
+     "TokenIsElevated": true,
+     "CreateTime": "2025-02-02T06:44:31.5954257Z"
     }
    },
    "Message": null
@@ -206,7 +176,6 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
   "Match": {
    "match": true,
    "search_results": {
-    "etw_file": true,
     "exclusion": false,
     "selection": true
    },
@@ -219,28 +188,10 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
    "Logsource": {
     "Category": "etw",
     "Product": "windows",
-    "Service": "file"
+    "Service": "kernel"
    },
    "Detection": {
     "Searches": {
-     "etw_file": {
-      "event_matchers": [
-       [
-        {
-         "field": "EventID",
-         "values": [
-          12
-         ]
-        },
-        {
-         "field": "Channel",
-         "values": [
-          "Microsoft-Windows-Kernel-File"
-         ]
-        }
-       ]
-      ]
-     },
      "exclusion": {
       "event_matchers": [
        [
@@ -261,7 +212,7 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
       "event_matchers": [
        [
         {
-         "field": "ETWFileName",
+         "field": "FileName",
          "modifiers": [
           "re"
          ],
@@ -272,7 +223,7 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
         {
          "field": "EventType",
          "values": [
-          "FileOpen"
+          "CreateFile"
          ]
         }
        ]
@@ -282,9 +233,6 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
     "Condition": [
      {
       "Search": [
-       {
-        "Name": "etw_file"
-       },
        {
         "Name": "selection"
        },
@@ -298,11 +246,8 @@ LET KernelFileRows = SELECT * FROM parse_jsonl( filename=testDir + "/test_files/
     ]
    },
    "Level": "default",
-   "References": [
-    "https://github.com/Yamato-Security/hayabusa-rules/tree/main/rules/fibratus/credential_access_file_access_to_sam_database.yml"
-   ],
    "AdditionalFields": {
-    "details": "Process %ProcessExe% accessed file %ETWFileName%"
+    "details": "Process %ProcessExe% accessed file %OpenFile%"
    }
   }
  }

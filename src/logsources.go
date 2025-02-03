@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
-	"sort"
 	"strings"
 
+	"github.com/Velocidex/ordereddict"
 	"github.com/Velocidex/sigma-go"
 	"github.com/Velocidex/yaml/v2"
 )
@@ -22,7 +22,8 @@ type Stats struct {
 }
 
 type CompilerContext struct {
-	logsources map[string]int
+	logsources       map[string]int
+	logsources_order []string
 
 	// Keep track of fields seen for each log source that are not
 	// already known and defined by the config file.
@@ -92,7 +93,7 @@ func (self *CompilerContext) LoadConfig(filename string) error {
 
 func (self *CompilerContext) LoadConfigFromString(data string) error {
 
-	config_obj := &Config{}
+	config_obj := NewConfig()
 	err := yaml.Unmarshal([]byte(data), config_obj)
 	if err != nil {
 		return err
@@ -114,12 +115,12 @@ func (self *CompilerContext) LoadConfigFromString(data string) error {
 			return err
 		}
 
-		data, err := ioutil.ReadAll(fd)
+		secondary_data, err := ioutil.ReadAll(fd)
 		if err != nil {
 			return err
 		}
-		config_obj = &Config{}
-		err = yaml.Unmarshal(data, config_obj)
+		config_obj = NewConfig()
+		err = yaml.Unmarshal(secondary_data, config_obj)
 		if err != nil {
 			return err
 		}
@@ -165,7 +166,7 @@ func (self *CompilerContext) LoadRejectSupporessions(filename string) error {
 
 // Get the source_spec from either this config or imported_configs
 func (self *CompilerContext) Resolve(source_spec string) bool {
-	_, pres := self.config_obj.sources[source_spec]
+	_, pres := self.config_obj.sources.Get(source_spec)
 	return pres
 }
 
@@ -203,14 +204,8 @@ func (self *CompilerContext) Stats() Stats {
 		TotalVisitedRules: self.total_visited_rules,
 	}
 
-	sources := []string{}
-	for k := range self.logsources {
-		sources = append(sources, k)
-	}
-
-	sort.Strings(sources)
 	fmt.Printf("\nThe following log sources will be used:\n")
-	for _, v := range sources {
+	for _, v := range self.logsources_order {
 		count, _ := self.logsources[v]
 
 		fmt.Printf("  %v (%v rules)\n", v, count)
@@ -291,7 +286,17 @@ func (self *CompilerContext) Stats() Stats {
 
 func (self *CompilerContext) getSourceFromChannel(
 	channel string) string {
-	for source, query := range self.config_obj.sources {
+	for _, source := range self.config_obj.sources.Keys() {
+		query_any, pres := self.config_obj.sources.Get(source)
+		if !pres {
+			continue
+		}
+
+		query, ok := query_any.(Query)
+		if !ok {
+			continue
+		}
+
 		for _, c := range query.Channel {
 			if c == channel {
 				return source
@@ -308,7 +313,12 @@ func updateRuleLogSources(source_spec string, log_source *sigma.Logsource) {
 		if parts[0] == "*" {
 			parts[0] = ""
 		}
-
+		if parts[1] == "*" {
+			parts[1] = ""
+		}
+		if parts[2] == "*" {
+			parts[2] = ""
+		}
 		log_source.Category = parts[0]
 		log_source.Product = parts[1]
 		log_source.Service = parts[2]
@@ -503,4 +513,41 @@ func (self *CompilerContext) addError(reason string, path string) {
 	failed, _ := self.errored_rules[reason]
 	failed = append(failed, path)
 	self.errored_rules[reason] = failed
+}
+
+type LogSourceCollection struct {
+	*ordereddict.Dict
+}
+
+func (self *LogSourceCollection) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	dict := ordereddict.NewDict()
+
+	mapping := make(map[string]Query)
+	err := unmarshal(mapping)
+	if err != nil {
+		return err
+	}
+
+	err = unmarshal(dict)
+	if err != nil {
+		return err
+	}
+
+	for _, k := range dict.Keys() {
+		v, pres := mapping[k]
+		if pres {
+			dict.Update(k, v)
+		} else {
+			dict.Delete(k)
+		}
+	}
+
+	self.Dict = dict
+	return nil
+}
+
+func NewLogSorceCollection() *LogSourceCollection {
+	return &LogSourceCollection{
+		Dict: ordereddict.NewDict(),
+	}
 }

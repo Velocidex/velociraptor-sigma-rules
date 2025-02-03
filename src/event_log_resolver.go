@@ -38,8 +38,13 @@ func (self *EventResolver) CheckFieldOnLogSource(field, logsource string) bool {
 		return true
 	}
 
-	log_def, pres := self.config_obj.sources[logsource]
+	log_def_any, pres := self.config_obj.sources.Get(logsource)
 	if !pres {
+		return false
+	}
+
+	log_def, ok := log_def_any.(Query)
+	if !ok {
 		return false
 	}
 

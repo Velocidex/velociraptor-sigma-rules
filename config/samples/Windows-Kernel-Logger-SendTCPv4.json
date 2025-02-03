@@ -1,0 +1,1 @@
+{"Timestamp":"2025-01-30T14:06:22Z","EventType":"SendTCPv4","System":{"Channel":"NT Kernel Logger","Computer":"WIN-SJE0CKQO83P","EventType":"SendTCPv4","EventID":{"Value":0}},"EventData":{"PID":"1596","size":"1652","daddr":"192.168.1.5","saddr":"192.168.1.237","dport":"37890","sport":"3389","startime":"45977585","endtime":"45977585","seqnum":"0","connid":null,"ProcInfo":null}}

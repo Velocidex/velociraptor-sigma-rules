@@ -134,4 +134,3 @@ RuleDirectories:
   - hayabusa/hayabusa/sysmon/
   - hayabusa/sigma/builtin/
   - hayabusa/sigma/sysmon/
-  - rules/fibratus/

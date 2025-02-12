@@ -71,6 +71,68 @@ the `Microsoft-Windows-Kernel-File` or
 </pre>
 
 
+##### CreateFile
+<pre class="json-renderer">
+{
+    "Timestamp": "2025-02-10T14:53:28Z",
+    "EventType": "CreateFile",
+    "System": {
+        "Channel": "NT-Kernel-Logger",
+        "Computer": "Hostname",
+        "EventType": "CreateFile",
+        "EventID": {
+            "Value": 0
+        }
+    },
+    "EventData": {
+        "IrpPtr": "0xFFFFBB0CCAF9D0F8",
+        "FileObject": "0xFFFFBB0CCED8D220",
+        "TTID": "6772",
+        "CreateOptions": "21119008",
+        "FileAttributes": "0",
+        "ShareAccess": "7",
+        "OpenPath": "C:\\Windows\\System32\\psapi.dll",
+        "ProcInfo": {
+            "Pid": 3896,
+            "Ppid": 1160,
+            "Name": "MsMpEng.exe",
+            "Threads": 86,
+            "Username": "NT AUTHORITY\\SYSTEM",
+            "OwnerSid": "S-1-5-18",
+            "CommandLine": "\"C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.24090.11-0\\MsMpEng.exe\"",
+            "Exe": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.24090.11-0\\MsMpEng.exe",
+            "TokenIsElevated": true,
+            "CreateTime": "2025-02-09T12:57:23.9023563Z",
+            "User": 343.9949132,
+            "System": 2.9596658,
+            "IoCounters": {
+                "ReadOperationCount": 267063,
+                "WriteOperationCount": 78945,
+                "OtherOperationCount": 3306593,
+                "ReadTransferCount": 7729991705,
+                "WriteTransferCount": 793027416,
+                "OtherTransferCount": 843561371
+            },
+            "Memory": {
+                "PageFaultCount": 108663785,
+                "PeakWorkingSetSize": 998694912,
+                "WorkingSetSize": 209084416,
+                "QuotaPeakPagedPoolUsage": 1543600,
+                "QuotaPagedPoolUsage": 698424,
+                "QuotaPeakNonPagedPoolUsage": 535768,
+                "QuotaNonPagedPoolUsage": 254496,
+                "PagefileUsage": 331485184,
+                "PeakPagefileUsage": 1064894464
+            },
+            "PebBaseAddress": 513193275392,
+            "IsWow64": false
+        }
+    }
+}
+
+</pre>
+
+
 ##### RegQueryValue
 <pre class="json-renderer">
 {"Timestamp":"2025-01-30T14:06:21Z","EventType":"RegQueryValue","System":{"Channel":"NT Kernel Logger","Computer":"WIN-SJE0CKQO83P","EventType":"RegQueryValue","EventID":{"Value":0}},"EventData":{"InitialTime":"4597740950432","Status":"0","Index":"1","KeyHandle":"0xFFFFB189314B9200","KeyName":"StandardName","RegistryPath":"\\REGISTRY\\MACHINE\\SYSTEM\\ControlSet001\\Control\\TimeZoneInformation\\StandardName","ProcInfo":{"Name":"velociraptor.exe","Username":"WIN-SJE0CKQO83P\\Administrator","Exe":"C:\\velociraptor.exe","CommandLine":"c:\\velociraptor.exe  gui --datastore c:\\datastore\\ --nobrowser --debug -v"}}}
@@ -176,12 +238,6 @@ the `Microsoft-Windows-Kernel-File` or
         }
     }
 }
-
-</pre>
-
-
-##### CreateFile
-<pre class="json-renderer">
 
 </pre>
 

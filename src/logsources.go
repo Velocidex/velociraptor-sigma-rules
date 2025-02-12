@@ -125,12 +125,6 @@ func (self *CompilerContext) LoadConfigFromString(data string) error {
 			return err
 		}
 
-		// Now try again to overlay the original config data.
-		err = yaml.Unmarshal([]byte(data), config_obj)
-		if err != nil {
-			return err
-		}
-
 		self.imported_configs = append(self.imported_configs, config_obj)
 		self.config_obj.mergeConfig(config_obj)
 	}

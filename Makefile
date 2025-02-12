@@ -8,7 +8,7 @@ windows:
 
 compile: compileThirdParty
 
-compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo compileWindowsETW compileHayabusaMonitoring
+compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo compileWindowsETW compileHayabusaMonitoring compileLinuxEBPF
 
 compileWindowsBaseDebug:
 	dlv debug ./src/ -- compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
@@ -24,6 +24,12 @@ compileWindowsBaseEvents:
 
 compileWindowsBaseETW:
 	./velosigmac compile --config ./config/windows_etw_base.yaml --output ./output/Windows-Sigma-ETWBase.zip --yaml ./output/Windows.Sigma.ETWBase.yaml  --docs ./docs/content/docs/models/windows_etw_base/_index.md
+
+compileLinuxEBPF: compileLinuxEBPFBase
+
+compileLinuxEBPFBase:
+	./velosigmac compile --config ./config/linux_ebpf_base.yaml --output ./output/Linux-Sigma-EBPFBase.zip --yaml ./output/Linux.Sigma.EBPFBase.yaml  --docs ./docs/content/docs/models/linux_ebpf_base/_index.md
+	./velosigmac compile --config ./config/linux_ebpf_base_test.yaml --yaml ./output/Linux.Sigma.EBPFBase.CaptureTestSet.yaml
 
 compileWindowsETW: compileWindowsBaseETW
 	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Windows-Sigma-Fibratus.zip --yaml ./output/Windows.Sigma.Fibratus.yaml
@@ -48,4 +54,4 @@ golden:
 	./tests/velociraptor -v --definitions ./output/ golden ./tests/testcases/ --config tests/golden.config.yaml --env testDir=`pwd`/tests/  --filter=${GOLDEN}
 
 profile:
-	./velosigmac gen_profiles --output ./output/profiles.json ./config/windows_base.yaml ./config/windows_base_events.yaml
+	./velosigmac gen_profiles --output ./output/profiles.json ./config/windows_base.yaml ./config/windows_base_events.yaml ./config/windows_etw_base.yaml

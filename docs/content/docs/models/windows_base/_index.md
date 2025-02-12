@@ -13,7 +13,9 @@ Following is a list of recognized log sources.
 
 ## `*/windows/application`
 
-This Log Source generates events from the Application Channel, usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
+This Log Source generates events from the Application Channel.
+
+These are  usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
 
 The channel stores a wide variety of system events from multiple
 services.
@@ -31,7 +33,9 @@ log_sources:
 
 ## `*/windows/applocker`
 
-This Log Source generates combined events from the Windows `AppLocker service`. Events are usually stored in the files:
+This Log Source generates combined events from the Windows `AppLocker service`.
+
+Events are usually stored in the files:
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4MSI and Script.evtx`
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4EXE and DLL.evtx`
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4Packaged app-Deployment.evtx`
@@ -50,7 +54,9 @@ log_sources:
 
 ## `*/windows/appmodel-runtime`
 
-This Log Source generates combined events from the Windows `AppModel Runtime`. Events are usually stored in the files:
+This Log Source generates combined events from the Windows `AppModel Runtime`.
+
+Events are usually stored in the files:
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppModel-Runtime%4Admin.evtx`
 
 
@@ -94,7 +100,9 @@ log_sources:
 
 ## `*/windows/bits-client`
 
-This Log Source generates combined events from the Windows Bits Client service. Events are usually stored in the files:
+This Log Source generates combined events from the Windows Bits Client service.
+
+Events are usually stored in the files:
   * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx`
 
 The BITS service is used to download files and it is often misused by threat actors to download malicious payloads.

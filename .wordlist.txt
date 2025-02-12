@@ -79,3 +79,13 @@ SetValueKey
 WriteFile
 filesystem
 CreateFile
+
+
+<url-free> docs/content/docs/models/linux_ebpf_base/_index.md
+--------------------------------------------------------------------------------
+bpf
+chown
+ebpf
+inode
+sched
+unlink

@@ -87,7 +87,6 @@ QueryTemplate: |
        FROM Artifact.Windows.Sigma.ETWBase(
           ROOT=ROOT, RuleLevel=RuleLevel, RuleStatus=RuleStatus,
           RuleTitleFilter=RuleTitleFilter, RuleExclusions=RuleExclusions,
-          DateAfter=DateAfter, DateBefore=DateBefore,
           SigmaRules=SigmaRules)
 
 # These rules are manually translated so they are all supported

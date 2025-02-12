@@ -16,10 +16,6 @@ Preamble: |
   type: CLIENT_EVENT
 
   parameters:
-    - name: ROOT
-      description: The Event Log Directory we use to read all logs
-      default: C:/Windows/System32/WinEvt/Logs/
-
     - name: Debug
       type: bool
       description: Enable full debug trace
@@ -198,6 +194,8 @@ Sources:
         json: "config/samples/Windows-Kernel-Logger-CloseFile.json"
       - name: ReleaseFile
         json: "config/samples/Windows-Kernel-Logger-ReleaseFile.json"
+      - name: CreateFile
+        json: "config/samples/Windows-Kernel-Logger-CreateFile.json"
 
       - name: RegQueryValue
         json: "config/samples/Windows-Kernel-Logger-RegQueryValue.json"
@@ -215,9 +213,6 @@ Sources:
 
       - name: CreateProcess
         json: "config/samples/Windows-Kernel-Logger-CreateProcess.json"
-
-      - name: CreateFile
-        json: "config/samples/Windows-Kernel-Logger-CreateFile.json"
 
     query: |
       SELECT * FROM delay(

@@ -1,6 +1,6 @@
 Name: Windows.Sigma.Base
 Description: |
-  Standard Velociraptor Sigma Log sources for Windows.
+  Sigma Model for triaging event logs on Windows.
 
   This profile includes many Windows EVTX log sources as well as
   multiple artifact based log sources.
@@ -579,7 +579,9 @@ DefaultDetails:
 Sources:
   '*/windows/application':
     description: |
-      This Log Source generates events from the Application Channel, usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
+      This Log Source generates events from the Application Channel.
+
+      These are  usually stored in the file `C:\Windows\System32\WinEvt\Logs\Application.evtx`
 
       The channel stores a wide variety of system events from multiple
       services.
@@ -596,7 +598,9 @@ Sources:
 
   '*/windows/applocker':
     description: |
-      This Log Source generates combined events from the Windows `AppLocker service`. Events are usually stored in the files:
+      This Log Source generates combined events from the Windows `AppLocker service`.
+
+      Events are usually stored in the files:
         * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4MSI and Script.evtx`
         * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4EXE and DLL.evtx`
         * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppLocker%4Packaged app-Deployment.evtx`
@@ -622,7 +626,9 @@ Sources:
 
   '*/windows/appmodel-runtime':
     description: |
-      This Log Source generates combined events from the Windows `AppModel Runtime`. Events are usually stored in the files:
+      This Log Source generates combined events from the Windows `AppModel Runtime`.
+
+      Events are usually stored in the files:
         * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-AppModel-Runtime%4Admin.evtx`
 
     query: |
@@ -659,7 +665,9 @@ Sources:
 
   '*/windows/bits-client':
     description: |
-      This Log Source generates combined events from the Windows Bits Client service. Events are usually stored in the files:
+      This Log Source generates combined events from the Windows Bits Client service.
+
+      Events are usually stored in the files:
         * `C:\Windows\System32\WinEvt\Logs\Microsoft-Windows-Bits-Client%4Operational.evtx`
 
       The BITS service is used to download files and it is often misused by threat actors to download malicious payloads.
@@ -1223,7 +1231,8 @@ Sources:
                   User=Username
              ) AS EventData
       FROM foreach(row={
-            SELECT CreateTime, Pid, CommandLine, Exe,
+            SELECT StartTime AS CreateTime,
+                Pid, CommandLine, Exe,
                 process_tracker_get(id=Ppid).Data AS P,
                 if(condition=process_tracker_get(id=Ppid).Data.Exe,
                    then=hash(path=process_tracker_get(id=Ppid).Data.Exe)) AS PH,
@@ -1272,7 +1281,8 @@ Sources:
                   ParentSHA256=PH.SHA256) AS EventData
       FROM foreach(
         row={
-            SELECT CreateTime, Pid, CommandLine, Exe,
+            SELECT StartTime AS CreateTime,
+                Pid, CommandLine, Exe,
                 process_tracker_get(id=Ppid).Data AS P,
                 if(condition=Exe, then=hash(path=Exe)) AS H,
                 Username

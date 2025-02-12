@@ -20,7 +20,7 @@ func BuildLogSource(config_obj *Config) []Query {
 		return nil
 	}
 
-	if config_obj.sources == nil {
+	if config_obj.sources == nil || config_obj.sources.Len() == 0 {
 		config_obj.mergeConfig(config_obj)
 	}
 

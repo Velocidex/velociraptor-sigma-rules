@@ -168,13 +168,14 @@ Sources:
           SELECT timestamp(epoch=now()) AS Timestamp,
                  System.EventName AS EventType,
                  System + dict(MainHostname=Hostname) AS System, EventData
-          FROM watch_ebpf(events="security_file_open",
+          FROM watch_ebpf(events=[
+              "security_file_open",
               "bpf_attach", "fchownat", "chown", "kill",
               "module_free", "module_load",
               "mount", "sched_process_exec",
               "security_socket_accept", "security_socket_bind", "security_socket_connect",
-              "unlink", "security_inode_unlink",
-          )
+              "unlink", "security_inode_unlink"
+          ])
       }, delay=1)
 
 

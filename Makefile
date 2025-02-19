@@ -13,7 +13,6 @@ compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo 
 compileWindowsBaseDebug:
 	dlv debug ./src/ -- compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
 
-
 compileWindowsBase:
 	./velosigmac compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
 	./velosigmac compile --config ./config/windows_base_test.yaml --yaml ./output/Windows.Sigma.Base.CaptureTestSet.yaml
@@ -34,7 +33,6 @@ compileLinuxEBPFBase:
 compileWindowsETW: compileWindowsBaseETW
 	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Windows-Sigma-Fibratus.zip --yaml ./output/Windows.Sigma.Fibratus.yaml
 
-
 compileHayabusa: compileWindowsBase
 	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor.Hayabusa.Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects
 
@@ -47,6 +45,9 @@ compileHayabusaMonitoring: compileWindowsBaseEvents
 compileChopChopGo:
 	./velosigmac compile --config ./config/ChopChopGo_rules.yaml --output ./output/Velociraptor-ChopChopGo-Rules.zip --yaml ./output/Velociraptor-ChopChopGo-Rules.yaml --rejects rejected/ChopChopGo_rules_rejects.json --ignore_previous_rejects
 
+package:
+	zip -v ./output/Velociraptor.Sigma.Artifacts.zip  ./output/*.yaml
+
 test: compile
 	go test -v ./...
 
@@ -54,4 +55,4 @@ golden:
 	./tests/velociraptor -v --definitions ./output/ golden ./tests/testcases/ --config tests/golden.config.yaml --env testDir=`pwd`/tests/  --filter=${GOLDEN}
 
 profile:
-	./velosigmac gen_profiles --output ./output/profiles.json ./config/windows_base.yaml ./config/windows_base_events.yaml ./config/windows_etw_base.yaml
+	./velosigmac gen_profiles --output ./output/profiles.json ./config/*base*.yaml

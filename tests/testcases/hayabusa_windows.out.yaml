@@ -21,7 +21,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 2,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664538.9014752
     },
@@ -73,7 +72,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 1,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664539.2608511
     },
@@ -138,7 +136,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 2,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664548.7608511
     },
@@ -190,7 +187,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 13,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664549.542101
     },
@@ -242,7 +238,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 1,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664549.7608511
     },
@@ -307,7 +302,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 1,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664549.7608511
     },
@@ -372,7 +366,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 7,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664549.792101
     },
@@ -430,7 +423,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 1,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664550.1983504
     },
@@ -495,7 +487,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 1,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664550.1983504
     },
@@ -560,7 +551,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 1,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664747.588976
     },
@@ -625,7 +615,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 1,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664747.588976
     },
@@ -690,7 +679,6 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
     "Level": 4,
     "Task": 1,
     "Opcode": 0,
-    "Keywords": 9223372036854775808,
     "TimeCreated": {
      "SystemTime": 1556664747.588976
     },

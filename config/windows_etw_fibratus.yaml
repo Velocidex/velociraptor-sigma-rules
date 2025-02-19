@@ -21,10 +21,6 @@ Preamble: |
   type: CLIENT
 
   parameters:
-    - name: ROOT
-      description: The Event Log Directory we use to read all logs
-      default: C:/Windows/System32/WinEvt/Logs/
-
     - name: RuleLevel
       type: choices
       default: Critical
@@ -85,7 +81,7 @@ QueryTemplate: |
    - query: |
        SELECT *
        FROM Artifact.Windows.Sigma.ETWBase(
-          ROOT=ROOT, RuleLevel=RuleLevel, RuleStatus=RuleStatus,
+          RuleLevel=RuleLevel, RuleStatus=RuleStatus,
           RuleTitleFilter=RuleTitleFilter, RuleExclusions=RuleExclusions,
           SigmaRules=SigmaRules)
 

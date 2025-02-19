@@ -21,7 +21,6 @@ LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(fil
     "Level": 4,
     "Task": 6,
     "Opcode": 0,
-    "Keywords": 36028797018963970,
     "TimeCreated": {
      "SystemTime": 1705127155.1681073
     },

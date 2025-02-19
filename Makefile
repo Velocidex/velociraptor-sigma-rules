@@ -55,4 +55,4 @@ golden:
 	./tests/velociraptor -v --definitions ./output/ golden ./tests/testcases/ --config tests/golden.config.yaml --env testDir=`pwd`/tests/  --filter=${GOLDEN}
 
 profile:
-	./velosigmac gen_profiles --output ./output/profiles.json ./config/windows_base.yaml ./config/windows_base_events.yaml ./config/windows_etw_base.yaml
+	./velosigmac gen_profiles --output ./output/profiles.json ./config/*base*.yaml

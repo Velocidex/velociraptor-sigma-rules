@@ -144,6 +144,11 @@ ExportTemplate: |
     LET DefaultDetailsLambda = '''{{.Base64DefaultDetailsQuery}}'''
     LET RuleFilterLambda = '''x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex'''
 
+    -- The Keywords field is actually not very useful but it trips
+    -- Elastic so we remove it.
+    -- https://github.com/Velocidex/velociraptor/issues/3856
+    LET SystemMask <= dict(Keywords=TRUE)
+
 
 # FieldMapping are global (i.e. shared between all log sources)
 # mappings between a field name and its corresponding VQL getter.
@@ -1365,7 +1370,7 @@ QueryTemplate: |
           _Rule.Title AS Title,
           System.EventRecordID AS RecordID,
           Details,
-          dict(System=System,
+          dict(System=System - SystemMask,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
           _Match, *

@@ -13,7 +13,6 @@ compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo 
 compileWindowsBaseDebug:
 	dlv debug ./src/ -- compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
 
-
 compileWindowsBase:
 	./velosigmac compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
 	./velosigmac compile --config ./config/windows_base_test.yaml --yaml ./output/Windows.Sigma.Base.CaptureTestSet.yaml
@@ -34,7 +33,6 @@ compileLinuxEBPFBase:
 compileWindowsETW: compileWindowsBaseETW
 	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Windows-Sigma-Fibratus.zip --yaml ./output/Windows.Sigma.Fibratus.yaml
 
-
 compileHayabusa: compileWindowsBase
 	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor.Hayabusa.Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects
 
@@ -46,6 +44,9 @@ compileHayabusaMonitoring: compileWindowsBaseEvents
 
 compileChopChopGo:
 	./velosigmac compile --config ./config/ChopChopGo_rules.yaml --output ./output/Velociraptor-ChopChopGo-Rules.zip --yaml ./output/Velociraptor-ChopChopGo-Rules.yaml --rejects rejected/ChopChopGo_rules_rejects.json --ignore_previous_rejects
+
+package:
+	zip -v ./output/Velociraptor.Sigma.Artifacts.zip  ./output/*.yaml
 
 test: compile
 	go test -v ./...

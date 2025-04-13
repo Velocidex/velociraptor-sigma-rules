@@ -92,6 +92,11 @@ func (self *EventResolver) CheckFieldMapping(field string) bool {
 		return true
 	}
 
+	// If the field has "." it might be a compound field
+	if strings.Contains(field, ".") {
+		return true
+	}
+
 	return false
 }
 

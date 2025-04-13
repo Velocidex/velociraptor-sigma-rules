@@ -8,7 +8,7 @@ windows:
 
 compile: compileThirdParty
 
-compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo compileWindowsETW compileHayabusaMonitoring compileLinuxEBPF
+compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileChopChopGo compileWindowsETW compileHayabusaMonitoring compileLinuxEBPF compileWindowsVQL
 
 compileWindowsBaseDebug:
 	dlv debug ./src/ -- compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
@@ -32,6 +32,12 @@ compileLinuxEBPFBase:
 
 compileWindowsETW: compileWindowsBaseETW
 	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Windows-Sigma-Fibratus.zip --yaml ./output/Windows.Sigma.Fibratus.yaml
+
+compileWindowsBaseVQL:
+	./velosigmac compile --config ./config/windows_base_vql.yaml --output ./output/Windows-Sigma-BaseVQL.zip --yaml ./output/Windows.Sigma.BaseVQL.yaml  --docs ./docs/content/docs/models/windows_base_vql/_index.md
+
+compileWindowsVQL: compileWindowsBaseVQL
+	./velosigmac compile --config ./config/windows_vql_triage.yaml --output ./output/Windows-Sigma-Triage.zip --yaml ./output/Windows.Sigma.Triage.yaml
 
 compileHayabusa: compileWindowsBase
 	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor.Hayabusa.Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects

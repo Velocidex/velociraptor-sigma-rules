@@ -19,11 +19,20 @@ logsource:
 
 detection:
   selection:
-    EventData|vql:
-      x=>x.DsrmAdminLogonBehavior=2
+    EventData.DsrmAdminLogonBehavior:
+      - 2
 
   condition: selection
 
-vql: x=>dict(EventData=dict(DsrmAdminLogonBehavior=GetValue(OSPath=LSAKey)))
+details: |
+  DsrmAdminLogonBehavior is set to %EventData.DsrmAdminLogonBehavior%
+
+vql: |
+  x=>dict(
+     Timestamp=timestamp(epoch=now()),
+     EventData=dict(
+        DsrmAdminLogonBehavior=GetValue(OSPath=LSAKey)
+    ))
+
 vql_args:
   LSAKey: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\DsrmAdminLogonBehavior

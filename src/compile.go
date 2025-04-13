@@ -34,7 +34,7 @@ var (
 
 	command_handlers []CommandHandler
 
-	allowed_additional_fields = []string{"details", "vql", "vql_args"}
+	allowed_additional_fields = []string{"details", "vql", "vql_args", "enrichment"}
 )
 
 type CommandHandler func(command string) bool
@@ -70,7 +70,21 @@ func (self *CompilerContext) CompileDirs() error {
 					return err
 				}
 
-				return self.CompileRule(string(data), path)
+				// Allow each file to contain multiple rules.
+				for _, rule := range strings.Split(string(data), "\n---\n") {
+					rule_data := strings.TrimSpace(rule) + "\n"
+					if rule_data == "" {
+						continue
+					}
+
+					err := self.CompileRule(rule_data, path)
+					if err != nil {
+						fmt.Printf("Rule %v: %v\n", err, rule_data)
+						return err
+					}
+				}
+
+				return nil
 			})
 		if err != nil {
 			return err

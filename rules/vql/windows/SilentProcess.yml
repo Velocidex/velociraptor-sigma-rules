@@ -18,10 +18,14 @@ detection:
 level: high
 ruletype: VQL
 
-vql: |
-  x=>dict(EventData=dict(
-    Timestamp=timestamp(epoch=now()),
-    SilentProcessExit=FetchKeyValues(OSPath=Key)))
+details: |
+  LSASS SilentProcessExit detected: %EventData.SilentProcessExit%
 
-vql_args:
-  Key: "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SilentProcessExit\\lsass.exe"
+vql: |
+  x=>dict(
+    Timestamp=timestamp(epoch=now()),
+    EventData=dict(
+       SilentProcessExit=SearchRegistryKeys(
+         Glob="HKEY_LOCAL_MACHINE/SOFTWARE/Microsoft/Windows NT/CurrentVersion/SilentProcessExit/lsass.exe/*")
+    )
+  )

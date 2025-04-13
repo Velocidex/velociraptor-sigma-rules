@@ -62,7 +62,7 @@ Preamble: |
         noisy,All rules marked noisy should be disabled by default.
 
   imports:
-    - Linux.EBPF.BaseEvent
+    - Linux.Sigma.EBPFBase
 
 QueryTemplate: |
    sources:

@@ -16,17 +16,20 @@ logsource:
 detection:
   selection:
     EventData|vql:
-      x=>x.DOTNET_STARTUP_HOOKS
+      x=>x.Hooks
 
   condition: selection
 
-vql: |
-  x=>dict(EventData=dict(DOTNET_STARTUP_HOOKS={
-      SELECT OSPath, Data.value AS Value
-      FROM glob(globs=[UserEnv, SystemEnv], accessor="registry")
-      WHERE Value
-  }))
+details: |
+  DOTNET_STARTUP_HOOKS detected: %EventData.Hooks%
 
-vql_args:
-  UserEnv: HKEY_USERS\*\Environment\DOTNET_STARTUP_HOOKS
-  SystemEnv: HKEY_LOCAL_MACHINE\System\ControlSet*\Control\Session Manager\Environment\DOTNET_STARTUP_HOOKS
+
+vql: |
+  x=>dict(
+    Timestamp=timestamp(epoch=now()),
+    EventData=dict(
+      Hooks=SearchRegistryKeys(Glob=[
+         "HKEY_USERS/*/Environment/DOTNET_STARTUP_HOOKS",
+         "HKEY_LOCAL_MACHINE/System/ControlSet*/Control/Session Manager/Environment/DOTNET_STARTUP_HOOKS"
+      ]))
+    )

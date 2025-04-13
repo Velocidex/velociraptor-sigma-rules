@@ -165,7 +165,10 @@ func (self *CompilerContext) Resolve(source_spec string) bool {
 }
 
 func (self *CompilerContext) incLogSource(source_spec string) {
-	count, _ := self.logsources[source_spec]
+	count, pres := self.logsources[source_spec]
+	if !pres {
+		self.logsources_order = append(self.logsources_order, source_spec)
+	}
 	count++
 
 	self.logsources[source_spec] = count

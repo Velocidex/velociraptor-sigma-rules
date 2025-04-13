@@ -1,0 +1,73 @@
+Name: Windows.Sigma.Triage
+ImportConfigs:
+  - config/windows_base_vql.yaml
+
+IncludeArtifacts:
+  - output/Windows.Sigma.BaseVQL.yaml
+
+Preamble: |
+  name: Windows.Sigma.Triage
+  description: |
+    This artifact contains VQL based triage rules for Windows.
+
+    This artifact was built on {{ .Time }}
+
+  type: CLIENT
+
+  parameters:
+    - name: Debug
+      type: bool
+      description: Enable full debug trace
+
+    - name: RuleLevel
+      type: choices
+      default: Critical
+      choices:
+        - "Critical"
+        - "Critical and High"
+        - "Critical, High, and Medium"
+        - "All"
+
+    - name: RuleStatus
+      type: choices
+      default: Stable
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+    - name: DateAfter
+      description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+    - name: DateBefore
+      description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+    - name: NTFS_CACHE_TIME
+      type: int
+      description: How often to flush the NTFS cache. (Default is never).
+      default: "1000000"
+
+  imports:
+    - Windows.Sigma.BaseVQL
+
+QueryTemplate: |
+   sources:
+   - query: |
+       LET Rules <= gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
+       SELECT *
+       FROM Artifact.Windows.Sigma.BaseVQL(
+          RuleLevel=RuleLevel, RuleStatus=RuleStatus,
+          RuleTitleFilter=RuleTitleFilter, Debug=Debug,
+          DateAfter=DateAfter, DateBefore=DateBefore,
+          SigmaRules=Rules, NTFS_CACHE_TIME=NTFS_CACHE_TIME)
+
+RuleDirectories:
+  - rules/vql/windows/

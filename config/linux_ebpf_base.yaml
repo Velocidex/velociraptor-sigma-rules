@@ -108,9 +108,9 @@ ExportTemplate: |
     `velociraptor/info/*`={ SELECT * FROM info() })
     {{ end }}
 
-    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
+    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")) || "{}")
 
-    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")) || "{}")
 
     LET DefaultDetailsLambda = '''{{.Base64DefaultDetailsQuery}}'''
     LET RuleFilterLambda = '''x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex'''

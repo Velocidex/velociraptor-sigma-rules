@@ -18,7 +18,7 @@ Preamble: |
 
     This artifact was built on {{ .Time }}
 
-  type: CLIENT
+  type: CLIENT_EVENT
 
   parameters:
     - name: RuleLevel

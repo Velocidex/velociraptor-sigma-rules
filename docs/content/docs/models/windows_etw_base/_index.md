@@ -246,7 +246,7 @@ the `Microsoft-Windows-Kernel-File` or
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: etw
   product: windows
   service: kernel
@@ -289,7 +289,7 @@ See `etw/windows/kernel` for a better ETW provider.
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: etw
   product: windows
   service: file
@@ -346,7 +346,7 @@ See `etw/windows/kernel` for a better ETW provider.
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: etw
   product: windows
   service: registry
@@ -364,7 +364,7 @@ See `etw/windows/kernel` for a better ETW provider.
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: etw
   product: windows
   service: process

@@ -49,7 +49,7 @@ event data.
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: vql
   product: windows
 ```
@@ -66,7 +66,7 @@ filename.
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: filesystem
   product: windows
   service: glob
@@ -81,7 +81,7 @@ Enumerates All Scheduled tasks
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: schtasks
 ```
@@ -95,7 +95,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: services
 ```
@@ -109,7 +109,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: persistence
   product: windows
   service: services
@@ -124,7 +124,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: process_creation
   product: vql
   service: execution
@@ -139,7 +139,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: webserver
   product: windows
 ```
@@ -153,7 +153,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: process_creation
   product: windows
   service: pslist
@@ -168,7 +168,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: image_load
   product: vql
   service: pslist
@@ -183,7 +183,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: network_connection
   product: windows
   service: netstat

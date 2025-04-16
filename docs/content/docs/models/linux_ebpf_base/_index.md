@@ -11,7 +11,49 @@ can be detected using Sigma Rules.
 Following is a list of recognized log sources.
 
 
-## `*/linux/ebpf`
+## `network_connection/linux/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+logsource:
+  category: network_connection
+  product: linux
+```
+
+
+## `file_event/linux/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+logsource:
+  category: file_event
+  product: linux
+```
+
+
+## `process_creation/linux/*`
+
+
+
+
+
+Sample use in a sigma rule:
+```yaml
+logsource:
+  category: process_creation
+  product: linux
+```
+
+
+## `ebpf/linux/*`
 
 Reports events from the ebpf subsystem.
 
@@ -98,9 +140,9 @@ monitoring artifact.
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
+  category: ebpf
   product: linux
-  service: ebpf
 ```
 
 

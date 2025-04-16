@@ -568,7 +568,7 @@ DocTemplate: |
 
   Sample use in a sigma rule:
   ```yaml
-  log_sources:
+  logsource:
     {{- if .LogSource.Category }}
     category: {{ .LogSource.Category }}
     {{- end }}

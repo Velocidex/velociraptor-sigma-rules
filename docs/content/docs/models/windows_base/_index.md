@@ -25,7 +25,7 @@ services.
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: application
 ```
@@ -46,7 +46,7 @@ Events are usually stored in the files:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: applocker
 ```
@@ -64,7 +64,7 @@ Events are usually stored in the files:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: appmodel-runtime
 ```
@@ -78,7 +78,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: appxdeployment-server
 ```
@@ -92,7 +92,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: appxpackaging-om
 ```
@@ -123,7 +123,7 @@ The BITS service is used to download files and it is often misused by threat act
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: bits-client
 ```
@@ -137,7 +137,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: capi2
 ```
@@ -151,7 +151,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: certificateservicesclient-lifecycle-system
 ```
@@ -165,7 +165,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: codeintegrity-operational
 ```
@@ -179,7 +179,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: diagnosis-scripted
 ```
@@ -193,7 +193,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: dns-client
 ```
@@ -207,7 +207,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: dns-server
 ```
@@ -221,7 +221,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: dns-server-analytic
 ```
@@ -235,7 +235,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: driver-framework
 ```
@@ -249,7 +249,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: firewall-as
 ```
@@ -263,7 +263,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: ldap_debug
 ```
@@ -277,7 +277,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: lsa-server
 ```
@@ -291,7 +291,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: microsoft-servicebus-client
 ```
@@ -305,7 +305,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: msexchange-management
 ```
@@ -319,7 +319,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: ntlm
 ```
@@ -333,7 +333,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: openssh
 ```
@@ -347,7 +347,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: powershell
 ```
@@ -361,7 +361,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: powershell-classic
 ```
@@ -375,7 +375,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: security
 ```
@@ -389,7 +389,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: security-mitigations
 ```
@@ -403,7 +403,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: shell-core
 ```
@@ -417,7 +417,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: smbclient-security
 ```
@@ -431,7 +431,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: sysmon
 ```
@@ -445,7 +445,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: system
 ```
@@ -459,7 +459,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: taskscheduler
 ```
@@ -473,7 +473,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: terminalservices-localsessionmanager
 ```
@@ -487,7 +487,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: vhdmp
 ```
@@ -501,7 +501,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: windefend
 ```
@@ -515,7 +515,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   product: windows
   service: wmi
 ```
@@ -529,7 +529,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: process_creation
   product: windows
 ```
@@ -543,7 +543,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: ps_classic_provider_start
   product: windows
 ```
@@ -557,7 +557,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: ps_classic_start
   product: windows
 ```
@@ -571,7 +571,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: ps_module
   product: windows
 ```
@@ -585,7 +585,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: ps_script
   product: windows
 ```
@@ -599,7 +599,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: registry_add
   product: windows
 ```
@@ -613,7 +613,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: registry_event
   product: windows
 ```
@@ -627,7 +627,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: registry_set
   product: windows
 ```
@@ -641,7 +641,7 @@ log_sources:
 
 Sample use in a sigma rule:
 ```yaml
-log_sources:
+logsource:
   category: antivirus
   product: windows
   service: windefend

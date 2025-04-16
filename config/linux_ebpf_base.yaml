@@ -14,6 +14,9 @@ Preamble: |
     This model uses Velociraptor's EBPF engine which is based on
     tracee https://github.com/aquasecurity/tracee.
 
+    This model is compatible with the Sigma HQ rules and it is used by
+    the artifact `Linux.EBPF.Monitoring`.
+
     This artifact was built on {{ .Time }}
 
   type: CLIENT_EVENT
@@ -105,7 +108,7 @@ ExportTemplate: |
   {{ Indent .Query 5 }}
       },
     {{- end -}}
-    `velociraptor/info/*`={ SELECT * FROM info() })
+    `velociraptor/info/*`={ SELECT * FROM info() WHERE FALSE })
     {{ end }}
 
     LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")) || "{}")
@@ -118,9 +121,44 @@ ExportTemplate: |
     LET GetProcInfo(PID) = to_dict(item={
       SELECT * FROM items(item=process_tracker_get(id=System.ProcessID).Data)
          WHERE _key =~ "Name|CommandLine|CreateTime|Exe|Cwd|Username"
-      }) + dict(CreateTime=timestamp(epoch=process_tracker_get(id=System.ProcessID).Data.CreateTime))
+      }) + dict(CreateTime=timestamp(epoch=process_tracker_get(id=System.ProcessID).Data.StartTime))
+
+    LET EBFFEvent = generate(name="EBPF Event Generator", query={
+      SELECT *, EventData + dict(ProcInfo=GetProcInfo(PID=System.ProcessID)) AS EventData
+      FROM delay(
+        query={
+          SELECT timestamp(epoch=now()) AS Timestamp,
+                 System.EventName AS EventType,
+                 System + dict(MainHostname=Hostname) AS System, EventData
+          FROM watch_ebpf(events=[
+              "security_file_open",
+              "bpf_attach", "fchownat", "chown", "kill",
+              "module_free", "module_load",
+              "mount", "sched_process_exec", "net_packet_dns_response",
+              "security_socket_accept", "security_socket_bind", "security_socket_connect",
+              "unlink", "security_inode_unlink"
+          ])
+      }, delay=5)
+    })
+
 
 FieldMappings:
+  EventData: "x=>x.EventData"
+  Timestamp: "x=>timestamp(epoch=now())"
+  EventName: "x=>x.System.EventName"
+  TargetFilename: "x=>x.EventData.pathname"
+  Image: "x=>x.EventData.ProcInfo.Exe"
+  CommandLine: "x=>x.EventData.argv"
+  ParentImage: "x=>process_tracker_get(id=x.System.ParentProcessID).Data.Exe"
+  ParentCommandLine: "x=>process_tracker_get(id=x.System.ParentProcessID).Data.CommandLine"
+  User: "x=>process_tracker_get(id=x.System.ProcessID).Data.Username"
+  LogonId: "x=>System.UserID"
+  CurrentDirectory: "x=>stat(filename=format(format='/proc/%v/cwd', args=x.System.ProcessID)).Data.Link"
+  DestinationIp: "x=>x.EventData.remote_addr.sin_addr"
+  DestinationHostname: "x=>x.EventData.remote_addr.dns_names"
+  Initiated: "x=>x.System.EventName = 'security_socket_connect'"
+  DestinationPort: "x=>x.EventData.remote_addr.sin_port"
+
 
 DefaultDetails:
   Query: |
@@ -129,9 +167,25 @@ DefaultDetails:
               args=[x.System.Provider.Name, x.System.EventID.Value])
           ) || x.Message || x.UserData || x.EventData
   Lookup:
+    X: X
 
 Sources:
-  "*/linux/ebpf":
+  "network_connection/linux/*":
+    query: |
+      SELECT * FROM EBFFEvent
+      WHERE System.EventName = "security_socket_connect"
+
+  "file_event/linux/*":
+    query: |
+      SELECT * FROM EBFFEvent
+      WHERE System.EventName = "security_file_open"
+
+  "process_creation/linux/*":
+    query: |
+      SELECT * FROM EBFFEvent
+      WHERE System.EventName = "sched_process_exec"
+
+  "ebpf/linux/*":
     description: |
       Reports events from the ebpf subsystem.
 
@@ -162,38 +216,22 @@ Sources:
         json: "config/samples/Linux-EBPF-chown.json"
 
     query: |
-      SELECT *, EventData + dict(ProcInfo=GetProcInfo(PID=System.ProcessID)) AS EventData
-      FROM delay(
-        query={
-          SELECT timestamp(epoch=now()) AS Timestamp,
-                 System.EventName AS EventType,
-                 System + dict(MainHostname=Hostname) AS System, EventData
-          FROM watch_ebpf(events=[
-              "security_file_open",
-              "bpf_attach", "fchownat", "chown", "kill",
-              "module_free", "module_load",
-              "mount", "sched_process_exec",
-              "security_socket_accept", "security_socket_bind", "security_socket_connect",
-              "unlink", "security_inode_unlink"
-          ])
-      }, delay=1)
-
+      SELECT * FROM EBFFEvent
 
 QueryTemplate: |
  sources:
  - query: |
-    LET Result = SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
-          System.Computer AS Computer,
-          System.Channel AS Channel,
-          System.EventID.Value AS EID,
+    LET Result = SELECT System.Timestamp AS Timestamp,
+          Hostname AS Computer,
+          "EBPF" AS Channel,
+          System.EventName AS EID,
           _Rule.Level AS Level,
           _Rule.Title AS Title,
-          System.EventRecordID AS RecordID,
           Details,
           dict(System=System,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match
+          _Match, *
     FROM sigma(
       rules=split(string= SigmaRules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,
@@ -205,7 +243,7 @@ QueryTemplate: |
       SELECT * FROM Result
     }, else={
       SELECT Timestamp, Computer, Channel , EID,
-             Level, Title, RecordID, Details, _Event
+             Level, Title, Details, _Event
       FROM Result
     })
 
@@ -241,7 +279,7 @@ DocTemplate: |
 
   Sample use in a sigma rule:
   ```yaml
-  log_sources:
+  logsource:
     {{- if .LogSource.Category }}
     category: {{ .LogSource.Category }}
     {{- end }}

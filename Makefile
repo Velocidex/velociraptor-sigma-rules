@@ -25,6 +25,7 @@ compileWindowsBaseETW:
 	./velosigmac compile --config ./config/windows_etw_base.yaml --output ./output/Windows-Sigma-ETWBase.zip --yaml ./output/Windows.Sigma.ETWBase.yaml  --docs ./docs/content/docs/models/windows_etw_base/_index.md
 
 compileLinuxEBPF: compileLinuxEBPFBase
+	./velosigmac compile --config ./config/linux_ebpf_monitoring.yaml --output ./output/Linux-Sigma-EBPF.zip --yaml ./output/Linux.Sigma.EBPF.yaml
 
 compileLinuxEBPFBase:
 	./velosigmac compile --config ./config/linux_ebpf_base.yaml --output ./output/Linux-Sigma-EBPFBase.zip --yaml ./output/Linux.Sigma.EBPFBase.yaml  --docs ./docs/content/docs/models/linux_ebpf_base/_index.md

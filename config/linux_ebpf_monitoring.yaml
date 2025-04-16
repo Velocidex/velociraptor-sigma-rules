@@ -1,0 +1,63 @@
+Name: Linux.EBPF.Monitoring
+ImportConfigs:
+  - config/linux_ebpf_base.yaml
+
+IncludeArtifacts:
+  - output/Linux.Sigma.EBPFBase.yaml
+
+Preamble: |
+  name: Linux.EBPF.Monitoring
+  description: |
+    This artifact packages the standard rules in the SigmaHQ
+    repository https://github.com/SigmaHQ/sigma together with
+    Velociraptor's eBPF Sigma model.
+
+    This artifact was built on {{ .Time }}
+
+  type: CLIENT
+
+  parameters:
+    - name: RuleLevel
+      type: choices
+      default: Critical
+      choices:
+        - "Critical"
+        - "Critical and High"
+        - "Critical, High, and Medium"
+        - "All"
+
+    - name: RuleStatus
+      type: choices
+      default: Stable
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+  imports:
+    - Linux.Sigma.EBPFBase
+
+ExportTemplate: |
+  export: |
+       LET SigmaRules <= gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
+
+QueryTemplate: |
+   sources:
+   - query: |
+       SELECT *
+       FROM Artifact.Linux.Sigma.EBPFBase(
+          RuleLevel=RuleLevel, RuleStatus=RuleStatus,
+          RuleTitleFilter=RuleTitleFilter, RuleExclusions=RuleExclusions,
+          SigmaRules=SigmaRules)
+
+# These rules are manually translated so they are all supported
+RuleDirectories:
+  - rules/sigma/rules/linux/file_event/
+  - rules/sigma/rules/linux/process_creation/
+  - rules/sigma/rules/linux/network_connection/

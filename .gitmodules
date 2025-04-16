@@ -4,3 +4,6 @@
 [submodule "ChopChopGo"]
 	path = ChopChopGo
 	url = https://github.com/M00NLIG7/ChopChopGo.git
+[submodule "rules/sigma"]
+	path = rules/sigma
+	url = https://github.com/SigmaHQ/sigma.git

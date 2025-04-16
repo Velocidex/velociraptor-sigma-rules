@@ -30,50 +30,50 @@ returns a dict with key/value pairs from the registry.</p></li></ul><h1 id=log-s
 <a class=anchor href=#vqlwindows>#</a></h2><p>This log source emits a single event. All rules using the log
 source will receive this event, where they can run arbitrary VQL
 queries to build the event themselves.</p><p>This is most useful for rules that want to generate their own
-event data.</p><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+event data.</p><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>vql</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span></code></pre></div><h2 id=filesystemwindowsglob><code>filesystem/windows/glob</code>
 <a class=anchor href=#filesystemwindowsglob>#</a></h2><p>This log source searches for all files on the drive - it takes a
 long time but allows rules to check for presence of a particular
-filename.</p><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+filename.</p><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>filesystem</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>glob</span>
 </span></span></code></pre></div><h2 id=windowsschtasks><code>*/windows/schtasks</code>
-<a class=anchor href=#windowsschtasks>#</a></h2><p>Enumerates All Scheduled tasks</p><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#windowsschtasks>#</a></h2><p>Enumerates All Scheduled tasks</p><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>schtasks</span>
 </span></span></code></pre></div><h2 id=windowsservices><code>*/windows/services</code>
-<a class=anchor href=#windowsservices>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#windowsservices>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>services</span>
 </span></span></code></pre></div><h2 id=persistencewindowsservices><code>persistence/windows/services</code>
-<a class=anchor href=#persistencewindowsservices>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#persistencewindowsservices>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>persistence</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>services</span>
 </span></span></code></pre></div><h2 id=process_creationvqlexecution><code>process_creation/vql/execution</code>
-<a class=anchor href=#process_creationvqlexecution>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#process_creationvqlexecution>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>process_creation</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>vql</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>execution</span>
 </span></span></code></pre></div><h2 id=webserverwindows><code>webserver/windows/*</code>
-<a class=anchor href=#webserverwindows>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#webserverwindows>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>webserver</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span></code></pre></div><h2 id=process_creationwindowspslist><code>process_creation/windows/pslist</code>
-<a class=anchor href=#process_creationwindowspslist>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#process_creationwindowspslist>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>process_creation</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>pslist</span>
 </span></span></code></pre></div><h2 id=image_loadvqlpslist><code>image_load/vql/pslist</code>
-<a class=anchor href=#image_loadvqlpslist>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#image_loadvqlpslist>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>image_load</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>vql</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>pslist</span>
 </span></span></code></pre></div><h2 id=network_connectionwindowsnetstat><code>network_connection/windows/netstat</code>
-<a class=anchor href=#network_connectionwindowsnetstat>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#network_connectionwindowsnetstat>#</a></h2><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>network_connection</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>netstat</span>

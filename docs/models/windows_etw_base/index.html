@@ -203,7 +203,7 @@ the <code>Microsoft-Windows-Kernel-File</code> or
     }
 }
 
-</pre><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+</pre><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>etw</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>kernel</span>
@@ -221,7 +221,7 @@ the <code>Microsoft-Windows-Kernel-File</code> or
 <a class=anchor href=#namecreate-event>#</a></h5><pre class=json-renderer>
 {"Timestamp":"2025-01-30T07:33:07Z","System":{"Channel":"Microsoft-Windows-Kernel-File","Computer":"WIN-SJE0CKQO83P","EventType":"NameCreate","EventID":{"Value":10}},"EventData":{"FileKey":"0xFFFFB18937D871B0","FileName":"\\Device\\HarddiskVolume3\\datastore\\hunts\\H.CUDEISQSB5K60\\notebook\\N.H.CUDEISQSB5K60\\NC.CUDIKP2J653IQ-CUDIMC0CRIMHS.json.db","ProcInfo":{"Name":"velociraptor.exe","Username":"WIN-SJE0CKQO83P\\Administrator","Exe":"C:\\velociraptor.exe","CommandLine":"c:\\velociraptor.exe  gui --datastore c:\\datastore\\ --nobrowser --debug -v"}}}
 
-</pre><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+</pre><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>etw</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>file</span>
@@ -247,12 +247,12 @@ the <code>Microsoft-Windows-Kernel-File</code> or
 <a class=anchor href=#setvaluekey-event>#</a></h5><pre class=json-renderer>
 {"Timestamp":"2025-01-30T08:10:20Z","System":{"Channel":"Microsoft-Windows-Kernel-Registry","Computer":"WIN-SJE0CKQO83P","EventType":"SetValueKey","EventID":{"Value":5}},"EventData":{"KeyObject":"0xFFFFB1893D043AA0","Status":"0x0","Type":"11","DataSize":"8","KeyName":"","ValueName":"PCT","CapturedDataSize":"0","CapturedData":"","PreviousDataType":"0","PreviousDataSize":"0","PreviousDataCapturedSize":"0","PreviousData":null,"ProcInfo":null,"ParentProcInfo":{"Name":"svchost.exe","Username":"NT AUTHORITY\\SYSTEM","Exe":"C:\\Windows\\System32\\svchost.exe","CommandLine":"C:\\Windows\\system32\\svchost.exe -k DcomLaunch -p"}}}
 
-</pre><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+</pre><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>etw</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>registry</span>
 </span></span></code></pre></div><h2 id=etwwindowsprocess><code>etw/windows/process</code>
-<a class=anchor href=#etwwindowsprocess>#</a></h2><p>Log source based on the <code>Microsoft-Windows-Kernel-Registry</code> provider</p><p>See <code>etw/windows/kernel</code> for a better ETW provider.</p><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>log_sources</span>:
+<a class=anchor href=#etwwindowsprocess>#</a></h2><p>Log source based on the <code>Microsoft-Windows-Kernel-Registry</code> provider</p><p>See <code>etw/windows/kernel</code> for a better ETW provider.</p><p>Sample use in a sigma rule:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>etw</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>process</span>

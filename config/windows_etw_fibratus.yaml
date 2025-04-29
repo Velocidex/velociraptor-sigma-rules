@@ -1,20 +1,14 @@
-Name: Windows.Sigma.Fibratus
+Name: Windows.ETW.Monitoring
 ImportConfigs:
   - config/windows_etw_base.yaml
 
 IncludeArtifacts:
-  - output/Windows.Sigma.ETWBase.yaml
+  - output/Windows.ETW.Monitoring.yaml
 
 Preamble: |
-  name: Windows.Sigma.Fibratus
+  name: Windows.ETW.Monitoring
   description: |
-    Fibratus https://www.fibratus.io/ is an open source detection
-    engine based on ETW technology. The Fibratus project contains its
-    own rule engine with its own unique language including its own set
-    of detection rules.
-
-    This artifact packages some of the Fibratus rules translated to
-    the Sigma rule format and using Velociraptor's ETW Sigma model.
+    This artifact contains
 
     This artifact was built on {{ .Time }}
 

@@ -1,0 +1,98 @@
+Name: Linux.Sigma.Triage
+ImportConfigs:
+  - config/linux_base.yaml
+
+IncludeArtifacts:
+  - output/Linux.Sigma.Base.yaml
+  - output/Linux.Sigma.Base.CaptureTestSet.yaml
+
+Preamble: |
+  name: Linux.Sigma.Triage
+  description: |
+    This artifact compiles the Linux rules from various sources into a
+    Velociraptor artifact using the Linux Sigma Base model.
+
+    The artifact is useful for triaging a Linux machine by parsing the
+    logs and flagging suspicious behaviors.
+
+    - SigmaHQ Linux Rules
+    - Built in Velociraptor rules.
+
+    This artifact was built on {{ .Time }}
+
+  type: CLIENT
+
+  parameters:
+    - name: ROOT
+      description: The Event Log Directory we use to read all logs
+      default: /var/log/
+
+    - name: RuleLevel
+      type: choices
+      default: Critical
+      choices:
+        - "Critical"
+        - "Critical and High"
+        - "Critical, High, and Medium"
+        - "All"
+
+    - name: RuleStatus
+      type: choices
+      default: Stable
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+    - name: DefaultYear
+      description: The Default year for parsing Syslog timestamps (default current year)
+
+    - name: RuleExclusions
+      type: csv
+      description: |
+        Some rules in the Hayabusa set are extremely noisy, so they
+        are disabled by default.
+      default: |
+        RuleTitleRegex,Reason
+        noisy,All rules marked noisy should be disabled by default.
+
+
+  imports:
+    - Linux.Sigma.Base
+
+QueryTemplate: |
+   sources:
+   - query: |
+       LET Rules <= gunzip(string=base64decode(string="{{.Base64CompressedRules}}"))
+       SELECT *
+       FROM Artifact.Linux.Sigma.Base(
+          ROOT=ROOT, RuleLevel=RuleLevel, RuleStatus=RuleStatus,
+          RuleTitleFilter=RuleTitleFilter, RuleExclusions=RuleExclusions,
+          DefaultYear=DefaultYear)
+
+# Many rules are broken and have bad field mappings. The following
+# list suppresses these warnings (but the rules are still rejected)
+BadFieldMappings:
+# We do not currently support rules with Timeframe in them so we
+# silently drop these.
+- Timeframe detections not supported
+
+
+# Many rules are broken and have bad log source section. The following
+# list suppresses these warnings (but the rules are still rejected)
+BadSources:
+- "*/linux/*"
+
+# The following are nonstandard and unsupported modifiers
+- endswithfield
+- equalsfield
+
+RuleDirectories:
+  - rules/sigma/rules/linux/auditd
+  - rules/sigma/rules/linux/network_connection

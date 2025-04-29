@@ -2,8 +2,7 @@ Name: Windows.Sigma.Base
 Description: |
   Sigma Model for triaging event logs on Windows.
 
-  This profile includes many Windows EVTX log sources as well as
-  multiple artifact based log sources.
+  This profile includes many Windows EVTX log sources.
 
 # The preamble include the artifact parameters, name, description and
 # type - basically everything that goes at the top of the artifact

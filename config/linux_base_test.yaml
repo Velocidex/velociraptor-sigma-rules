@@ -1,0 +1,96 @@
+Name: Linux.Sigma.Base.CaptureTestSet
+ImportConfigs:
+  - config/linux_base.yaml
+
+Preamble: |
+  name: Linux.Sigma.Base.CaptureTestSet
+  description: |
+    This artifact captures a test set of the log sources defined by
+    Linux.Sigma.Base. It is used to acquire a dataset for the
+    `SigmaStudio` notebook.
+
+  type: CLIENT
+  parameters:
+    - name: ROOT
+      description: The Event Log Directory we use to read all logs
+      default: /var/log/
+    - name: Debug
+      type: bool
+      description: Enable full debug trace
+    - name: RuleLevel
+      type: choices
+      default: All
+      choices:
+        - Critical
+        - Critical and High
+        - All
+
+    - name: DefaultYear
+      description: The Default year for parsing Syslog timestamps (default current year)
+
+    - name: RuleStatus
+      type: choices
+      default: All Rules
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleExclusions
+      type: csv
+      description: |
+        This table are rules that will be excluded by Title Regex
+      default: |
+        RuleTitleRegex,Reason
+        noisy,All rules marked noisy should be disabled by default.
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+    - name: LogSourceFilter
+      description: Only capture log sources that match this regex.
+      type: regex
+      default: .
+
+    - name: SelectedLogSources
+      description: Set to capture only those log sources.
+      type: multichoice
+      choices:
+      {{- range .ImportedLogSources }}
+      - "{{ .Name }}"
+      {{- end }}
+
+    - name: EventRegex
+      description: Only capture events that match this regex (the event is converted to JSON first).
+      type: regex
+      default: .
+
+  imports:
+    - Linux.Sigma.Base
+
+QueryTemplate: |
+   sources:
+   - name: MatchingSources
+     query: |
+       SELECT _key AS SourceName
+       FROM items(item=LogSources)
+       WHERE SourceName =~ LogSourceFilter
+         AND if(condition=SelectedLogSources, then=SourceName in SelectedLogSources, else=TRUE)
+
+   - query: |
+       SELECT * FROM foreach(row={
+         SELECT _key AS SourceName, _value AS Query
+         FROM items(item=LogSources)
+         WHERE SourceName =~ LogSourceFilter
+           AND if(condition=SelectedLogSources, then=SourceName in SelectedLogSources, else=TRUE)
+       }, query={
+         SELECT * FROM foreach(row={
+           SELECT * FROM items(item={
+             SELECT * FROM query(query=Query, inherit=TRUE)
+           })
+           WHERE _value =~ EventRegex
+         }, column="_value")
+       })

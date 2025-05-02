@@ -140,3 +140,10 @@ RuleDirectories:
   - hayabusa/hayabusa/sysmon/
   - hayabusa/sigma/builtin/
   - hayabusa/sigma/sysmon/
+
+DocTemplate: |
+  # Windows.Hayabusa.Rules artifact
+
+  This artifact contains rules designed to triage a Windows host
+
+  {{ "{{< ruleset \"index.json\" >}}" }}

@@ -1,6 +1,15 @@
 Name: Linux.Sigma.Base
+ImportConfigs:
+  - config/base_doc.yaml
+
 Description: |
-  Sigma Model for triaging event logs on Linux
+  # Linux Base Sigma Model
+
+  This model is designed for triage of dead disk, or file based live
+  analysis. The rules that use this model will be evaluated once on
+  all events.
+
+  After all relevant rules are evaluated, the collection is complete.
 
   NOTE: Auditd configuration based on
   https://raw.githubusercontent.com/Neo23x0/auditd/refs/heads/master/audit.rules
@@ -209,49 +218,3 @@ QueryTemplate: |
          default_details=DefaultDetailsLambda,
          rule_filter=RuleFilterLambda,
          field_mapping= FieldMapping)
-
-DocTemplate: |
-  # Linux Base Sigma Model
-
-  This model is designed for triage of dead disk, or file based live
-  analysis. The rules that use this model will be evaluated once on
-  all events.
-
-  After all relevant rules are evaluated, the collection is complete.
-
-  # Log Sources
-
-  Following is a list of recognized log sources.
-
-  {{ range .LogSources }}
-  ## `{{ .Name }}`
-
-  {{ .Description }}
-
-  {{ if .Samples }}
-  #### Sample Events
-  {{ range .Samples }}
-
-  ##### {{ .Name }}
-  <pre class="json-renderer">
-  {{ ReadFile .Json }}
-  </pre>
-  {{ end }}
-
-  {{ end }}
-
-  Sample use in a sigma rule:
-  ```yaml
-  logsource:
-    {{- if .LogSource.Category }}
-    category: {{ .LogSource.Category }}
-    {{- end }}
-    {{- if .LogSource.Product }}
-    product: {{ .LogSource.Product }}
-    {{- end }}
-    {{- if .LogSource.Service }}
-    service: {{ .LogSource.Service }}
-    {{- end }}
-  ```
-
-  {{ end }}

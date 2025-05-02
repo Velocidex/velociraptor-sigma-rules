@@ -23,7 +23,7 @@ compileLinuxBase:
 	./velosigmac compile --config ./config/linux_base_test.yaml --yaml ./output/Linux.Sigma.Base.CaptureTestSet.yaml
 
 compileLinuxTriage: compileLinuxBase
-	./velosigmac compile --config ./config/linux_sigma_triage.yaml --output ./output/Linux-Sigma-Triage.zip --yaml ./output/Linux.Sigma.Triage.yaml
+	./velosigmac compile --config ./config/linux_sigma_triage.yaml --output ./output/Linux-Sigma-Triage.zip --yaml ./output/Linux.Sigma.Triage.yaml --rule_dir ./docs/content/docs/artifacts/Linux.Sigma.Triage/ --docs ./docs/content/docs/artifacts/Linux.Sigma.Triage/_index.md
 
 
 compileWindowsBaseEvents:
@@ -41,7 +41,7 @@ compileLinuxEBPFBase:
 	./velosigmac compile --config ./config/linux_ebpf_base_test.yaml --yaml ./output/Linux.Sigma.EBPFBase.CaptureTestSet.yaml
 
 compileWindowsETW: compileWindowsBaseETW
-	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Windows-Sigma-Fibratus.zip --yaml ./output/Windows.Sigma.Fibratus.yaml
+	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Windows-Sigma-Fibratus.zip --yaml ./output/Windows.Sigma.Fibratus.yaml --rule_dir ./docs/content/docs/artifacts/Windows.ETW.Monitoring/ --docs ./docs/content/docs/artifacts/Windows.ETW.Monitoring/_index.md
 
 compileWindowsBaseVQL:
 	./velosigmac compile --config ./config/windows_base_vql.yaml --output ./output/Windows-Sigma-BaseVQL.zip --yaml ./output/Windows.Sigma.BaseVQL.yaml  --docs ./docs/content/docs/models/windows_base_vql/_index.md
@@ -50,13 +50,13 @@ compileWindowsVQL: compileWindowsBaseVQL
 	./velosigmac compile --config ./config/windows_vql_triage.yaml --output ./output/Windows-Sigma-Triage.zip --yaml ./output/Windows.Sigma.Triage.yaml
 
 compileHayabusa: compileWindowsBase
-	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor.Hayabusa.Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects
+	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor.Hayabusa.Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects --rule_dir ./docs/content/docs/artifacts/Windows.Hayabusa.Rules/ --docs ./docs/content/docs/artifacts/Windows.Hayabusa.Rules/_index.md
 
 debugHayabusa:
 	dlv debug ./src -- compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor-Hayabusa-Rules.yaml
 
 compileHayabusaMonitoring: compileWindowsBaseEvents
-	./velosigmac compile --config ./config/windows_hayabusa_event_monitoring.yaml --output ./output/Velociraptor-Hayabusa-Monitoring.zip --yaml ./output/Velociraptor-Hayabusa-Monitoring.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects
+	./velosigmac compile --config ./config/windows_hayabusa_event_monitoring.yaml --output ./output/Velociraptor-Hayabusa-Monitoring.zip --yaml ./output/Velociraptor-Hayabusa-Monitoring.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects --rule_dir ./docs/content/docs/artifacts/Windows.Hayabusa.Monitoring/ --docs ./docs/content/docs/artifacts/Windows.Hayabusa.Monitoring/_index.md
 
 package:
 	zip -v ./output/Velociraptor.Sigma.Artifacts.zip  ./output/*.yaml
@@ -69,3 +69,6 @@ golden:
 
 profile:
 	./velosigmac gen_profiles --output ./output/profiles.json ./config/*base*.yaml
+
+serve:
+	cd docs && hugo serve --port 1314 --bind 0.0.0.0

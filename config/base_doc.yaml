@@ -1,0 +1,84 @@
+DocTemplate: |
+  {{ .Config.Description }}
+
+  ## Log Sources
+
+  Following is a list of recognized log sources.
+
+  <table class="scroll-datatable">
+  <thead><tr>
+     <th>Log Source</th>
+     <th >Desc</th>
+  </tr></thead>
+  <tbody>
+  {{ range .LogSources }}
+  <tr>
+    <td >{{ "{{< link-heading \"" }} {{.Name}} {{"\" >}}" }}</td>
+    <td >{{ .Summary }}</td>
+  </tr>
+  {{ end }}
+  </tbody>
+  </table>
+
+  ## Field Mappings
+
+  The following field mappings can be used to access fields within the
+  event. Note that it is also possible to access the fields directly
+  (e.g. `EventData.AccessMask`)
+
+  {{ "{{% expand \"View all Field Mappings\" %}}" }}
+
+  <table class="datatable"><thead><tr><th>Name</th><th>Mapping</th></tr></thead>
+  <tbody>
+  {{ range .FieldMappings }}
+  <tr><td>{{ .Name }}</td><td>{{ .Mapping }}</td></tr>
+  {{ end }}
+  </tbody>
+  </table>
+
+  {{ "{{% /expand %}}" }}
+
+  <hr />
+
+  {{ range .LogSources }}
+  ## `{{ .Name }}`
+
+  {{ .Description }}
+
+  {{ "{{% expand \"Details\" %}}" }}
+
+  #### VQL Query
+
+  ```sql
+  {{ .Query }}
+  ```
+
+  {{ if .Samples }}
+  #### Sample Events
+  {{ range .Samples }}
+
+  ##### {{ .Name }}
+  <pre class="json-renderer">
+  {{ ReadFile .Json }}
+  </pre>
+  {{ end }}
+
+  {{ end }}
+
+  #### Sample use in a sigma rule:
+  ```yaml
+  logsource:
+    {{- if .LogSource.Category }}
+    category: {{ .LogSource.Category }}
+    {{- end }}
+    {{- if .LogSource.Product }}
+    product: {{ .LogSource.Product }}
+    {{- end }}
+    {{- if .LogSource.Service }}
+    service: {{ .LogSource.Service }}
+    {{- end }}
+  ```
+
+  {{ "{{% /expand %}}" }}
+
+  {{ end }}

@@ -29,6 +29,7 @@ var (
 	ignore_previous_rejects = compile_cmd.Flag("ignore_previous_rejects", "Read the rejects file and ignore any previously known rejected rules").Bool()
 	config                  = compile_cmd.Flag("config", "Config file to use").Required().ExistingFile()
 	level_regex_str         = compile_cmd.Flag("level_regex", "A regex to select rule Levels").Default(".").String()
+	rule_directory          = compile_cmd.Flag("rule_dir", "The base directory to write the rules").String()
 
 	debug = app.Flag("debug", "Print more details").Bool()
 
@@ -190,6 +191,11 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	self.original_rules.Write([]byte(rule_yaml))
 	self.original_rules.Write([]byte("\n---\n"))
 
+	self.original_rules_by_path[path] = rule_yaml
+
+	new_rule.Description = rule.Description
+	self.rules_by_path[path] = new_rule
+
 	return nil
 }
 
@@ -238,8 +244,7 @@ func doCompile() (err error) {
 
 	if *output != "" {
 		// Write the sigma file in the output directory.
-		out_fd, err := os.OpenFile(*output,
-			os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		out_fd, err := CreateFile(*output)
 		if err != nil {
 			return fmt.Errorf("Creating output: %w", err)
 		}
@@ -255,8 +260,7 @@ func doCompile() (err error) {
 	}
 
 	if *yaml_output != "" {
-		out_fd, err := os.OpenFile(*yaml_output,
-			os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		out_fd, err := CreateFile(*yaml_output)
 		if err != nil {
 			return fmt.Errorf("Creating yaml output: %w", err)
 		}
@@ -271,8 +275,7 @@ func doCompile() (err error) {
 	}
 
 	if *docs_output != "" {
-		out_fd, err := os.OpenFile(*docs_output,
-			os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		out_fd, err := CreateFile(*docs_output)
 		if err != nil {
 			return fmt.Errorf("Creating docs output: %w", err)
 		}
@@ -286,9 +289,15 @@ func doCompile() (err error) {
 		out_fd.Write([]byte(documentation))
 	}
 
+	if *rule_directory != "" {
+		err := context.WriteRuleDir(*rule_directory)
+		if err != nil {
+			return fmt.Errorf("WriteRuleDir: %w", err)
+		}
+	}
+
 	if *rejects_output != "" {
-		out_fd, err := os.OpenFile(*rejects_output,
-			os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+		out_fd, err := CreateFile(*rejects_output)
 		if err != nil {
 			return fmt.Errorf("Creating yaml output: %w", err)
 		}

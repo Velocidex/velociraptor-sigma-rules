@@ -3,7 +3,7 @@ ImportConfigs:
   - config/windows_etw_base.yaml
 
 IncludeArtifacts:
-  - output/Windows.ETW.Monitoring.yaml
+  - output/Windows.Sigma.ETWBase.yaml
 
 Preamble: |
   name: Windows.ETW.Monitoring
@@ -82,3 +82,11 @@ QueryTemplate: |
 # These rules are manually translated so they are all supported
 RuleDirectories:
   - rules/fibratus/
+
+DocTemplate: |
+  # Windows.ETW.Monitoring artifact
+
+  This artifact contains rules designed to monitoring a windows host
+  based on ETW streams.
+
+  {{ "{{< ruleset \"index.json\" >}}" }}

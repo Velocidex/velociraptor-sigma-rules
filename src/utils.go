@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 )
@@ -45,4 +47,13 @@ func ValuesInOrder[V interface{}](in map[string]V) (res []V) {
 	}
 
 	return res
+}
+
+func CreateFile(path string) (*os.File, error) {
+	dir := filepath.Dir(path)
+	os.MkdirAll(dir, 0700)
+
+	out_fd, err := os.OpenFile(path,
+		os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+	return out_fd, err
 }

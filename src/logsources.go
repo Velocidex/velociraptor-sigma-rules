@@ -58,6 +58,9 @@ type CompilerContext struct {
 	event_resolver *EventResolver
 
 	imported_configs []*Config
+
+	original_rules_by_path map[string]string
+	rules_by_path          map[string]sigma.Rule
 }
 
 func NewCompilerContext() *CompilerContext {
@@ -67,6 +70,8 @@ func NewCompilerContext() *CompilerContext {
 		seen_rules:                   make(map[string]int),
 		errored_rules:                make(map[string][]string),
 		ignored_rules:                make(map[string]bool),
+		original_rules_by_path:       make(map[string]string),
+		rules_by_path:                make(map[string]sigma.Rule),
 		level_regex:                  regexp.MustCompile(".*"),
 
 		fields:         make(map[string]int),

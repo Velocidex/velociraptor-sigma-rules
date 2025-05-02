@@ -96,3 +96,10 @@ BadSources:
 RuleDirectories:
   - rules/sigma/rules/linux/auditd
   - rules/sigma/rules/linux/network_connection
+
+DocTemplate: |
+  # Linux.Sigma.Triage artifact
+
+  This artifact contains rules designed to triage a Linux host
+
+  {{ "{{< ruleset \"index.json\" >}}" }}

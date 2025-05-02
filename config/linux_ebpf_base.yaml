@@ -1,9 +1,15 @@
 Name: Linux.Sigma.EBPFBase
-Description: |
-  A Sigma Model to consume Velociraptor's EBPF events on linux.
+ImportConfigs:
+  - config/base_doc.yaml
 
-  This is a real time monitoring profile which allows live monitoring
-  of Linux systems using Sigma rules.
+Description: |
+  # Linux Base eBPF Model
+
+  This model is designed to follow eBPF events on Linux.
+
+  Events are provided by various eBPF functions in the `watch_ebpf()`
+  plugin. These events can provide security critical information which
+  can be detected using Sigma Rules.
 
 Preamble: |
   name: Linux.Sigma.EBPFBase
@@ -246,49 +252,3 @@ QueryTemplate: |
              Level, Title, Details, _Event
       FROM Result
     })
-
-DocTemplate: |
-  # Linux Base eBPF Model
-
-  This model is designed to follow eBPF events on Linux.
-
-  Events are provided by various eBPF functions in the `watch_ebpf()`
-  plugin. These events can provide security critical information which
-  can be detected using Sigma Rules.
-
-  # Log Sources
-
-  Following is a list of recognized log sources.
-
-  {{ range .LogSources }}
-  ## `{{ .Name }}`
-
-  {{ .Description }}
-
-  {{ if .Samples }}
-  #### Sample Events
-  {{ range .Samples }}
-
-  ##### {{ .Name }}
-  <pre class="json-renderer">
-  {{ ReadFile .Json }}
-  </pre>
-  {{ end }}
-
-  {{ end }}
-
-  Sample use in a sigma rule:
-  ```yaml
-  logsource:
-    {{- if .LogSource.Category }}
-    category: {{ .LogSource.Category }}
-    {{- end }}
-    {{- if .LogSource.Product }}
-    product: {{ .LogSource.Product }}
-    {{- end }}
-    {{- if .LogSource.Service }}
-    service: {{ .LogSource.Service }}
-    {{- end }}
-  ```
-
-  {{ end }}

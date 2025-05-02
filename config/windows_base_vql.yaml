@@ -1,6 +1,38 @@
 Name: Windows.Sigma.BaseVQL
+ImportConfigs:
+  - config/base_doc.yaml
+
 Description: |
-  Sigma Model for triaging Windows forensic artifacts based on VQL Queries.
+  # Windows Base VQL Sigma Model
+
+  This model is designed for triage of dead disk, or file based live
+  analysis using VQL rules. The rules that use this model will be
+  evaluated once on all events.
+
+  After all relevant rules are evaluated, the collection is complete.
+
+  Rules that utilize this model may include a `vql` section which may
+  contain a VQL lambda to dictates how the event is generated. This
+  allows the rule itself to generate all relevant fields.
+
+  For example:
+
+  ```yaml
+  vql: |
+  x=>dict(
+    Timestamp=timestamp(epoch=now()),
+    EventData=dict(
+      Files=SearchFiles(Glob='C:/Users/*/AppData/Roaming/rclone/rclone.conf')
+    ))
+  ```
+
+  The following utility functions are defined:
+
+  * `SearchFiles(Glob)`: Allows searching for files with a
+    glob. Returns the file size as well as the first 100 bytes.
+
+  * `SearchRegistryKeys(Glob)`: Allows searching for registry keys -
+    returns a dict with key/value pairs from the registry.
 
 Preamble: |
   name: Windows.Sigma.BaseVQL
@@ -511,73 +543,3 @@ QueryTemplate: |
              X.Enrichment AS _Enrichment
       FROM Result
     })
-
-DocTemplate: |
-  # Windows Base VQL Sigma Model
-
-  This model is designed for triage of dead disk, or file based live
-  analysis using VQL rules. The rules that use this model will be
-  evaluated once on all events.
-
-  After all relevant rules are evaluated, the collection is complete.
-
-  Rules that utilize this model may include a `vql` section which may
-  contain a VQL lambda to dictates how the event is generated. This
-  allows the rule itself to generate all relevant fields.
-
-  For example:
-
-  ```yaml
-  vql: |
-  x=>dict(
-    Timestamp=timestamp(epoch=now()),
-    EventData=dict(
-      Files=SearchFiles(Glob='C:/Users/*/AppData/Roaming/rclone/rclone.conf')
-    ))
-  ```
-
-  The following utility functions are defined:
-
-  * `SearchFiles(Glob)`: Allows searching for files with a
-    glob. Returns the file size as well as the first 100 bytes.
-
-  * `SearchRegistryKeys(Glob)`: Allows searching for registry keys -
-    returns a dict with key/value pairs from the registry.
-
-
-  # Log Sources
-
-  Following is a list of recognized log sources.
-
-  {{ range .LogSources }}
-  ## `{{ .Name }}`
-
-  {{ .Description }}
-
-  {{ if .Samples }}
-  #### Sample Events
-  {{ range .Samples }}
-
-  ##### {{ .Name }}
-  <pre class="json-renderer">
-  {{ ReadFile .Json }}
-  </pre>
-  {{ end }}
-
-  {{ end }}
-
-  Sample use in a sigma rule:
-  ```yaml
-  logsource:
-    {{- if .LogSource.Category }}
-    category: {{ .LogSource.Category }}
-    {{- end }}
-    {{- if .LogSource.Product }}
-    product: {{ .LogSource.Product }}
-    {{- end }}
-    {{- if .LogSource.Service }}
-    service: {{ .LogSource.Service }}
-    {{- end }}
-  ```
-
-  {{ end }}

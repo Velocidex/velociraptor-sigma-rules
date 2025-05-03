@@ -8,7 +8,7 @@ Queries:
        filename=testDir + "/test_files/WindowsEvents/KernelLogger.json"))
 
   - LET _ <= import(artifact="Windows.Sigma.ETWBase")
-  - LET _ <= import(artifact="Windows.Sigma.Fibratus")
+  - LET _ <= import(artifact="Windows.ETW.Monitoring")
 
   - LET TestingLogSources <= sigma_log_sources(
     `etw/windows/kernel`={

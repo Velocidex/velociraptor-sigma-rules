@@ -24,8 +24,8 @@ jobs:
       id: velociraptor
       with:
         repository: velocidex/velociraptor
-        tag: v0.73
-        fileName: "velociraptor-v0.73.3-linux-amd64-musl"
+        tag: v0.74
+        fileName: "velociraptor-v0.74.2-linux-amd64-musl"
         out-file-path: tests
 
     - name: Run tests

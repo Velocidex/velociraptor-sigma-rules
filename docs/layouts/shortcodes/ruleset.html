@@ -40,6 +40,24 @@ function matchItem(filter, item) {
     return false;
 }
 
+function insertRule(node, link) {
+    let existing = node.find("pre");
+    if (existing.length > 0) {
+        existing.remove();
+        return;
+    }
+
+    $.ajax({
+        url: link,
+        method: "GET",
+        success: function(data) {
+            let highlighted = hljs.highlight(data, {language: "yaml"});
+            let new_node = $("<pre>").append($("<code>").append(highlighted.value));
+            node.append(new_node);
+        }
+    });
+}
+
 function doSearch() {
   // Declare variables
   let input = document.getElementById('myInput');
@@ -89,11 +107,15 @@ function DrawResults(data) {
       template.find(".title").append(item.title);
       template.find(".author").append(item.author);
       template.find(".description").append(item.description);
-      template.find(".title").attr("href", item.link);
+      template.find(".title").attr("href", item.link).click(function() {
+          insertRule(template, item.link);
+          return false;
+      });
       template.find(".date").append(item.date)
 
-    for (let j=0; j<item.tags.length; j++) {
-        let tag = item.tags[j];
+    let labels = item.tags || [];
+    for (let j=0; j<labels.length; j++) {
+        let tag = labels[j];
         let link = $(`
 <a class="space tag"><i class="linkcolour label label-success">` +
                      tag + `</i></a>`).click(function() {

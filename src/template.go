@@ -36,11 +36,22 @@ func BuildLogSource(config_obj *Config) []Query {
 		}
 
 		query_str := strings.TrimSpace(query.Query)
+		if query.Summary == "" {
+			lines := strings.Split(query.Description, "\n")
+			for _, l := range lines {
+				if len(l) > 0 {
+					query.Summary = l
+					break
+				}
+			}
+		}
+
 		if len(query_str) > 0 {
 			q := Query{
 				Query:       query_str,
 				Name:        k,
 				Description: query.Description,
+				Summary:     query.Summary,
 				LogSource:   &sigma.Logsource{},
 				Samples:     query.Samples,
 			}
@@ -53,6 +64,11 @@ func BuildLogSource(config_obj *Config) []Query {
 	return sources
 }
 
+type FieldMapping struct {
+	Name    string
+	Mapping string
+}
+
 type ArtifactContent struct {
 	Time                       string
 	Base64CompressedRules      string
@@ -61,6 +77,8 @@ type ArtifactContent struct {
 	Base64DefaultDetailsQuery  string
 	LogSources                 []Query
 	ImportedLogSources         []Query
+	FieldMappings              []FieldMapping
+	Config                     *Config
 }
 
 func readFile(args ...interface{}) interface{} {

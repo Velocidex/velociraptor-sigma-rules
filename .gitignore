@@ -5,6 +5,8 @@ docs/resources/
 **/.DS_Store
 **/**/.DS_Store
 .hugo_build.lock
+docs/content/docs/artifacts/
+docs/content/docs/models/
 
 velosigmac
 velosigmac.exe

@@ -1,4 +1,4 @@
-LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=testDir + "/test_files/WindowsEvents/KernelLogger.json"))[]LET _ <= import(artifact="Windows.Sigma.ETWBase")[]LET _ <= import(artifact="Windows.Sigma.Fibratus")[]LET TestingLogSources <= sigma_log_sources( `etw/windows/kernel`={ SELECT * FROM KernelLoggerRows })[]SELECT  _Rule.Title AS Rule ,
+LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=testDir + "/test_files/WindowsEvents/KernelLogger.json"))[]LET _ <= import(artifact="Windows.Sigma.ETWBase")[]LET _ <= import(artifact="Windows.ETW.Monitoring")[]LET TestingLogSources <= sigma_log_sources( `etw/windows/kernel`={ SELECT * FROM KernelLoggerRows })[]SELECT  _Rule.Title AS Rule ,
       Details,
       dict(System=System,
            EventData=X.EventData || X.UserData,

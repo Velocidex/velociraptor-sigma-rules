@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"regexp"
 	"testing"
 
@@ -8,6 +9,9 @@ import (
 )
 
 func TestConfig(t *testing.T) {
+	err := os.Chdir("..")
+	assert.NoError(t, err)
+
 	tests := map[string]struct {
 		configFile            string
 		configLoadError       string
@@ -16,7 +20,7 @@ func TestConfig(t *testing.T) {
 		expectedInvalidFields int
 	}{
 		"CuratedRulesTest": {
-			configFile:            "../config/windows_base.yaml",
+			configFile:            "config/windows_base.yaml",
 			configLoadError:       "",
 			doCompileError:        "",
 			expectedMissingFields: 0,

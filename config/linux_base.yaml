@@ -1,0 +1,220 @@
+Name: Linux.Sigma.Base
+ImportConfigs:
+  - config/base_doc.yaml
+
+Description: |
+  # Linux Base Sigma Model
+
+  This model is designed for triage of dead disk, or file based live
+  analysis. The rules that use this model will be evaluated once on
+  all events.
+
+  After all relevant rules are evaluated, the collection is complete.
+
+  NOTE: Auditd configuration based on
+  https://raw.githubusercontent.com/Neo23x0/auditd/refs/heads/master/audit.rules
+
+Preamble: |
+  name: Linux.Sigma.Base
+  parameters:
+    - name: ROOT
+      description: The Event Log Directory we use to read all logs
+      default: /var/log/
+    - name: Debug
+      type: bool
+      description: Enable full debug trace
+    - name: RuleLevel
+      type: choices
+      default: All
+      choices:
+        - Critical
+        - Critical and High
+        - All
+
+    - name: DefaultYear
+      description: The Default year for parsing Syslog timestamps (default current year)
+
+    - name: RuleStatus
+      type: choices
+      default: All Rules
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleExclusions
+      type: csv
+      description: |
+        This table are rules that will be excluded by Title Regex
+      default: |
+        RuleTitleRegex,Reason
+        noisy,All rules marked noisy should be disabled by default.
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+ExportTemplate: |
+  export: |
+    LET X = scope()
+    LET Hostname <= dict(H={ SELECT Hostname FROM info()}).H[0].Hostname
+
+    LET ExcludeRegex <= if(condition=X.RuleExclusions,
+         then=join(array=RuleExclusions.RuleTitleRegex, sep="|"),
+         else="XXXXXXX")
+
+    LET RuleStatusRegex <= get(item=dict(
+         `Stable`="stable",
+         `Stable and Experimental`="stable|experimental",
+         `Stable and Test`="stable|test",
+         `All Rules`="."), member=RuleStatus)
+
+    LET RuleLevelRegex <= get(item=dict(
+         Critical="critical",
+         `Critical and High`="critical|high",
+         `All`="."), member=RuleLevel)
+
+    LET ParseLogFile(Filter, ROOT) =
+        SELECT OSPath.Basename AS Channel, Line FROM foreach(row={
+           SELECT OSPath FROM glob(globs="*", root=ROOT)
+           WHERE OSPath.Basename =~ Filter
+        }, query={
+           SELECT OSPath, Line
+           FROM parse_lines(filename=OSPath)
+        })
+
+    LET ParseAuditdLogFile(Filter, ROOT) =
+        SELECT OSPath.Basename AS Channel, * FROM foreach(row={
+           SELECT OSPath FROM glob(globs="*", root=ROOT)
+           WHERE OSPath.Basename =~ Filter
+        }, query={
+           SELECT OSPath, *
+           FROM parse_auditd(filename=OSPath)
+        })
+
+    -- Used to parse syslog lines
+    LET DefaultYear <= format(format=" %v", args=DefaultYear || timestamp(epoch=now()).Year)
+
+    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
+
+    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+
+    LET ParseTimestamp(Line) = grok(grok="%{SYSLOGTIMESTAMP:timestamp}", data=Line)
+
+    {{ if .LogSources }}
+    LET LogSources <= sigma_log_sources(
+    {{ range .LogSources }}
+      `{{ .Name }}`={
+  {{ Indent .Query 5 }}
+      },
+    {{- end -}}
+    `velociraptor/info/*`={ SELECT * FROM info() })
+    {{ end }}
+
+    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
+
+    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+
+    LET DefaultDetailsLambda = '''{{.Base64DefaultDetailsQuery}}'''
+    LET RuleFilterLambda = '''x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex'''
+
+    LET AuditdEvents = generate(name="Auditd Events", query={
+      SELECT * FROM ParseAuditdLogFile(ROOT=ROOT + "/audit/", Filter="audit.log")
+    })
+
+
+FieldMappings:
+  Image: x=>x.Process.exe
+  exe: x=>x.Process.exe
+  TargetFilename: x=>x.File.path
+  name: x=>x.Process.name
+  CommandLine: x=>x.Process.title
+
+  # Auditd based rules
+  a0: x=>x.Process.args[0]
+  a1: x=>x.Process.args[1]
+  a2: x=>x.Process.args[2]
+  a3: x=>x.Process.args[3]
+  a4: x=>x.Process.args[4]
+  a5: x=>x.Process.args[5]
+  a6: x=>x.Process.args[6]
+  a7: x=>x.Process.args[7]
+  #type: x=>if(condition=x.Summary.action =~ "exec", then="EXECVE")
+  type: x=>upcase(string=x.Type)
+  comm: x=>x.Process.name
+  nametype: x=>x.Paths.nametype
+  syscall: x=>x.Data.syscall
+  "": x=>x
+  unit: x=>x.Data.unit
+  key: x=>x.Tags[0]
+
+  DestinationIp: x=>x.Dest.ip
+  DestinationHostname: x=>host(name=x.Dest.ip, type="PTR", tracker_only=TRUE)
+  DestinationPort: x=>x.Dest.port
+  Initiated: x=>x.Net.direction =~ "egress"
+
+
+DefaultDetails:
+  Query: x=>x.Line
+  Lookup:
+    A: x=>x.Line
+
+Sources:
+  "*/linux/*":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|syslog|secure")
+
+  "*/linux/sshd":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|secure")
+      WHERE Line =~ "sshd"
+
+  "*/linux/cron":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="syslog")
+      WHERE Line =~ "cron"
+
+  "*/linux/auth":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|secure")
+
+  "*/linux/syslog":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="syslog")
+
+  "*/linux/sudo":
+    query: |
+      SELECT * FROM ParseLogFile(ROOT=ROOT, Filter="auth.log|secure")
+      WHERE Line =~ "sudo:"
+
+  "*/linux/auditd":
+    query: |
+      SELECT * FROM AuditdEvents
+
+  "network_connection/linux/*":
+    query: |
+      SELECT * FROM AuditdEvents
+      WHERE Summary.action = "connected-to"
+
+  "process_creation/linux/*":
+    query: |
+      SELECT * FROM ParseAuditdLogFile(ROOT=ROOT + "/audit/", Filter="audit.log")
+
+QueryTemplate: |
+  sources:
+  - query: |
+      SELECT Timestamp,
+             Hostname AS Computer,
+             Channel,
+             _Rule.Level AS Level,
+             _Rule.Title AS Title,
+             Details,
+             *
+      FROM sigma(
+         rules=split(string= Rules, sep_string="\n---\n"),
+         log_sources= LogSources, debug=Debug,
+         default_details=DefaultDetailsLambda,
+         rule_filter=RuleFilterLambda,
+         field_mapping= FieldMapping)

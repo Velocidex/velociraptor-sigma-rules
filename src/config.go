@@ -17,12 +17,14 @@ type Sample struct {
 }
 
 type Query struct {
-	Query       string           `json:"query,omitempty"`
-	Channel     []string         `json:"channel,omitempty"`
-	Fields      []string         `json:"fields,omitempty"`
-	Description string           `json:"description,omitempty"`
-	Name        string           `json:"name,omitempty"`
-	LogSource   *sigma.Logsource `json:"log_source,omitempty"`
+	Query       string   `json:"query,omitempty"`
+	Channel     []string `json:"channel,omitempty"`
+	Fields      []string `json:"fields,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Summary     string   `json:"Summary,omitempty"`
+
+	Name      string           `json:"name,omitempty"`
+	LogSource *sigma.Logsource `json:"log_source,omitempty"`
 
 	// A set of JSON files with sample events for this log source
 	Samples []Sample `json:"samples,omitempty"`
@@ -96,6 +98,10 @@ func (self *Config) mergeConfig(config_obj *Config) {
 		for k, v := range config_obj.FieldMappings {
 			self.field_mappings[k] = v
 		}
+	}
+
+	if self.DocTemplate == "" {
+		self.DocTemplate = config_obj.DocTemplate
 	}
 }
 

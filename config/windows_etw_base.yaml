@@ -1,6 +1,15 @@
 Name: Windows.Sigma.ETWBase
+ImportConfigs:
+  - config/base_doc.yaml
+
 Description: |
-  Standard Velociraptor Sigma Log sources for Event Tracing for Windows (ETW).
+  # Windows Base ETW Model
+
+  This model is designed to follow ETW event sources.
+
+  ETW events are provided by various ETW Providers in the Windows
+  Kernel. These events can provide security critical information which
+  can be detected using Sigma Rules.
 
   This is a real time monitoring profile which allows live monitoring
   of Windows systems using Sigma rules.
@@ -377,49 +386,3 @@ QueryTemplate: |
              Level, Title, RecordID, Details, _Event
       FROM Result
     })
-
-DocTemplate: |
-  # Windows Base ETW Model
-
-  This model is designed to follow ETW event sources.
-
-  ETW events are provided by various ETW Providers in the Windows
-  Kernel. These events can provide security critical information which
-  can be detected using Sigma Rules.
-
-  # Log Sources
-
-  Following is a list of recognized log sources.
-
-  {{ range .LogSources }}
-  ## `{{ .Name }}`
-
-  {{ .Description }}
-
-  {{ if .Samples }}
-  #### Sample Events
-  {{ range .Samples }}
-
-  ##### {{ .Name }}
-  <pre class="json-renderer">
-  {{ ReadFile .Json }}
-  </pre>
-  {{ end }}
-
-  {{ end }}
-
-  Sample use in a sigma rule:
-  ```yaml
-  logsource:
-    {{- if .LogSource.Category }}
-    category: {{ .LogSource.Category }}
-    {{- end }}
-    {{- if .LogSource.Product }}
-    product: {{ .LogSource.Product }}
-    {{- end }}
-    {{- if .LogSource.Service }}
-    service: {{ .LogSource.Service }}
-    {{- end }}
-  ```
-
-  {{ end }}

@@ -1,9 +1,15 @@
 Name: Windows.Sigma.Base
-Description: |
-  Sigma Model for triaging event logs on Windows.
+ImportConfigs:
+  - config/base_doc.yaml
 
-  This profile includes many Windows EVTX log sources as well as
-  multiple artifact based log sources.
+Description: |
+  # Windows.Sigma.Base Model
+
+  This model is designed for triage of dead disk, or file based live
+  analysis. The rules that use this model will be evaluated once on
+  all events.
+
+  After all relevant rules are evaluated, the collection is complete.
 
 # The preamble include the artifact parameters, name, description and
 # type - basically everything that goes at the top of the artifact
@@ -1177,49 +1183,3 @@ QueryTemplate: |
              Level, Title, RecordID, Details, _Event
       FROM Result
     })
-
-DocTemplate: |
-  # Windows Base Sigma Model
-
-  This model is designed for triage of dead disk, or file based live
-  analysis. The rules that use this model will be evaluated once on
-  all events.
-
-  After all relevant rules are evaluated, the collection is complete.
-
-  # Log Sources
-
-  Following is a list of recognized log sources.
-
-  {{ range .LogSources }}
-  ## `{{ .Name }}`
-
-  {{ .Description }}
-
-  {{ if .Samples }}
-  #### Sample Events
-  {{ range .Samples }}
-
-  ##### {{ .Name }}
-  <pre class="json-renderer">
-  {{ ReadFile .Json }}
-  </pre>
-  {{ end }}
-
-  {{ end }}
-
-  Sample use in a sigma rule:
-  ```yaml
-  logsource:
-    {{- if .LogSource.Category }}
-    category: {{ .LogSource.Category }}
-    {{- end }}
-    {{- if .LogSource.Product }}
-    product: {{ .LogSource.Product }}
-    {{- end }}
-    {{- if .LogSource.Service }}
-    service: {{ .LogSource.Service }}
-    {{- end }}
-  ```
-
-  {{ end }}

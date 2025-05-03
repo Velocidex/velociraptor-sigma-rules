@@ -33,7 +33,7 @@ jobs:
           cp output/*.{zip,json} docs/static/
 
       - name: Build
-        run: cd docs/ && make build_indexes && hugo --minify
+        run: cd docs/ && hugo --minify
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
@@ -41,3 +41,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/public
+          force_orphan: true

@@ -12,3 +12,4 @@ unsafe= true
 [params]
 BookTheme = 'light'
 BookSearch = false
+BookToC = false

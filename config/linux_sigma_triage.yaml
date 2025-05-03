@@ -102,4 +102,6 @@ DocTemplate: |
 
   This artifact contains rules designed to triage a Linux host
 
+  Base Artifact: [Linux.Sigma.Base](/docs/models/linux_base/)
+
   {{ "{{< ruleset \"index.json\" >}}" }}

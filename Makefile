@@ -34,20 +34,20 @@ compileWindowsBaseETW:
 	./velosigmac compile --config ./config/windows_etw_base.yaml --output ./output/Windows-Sigma-ETWBase.zip --yaml ./output/Windows.Sigma.ETWBase.yaml  --docs ./docs/content/docs/models/windows_etw_base/_index.md
 
 compileLinuxEBPF: compileLinuxEBPFBase
-	./velosigmac compile --config ./config/linux_ebpf_monitoring.yaml --output ./output/Linux-Sigma-EBPF.zip --yaml ./output/Linux.Sigma.EBPF.yaml
+	./velosigmac compile --config ./config/linux_ebpf_monitoring.yaml --output ./output/Linux-Sigma-EBPF.zip --yaml ./output/Linux.Sigma.EBPF.yaml --rule_dir ./docs/content/docs/artifacts/Linux.EBPF.Monitoring/ --docs ./docs/content/docs/artifacts/Linux.EBPF.Monitoring/_index.md
 
 compileLinuxEBPFBase:
 	./velosigmac compile --config ./config/linux_ebpf_base.yaml --output ./output/Linux-Sigma-EBPFBase.zip --yaml ./output/Linux.Sigma.EBPFBase.yaml  --docs ./docs/content/docs/models/linux_ebpf_base/_index.md
 	./velosigmac compile --config ./config/linux_ebpf_base_test.yaml --yaml ./output/Linux.Sigma.EBPFBase.CaptureTestSet.yaml
 
 compileWindowsETW: compileWindowsBaseETW
-	./velosigmac compile --config ./config/windows_etw_fibratus.yaml --output ./output/Windows-Sigma-Fibratus.zip --yaml ./output/Windows.Sigma.Fibratus.yaml --rule_dir ./docs/content/docs/artifacts/Windows.ETW.Monitoring/ --docs ./docs/content/docs/artifacts/Windows.ETW.Monitoring/_index.md
+	./velosigmac compile --config ./config/windows_etw_monitoring.yaml --output ./output/Windows-ETW-Monitoring.zip --yaml ./output/Windows.ETW.Monitoring.yaml --rule_dir ./docs/content/docs/artifacts/Windows.ETW.Monitoring/ --docs ./docs/content/docs/artifacts/Windows.ETW.Monitoring/_index.md
 
 compileWindowsBaseVQL:
 	./velosigmac compile --config ./config/windows_base_vql.yaml --output ./output/Windows-Sigma-BaseVQL.zip --yaml ./output/Windows.Sigma.BaseVQL.yaml  --docs ./docs/content/docs/models/windows_base_vql/_index.md
 
 compileWindowsVQL: compileWindowsBaseVQL
-	./velosigmac compile --config ./config/windows_vql_triage.yaml --output ./output/Windows-Sigma-Triage.zip --yaml ./output/Windows.Sigma.Triage.yaml
+	./velosigmac compile --config ./config/windows_vql_triage.yaml --output ./output/Windows-Sigma-Triage.zip --yaml ./output/Windows.Sigma.Triage.yaml --rule_dir ./docs/content/docs/artifacts/Windows.Sigma.Triage/ --docs ./docs/content/docs/artifacts/Windows.Sigma.Triage/_index.md
 
 compileHayabusa: compileWindowsBase
 	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor.Hayabusa.Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects --rule_dir ./docs/content/docs/artifacts/Windows.Hayabusa.Rules/ --docs ./docs/content/docs/artifacts/Windows.Hayabusa.Rules/_index.md

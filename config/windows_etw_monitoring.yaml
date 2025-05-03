@@ -89,4 +89,6 @@ DocTemplate: |
   This artifact contains rules designed to monitoring a windows host
   based on ETW streams.
 
+  Base Artifact: [Windows.Sigma.ETWBase](/docs/models/windows_etw_base/)
+
   {{ "{{< ruleset \"index.json\" >}}" }}

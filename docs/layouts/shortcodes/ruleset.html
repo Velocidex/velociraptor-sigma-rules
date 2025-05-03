@@ -8,7 +8,9 @@
          placeholder="Search rules"
          aria-describedby="basic-addon2">
   <span class="input-group-addon"
-        id="basic-addon2"><i class="fas fa-search"></i></span>
+        id="basic-addon2"><i class="fas fa-search"></i>
+    <span class="total-count"></span>
+  </span>
 </div>
 
 <hr />
@@ -26,8 +28,11 @@ $.ajax({
 });
 
 function matchItem(filter, item) {
-    if (item.title.toUpperCase().includes(filter) ||
-        item.description.toUpperCase().includes(filter)) {
+    let description = item.description || "";
+    let title = item.title || "";
+
+    if (title.toUpperCase().includes(filter) ||
+        description.toUpperCase().includes(filter)) {
         return true;
     }
 
@@ -41,19 +46,26 @@ function matchItem(filter, item) {
 }
 
 function insertRule(node, link) {
-    let existing = node.find("pre");
-    if (existing.length > 0) {
-        existing.remove();
+    let description = $(node).find("p.description");
+    if (!description.length) {
         return;
     }
 
+    let existing = node.find("pre");
+    if (existing.length > 0) {
+        existing.remove();
+        description.show();
+        return;
+    }
+
+    description.hide();
     $.ajax({
         url: link,
         method: "GET",
         success: function(data) {
             let highlighted = hljs.highlight(data, {language: "yaml"});
             let new_node = $("<pre>").append($("<code>").append(highlighted.value));
-            node.append(new_node);
+            description.after(new_node);
         }
     });
 }
@@ -79,6 +91,7 @@ function doSearch() {
 // Only show up to 50 hits to make the page load faster.
 function DrawResults(data) {
     $(".search_results").empty();
+    $("span.total-count").text("Total " + data.length);
 
     let most_results = data.length;
     if(most_results > 50) {
@@ -138,15 +151,19 @@ function myFunction() {
 
   // Loop through all list items, and hide those who don't match the
   // search query
+  let count = 0;
   for (i = 0; i < li.length; i++) {
     a = li[i].getElementsByTagName("a")[0];
     txtValue = a.textContent || a.innerText;
 
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
+        li[i].style.display = "";
+        count++;
     } else {
       li[i].style.display = "none";
     }
   }
+
+  $(input).find("span.total-count").text("Total ");
 }
 </script>

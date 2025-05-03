@@ -61,3 +61,14 @@ RuleDirectories:
   - rules/sigma/rules/linux/file_event/
   - rules/sigma/rules/linux/process_creation/
   - rules/sigma/rules/linux/network_connection/
+
+
+DocTemplate: |
+  # Linux.EBPF.Monitoring artifact
+
+  This artifact contains rules designed to monitor a Linux host using
+  EBPF.
+
+  Base Artifact: [Linux.Sigma.EBPFBase](/docs/models/linux_ebpf_base/)
+
+  {{ "{{< ruleset \"index.json\" >}}" }}

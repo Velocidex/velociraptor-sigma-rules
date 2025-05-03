@@ -62,13 +62,20 @@ func (self *CompilerContext) WriteRuleDir(base string) error {
 
 		rule, pres := self.rules_by_path[path]
 		if pres {
-			index = append(index, RuleIndex{
+			idx := RuleIndex{
 				Title:       rule.Title,
 				Description: rule.Description,
 				Author:      rule.Author,
 				Tags:        rule.Tags,
 				Link:        path,
-			})
+			}
+
+			tag, err := self.normalize_logsource(&rule, "")
+			if err == nil {
+				idx.Tags = append(idx.Tags, "logsource:"+tag)
+			}
+
+			index = append(index, idx)
 		}
 	}
 

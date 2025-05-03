@@ -140,4 +140,6 @@ DocTemplate: |
 
   This artifact contains rules designed to triage a Windows host
 
+  Base Artifact: [Windows.Sigma.BaseEvents](/docs/models/windows_base_events/)
+
   {{ "{{< ruleset \"index.json\" >}}" }}

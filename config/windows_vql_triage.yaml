@@ -71,3 +71,13 @@ QueryTemplate: |
 
 RuleDirectories:
   - rules/vql/windows/
+
+DocTemplate: |
+  # Windows.Sigma.Triage artifact
+
+  This artifact contains rules designed to triage a Windows host using
+  VQL queries.
+
+  Base Artifact: [Windows.Sigma.BaseVQL](/docs/models/windows_base_vql/)
+
+  {{ "{{< ruleset \"index.json\" >}}" }}

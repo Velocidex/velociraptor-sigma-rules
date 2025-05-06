@@ -142,4 +142,9 @@ DocTemplate: |
 
   Base Artifact: [Windows.Sigma.BaseEvents](/docs/models/windows_base_events/)
 
+  You can download the artifact pack here
+  [Velociraptor-Hayabusa-Monitoring.zip](/artifacts/Velociraptor-Hayabusa-Monitoring.zip)
+  and customize using instructions at
+  [Customizing Artifacts](https://sigma.velocidex.com/docs/sigma_in_velociraptor/customize/)
+
   {{ "{{< ruleset \"index.json\" >}}" }}

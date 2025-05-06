@@ -104,4 +104,10 @@ DocTemplate: |
 
   Base Artifact: [Linux.Sigma.Base](/docs/models/linux_base/)
 
+  You can download the artifact pack here
+  [Linux-Sigma-Triage.zip](/artifacts/Linux-Sigma-Triage.zip)
+  and customize using instructions at
+  [Customizing Artifacts](https://sigma.velocidex.com/docs/sigma_in_velociraptor/customize/)
+
+
   {{ "{{< ruleset \"index.json\" >}}" }}

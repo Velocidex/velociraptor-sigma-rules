@@ -148,4 +148,9 @@ DocTemplate: |
 
   Base Artifact: [Windows.Sigma.Base](/docs/models/windows_base/)
 
+  You can download the artifact pack here
+  [Velociraptor-Hayabusa-Rules.zip](/artifacts/Velociraptor-Hayabusa-Rules.zip)
+  and customize using instructions at
+  [Customizing Artifacts](https://sigma.velocidex.com/docs/sigma_in_velociraptor/customize/)
+
   {{ "{{< ruleset \"index.json\" >}}" }}

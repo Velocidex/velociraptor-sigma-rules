@@ -89,3 +89,13 @@ ebpf
 inode
 sched
 unlink
+
+
+ETWBase
+BaseVQL
+BaseEvents
+EBPFBase
+CuratedSigma
+
+Auditd
+YAML

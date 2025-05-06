@@ -135,6 +135,7 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 		}
 	}
 
+	// This is the concise and reducted rule that will be hunted for.
 	new_rule := sigma.Rule{
 		Title:            rule.Title,
 		Author:           rule.Author,
@@ -143,11 +144,6 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 		Logsource:        rule.Logsource,
 		Detection:        rule.Detection,
 		AdditionalFields: additional_fields,
-	}
-
-	if self.config_obj.BaseReferenceURL != "" {
-		new_rule.References = []string{
-			self.config_obj.BaseReferenceURL + path}
 	}
 
 	// Record all the rules we added
@@ -192,8 +188,7 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	self.original_rules.Write([]byte("\n---\n"))
 
 	self.original_rules_by_path[path] = rule_yaml
-
-	new_rule.Description = rule.Description
+	self.original_rule_obj_by_path[path] = rule
 	self.rules_by_path[path] = new_rule
 
 	return nil

@@ -4,56 +4,31 @@ date: 2023-10-15T00:14:44+10:00
 weight: 10
 ---
 
+# Velociraptor Artifacts
 
-You can import the artifacts within this project using a server
-artifact. This artifact will automatically import the latest version.
+The Velociraptor Sigma project contains a number of managed artifacts
+that can be used in various situations. The artifacts contain a large
+number of Sigma rules that can be customized as needed.
 
-{{% notice "info" %}}
+You can see the different artifacts on the sidebar in this page. To
+import all these artifacts into Velociraptor you can use the built in
+[Server.Import.CuratedSigma](https://docs.velociraptor.app/artifact_references/pages/server.import.curatedsigma/)
+artifact, or import these manually by downloading the
+[Velociraptor.Sigma.Artifacts.zip](https://sigma.velocidex.com/Velociraptor.Sigma.Artifacts.zip)
+artifact pack.
 
-This artifact is already included in the official Velociraptor
-release, but the below represents the latest version.
+If manually adding these artifacts:
 
-{{% /notice %}}
+1. Select `View Artifacts` in the sidebar
+2. Click the `Upload Artifact Pack` button
+3. Upload the file from the local filesystem
+4. Import the artifacts you want (or all of them)
+
+![](uploading_artifact_pack.svg)
 
 
-```yaml
-name: Server.Import.CuratedSigma
-description: |
-  This artifact allows importing curated Sigma rules from
-  https://sigma.velocidex.com
+## Customizing the curated artifacts
 
-  Collect this artifact on the server to automatically import or
-  update these artifacts.
-
-type: SERVER
-
-required_permissions:
-- SERVER_ADMIN
-
-parameters:
-  - name: PackageNames
-    type: multichoice
-    default: '["Velociraptor Hayabusa Ruleset"]'
-    choices:
-      - Velociraptor Hayabusa Ruleset
-      - Velociraptor Hayabusa Live Detection
-      - Velociraptor ChopChopGo Ruleset (Linux)
-      - Velociraptor Curated Windows Ruleset
-
-  - name: Prefix
-    description: Add this prefix to imported artifacts
-    validating_regex: '^[a-zA-Z0-9_.]*$'
-
-sources:
-  - query: |
-      LET URLlookup = dict(
-        `Velociraptor ChopChopGo Ruleset (Linux)`="https://sigma.velocidex.com/Velociraptor-ChopChopGo-Rules.zip",
-        `Velociraptor Hayabusa Ruleset`="https://sigma.velocidex.com/Velociraptor-Hayabusa-Rules.zip",
-        `Velociraptor Hayabusa Live Detection`="https://sigma.velocidex.com/Velociraptor-Hayabusa-Monitoring.zip")
-
-      SELECT * FROM foreach(row=PackageNames,
-                            query={SELECT * FROM
-                                Artifact.Server.Import.ArtifactExchange(
-                                Prefix=Prefix,
-                                ExchangeURL=get(item= URLlookup, member= _value))})
-```
+Most users will need to customize the curated Sigma rules for their
+environments. To learn how to do this, please read the [Customizing
+Artifact Packs]({{< relref "/docs/sigma_in_velociraptor/customize/" >}}) page.

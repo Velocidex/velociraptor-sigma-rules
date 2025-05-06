@@ -12,6 +12,9 @@ Preamble: |
     repository https://github.com/SigmaHQ/sigma together with
     Velociraptor's eBPF Sigma model.
 
+    You can customize this artifact using instructions at
+    [Customizing Artifacts](https://sigma.velocidex.com/docs/sigma_in_velociraptor/customize/)
+
     This artifact was built on {{ .Time }}
 
   type: CLIENT
@@ -19,7 +22,7 @@ Preamble: |
   parameters:
     - name: RuleLevel
       type: choices
-      default: Critical
+      default: All
       choices:
         - "Critical"
         - "Critical and High"
@@ -28,7 +31,7 @@ Preamble: |
 
     - name: RuleStatus
       type: choices
-      default: Stable
+      default: All Rules
       choices:
         - Stable
         - Stable and Experimental
@@ -70,5 +73,8 @@ DocTemplate: |
   EBPF.
 
   Base Artifact: [Linux.Sigma.EBPFBase](/docs/models/linux_ebpf_base/)
+
+  You can download the artifact pack here
+  [Linux-Sigma-EBPF.zip](/artifacts/Linux-Sigma-EBPF.zip)
 
   {{ "{{< ruleset \"index.json\" >}}" }}

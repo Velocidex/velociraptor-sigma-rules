@@ -59,8 +59,13 @@ type CompilerContext struct {
 
 	imported_configs []*Config
 
-	original_rules_by_path map[string]string
-	rules_by_path          map[string]sigma.Rule
+	// Keep the original rules as raw strings to include any comments
+	// in the yaml which would be lost on decode/encode round trip.
+	original_rules_by_path    map[string]string
+	original_rule_obj_by_path map[string]sigma.Rule
+	rules_by_path             map[string]sigma.Rule
+
+	completed_artifact string
 }
 
 func NewCompilerContext() *CompilerContext {
@@ -71,6 +76,7 @@ func NewCompilerContext() *CompilerContext {
 		errored_rules:                make(map[string][]string),
 		ignored_rules:                make(map[string]bool),
 		original_rules_by_path:       make(map[string]string),
+		original_rule_obj_by_path:    make(map[string]sigma.Rule),
 		rules_by_path:                make(map[string]sigma.Rule),
 		level_regex:                  regexp.MustCompile(".*"),
 

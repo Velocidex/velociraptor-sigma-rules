@@ -30,7 +30,10 @@ jobs:
       - name: Prepare
         run: |
           make linux compile profile package
-          cp output/*.{zip,json} docs/static/
+          mkdir docs/artifacts
+          cp output/*.zip docs/static/artifacts/
+          cp output/Velociraptor.Sigma.Artifacts.zip docs/static/
+          cp output/profile.json docs/static/
 
       - name: Build
         run: cd docs/ && hugo --minify

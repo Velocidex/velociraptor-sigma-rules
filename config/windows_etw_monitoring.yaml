@@ -91,4 +91,9 @@ DocTemplate: |
 
   Base Artifact: [Windows.Sigma.ETWBase](/docs/models/windows_etw_base/)
 
+  You can download the artifact pack here
+  [Windows-ETW-Monitoring.zip](/artifacts/Windows-ETW-Monitoring.zip)
+  and customize using instructions at
+  [Customizing Artifacts](https://sigma.velocidex.com/docs/sigma_in_velociraptor/customize/)
+
   {{ "{{< ruleset \"index.json\" >}}" }}

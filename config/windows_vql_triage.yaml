@@ -80,4 +80,9 @@ DocTemplate: |
 
   Base Artifact: [Windows.Sigma.BaseVQL](/docs/models/windows_base_vql/)
 
+  You can download the artifact pack here
+  [Windows-Sigma-Triage.zip](/artifacts/Windows-Sigma-Triage.zip)
+  and customize using instructions at
+  [Customizing Artifacts](https://sigma.velocidex.com/docs/sigma_in_velociraptor/customize/)
+
   {{ "{{< ruleset \"index.json\" >}}" }}

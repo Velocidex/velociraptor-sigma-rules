@@ -60,11 +60,16 @@ func (self *CompilerContext) WriteRuleDir(base string) error {
 		fd.Close()
 		fmt.Printf("Wrote rule %v\n", target)
 
+		og_rule, pres := self.original_rule_obj_by_path[path]
+		if !pres {
+			continue
+		}
+
 		rule, pres := self.rules_by_path[path]
 		if pres {
 			idx := RuleIndex{
 				Title:       rule.Title,
-				Description: rule.Description,
+				Description: og_rule.Description,
 				Author:      rule.Author,
 				Tags:        rule.Tags,
 				Link:        path,

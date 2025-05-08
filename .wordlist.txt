@@ -99,3 +99,7 @@ CuratedSigma
 
 Auditd
 YAML
+
+DNS
+Lookups
+WMI

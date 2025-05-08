@@ -20,6 +20,8 @@ import os
 from io import BytesIO
 import gzip
 import base64
+import zipfile
+
 
 def build_artifact(artifact_path, rule_path):
     with open(artifact_path) as fd:
@@ -44,15 +46,39 @@ def build_artifact(artifact_path, rule_path):
                     raw_rules.write(data)
 
     encoded = base64.standard_b64encode(compressed_rules.getvalue()).decode("utf8")
-    print(re.sub(r'base64decode\(string=".+"',
+    return re.sub(r'base64decode\(string=".+"',
           r'base64decode(string="' + encoded + '"',
-          artifact_data))
+          artifact_data)
 
 if __name__ == "__main__":
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument("artifact", help="The artifact file to modify")
     argument_parser.add_argument("rule_dir", help="Path to the top level rules directory")
+    argument_parser.add_argument(
+        "--zip", type=str,
+        help="Write the artifact in a zipfile")
+
+    argument_parser.add_argument(
+        "--name", type=str,
+        help="Set a new namefor the new artifact")
 
     args = argument_parser.parse_args()
-    build_artifact(args.artifact, args.rule_dir)
+    artifact = build_artifact(args.artifact, args.rule_dir)
+
+    if args.name:
+        artifact = re.sub("(name: ).+", "\\1" + args.name, artifact)
+
+    if args.zip:
+        artifact_name = "artifact.yaml"
+        if args.name:
+            artifact_name = args.name + ".yaml"
+
+        with zipfile.ZipFile(args.zip, 'w', compression=zipfile.ZIP_DEFLATED) as z:
+            z.writestr(artifact_name, artifact)
+
+        print("Added %s to zip file %s" % (artifact_name, args.zip))
+
+    else:
+        print(artifact)
+
 `

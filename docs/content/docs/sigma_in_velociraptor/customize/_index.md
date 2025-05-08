@@ -111,11 +111,13 @@ positional arguments:
 
 options:
   -h, --help  show this help message and exit
+  --zip ZIP    Write the artifact in a zipfile
+  --name NAME  Set a new namefor the new artifact
 ```
 
 To rebuild:
 ```text
-python compiler.py Windows.Hayabusa.Rules.yaml rules > new_artifact.yaml
+python compiler.py Windows.Hayabusa.Rules.yaml rules --name MySigmaArtifact > new_artifact.yaml
 ```
 
 ### Importing the new script into the server
@@ -135,3 +137,17 @@ FROM glob(globs="/opt/sigma/*.yaml")
 
 Where `/opt/sigma/` is a directory on the server where you can upload
 all the customized Sigma artifacts.
+
+### Exporting to a Zip file
+
+If you do not have access to the server's filesystem, you can export
+the custom artifact into a zip file which contains the artifact:
+
+```text
+python compiler.py Windows.Hayabusa.Rules.yaml rules --name MySigmaArtifact --zip MySigmaArtifact.zip
+```
+
+This file can then be manually uploaded through the GUI `View
+Artifacts` screen by clicking the `Upload Artifact Pack` button.
+
+![](../../artifacts/uploading_artifact_pack.svg)

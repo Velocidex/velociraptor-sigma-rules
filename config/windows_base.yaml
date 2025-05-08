@@ -40,7 +40,7 @@ Preamble: |
 
     - name: RuleLevel
       type: choices
-      default: Critical
+      default: All
       choices:
         - "Critical"
         - "Critical and High"
@@ -49,7 +49,7 @@ Preamble: |
 
     - name: RuleStatus
       type: choices
-      default: Stable
+      default: All Rules
       choices:
         - Stable
         - Stable and Experimental

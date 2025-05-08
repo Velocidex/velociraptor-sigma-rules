@@ -31,7 +31,7 @@ Preamble: |
 
     - name: RuleLevel
       type: choices
-      default: Critical
+      default: All
       choices:
         - "Critical"
         - "Critical and High"
@@ -40,7 +40,7 @@ Preamble: |
 
     - name: RuleStatus
       type: choices
-      default: Stable
+      default: All Rules
       choices:
         - Stable
         - Stable and Experimental
@@ -123,6 +123,13 @@ ExportTemplate: |
 
     -- SetValueKey | DeleteValueKey | CreateKey | OpenKey | DeleteKey = 0x100 | 0x200 | 0x1000 | 0x2000 | 0x4000
     LET WindowsKernelRegistry_Keyword <= 0x7300
+
+    LET PublisherGlob <= pathspec(
+      Path='''HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Publishers''',
+      path_type="registry")
+
+    LET GUIDLookup(GUID) = SELECT Data.value AS Provider
+      FROM stat(accessor="registry", filename=PublisherGlob + ("/" + GUID + "/@"))
 
     {{ if .LogSources }}
     LET LogSources <= sigma_log_sources(
@@ -355,6 +362,108 @@ Sources:
     fields:
       - Channel
       - EventID
+
+  etw/windows/sysmon:
+    description: |
+      Log source to read Sysmon events via ETW
+
+      This is better than reading the log files since it does not use
+      the event log service.
+
+    query: |
+      SELECT *
+      FROM delay(query={
+         SELECT System.TimeStamp AS Timestamp,
+          System + dict(
+             EventId=System.ID,
+             Computer=Hostname,
+             Channel="Microsoft-Windows-Sysmon/Operational") AS System,
+          EventData + dict(ProcInfo=process_tracker_get(
+             id=System.ProcessID).Data) AS EventData
+        FROM watch_etw(
+            guid='{5770385f-c22a-43e0-bf4c-06f5698ffbd9}',
+            description="Microsoft-Windows-Sysmon/Operational")
+      }, delay=1)
+    channel:
+      - Microsoft-Windows-Kernel-Process
+    fields:
+      - Channel
+      - EventID
+
+  etw/windows/etw:
+    description: |
+      Log source to monitor ETW system states
+
+    query: |
+      SELECT *
+      FROM delay(query={
+         SELECT System.TimeStamp AS Timestamp,
+          System + dict(
+             EventId=System.ID,
+             Computer=Hostname,
+             Channel="Microsoft-Windows-Kernel-EventTracing") AS System,
+          EventData + dict(ProcInfo=process_tracker_get(
+             id=System.ProcessID).Data) AS EventData
+        FROM watch_etw(
+            guid='{B675EC37-BDB6-4648-BC92-F3FDC74D3CA2}', any=0x30,
+            description="Microsoft-Windows-Kernel-EventTracing")
+      }, delay=1)
+    channel:
+      - Microsoft-Windows-Kernel-Process
+    fields:
+      - Channel
+      - EventID
+
+  etw/windows/wmi:
+    description: |
+      Log source to monitor WMI activity
+
+    query: |
+      SELECT *
+      FROM delay(query={
+         SELECT System.TimeStamp AS Timestamp,
+          System + dict(
+             EventId=System.ID,
+             Computer=Hostname,
+             Channel="Microsoft-Windows-WMI-Activity") AS System,
+          EventData + dict(ProcInfo=process_tracker_get(
+             id=System.ProcessID).Data) AS EventData
+        FROM watch_etw(
+            guid='{1418EF04-B0B4-4623-BF7E-D74AB47BBDAA}', any=0x30,
+            description="Microsoft-Windows-WMI-Activity")
+      }, delay=1)
+    channel:
+      - Microsoft-Windows-Kernel-Process
+    fields:
+      - Channel
+      - EventID
+
+  etw/windows/dns:
+    description: |
+      Log source to monitor DNS Lookups
+
+      See full description [here](https://github.com/repnz/etw-providers-docs/blob/master/Manifests-Win10-18990/Microsoft-Windows-DNS-Client.xml)
+
+    query: |
+      SELECT *
+      FROM delay(query={
+         SELECT System.TimeStamp AS Timestamp,
+          System + dict(
+             EventId=System.ID,
+             Computer=Hostname,
+             Channel="Microsoft-Windows-DNS-Client") AS System,
+          EventData + dict(ProcInfo=process_tracker_get(
+             id=System.ProcessID).Data) AS EventData
+        FROM watch_etw(
+            guid='{1C95126E-7EEA-49A9-A3FE-A378B03DDB4D}', any=0x30,
+            description="Microsoft-Windows-DNS-Client")
+      }, delay=1)
+    channel:
+      - Microsoft-Windows-Kernel-Process
+    fields:
+      - Channel
+      - EventID
+
 
 
 QueryTemplate: |

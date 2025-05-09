@@ -1,9 +1,9 @@
-Name: Linux.Sigma.EBPFBase.CaptureTestSet
+Name: Linux.Sigma.EBPFBase.ReplayTestSet
 ImportConfigs:
   - config/linux_ebpf_base.yaml
 
 Preamble: |
-  name: Linux.Sigma.EBPFBase.CaptureTestSet
+  name: Linux.Sigma.EBPFBase.ReplayTestSet
   description: |
     This artifact captures a test set of the log sources defined by
     Linux.EBPF.BaseEvent. It is used to acquire a dataset for the
@@ -34,16 +34,7 @@ Preamble: |
 
 QueryTemplate: |
    sources:
-   - name: MatchingSources
-     query: |
-       SELECT _key AS SourceName
-       FROM items(item=LogSources)
-       WHERE SourceName =~ LogSourceFilter
-         AND if(condition=SelectedLogSources,
-                then=SourceName in SelectedLogSources, else=TRUE)
-
-   - name: Data
-     query: |
+   - query: |
        LET X = SELECT * FROM foreach(row={
          SELECT _key AS SourceName, _value AS Query
          FROM items(item=LogSources)

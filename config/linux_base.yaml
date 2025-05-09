@@ -5,7 +5,7 @@ ImportConfigs:
 Description: |
   # Linux Base Sigma Model
 
-  This model is designed for triage of dead disk, or file based live
+  This model is designed for triage of dead disk or file based live
   analysis. The rules that use this model will be evaluated once on
   all events.
 

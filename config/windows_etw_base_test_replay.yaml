@@ -1,0 +1,52 @@
+Name: Windows.Sigma.ETWBase.ReplayTestSet
+ImportConfigs:
+  - config/windows_etw_base.yaml
+
+Preamble: |
+  name: Windows.Sigma.ETWBase.ReplayTestSet
+  description: |
+    This artifact replays a previously captured test set into the rules.
+
+  type: CLIENT
+  parameters:
+   - name: JSONDump
+     description: A path to the JSON dump of the test set
+     default: C:\path\to\file.json
+
+   - name: Debug
+     description: Enable this to match all rules (even if they did not match) in order to see what detections matched.
+     type: bool
+
+   - name: SigmaRules
+     description: Sigma Rules to test
+
+  imports:
+    - Windows.Sigma.ETWBase
+
+QueryTemplate: |
+   sources:
+   - query: |
+       // Feed all the json rows to the log sources.
+       LET AllRows = SELECT * FROM parse_jsonl(filename=JSONDump)
+
+       LET TestingLogSourceDict <= to_dict(item={
+         SELECT _key, AllRows AS _value
+         FROM items(item=LogSources)
+       })
+
+       // Build the log sources automatically.
+       LET TestingLogSources <= sigma_log_sources(`**`=TestingLogSourceDict)
+
+       // Apply the Sigma Rules on the samples.
+       SELECT  _Rule.Title AS Rule ,
+         Details,
+         dict(System=System,
+              EventData=X.EventData || X.UserData,
+              Message=X.Message) AS Event,
+         _Match AS Match
+
+       FROM sigma(
+          rules=split(string=SigmaRules, sep_string="\n---\n"),
+          log_sources= TestingLogSources, debug=Debug,
+          default_details=DefaultDetailsLambda,
+          field_mapping= FieldMapping)

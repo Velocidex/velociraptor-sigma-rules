@@ -1,4 +1,4 @@
-Name: Windows.Sigma.Base.CaptureTestSet
+Name: Windows.Sigma.BaseEvents.CaptureTestSet
 ImportConfigs:
   - config/windows_base_events.yaml
 

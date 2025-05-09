@@ -16,11 +16,13 @@ compileWindowsBaseDebug:
 compileWindowsBase:
 	./velosigmac compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
 	./velosigmac compile --config ./config/windows_base_test.yaml --yaml ./output/Windows.Sigma.Base.CaptureTestSet.yaml
+	./velosigmac compile --config ./config/windows_base_test_replay.yaml --yaml ./output/Windows.Sigma.Base.ReplayTestSet.yaml
 
 
 compileLinuxBase:
 	./velosigmac compile --config ./config/linux_base.yaml --output ./output/Linux-Sigma-Base.zip --yaml ./output/Linux.Sigma.Base.yaml --docs ./docs/content/docs/models/linux_base/_index.md
 	./velosigmac compile --config ./config/linux_base_test.yaml --yaml ./output/Linux.Sigma.Base.CaptureTestSet.yaml
+	./velosigmac compile --config ./config/linux_base_test_replay.yaml --yaml ./output/Linux.Sigma.Base.ReplayTestSet.yaml
 
 compileLinuxTriage: compileLinuxBase
 	./velosigmac compile --config ./config/linux_sigma_triage.yaml --output ./output/Linux-Sigma-Triage.zip --yaml ./output/Linux.Sigma.Triage.yaml --rule_dir ./docs/content/docs/artifacts/Linux.Sigma.Triage/ --docs ./docs/content/docs/artifacts/Linux.Sigma.Triage/_index.md
@@ -29,9 +31,13 @@ compileLinuxTriage: compileLinuxBase
 compileWindowsBaseEvents:
 	./velosigmac compile --config ./config/windows_base_events.yaml --output ./output/Windows-Sigma-BaseEvents.zip --yaml ./output/Windows.Sigma.BaseEvents.yaml  --docs ./docs/content/docs/models/windows_base_events/_index.md
 	./velosigmac compile --config ./config/windows_base_event_test.yaml --yaml ./output/Windows.Sigma.BaseEvents.CaptureTestSet.yaml
+	./velosigmac compile --config ./config/windows_base_event_test_replay.yaml --yaml ./output/Windows.Sigma.BaseEvents.ReplayTestSet.yaml
+
 
 compileWindowsBaseETW:
 	./velosigmac compile --config ./config/windows_etw_base.yaml --output ./output/Windows-Sigma-ETWBase.zip --yaml ./output/Windows.Sigma.ETWBase.yaml  --docs ./docs/content/docs/models/windows_etw_base/_index.md
+	./velosigmac compile --config ./config/windows_etw_base_test.yaml --yaml ./output/Windows.Sigma.ETWBase.CaptureTestSet.yaml
+	./velosigmac compile --config ./config/windows_etw_base_test_replay.yaml --yaml ./output/Windows.Sigma.ETWBase.ReplayTestSet.yaml
 
 compileLinuxEBPF: compileLinuxEBPFBase
 	./velosigmac compile --config ./config/linux_ebpf_monitoring.yaml --output ./output/Linux-Sigma-EBPF.zip --yaml ./output/Linux.Sigma.EBPF.yaml --rule_dir ./docs/content/docs/artifacts/Linux.EBPF.Monitoring/ --docs ./docs/content/docs/artifacts/Linux.EBPF.Monitoring/_index.md
@@ -39,6 +45,7 @@ compileLinuxEBPF: compileLinuxEBPFBase
 compileLinuxEBPFBase:
 	./velosigmac compile --config ./config/linux_ebpf_base.yaml --output ./output/Linux-Sigma-EBPFBase.zip --yaml ./output/Linux.Sigma.EBPFBase.yaml  --docs ./docs/content/docs/models/linux_ebpf_base/_index.md
 	./velosigmac compile --config ./config/linux_ebpf_base_test.yaml --yaml ./output/Linux.Sigma.EBPFBase.CaptureTestSet.yaml
+	./velosigmac compile --config ./config/linux_ebpf_base_test_replay.yaml --yaml ./output/Linux.Sigma.EBPFBase.ReplayTestSet.yaml
 
 compileWindowsETW: compileWindowsBaseETW
 	./velosigmac compile --config ./config/windows_etw_monitoring.yaml --output ./output/Windows-ETW-Monitoring.zip --yaml ./output/Windows.ETW.Monitoring.yaml --rule_dir ./docs/content/docs/artifacts/Windows.ETW.Monitoring/ --docs ./docs/content/docs/artifacts/Windows.ETW.Monitoring/_index.md

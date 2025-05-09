@@ -1180,6 +1180,7 @@ QueryTemplate: |
       SELECT * FROM Result
     }, else={
       SELECT Timestamp, Computer, Channel , EID,
-             Level, Title, RecordID, Details, _Event
+             Level, Title, RecordID, Details, _Event,
+             X.Enrichment AS Enrichment
       FROM Result
     })

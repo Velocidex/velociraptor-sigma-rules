@@ -1,15 +1,15 @@
-Name: Linux.Sigma.EBPFBase.CaptureTestSet
+Name: Windows.Sigma.ETWBase.CaptureTestSet
 ImportConfigs:
-  - config/linux_ebpf_base.yaml
+  - config/windows_etw_base.yaml
 
 Preamble: |
-  name: Linux.Sigma.EBPFBase.CaptureTestSet
+  name: Windows.Sigma.ETWBase.CaptureTestSet
   description: |
     This artifact captures a test set of the log sources defined by
-    Linux.EBPF.BaseEvent. It is used to acquire a dataset for the
+    Windows.Sigma.ETWBase. It is used to acquire a dataset for the
     `SigmaStudio` notebook.
 
-  type: CLIENT_EVENT
+  type: CLIENT
   parameters:
     - name: LogSourceFilter
       description: Only capture log sources that match this regex.
@@ -19,6 +19,7 @@ Preamble: |
     - name: SelectedLogSources
       description: Set to capture only those log sources.
       type: multichoice
+      default: '[]'
       choices:
       {{- range .ImportedLogSources }}
       - "{{ .Name }}"
@@ -30,20 +31,11 @@ Preamble: |
       default: .
 
   imports:
-    - Linux.Sigma.EBPFBase
+    - Windows.Sigma.ETWBase
 
 QueryTemplate: |
    sources:
-   - name: MatchingSources
-     query: |
-       SELECT _key AS SourceName
-       FROM items(item=LogSources)
-       WHERE SourceName =~ LogSourceFilter
-         AND if(condition=SelectedLogSources,
-                then=SourceName in SelectedLogSources, else=TRUE)
-
-   - name: Data
-     query: |
+   - query: |
        LET X = SELECT * FROM foreach(row={
          SELECT _key AS SourceName, _value AS Query
          FROM items(item=LogSources)

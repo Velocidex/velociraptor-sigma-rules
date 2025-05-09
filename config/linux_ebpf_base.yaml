@@ -67,19 +67,6 @@ Preamble: |
     - name: SigmaRules
       description: If provided we use these rules instead of the built in set.
 
-    - name: NTFS_CACHE_TIME
-      type: int
-      description: How often to flush the NTFS cache. (Default is 10 Min).
-      default: "600"
-
-    - name: EVTX_FREQUENCY
-      type: int
-      default: 60
-      description: |
-        How often in seconds to check for event log changes. Lower
-        number means more real time detection but potentially higher
-        CPU utilization.
-
 ExportTemplate: |
   export: |
     -- Add some defaults
@@ -249,6 +236,7 @@ QueryTemplate: |
       SELECT * FROM Result
     }, else={
       SELECT Timestamp, Computer, Channel , EID,
-             Level, Title, Details, _Event
+             Level, Title, Details, _Event,
+             X.Enrichment AS Enrichment
       FROM Result
     })

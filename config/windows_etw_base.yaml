@@ -155,7 +155,7 @@ FieldMappings:
   Username: "x=>x.EventData.ProcInfo.Username"
   CommandLine: "x=>x.EventData.ProcInfo.CommandLine"
 
-  EventType: "x=>x.EventType"
+  EventType: "x=>x.System.EventType"
   Computer: "x=>x.System.Computer"
   Channel: "x=>x.System.Channel"
   FileName: "x=>x.EventData.FileName || x.EventData.OpenPath"
@@ -234,11 +234,11 @@ Sources:
       SELECT * FROM delay(
         query={
           SELECT timestamp(epoch=now()) AS Timestamp,
-                 System.KernelEventType AS EventType,
-                 dict(Channel="NT-Kernel-Logger",
+                 System + dict(Channel="NT-Kernel-Logger",
                       Computer=Hostname,
                       EventType=System.KernelEventType,
                       EventID=dict(Value=System.ID)) AS System,
+                 System.KernelEventType AS EventType,
                  EventData + dict(ProcInfo=process_tracker_get(
                      id=System.ProcessID).Data) AS EventData
           FROM watch_etw(guid='{9E814AAD-3204-11D2-9A82-006008A86939}',
@@ -271,7 +271,7 @@ Sources:
 
     query: |
       SELECT timestamp(epoch=now()) AS Timestamp,
-             dict(Channel="Microsoft-Windows-Kernel-File",
+             System + dict(Channel="Microsoft-Windows-Kernel-File",
                   Computer=Hostname,
                   EventType=get(item=WindowsKernelFile_EIDLookup,
                                 field=str(str=System.ID)),
@@ -310,7 +310,7 @@ Sources:
 
     query: |
       SELECT timestamp(epoch=now()) AS Timestamp,
-             dict(Channel="Microsoft-Windows-Kernel-Registry",
+             System + dict(Channel="Microsoft-Windows-Kernel-Registry",
                   Computer=Hostname,
                   EventType=get(item=WindowsKernelRegistry_EIDLookup,
                                 field=str(str=System.ID)),
@@ -341,7 +341,7 @@ Sources:
 
     query: |
       SELECT timestamp(epoch=now()) AS Timestamp,
-             dict(Channel="Microsoft-Windows-Kernel-Process",
+             System + dict(Channel="Microsoft-Windows-Kernel-Process",
                   Computer=Hostname,
                   EventType=get(item=WindowsKernelProcess_EIDLookup,
                                 field=str(str=System.ID)),
@@ -469,18 +469,18 @@ Sources:
 QueryTemplate: |
  sources:
  - query: |
-    LET Result = SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp,
+    LET Result = SELECT Timestamp,
           System.Computer AS Computer,
           System.Channel AS Channel,
           System.EventID.Value AS EID,
+          System.EventType AS EventType,
           _Rule.Level AS Level,
           _Rule.Title AS Title,
-          System.EventRecordID AS RecordID,
           Details,
           dict(System=System,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match
+          _Match, *
     FROM sigma(
       rules=split(string= SigmaRules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,
@@ -491,7 +491,8 @@ QueryTemplate: |
     SELECT * FROM if(condition=Debug, then={
       SELECT * FROM Result
     }, else={
-      SELECT Timestamp, Computer, Channel , EID,
-             Level, Title, RecordID, Details, _Event
+      SELECT Timestamp, Computer, Channel , EID, EventType,
+             Level, Title, Details, _Event,
+             X.Enrichment AS Enrichment
       FROM Result
     })

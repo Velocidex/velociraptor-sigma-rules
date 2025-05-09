@@ -540,6 +540,6 @@ QueryTemplate: |
       SELECT Timestamp, Computer, Channel , EID,
              Level, Title, RecordID, Details,
              _Event,
-             X.Enrichment AS _Enrichment
+             X.Enrichment AS Enrichment
       FROM Result
     })

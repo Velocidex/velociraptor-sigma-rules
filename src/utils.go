@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 )
@@ -20,6 +21,10 @@ func indent(in string, indent int) string {
 }
 
 func MustMarshal(in interface{}) []byte {
+	if IsNil(in) {
+		return []byte("{}")
+	}
+
 	data, _ := json.Marshal(in)
 	return data
 }
@@ -56,4 +61,19 @@ func CreateFile(path string) (*os.File, error) {
 	out_fd, err := os.OpenFile(path,
 		os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
 	return out_fd, err
+}
+
+func IsNil(v interface{}) bool {
+	if v == nil {
+		return true
+	}
+
+	switch reflect.TypeOf(v).Kind() {
+	case reflect.Ptr, reflect.Map, reflect.Chan, reflect.Slice:
+		//use of IsNil method
+		return reflect.ValueOf(v).IsNil()
+
+	default:
+		return false
+	}
 }

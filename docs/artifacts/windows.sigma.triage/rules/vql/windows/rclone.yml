@@ -1,0 +1,27 @@
+title: Rclone
+status: test
+description: Check if RClone was used on this system
+logsource:
+    category: vql
+    product: windows
+
+detection:
+  selection:
+    "EventData|vql":
+      x=>x.Files OR x.Registry
+
+  condition: selection
+
+level: high
+ruletype: VQL
+
+details: |
+  Found RClone configuration files %EventData.Files%
+
+vql: |
+  x=>dict(
+    Timestamp=timestamp(epoch=now()),
+    EventData=dict(
+      Files=SearchFiles(Glob='C:/Users/*/AppData/Roaming/rclone/rclone.conf'),
+      Registry=SearchRegistryKeys(Glob='HKEY_USERS/*/SOFTWARE/Microsoft/Windows NT/CurrentVersion/AppCompatFlags/Compatibility Assistant/Store/*rclone*')
+    ))

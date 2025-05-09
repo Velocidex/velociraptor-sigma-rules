@@ -1168,7 +1168,7 @@ QueryTemplate: |
           dict(System=System - SystemMask,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match, Enrichment
+          _Match, *
     FROM sigma(
       rules=split(string=SigmaRules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,

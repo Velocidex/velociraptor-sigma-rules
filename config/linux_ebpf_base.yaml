@@ -224,7 +224,7 @@ QueryTemplate: |
           dict(System=System,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match, Enrichment
+          _Match, *
     FROM sigma(
       rules=split(string= SigmaRules, sep_string="\n---\n"),
       log_sources= LogSources, debug=Debug,
@@ -236,6 +236,7 @@ QueryTemplate: |
       SELECT * FROM Result
     }, else={
       SELECT Timestamp, Computer, Channel , EID,
-             Level, Title, Details, _Event, Enrichment
+             Level, Title, Details, _Event,
+             X.Enrichment AS Enrichment
       FROM Result
     })

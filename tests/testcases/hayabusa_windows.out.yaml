@@ -48,6 +48,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -112,6 +113,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -163,6 +165,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -214,6 +217,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -278,6 +282,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -342,6 +347,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -399,6 +405,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -463,6 +470,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -527,6 +535,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -591,6 +600,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -655,6 +665,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  },
  {
@@ -719,6 +730,7 @@ LET temp <= tempdir()[]LET _ <= copy(filename=testDir + "/test_files/EVTX-ATTACK
    },
    "Message": ""
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  }
 ]

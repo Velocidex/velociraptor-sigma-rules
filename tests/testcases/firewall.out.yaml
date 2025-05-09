@@ -49,6 +49,7 @@ LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(fil
    },
    "Message": null
   },
+  "Enrichment": null,
   "_Source": "Windows.Hayabusa.Rules"
  }
 ]

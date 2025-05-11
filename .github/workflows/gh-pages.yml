@@ -34,6 +34,7 @@ jobs:
           cp output/*.zip docs/static/artifacts/
           cp output/Velociraptor.Sigma.Artifacts.zip docs/static/
           cp output/profiles.json docs/static/
+          cp legacy/*.zip docs/static/
 
       - name: Build
         run: cd docs/ && hugo --minify

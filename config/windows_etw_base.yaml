@@ -131,6 +131,11 @@ ExportTemplate: |
     LET GUIDLookup(GUID) = SELECT Data.value AS Provider
       FROM stat(accessor="registry", filename=PublisherGlob + ("/" + GUID + "/@"))
 
+    LET GetProcInfo(PID) = to_dict(item={
+      SELECT * FROM items(item=process_tracker_get(id=PID).Data)
+         WHERE _key =~ "Name|CommandLine|CreateTime|Exe|Cwd|Username"
+      })
+
     {{ if .LogSources }}
     LET LogSources <= sigma_log_sources(
     {{ range .LogSources }}
@@ -169,7 +174,7 @@ DefaultDetails:
   Query: |
     x=>get(item=DefaultDetails,
            member=format(format="%v/%v",
-              args=[x.System.Provider.Name, x.System.EventID.Value])
+              args=[x.System.Provider.Name, x.System.ID])
           ) || x.Message || x.UserData || x.EventData
   Lookup:
 
@@ -239,8 +244,9 @@ Sources:
                       EventType=System.KernelEventType,
                       EventID=dict(Value=System.ID)) AS System,
                  System.KernelEventType AS EventType,
-                 EventData + dict(ProcInfo=process_tracker_get(
-                     id=System.ProcessID).Data) AS EventData
+                 EventData + dict(
+                    ProcInfo=GetProcInfo(PID=System.ProcessID)
+                 ) AS EventData
           FROM watch_etw(guid='{9E814AAD-3204-11D2-9A82-006008A86939}',
                          capture_state=TRUE,
                          level=5,
@@ -276,8 +282,9 @@ Sources:
                   EventType=get(item=WindowsKernelFile_EIDLookup,
                                 field=str(str=System.ID)),
                   EventID=dict(Value=System.ID)) AS System,
-             EventData + dict(ProcInfo=process_tracker_get(
-                 id=System.ProcessID).Data) AS EventData
+             EventData + dict(
+                 ProcInfo=GetProcInfo(PID=System.ProcessID)
+             ) AS EventData
       FROM delay(query={
          SELECT * FROM watch_etw(
             guid='{edd08927-9cc4-4e65-b970-c2560fb5c289}',
@@ -316,10 +323,8 @@ Sources:
                                 field=str(str=System.ID)),
                   EventID=dict(Value=System.ID)) AS System,
              EventData + dict(
-                 ProcInfo=process_tracker_get(
-                   id=EventData.ProcessID).Data,
-                 ParentProcInfo=process_tracker_get(
-                   id=System.ProcessID).Data) AS EventData
+                 ProcInfo=GetProcInfo(PID=System.ProcessID)
+             ) AS EventData
       FROM delay(query={
          SELECT * FROM watch_etw(
             guid='{70eb4f03-c1de-4f73-a051-33d13d5413bd}',
@@ -347,10 +352,8 @@ Sources:
                                 field=str(str=System.ID)),
                   EventID=dict(Value=System.ID)) AS System,
              EventData + dict(
-                 ProcInfo=process_tracker_get(
-                   id=EventData.ProcessID).Data,
-                 ParentProcInfo=process_tracker_get(
-                   id=System.ProcessID).Data) AS EventData
+                ProcInfo=GetProcInfo(PID=System.ProcessID)
+             ) AS EventData
       FROM delay(query={
          SELECT * FROM watch_etw(
             guid='{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}',

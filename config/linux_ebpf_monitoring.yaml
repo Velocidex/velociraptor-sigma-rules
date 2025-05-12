@@ -17,7 +17,7 @@ Preamble: |
 
     This artifact was built on {{ .Time }}
 
-  type: CLIENT
+  type: CLIENT_EVENT
 
   parameters:
     - name: RuleLevel
@@ -76,5 +76,7 @@ DocTemplate: |
 
   You can download the artifact pack here
   [Linux-Sigma-EBPF.zip](/artifacts/Linux-Sigma-EBPF.zip)
+  and customize using instructions at
+  [Customizing Artifacts](https://sigma.velocidex.com/docs/sigma_in_velociraptor/customize/)
 
   {{ "{{< ruleset \"index.json\" >}}" }}

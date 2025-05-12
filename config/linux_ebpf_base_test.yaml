@@ -34,16 +34,7 @@ Preamble: |
 
 QueryTemplate: |
    sources:
-   - name: MatchingSources
-     query: |
-       SELECT _key AS SourceName
-       FROM items(item=LogSources)
-       WHERE SourceName =~ LogSourceFilter
-         AND if(condition=SelectedLogSources,
-                then=SourceName in SelectedLogSources, else=TRUE)
-
-   - name: Data
-     query: |
+   - query: |
        LET X = SELECT * FROM foreach(row={
          SELECT _key AS SourceName, _value AS Query
          FROM items(item=LogSources)
@@ -51,7 +42,12 @@ QueryTemplate: |
            AND if(condition=SelectedLogSources,
                   then=SourceName in SelectedLogSources, else=TRUE)
        }, query={
-         SELECT * FROM query(query=Query, inherit=TRUE)
+         SELECT * FROM foreach(row={
+           SELECT * FROM items(item={
+             SELECT * FROM query(query=Query, inherit=TRUE)
+           })
+           WHERE _value =~ EventRegex
+         }, column="_value")
        }, async=TRUE)
 
        SELECT *

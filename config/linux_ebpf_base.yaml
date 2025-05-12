@@ -112,12 +112,30 @@ ExportTemplate: |
     LET RuleFilterLambda = '''x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex'''
 
     LET GetProcInfo(PID) = to_dict(item={
-      SELECT * FROM items(item=process_tracker_get(id=System.ProcessID).Data)
+      SELECT * FROM items(item=process_tracker_get(id=PID).Data)
          WHERE _key =~ "Name|CommandLine|CreateTime|Exe|Cwd|Username"
-      }) + dict(CreateTime=timestamp(epoch=process_tracker_get(id=System.ProcessID).Data.StartTime))
+      })
+
+    // Get proc info from the process tracker but if that fails fill
+    // it from the event. The process tracker may fail to find the process
+    // if the EBPF process tracker is not enabled
+    LET GetProcInfoFallback(ProcInfo, EventData, System) = if(
+       condition=ProcInfo.Name,
+         then=ProcInfo,
+         else=dict(Name=System.ProcessName,
+                   CommandLine=join(array=EventData.argv, sep=" "),
+                   CreateTime=timestamp(epoch=EventData.ctime) || System.ThreadStartTime,
+                   Exe=EventData.pathname,
+                   Username=System.UserID))
 
     LET EBFFEvent = generate(name="EBPF Event Generator", query={
-      SELECT *, EventData + dict(ProcInfo=GetProcInfo(PID=System.ProcessID)) AS EventData
+      SELECT *, EventData + dict(
+           Test=process_tracker_get(id=System.ProcessID),
+           ProcInfo=GetProcInfoFallback(
+              ProcInfo=GetProcInfo(PID=System.ProcessID),
+              EventData=EventData,
+              System=System)
+        ) AS EventData
       FROM delay(
         query={
           SELECT timestamp(epoch=now()) AS Timestamp,

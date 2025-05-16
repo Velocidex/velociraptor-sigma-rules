@@ -64,19 +64,6 @@ Preamble: |
     - name: SigmaRules
       description: If provided we use these rules instead of the built in set.
 
-    - name: NTFS_CACHE_TIME
-      type: int
-      description: How often to flush the NTFS cache. (Default is 10 Min).
-      default: "600"
-
-    - name: EVTX_FREQUENCY
-      type: int
-      default: 60
-      description: |
-        How often in seconds to check for event log changes. Lower
-        number means more real time detection but potentially higher
-        CPU utilization.
-
 ExportTemplate: |
   export: |
     -- Add some defaults
@@ -483,11 +470,11 @@ QueryTemplate: |
           dict(System=System,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match, *
+          *
     FROM sigma(
-      rules=split(string= SigmaRules, sep_string="\n---\n"),
+      rules=split(string= SigmaRules, sep="\n---+\r?\n"),
       log_sources= LogSources, debug=Debug,
-      default_details='''{{.Base64DefaultDetailsQuery}}''',
+      default_details=DefaultDetailsLambda,
       rule_filter="x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex",
       field_mapping= FieldMapping)
 
@@ -495,7 +482,7 @@ QueryTemplate: |
       SELECT * FROM Result
     }, else={
       SELECT Timestamp, Computer, Channel , EID, EventType,
-             Level, Title, Details, _Event,
+             Level, Title, Details, X._Correlations || _Event AS _Event,
              X.Enrichment AS Enrichment
       FROM Result
     })

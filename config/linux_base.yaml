@@ -213,7 +213,7 @@ QueryTemplate: |
              Details,
              *
       FROM sigma(
-         rules=split(string= Rules, sep_string="\n---\n"),
+         rules=split(string= Rules, sep="\n---+\r?\n"),
          log_sources= LogSources, debug=Debug,
          default_details=DefaultDetailsLambda,
          rule_filter=RuleFilterLambda,

@@ -66,7 +66,7 @@ if __name__ == "__main__":
     artifact = build_artifact(args.artifact, args.rule_dir)
 
     if args.name:
-        artifact = re.sub("(name: ).+", "\\1" + args.name, artifact)
+        artifact = re.sub("^(name: ).+", "\\1" + args.name, artifact)
 
     if args.zip:
         artifact_name = "artifact.yaml"

@@ -528,7 +528,7 @@ QueryTemplate: |
                Message=X.Message) AS _Event,
           _Match, *
     FROM sigma(
-      rules=split(string=SigmaRules, sep_string="\n---\n"),
+      rules=split(string=SigmaRules, sep="\n---+\r?\n"),
       log_sources= LogSources, debug=Debug,
       default_details=DefaultDetailsLambda,
       rule_filter=RuleFilterLambda,

@@ -38,15 +38,29 @@ QueryTemplate: |
        LET TestingLogSources <= sigma_log_sources(`**`=TestingLogSourceDict)
 
        // Apply the Sigma Rules on the samples.
-       SELECT  _Rule.Title AS Rule ,
-         Details,
-         dict(System=System,
-              EventData=X.EventData || X.UserData,
-              Message=X.Message) AS Event,
-         _Match AS Match
-
+       LET Result = SELECT Timestamp,
+          System.Computer AS Computer,
+          System.Channel AS Channel,
+          System.EventID.Value AS EID,
+          System.EventType AS EventType,
+          _Rule.Level AS Level,
+          _Rule.Title AS Title,
+          Details,
+          dict(System=System,
+               EventData=X.EventData || X.UserData,
+               Message=X.Message) AS _Event,
+          X._Match || X._Correlations AS Match, *
        FROM sigma(
-          rules=split(string=SigmaRules, sep_string="\n---\n"),
+          rules=split(string=SigmaRules, sep="\n---+\r?\n"),
           log_sources= TestingLogSources, debug=Debug,
           default_details=DefaultDetailsLambda,
           field_mapping= FieldMapping)
+
+       SELECT * FROM if(condition=Debug, then={
+          SELECT * FROM Result
+       }, else={
+          SELECT Timestamp, Computer, Channel , EID, EventType,
+             Level, Title, Details, X._Correlations[:5] || _Event AS _Event,
+             X.Enrichment AS Enrichment
+          FROM Result
+       })

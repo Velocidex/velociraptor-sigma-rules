@@ -1,0 +1,35 @@
+title: DotNet Startup Hooks
+status: test
+description: |
+  The .NET DLLs listed in the DOTNET_STARTUP_HOOKS environment
+  variable are loaded into .NET processes at runtime.
+
+author: Chris Jones - CPIRT, FabFaeb, Antonio Blescia (TheThMando), bmcder02
+references:
+ - https://persistence-info.github.io/Data/dotnetstartuphooks.html
+ - https://github.com/last-byte/PersistenceSniper/blob/main/PersistenceSniper/PersistenceSniper.psm1
+
+logsource:
+  product: windows
+  category: vql
+
+detection:
+  selection:
+    EventData|vql:
+      x=>x.Hooks
+
+  condition: selection
+
+details: |
+  DOTNET_STARTUP_HOOKS detected: %EventData.Hooks%
+
+
+vql: |
+  x=>dict(
+    Timestamp=timestamp(epoch=now()),
+    EventData=dict(
+      Hooks=SearchRegistryKeys(Glob=[
+         "HKEY_USERS/*/Environment/DOTNET_STARTUP_HOOKS",
+         "HKEY_LOCAL_MACHINE/System/ControlSet*/Control/Session Manager/Environment/DOTNET_STARTUP_HOOKS"
+      ]))
+    )

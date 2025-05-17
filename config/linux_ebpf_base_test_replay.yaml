@@ -5,29 +5,20 @@ ImportConfigs:
 Preamble: |
   name: Linux.Sigma.EBPFBase.ReplayTestSet
   description: |
-    This artifact captures a test set of the log sources defined by
-    Linux.EBPF.BaseEvent. It is used to acquire a dataset for the
-    `SigmaStudio` notebook.
+    This artifact replays a previously captured test set into the rules.
 
-  type: CLIENT_EVENT
+  type: CLIENT
   parameters:
-    - name: LogSourceFilter
-      description: Only capture log sources that match this regex.
-      type: regex
-      default: .
+   - name: JSONDump
+     description: A path to the JSON dump of the test set
+     default: /path/to/file.json
 
-    - name: SelectedLogSources
-      description: Set to capture only those log sources.
-      type: multichoice
-      choices:
-      {{- range .ImportedLogSources }}
-      - "{{ .Name }}"
-      {{- end }}
+   - name: Debug
+     description: Enable this to match all rules (even if they did not match) in order to see what detections matched.
+     type: bool
 
-    - name: EventRegex
-      description: Only capture events that match this regex (the event is converted to JSON first).
-      type: regex
-      default: .
+   - name: SigmaRules
+     description: Sigma Rules to test
 
   imports:
     - Linux.Sigma.EBPFBase
@@ -35,19 +26,40 @@ Preamble: |
 QueryTemplate: |
    sources:
    - query: |
-       LET X = SELECT * FROM foreach(row={
-         SELECT _key AS SourceName, _value AS Query
-         FROM items(item=LogSources)
-         WHERE SourceName =~ LogSourceFilter
-           AND if(condition=SelectedLogSources,
-                  then=SourceName in SelectedLogSources, else=TRUE)
-       }, query={
-         SELECT * FROM query(query=Query, inherit=TRUE)
-       }, async=TRUE)
+       // Feed all the json rows to the log sources.
+       LET AllRows = SELECT * FROM parse_jsonl(filename=JSONDump)
 
-       SELECT *
-       FROM if(condition= version(function="sigma_log_sources") > 1, then=X,
-         else={
-           SELECT log(message="Artifact requires at least Velociraptor 0.74")
-           FROM scope()
+       LET TestingLogSourceDict <= to_dict(item={
+         SELECT _key, AllRows AS _value
+         FROM items(item=LogSources)
+       })
+
+       // Build the log sources automatically.
+       LET TestingLogSources <= sigma_log_sources(`**`=TestingLogSourceDict)
+
+       // Apply the Sigma Rules on the samples.
+       LET Result = SELECT System.Timestamp AS Timestamp,
+          Hostname AS Computer,
+          "EBPF" AS Channel,
+          System.EventName AS EID,
+          _Rule.Level AS Level,
+          _Rule.Title AS Title,
+          Details,
+          dict(System=System,
+               EventData=X.EventData || X.UserData,
+               Message=X.Message) AS _Event,
+          X._Match || X._Correlations AS Match, *
+       FROM sigma(
+          rules=split(string=SigmaRules, sep="\n---+\r?\n"),
+          log_sources= TestingLogSources, debug=Debug,
+          default_details=DefaultDetailsLambda,
+          field_mapping= FieldMapping)
+
+       SELECT * FROM if(condition=Debug, then={
+          SELECT * FROM Result
+       }, else={
+          SELECT Timestamp, Computer, Channel , EID, EventType,
+             Level, Title, Details, X._Correlations[:5] || _Event AS _Event,
+             X.Enrichment AS Enrichment
+          FROM Result
        })

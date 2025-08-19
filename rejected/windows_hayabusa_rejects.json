@@ -6,7 +6,7 @@
   },
   {
    "Path": "hayabusa/hayabusa/builtin/NTFS_Op/NTFS_4_info_volume_mount.yml",
-   "Error": "Missing Source: '*/windows/*'"
+   "Error": "Missing Source: '*/windows/ntfs'"
   },
   {
    "Path": "hayabusa/hayabusa/builtin/Partition_Diagnostic/PartitionDiagnostic_1006_Info_DeviceConn.yml",

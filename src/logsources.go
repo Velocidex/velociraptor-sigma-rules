@@ -425,6 +425,7 @@ var valid_modifiers = map[string]bool{
 	"base64":       true,
 	"base64offset": true,
 	"windash":      true,
+	"wide":         true,
 }
 
 func (self *CompilerContext) check_modifiers(

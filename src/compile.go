@@ -91,7 +91,20 @@ func (self *CompilerContext) CompileDirs() error {
 			return err
 		}
 	}
-	return nil
+	return self.checkDefaultDetails()
+}
+
+func (self *CompilerContext) checkDefaultDetails() (err error) {
+	if self.config_obj.DefaultDetails.Lookup != nil {
+		for k, details := range self.config_obj.DefaultDetails.Lookup {
+			err = self.walk_details(details, k)
+			if err != nil {
+				fmt.Printf("Checking Default Details: %v\n", err)
+			}
+		}
+	}
+
+	return err
 }
 
 func (self *CompilerContext) CompileRule(rule_yaml, path string) error {

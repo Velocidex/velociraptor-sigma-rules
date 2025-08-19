@@ -425,6 +425,7 @@ var valid_modifiers = map[string]bool{
 	"base64":       true,
 	"base64offset": true,
 	"windash":      true,
+	"wide":         true,
 }
 
 func (self *CompilerContext) check_modifiers(
@@ -439,6 +440,24 @@ func (self *CompilerContext) check_modifiers(
 	}
 
 	return nil
+}
+
+var expandRegEx = regexp.MustCompile(`%([A-Z.a-z_0-9]+)(\[([0-9]+)\])?%`)
+
+func (self *CompilerContext) walk_details(
+	details string, path string) (err error) {
+
+	for _, match := range expandRegEx.FindAllStringSubmatch(details, -1) {
+		variable := match[1]
+
+		// Check if there is a field mapping
+		if !self.event_resolver.CheckFieldMapping(variable) {
+			self.incMissingFieldMap(variable, path)
+			err = fmt.Errorf("Missing field mapping '%v' at %v", variable, path)
+		}
+	}
+
+	return err
 }
 
 func (self *CompilerContext) walk_fields(
@@ -474,6 +493,15 @@ func (self *CompilerContext) walk_fields(
 			}
 		}
 	}
+
+	details_any, pres := rule.AdditionalFields["details"]
+	if pres {
+		details, ok := details_any.(string)
+		if ok {
+			err = self.walk_details(details, path)
+		}
+	}
+
 	return err
 }
 

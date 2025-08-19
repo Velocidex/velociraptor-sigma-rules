@@ -6,7 +6,7 @@
   },
   {
    "Path": "hayabusa/hayabusa/builtin/NTFS_Op/NTFS_4_info_volume_mount.yml",
-   "Error": "Missing Source: '*/windows/*'"
+   "Error": "Missing Source: '*/windows/ntfs'"
   },
   {
    "Path": "hayabusa/hayabusa/builtin/Partition_Diagnostic/PartitionDiagnostic_1006_Info_DeviceConn.yml",
@@ -101,14 +101,6 @@
    "Error": "Invalid modifier fieldref"
   },
   {
-   "Path": "hayabusa/sigma/builtin/emerging-threats/2023/Exploits/CVE-2023-23397/win_smbclient_connectivity_exploit_cve_2023_23397_outlook_remote_file.yml",
-   "Error": "Missing field mapping 'ServerAddress' in */windows/smbclient-connectivity"
-  },
-  {
-   "Path": "hayabusa/sigma/builtin/emerging-threats/2023/Malware/Pikabot/proc_creation_win_malware_pikabot_discovery.yml",
-   "Error": "Missing field mapping 'GrandParentImage' in */windows/security"
-  },
-  {
    "Path": "hayabusa/sigma/builtin/placeholder/network_connection/net_connection_win_susp_rdp_from_domain_controller.yml",
    "Error": "Invalid modifier expand"
   },
@@ -163,10 +155,6 @@
   {
    "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_susp_interactive_logons.yml",
    "Error": "Invalid modifier expand"
-  },
-  {
-   "Path": "hayabusa/sigma/builtin/security/win_security_rdp_reverse_tunnel.yml",
-   "Error": "Missing field mapping 'FilterOrigin' in */windows/security"
   },
   {
    "Path": "hayabusa/sigma/builtin/unsupported/proc_creation_win_correlation_multiple_susp_cli.yml",
@@ -175,14 +163,6 @@
   {
    "Path": "hayabusa/sigma/builtin/unsupported/proc_creation_win_correlation_susp_builtin_commands_recon.yml",
    "Error": "In rule Reconnaissance Activity Using BuiltIn Commands: Timeframe detections not supported"
-  },
-  {
-   "Path": "hayabusa/sigma/builtin/unsupported/sysmon_always_install_elevated_msi_spawned_cmd_and_powershell_spawned_processes.yml",
-   "Error": "Missing field mapping 'ParentOfParentImage' in */windows/security"
-  },
-  {
-   "Path": "hayabusa/sigma/builtin/unsupported/win_kernel_and_3rd_party_drivers_exploits_token_stealing.yml",
-   "Error": "Missing field mapping 'ParentIntegrityLevel' in */windows/security"
   },
   {
    "Path": "hayabusa/sigma/builtin/unsupported/win_remote_schtask.yml",
@@ -253,14 +233,6 @@
    "Error": "Missing Source: '*/windows/*'"
   },
   {
-   "Path": "hayabusa/sigma/sysmon/create_remote_thread/create_remote_thread_win_susp_uncommon_source_image.yml",
-   "Error": "Missing field mapping 'TargetParentProcessId' in */windows/sysmon"
-  },
-  {
-   "Path": "hayabusa/sigma/sysmon/emerging-threats/2023/Malware/Pikabot/proc_creation_win_malware_pikabot_discovery.yml",
-   "Error": "Missing field mapping 'GrandParentImage' in */windows/sysmon"
-  },
-  {
    "Path": "hayabusa/sigma/sysmon/file/file_delete/file_delete_win_delete_own_image.yml",
    "Error": "Invalid modifier fieldref"
   },
@@ -291,22 +263,10 @@
   {
    "Path": "hayabusa/sigma/sysmon/placeholder/process_creation/proc_creation_win_userdomain_variable_enumeration.yml",
    "Error": "Invalid modifier expand"
-  },
-  {
-   "Path": "hayabusa/sigma/sysmon/threat-hunting/create_remote_thread/create_remote_thread_win_powershell_generic.yml",
-   "Error": "Missing field mapping 'SourceParentImage' in */windows/sysmon"
-  },
-  {
-   "Path": "hayabusa/sigma/sysmon/threat-hunting/process_access/proc_access_win_lsass_uncommon_access_flag.yml",
-   "Error": "Missing field mapping 'SourceCommandLine' in */windows/sysmon"
   },
   {
    "Path": "hayabusa/sigma/sysmon/unsupported/dns_query_win_possible_dns_rebinding.yml",
    "Error": "In rule Possible DNS Rebinding: Timeframe detections not supported"
-  },
-  {
-   "Path": "hayabusa/sigma/sysmon/unsupported/file_event_executable_and_script_creation_by_office_using_file_ext.yml",
-   "Error": "Missing field mapping 'FileMagicBytes' in */windows/sysmon"
   },
   {
    "Path": "hayabusa/sigma/sysmon/unsupported/proc_creation_win_correlation_multiple_susp_cli.yml",
@@ -315,14 +275,6 @@
   {
    "Path": "hayabusa/sigma/sysmon/unsupported/proc_creation_win_correlation_susp_builtin_commands_recon.yml",
    "Error": "In rule Reconnaissance Activity Using BuiltIn Commands 2: Timeframe detections not supported"
-  },
-  {
-   "Path": "hayabusa/sigma/sysmon/unsupported/sysmon_always_install_elevated_msi_spawned_cmd_and_powershell_spawned_processes.yml",
-   "Error": "Missing field mapping 'ParentOfParentImage' in */windows/sysmon"
-  },
-  {
-   "Path": "hayabusa/sigma/sysmon/unsupported/win_kernel_and_3rd_party_drivers_exploits_token_stealing.yml",
-   "Error": "Missing field mapping 'ParentIntegrityLevel' in */windows/sysmon"
   }
  ]
 }

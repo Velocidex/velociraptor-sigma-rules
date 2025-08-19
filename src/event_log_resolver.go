@@ -88,8 +88,9 @@ func (self *EventResolver) CheckFieldMapping(field string) bool {
 	_, pres = self.all_fields[field]
 	if pres {
 		// Add an automatic log source
-		self.config_obj.field_mappings[field] = fmt.Sprintf("x=>x.EventData.%s", field)
-		return true
+		fmt.Printf("Error: Need to add the following field mapping to the base artifact:\n %v: \"x=>x.EventData.%s\"\n",
+			field, field)
+		return false
 	}
 
 	// If the field has "." it might be a compound field

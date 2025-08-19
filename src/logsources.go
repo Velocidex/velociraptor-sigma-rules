@@ -444,24 +444,19 @@ func (self *CompilerContext) check_modifiers(
 var expandRegEx = regexp.MustCompile(`%([A-Z.a-z_0-9]+)(\[([0-9]+)\])?%`)
 
 func (self *CompilerContext) walk_details(
-	details string, path string, logsource string) (err error) {
+	details string, path string) (err error) {
 
 	for _, match := range expandRegEx.FindAllStringSubmatch(details, -1) {
 		variable := match[1]
 
-		if variable == "UserContext" {
-			DlvBreak()
-		}
-
 		// Check if there is a field mapping
 		if !self.event_resolver.CheckFieldMapping(variable) {
 			self.incMissingFieldMap(variable, path)
-			return fmt.Errorf(
-				"Missing field mapping '%v' in %v", variable, logsource)
+			err = fmt.Errorf("Missing field mapping '%v' at %v", variable, path)
 		}
 	}
 
-	return nil
+	return err
 }
 
 func (self *CompilerContext) walk_fields(
@@ -502,7 +497,7 @@ func (self *CompilerContext) walk_fields(
 	if pres {
 		details, ok := details_any.(string)
 		if ok {
-			err = self.walk_details(details, path, logsource)
+			err = self.walk_details(details, path)
 		}
 	}
 

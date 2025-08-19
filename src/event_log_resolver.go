@@ -84,20 +84,14 @@ func (self *EventResolver) CheckFieldMapping(field string) bool {
 		return true
 	}
 
-	// Is the field mapping known by any of our log sources?
-	_, pres = self.all_fields[field]
-	if pres {
-		// Add an automatic log source
-		fmt.Printf("Error: Need to add the following field mapping to the base artifact:\n %v: \"x=>x.EventData.%s\"\n",
-			field, field)
-		return false
-	}
-
 	// If the field has "." it might be a compound field
 	if strings.Contains(field, ".") {
 		return true
 	}
 
+	// Add an automatic log source
+	fmt.Printf("Error: Need to add the following field mapping to the base artifact:\n %v: \"x=>x.EventData.%s\"\n",
+		field, field)
 	return false
 }
 

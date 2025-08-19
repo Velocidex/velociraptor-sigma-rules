@@ -140,7 +140,7 @@ LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=t
  },
  {
   "Rule": "File access to SAM database",
-  "Details": "Process C:\\velociraptor.exe accessed file OpenFile",
+  "Details": "Process C:\\velociraptor.exe accessed file C:\\WINDOWS\\SYSTEM32\\CONFIG\\SAM",
   "Event": {
    "System": {
     "Channel": "NT Kernel Logger",
@@ -247,7 +247,7 @@ LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=t
    },
    "Level": "default",
    "AdditionalFields": {
-    "details": "Process %ProcessExe% accessed file %OpenFile%"
+    "details": "Process %ProcessExe% accessed file %FileName%"
    }
   }
  }

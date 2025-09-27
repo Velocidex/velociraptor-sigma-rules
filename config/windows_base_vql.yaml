@@ -212,6 +212,28 @@ Sources:
       - Timestamp
       - EventData
       - System
+    
+  /windows/prefetch:
+    description: |
+      Prefetch entries via Velociraptor artifacts. Emits one event per .PF file,
+      using the Prefetch file mtime as Timestamp and exposing the executable name
+      for Sigma matching.
+    query: |
+      SELECT
+        modified AS Timestamp,
+        dict(Computer=Hostname, Channel='Velociraptor') AS System,
+        dict(
+          PrefetchName = Name,                                  -- e.g. RUNDLL32.EXE-81640945.pf
+          Image        = regex_replace(source=Name, re='-.*$', replace=''),  -- RUNDLL32.EXE
+          OSPath       = format(format='C:\\Windows\\Prefetch\\%v', args=[Name]),
+          Mtime        = modified
+        ) AS EventData
+      FROM Artifact.Windows.Attack.Prefetch()
+    fields:
+      - Image
+      - Name
+      - OSPath
+      - Mtime
 
   filesystem/windows/glob:
     description: |
@@ -232,6 +254,31 @@ Sources:
       - OSPath
       - Size
       - Mtime
+
+
+    # Evidence of execution from Prefetch files
+  /windows/prefetch:
+    description: |
+      Prefetch entries via Velociraptor artifacts. Emits one event per .PF file,
+      using the Prefetch file mtime as Timestamp and exposing the executable name
+      for Sigma matching.
+    query: |
+      SELECT
+        modified AS Timestamp,
+        dict(Computer=Hostname, Channel='Velociraptor') AS System,
+        dict(
+          PrefetchName = Name,                                  -- e.g. RUNDLL32.EXE-81640945.pf
+          Image        = regex_replace(source=Name, re='-.*$', replace=''),  -- RUNDLL32.EXE
+          OSPath       = format(format='C:\\Windows\\Prefetch\\%v', args=[Name]),
+          Mtime        = modified
+        ) AS EventData
+      FROM Artifact.Windows.Attack.Prefetch()
+    fields:
+      - Image
+      - Name
+      - OSPath
+      - Mtime
+  
 
   process_creation/windows/pslist:
     query: |

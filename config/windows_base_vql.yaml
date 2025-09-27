@@ -225,6 +225,15 @@ Sources:
           Image=split(string=Name, sep='-')[0]
         ) AS EventData
       FROM Artifact.Windows.Attack.Prefetch()
+    fields:
+      - Timestamp
+      - Image
+      - Name
+      - Mtime
+      - ModTime
+      - System.Computer
+      - System.Channel
+
 
   filesystem/windows/glob:
     description: |

@@ -535,6 +535,79 @@ Sources:
       - System
       - EventData
 
+  'forensics/windows/prefetch':
+    description: >
+      Parse Windows Prefetch files (dead-disk or live). Emits one row per PF
+      entry with useful triage fields for Sigma.
+    query: |
+      SELECT
+        ModificationTime AS Timestamp,
+        dict(Computer=Hostname, Channel='Velociraptor') AS System,
+        dict(
+          Name=PrefetchFileName,      
+          Image=Executable,           
+          OSPath=OSPath,              
+          Directory=dirname(path=OSPath),
+          Mtime=ModificationTime,     
+          RunCount=RunCount,
+          LastRunTimes=LastRunTimes,  
+          PrefetchHash=string(Hash)   
+        ) AS EventData
+      FROM Artifact.Windows.Forensics.Prefetch()
+    fields:
+      - Name
+      - Image
+      - OSPath
+      - Directory
+      - Mtime
+      - RunCount
+      - LastRunTimes
+      - PrefetchHash
+
+  'process_creation/windows/attack_prefetch':
+    description: >
+      Lightweight Prefetch view used by Windows.Attack.Prefetch. Helpful for
+      quick presence checks of executables that created PF entries.
+    query: |
+      SELECT
+        modified AS Timestamp,
+        dict(Computer=Hostname, Channel='Velociraptor') AS System,
+        dict(
+          Name=Name,                              
+          Mtime=modified,                         
+          ModTime=ModTime,                        
+          Image=get(item=split(string=Name, sep='-'), member=0)  
+        ) AS EventData
+      FROM Artifact.Windows.Attack.Prefetch()
+    fields:
+      - Name
+      - Image
+      - Mtime
+      - ModTime
+
+  'forensics/windows/usn':
+    description: >
+      USN Journal parser output normalized for Sigma. Emits filesystem change
+      records with path, filename, reason flags and MFT identifiers.
+    query: |
+      SELECT
+        Timestamp,
+        dict(Computer=Hostname, Channel='Velociraptor') AS System,
+        dict(
+          OSPath=OSPath,        
+          FileName=Filename,    
+          Reason=Reason,       
+          MFTId=MFTId,
+          ParentMFTId=ParentMFTId
+        ) AS EventData
+      FROM Artifact.Windows.Forensics.Usn()
+    fields:
+      - OSPath
+      - FileName
+      - Reason
+      - MFTId
+      - ParentMFTId
+
 
 # QueryTemplate is the template used to generate the query part of the
 # artifact (i.e. the artifact sources).

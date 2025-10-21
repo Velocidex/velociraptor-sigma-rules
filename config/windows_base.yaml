@@ -45,6 +45,7 @@ Preamble: |
         - "Critical"
         - "Critical and High"
         - "Critical, High, and Medium"
+        - "Critical, High, Medium, and Low"
         - "All"
 
     - name: RuleStatus
@@ -108,6 +109,7 @@ ExportTemplate: |
          `Critical`="critical",
          `Critical and High`="critical|high",
          `Critical, High, and Medium`="critical|high|medium|default",
+         `Critical, High, Medium, and Low`="critical|high|medium|low|default",
          `All`="."), member=X.RuleLevel || "All")
 
     LET MandatoryLabelLookup <= dict(

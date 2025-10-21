@@ -508,6 +508,32 @@ Sources:
       - Protocol
       - Status
 
+  '*/windows/wmi':
+    description: |
+      Exposes permanent WMI subscriptions (Filter + Consumer) in a Sigma-friendly format.
+      Helps detect uptime-based persistence and consumers that launch processes.
+  
+    query: |
+      SELECT
+        timestamp(epoch=now()) AS Timestamp,
+        dict(
+          Computer=Hostname,
+          Channel="Velociraptor",
+          TimeCreated=dict(SystemTime=now())
+        ) AS System,
+        dict(
+          Namespace=Namespace,
+          FilterDetails=FilterDetails,
+          ConsumerDetails=ConsumerDetails
+        ) AS EventData
+      FROM Artifact.Windows.Persistence.PermanentWMIEvents(
+        AllRootNamespaces=false
+      )
+
+    fields:
+      - Timestamp
+      - System
+      - EventData
 
 
 # QueryTemplate is the template used to generate the query part of the

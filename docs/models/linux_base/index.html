@@ -1,0 +1,184 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="
+  Linux Base Sigma Model
+  #
+
+This model is designed for triage of dead disk or file based live
+analysis. The rules that use this model will be evaluated once on
+all events.
+After all relevant rules are evaluated, the collection is complete.
+NOTE: Auditd configuration based on
+https://raw.githubusercontent.com/Neo23x0/auditd/refs/heads/master/audit.rules
+
+  Log Sources
+  #
+
+Following is a list of recognized log sources.
+
+
+   Log Source
+   Desc
+
+
+
+   */linux/* 
+
+  
+
+
+   */linux/sshd 
+
+  
+
+
+   */linux/cron 
+
+  
+
+
+   */linux/auth 
+
+  
+
+
+   */linux/syslog 
+
+  
+
+
+   */linux/sudo 
+
+  
+
+
+   */linux/auditd 
+
+  
+
+
+   network_connection/linux/* 
+
+  
+
+
+   process_creation/linux/* 
+
+  
+
+
+
+
+  Field Mappings
+  #
+
+The following field mappings can be used to access fields within the
+event. Note that it is also possible to access the fields directly
+(e.g. EventData.AccessMask)"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://sigma.velocidex.com/docs/models/linux_base/"><meta property="og:site_name" content="Velociraptor Curated Sigma"><meta property="og:title" content="Velociraptor Curated Sigma"><meta property="og:description" content="Linux Base Sigma Model # This model is designed for triage of dead disk or file based live analysis. The rules that use this model will be evaluated once on all events.
+After all relevant rules are evaluated, the collection is complete.
+NOTE: Auditd configuration based on https://raw.githubusercontent.com/Neo23x0/auditd/refs/heads/master/audit.rules
+Log Sources # Following is a list of recognized log sources.
+Log Source Desc */linux/* */linux/sshd */linux/cron */linux/auth */linux/syslog */linux/sudo */linux/auditd network_connection/linux/* process_creation/linux/* Field Mappings # The following field mappings can be used to access fields within the event. Note that it is also possible to access the fields directly (e.g. EventData.AccessMask)"><meta property="og:locale" content="en_us"><meta property="og:type" content="website"><title>&lt;span class="icon">
+&lt;i class="fa-solid fa-book">&lt;/i>
+Linux Base
+&lt;/span> | Velociraptor Curated Sigma</title><link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://sigma.velocidex.com/docs/models/linux_base/><link rel=stylesheet href=/book.min.3257a7ce7c061eb5dfc72257c356229b1470dc77ce9b982ac220c02542f9f04f.css integrity="sha256-MlenznwGHrXfxyJXw1YimxRw3HfOm5gqwiDAJUL58E8=" crossorigin=anonymous><link rel=alternate type=application/rss+xml href=http://sigma.velocidex.com/docs/models/linux_base/index.xml title="Velociraptor Curated Sigma"><script src=/js/jquery-3.3.1.min.js?1703133391></script><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1703133392 rel=stylesheet><link href=/css/theme.css rel=stylesheet><link href=//cdn.datatables.net/2.3.0/css/dataTables.dataTables.min.css rel=stylesheet><script src=//cdn.datatables.net/2.3.0/js/dataTables.min.js></script><link href=//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css rel=stylesheet><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js integrity="sha512-0UbR6HN0dY8fWN9T7fF658896tsPgnbRREHCNq46J9/JSn8GonXDZmqtTc3qS879GM0zV49b9LPhdc/maKP8Kg==" crossorigin=anonymous referrerpolicy=no-referrer></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css integrity="sha512-56GJrpSgHk6Mc9Fltt+bQKcICJoEpxtvozXPA5n5OT0rfWiqGlJmJCI/vl16kctf/0XbBloh03vl7OF2xFnR8g==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css rel=stylesheet><script>$(document).ready(function(){$(".json-renderer").each(function(){try{data=JSON.parse($(this).text()),$(this).jsonViewer(data,{collapsed:!0,rootCollapsable:!1})}catch{}}),$(".datatable").each(function(){new DataTable(this,{paging:!0})}),$(".scroll-datatable").each(function(){let e=$(this),t=new DataTable(this,{paging:!1,scrollY:200})})})</script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>Velociraptor Curated Sigma</span></a></h2><ul><li><a href=/docs/sigma_in_velociraptor/><span class=icon><i class="fa-solid fa-blog"></i>
+Sigma In Velociraptor</span></a><ul><li><a href=/docs/sigma_in_velociraptor/customize/>Customizing Artifacts</a><ul></ul></li></ul></li><li><a href=/docs/artifacts/><span class=icon><i class="fa-solid fa-desktop"></i>
+Velociraptor Artifacts</span></a><ul><li><a href=/docs/artifacts/linux.ebpf.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Linux.EBPF.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/linux.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+Linux.Sigma.Triage</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.etw.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.ETW.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.hayabusa.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Hayabusa.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.hayabusa.rules/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Hayabusa.Rules</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Sigma.Triage</span></a><ul></ul></li></ul></li><li><a href=/docs/models/><span class=icon><i class="fa-solid fa-desktop"></i>
+Sigma Models</span></a><ul><li><a href=/docs/models/linux_base/ class=active><span class=icon><i class="fa-solid fa-book"></i>
+Linux Base</span></a><ul></ul></li><li><a href=/docs/models/linux_ebpf_base/><span class=icon><i class="fa-solid fa-book"></i>
+Linux Ebpf Base</span></a><ul></ul></li><li><a href=/docs/models/windows_base/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base</span></a><ul></ul></li><li><a href=/docs/models/windows_base_events/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Events</span></a><ul></ul></li><li><a href=/docs/models/windows_base_vql/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Vql</span></a><ul></ul></li><li><a href=/docs/models/windows_etw_base/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Etw Base</span></a><ul></ul></li></ul></li><li><a href=/docs/github/><span class=icon><i class="fa-brands fa-github"></i>
+Github</span></a><ul></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label><h3><span class=icon><i class="fa-solid fa-book"></i>
+Linux Base</span></h3><label for=toc-control></label></div></header><article class="markdown book-article"><h1 id=linux-base-sigma-model>Linux Base Sigma Model
+<a class=anchor href=#linux-base-sigma-model>#</a></h1><p>This model is designed for triage of dead disk or file based live
+analysis. The rules that use this model will be evaluated once on
+all events.</p><p>After all relevant rules are evaluated, the collection is complete.</p><p>NOTE: Auditd configuration based on
+<a href=https://raw.githubusercontent.com/Neo23x0/auditd/refs/heads/master/audit.rules>https://raw.githubusercontent.com/Neo23x0/auditd/refs/heads/master/audit.rules</a></p><h2 id=log-sources>Log Sources
+<a class=anchor href=#log-sources>#</a></h2><p>Following is a list of recognized log sources.</p><table class=scroll-datatable><thead><tr><th>Log Source</th><th>Desc</th></tr></thead><tbody><tr><td><a href=#linux>*/linux/*</a></td><td></td></tr><tr><td><a href=#linuxsshd>*/linux/sshd</a></td><td></td></tr><tr><td><a href=#linuxcron>*/linux/cron</a></td><td></td></tr><tr><td><a href=#linuxauth>*/linux/auth</a></td><td></td></tr><tr><td><a href=#linuxsyslog>*/linux/syslog</a></td><td></td></tr><tr><td><a href=#linuxsudo>*/linux/sudo</a></td><td></td></tr><tr><td><a href=#linuxauditd>*/linux/auditd</a></td><td></td></tr><tr><td><a href=#networkconnectionlinux>network_connection/linux/*</a></td><td></td></tr><tr><td><a href=#processcreationlinux>process_creation/linux/*</a></td><td></td></tr></tbody></table><h2 id=field-mappings>Field Mappings
+<a class=anchor href=#field-mappings>#</a></h2><p>The following field mappings can be used to access fields within the
+event. Note that it is also possible to access the fields directly
+(e.g. <code>EventData.AccessMask</code>)</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>View all Field Mappings</span></div><div class=expand-content style=display:none><table class=datatable><thead><tr><th>Name</th><th>Mapping</th></tr></thead><tbody><tr><td></td><td>x=>x</td></tr><tr><td>CommandLine</td><td>x=>x.Process.title</td></tr><tr><td>DestinationHostname</td><td>x=>host(name=x.Dest.ip, type="PTR", tracker_only=TRUE)</td></tr><tr><td>DestinationIp</td><td>x=>x.Dest.ip</td></tr><tr><td>DestinationPort</td><td>x=>x.Dest.port</td></tr><tr><td>Image</td><td>x=>x.Process.exe</td></tr><tr><td>Initiated</td><td>x=>x.Net.direction =~ "egress"</td></tr><tr><td>TargetFilename</td><td>x=>x.File.path</td></tr><tr><td>a0</td><td>x=>x.Process.args[0]</td></tr><tr><td>a1</td><td>x=>x.Process.args[1]</td></tr><tr><td>a2</td><td>x=>x.Process.args[2]</td></tr><tr><td>a3</td><td>x=>x.Process.args[3]</td></tr><tr><td>a4</td><td>x=>x.Process.args[4]</td></tr><tr><td>a5</td><td>x=>x.Process.args[5]</td></tr><tr><td>a6</td><td>x=>x.Process.args[6]</td></tr><tr><td>a7</td><td>x=>x.Process.args[7]</td></tr><tr><td>comm</td><td>x=>x.Process.name</td></tr><tr><td>exe</td><td>x=>x.Process.exe</td></tr><tr><td>key</td><td>x=>x.Tags[0]</td></tr><tr><td>name</td><td>x=>x.Process.name</td></tr><tr><td>nametype</td><td>x=>x.Paths.nametype</td></tr><tr><td>syscall</td><td>x=>x.Data.syscall</td></tr><tr><td>type</td><td>x=>upcase(string=x.Type)</td></tr><tr><td>unit</td><td>x=>x.Data.unit</td></tr></tbody></table></div></div><hr><h2 id=linux><code>*/linux/*</code>
+<a class=anchor href=#linux>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> ParseLogFile(ROOT<span style=color:#f92672>=</span>ROOT, Filter<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;auth.log|syslog|secure&#34;</span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span></code></pre></div></div></div><h2 id=linuxsshd><code>*/linux/sshd</code>
+<a class=anchor href=#linuxsshd>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> ParseLogFile(ROOT<span style=color:#f92672>=</span>ROOT, Filter<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;auth.log|secure&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span> Line <span style=color:#f92672>=~</span> <span style=color:#e6db74>&#34;sshd&#34;</span>
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>sshd</span>
+</span></span></code></pre></div></div></div><h2 id=linuxcron><code>*/linux/cron</code>
+<a class=anchor href=#linuxcron>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> ParseLogFile(ROOT<span style=color:#f92672>=</span>ROOT, Filter<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;syslog&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span> Line <span style=color:#f92672>=~</span> <span style=color:#e6db74>&#34;cron&#34;</span>
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>cron</span>
+</span></span></code></pre></div></div></div><h2 id=linuxauth><code>*/linux/auth</code>
+<a class=anchor href=#linuxauth>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> ParseLogFile(ROOT<span style=color:#f92672>=</span>ROOT, Filter<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;auth.log|secure&#34;</span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>auth</span>
+</span></span></code></pre></div></div></div><h2 id=linuxsyslog><code>*/linux/syslog</code>
+<a class=anchor href=#linuxsyslog>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> ParseLogFile(ROOT<span style=color:#f92672>=</span>ROOT, Filter<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;syslog&#34;</span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>syslog</span>
+</span></span></code></pre></div></div></div><h2 id=linuxsudo><code>*/linux/sudo</code>
+<a class=anchor href=#linuxsudo>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> ParseLogFile(ROOT<span style=color:#f92672>=</span>ROOT, Filter<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;auth.log|secure&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span> Line <span style=color:#f92672>=~</span> <span style=color:#e6db74>&#34;sudo:&#34;</span>
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>sudo</span>
+</span></span></code></pre></div></div></div><h2 id=linuxauditd><code>*/linux/auditd</code>
+<a class=anchor href=#linuxauditd>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> AuditdEvents
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>auditd</span>
+</span></span></code></pre></div></div></div><h2 id=network_connectionlinux><code>network_connection/linux/*</code>
+<a class=anchor href=#network_connectionlinux>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> AuditdEvents
+</span></span><span style=display:flex><span><span style=color:#66d9ef>WHERE</span> Summary.action <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;connected-to&#34;</span>
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>network_connection</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span></code></pre></div></div></div><h2 id=process_creationlinux><code>process_creation/linux/*</code>
+<a class=anchor href=#process_creationlinux>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> <span style=color:#66d9ef>FROM</span> ParseAuditdLogFile(ROOT<span style=color:#f92672>=</span>ROOT <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;/audit/&#34;</span>, Filter<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;audit.log&#34;</span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>process_creation</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>linux</span>
+</span></span></code></pre></div></div></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div></main></body></html>

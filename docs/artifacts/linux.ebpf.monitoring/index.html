@@ -1,0 +1,75 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="
+  Linux.EBPF.Monitoring artifact
+  #
+
+This artifact contains rules designed to monitor a Linux host using
+EBPF.
+Base Artifact: Linux.Sigma.EBPFBase
+You can download the artifact pack here
+Linux-Sigma-EBPF.zip
+and customize using instructions at
+Customizing Artifacts
+
+
+
+
+  
+  
+  
+  
+    
+  
+
+
+
+
+
+
+"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://sigma.velocidex.com/docs/artifacts/linux.ebpf.monitoring/"><meta property="og:site_name" content="Velociraptor Curated Sigma"><meta property="og:title" content="Linux.EBPF.Monitoring"><meta property="og:description" content="Linux.EBPF.Monitoring artifact # This artifact contains rules designed to monitor a Linux host using EBPF.
+Base Artifact: Linux.Sigma.EBPFBase
+You can download the artifact pack here Linux-Sigma-EBPF.zip and customize using instructions at Customizing Artifacts"><meta property="og:locale" content="en_us"><meta property="og:type" content="website"><title>&lt;span class="icon">
+&lt;i class="fa-solid fa-book">&lt;/i>
+Linux.EBPF.Monitoring
+&lt;/span> | Velociraptor Curated Sigma</title><link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://sigma.velocidex.com/docs/artifacts/linux.ebpf.monitoring/><link rel=stylesheet href=/book.min.3257a7ce7c061eb5dfc72257c356229b1470dc77ce9b982ac220c02542f9f04f.css integrity="sha256-MlenznwGHrXfxyJXw1YimxRw3HfOm5gqwiDAJUL58E8=" crossorigin=anonymous><link rel=alternate type=application/rss+xml href=http://sigma.velocidex.com/docs/artifacts/linux.ebpf.monitoring/index.xml title="Velociraptor Curated Sigma"><script src=/js/jquery-3.3.1.min.js?1703133391></script><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1703133392 rel=stylesheet><link href=/css/theme.css rel=stylesheet><link href=//cdn.datatables.net/2.3.0/css/dataTables.dataTables.min.css rel=stylesheet><script src=//cdn.datatables.net/2.3.0/js/dataTables.min.js></script><link href=//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css rel=stylesheet><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js integrity="sha512-0UbR6HN0dY8fWN9T7fF658896tsPgnbRREHCNq46J9/JSn8GonXDZmqtTc3qS879GM0zV49b9LPhdc/maKP8Kg==" crossorigin=anonymous referrerpolicy=no-referrer></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css integrity="sha512-56GJrpSgHk6Mc9Fltt+bQKcICJoEpxtvozXPA5n5OT0rfWiqGlJmJCI/vl16kctf/0XbBloh03vl7OF2xFnR8g==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css rel=stylesheet><script>$(document).ready(function(){$(".json-renderer").each(function(){try{data=JSON.parse($(this).text()),$(this).jsonViewer(data,{collapsed:!0,rootCollapsable:!1})}catch{}}),$(".datatable").each(function(){new DataTable(this,{paging:!0})}),$(".scroll-datatable").each(function(){let e=$(this),t=new DataTable(this,{paging:!1,scrollY:200})})})</script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>Velociraptor Curated Sigma</span></a></h2><ul><li><a href=/docs/sigma_in_velociraptor/><span class=icon><i class="fa-solid fa-blog"></i>
+Sigma In Velociraptor</span></a><ul><li><a href=/docs/sigma_in_velociraptor/customize/>Customizing Artifacts</a><ul></ul></li></ul></li><li><a href=/docs/artifacts/><span class=icon><i class="fa-solid fa-desktop"></i>
+Velociraptor Artifacts</span></a><ul><li><a href=/docs/artifacts/linux.ebpf.monitoring/ class=active><span class=icon><i class="fa-solid fa-book"></i>
+Linux.EBPF.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/linux.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+Linux.Sigma.Triage</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.etw.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.ETW.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.hayabusa.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Hayabusa.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.hayabusa.rules/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Hayabusa.Rules</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Sigma.Triage</span></a><ul></ul></li></ul></li><li><a href=/docs/models/><span class=icon><i class="fa-solid fa-desktop"></i>
+Sigma Models</span></a><ul><li><a href=/docs/models/linux_base/><span class=icon><i class="fa-solid fa-book"></i>
+Linux Base</span></a><ul></ul></li><li><a href=/docs/models/linux_ebpf_base/><span class=icon><i class="fa-solid fa-book"></i>
+Linux Ebpf Base</span></a><ul></ul></li><li><a href=/docs/models/windows_base/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base</span></a><ul></ul></li><li><a href=/docs/models/windows_base_events/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Events</span></a><ul></ul></li><li><a href=/docs/models/windows_base_vql/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Vql</span></a><ul></ul></li><li><a href=/docs/models/windows_etw_base/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Etw Base</span></a><ul></ul></li></ul></li><li><a href=/docs/github/><span class=icon><i class="fa-brands fa-github"></i>
+Github</span></a><ul></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label><h3><span class=icon><i class="fa-solid fa-book"></i>
+Linux.EBPF.Monitoring</span></h3><label for=toc-control></label></div></header><article class="markdown book-article"><h1 id=linuxebpfmonitoring-artifact>Linux.EBPF.Monitoring artifact
+<a class=anchor href=#linuxebpfmonitoring-artifact>#</a></h1><p>This artifact contains rules designed to monitor a Linux host using
+EBPF.</p><p>Base Artifact: <a href=/docs/models/linux_ebpf_base/>Linux.Sigma.EBPFBase</a></p><p>You can download the artifact pack here
+<a href=/artifacts/Linux-Sigma-EBPF.zip>Linux-Sigma-EBPF.zip</a>
+and customize using instructions at
+<a href=https://sigma.velocidex.com/docs/sigma_in_velociraptor/customize/>Customizing Artifacts</a></p><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js></script><div class=input-group><span class=input-group-addon id=clear><i class="fas fa-xmark"></i>
+</span><input type=text id=myInput onkeyup=doSearch() class=form-control placeholder="Search rules" aria-describedby=basic-addon2>
+<span class=input-group-addon id=basic-addon2><i class="fas fa-search"></i>
+<span class=total-count></span></span></div><hr><div class=search_results></div><script>$("#clear").click(function(){let e=$(this).next("input");e&&(e.val(""),doSearch())});let all_data=[];$.ajax({url:"index.json"}).done(function(e){all_data=e,DrawResults(e)});function matchItem(e,t){let s=t.description||"",o=t.title||"";if(o.toUpperCase().includes(e)||s.toUpperCase().includes(e))return!0;let n=t.tags||[];for(let t=0;t<n.length;t++)if(n[t].toUpperCase().includes(e))return!0;return!1}function insertRule(e,t){let n=$(e).find("p.description");if(!n.length)return;let s=e.find("pre");if(s.length>0){s.remove(),n.show();return}n.hide(),$.ajax({url:t,method:"GET",success:function(e){let t=hljs.highlight(e,{language:"yaml"}),s=$("<pre>").append($("<code>").append(t.value));n.after(s)}})}function doSearch(){let t=document.getElementById("myInput"),n=t.value.toUpperCase(),e=[];for(let t=0;t<all_data.length;t++){let s=all_data[t];if(matchItem(n,s)&&e.push(s),e.length>50)break}DrawResults(e)}function DrawResults(e){$(".search_results").empty(),$("span.total-count").text("Total "+e.length);let t=e.length;t>50&&(t=50);for(let o=0;o<t;o++){let s=e[o],n=$(`
+<div class="panel panel-default color">
+  <div class="panel-heading color">
+    <a class="title" target="new" href=""><h3 class="panel-title color " ></h3></a>
+    <div class="author pull-right"></div>
+  </div>
+  <div class="panel-body color">
+    <div class="border color">
+       <div class="border color">
+         <div class="idea-inner-text-main color">
+           <p class="description "></p>
+           <p class="idea-tag space"></p>
+         </div>
+       </div>
+    </div>
+</div>`);n.find(".title").append(s.title),n.find(".author").append(s.author),n.find(".description").append(s.description),n.find(".title").attr("href",s.link).click(function(){return insertRule(n,s.link),!1}),n.find(".date").append(s.date);let i=s.tags||[];for(let e=0;e<i.length;e++){let t=i[e],s=$(`
+<a class="space tag"><i class="linkcolour label label-success">`+t+`</i></a>`).click(function(){document.getElementById("myInput").value=t,doSearch()});n.find(".idea-tag").append(s)}let a=$(".search_results").append(n)}}</script></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div></main></body></html>

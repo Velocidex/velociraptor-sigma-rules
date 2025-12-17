@@ -1,0 +1,317 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="
+  Windows Base VQL Sigma Model
+  #
+
+This model is designed for triage of dead disk, or file based live
+analysis using VQL rules. The rules that use this model will be
+evaluated once on all events.
+After all relevant rules are evaluated, the collection is complete.
+Rules that utilize this model may include a vql section which may
+contain a VQL lambda to dictates how the event is generated. This
+allows the rule itself to generate all relevant fields."><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://sigma.velocidex.com/docs/models/windows_base_vql/"><meta property="og:site_name" content="Velociraptor Curated Sigma"><meta property="og:title" content="Velociraptor Curated Sigma"><meta property="og:description" content="Windows Base VQL Sigma Model # This model is designed for triage of dead disk, or file based live analysis using VQL rules. The rules that use this model will be evaluated once on all events.
+After all relevant rules are evaluated, the collection is complete.
+Rules that utilize this model may include a vql section which may contain a VQL lambda to dictates how the event is generated. This allows the rule itself to generate all relevant fields."><meta property="og:locale" content="en_us"><meta property="og:type" content="website"><title>&lt;span class="icon">
+&lt;i class="fa-solid fa-book">&lt;/i>
+Windows Base Vql
+&lt;/span> | Velociraptor Curated Sigma</title><link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://sigma.velocidex.com/docs/models/windows_base_vql/><link rel=stylesheet href=/book.min.3257a7ce7c061eb5dfc72257c356229b1470dc77ce9b982ac220c02542f9f04f.css integrity="sha256-MlenznwGHrXfxyJXw1YimxRw3HfOm5gqwiDAJUL58E8=" crossorigin=anonymous><link rel=alternate type=application/rss+xml href=http://sigma.velocidex.com/docs/models/windows_base_vql/index.xml title="Velociraptor Curated Sigma"><script src=/js/jquery-3.3.1.min.js?1703133391></script><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1703133392 rel=stylesheet><link href=/css/theme.css rel=stylesheet><link href=//cdn.datatables.net/2.3.0/css/dataTables.dataTables.min.css rel=stylesheet><script src=//cdn.datatables.net/2.3.0/js/dataTables.min.js></script><link href=//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css rel=stylesheet><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js integrity="sha512-0UbR6HN0dY8fWN9T7fF658896tsPgnbRREHCNq46J9/JSn8GonXDZmqtTc3qS879GM0zV49b9LPhdc/maKP8Kg==" crossorigin=anonymous referrerpolicy=no-referrer></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css integrity="sha512-56GJrpSgHk6Mc9Fltt+bQKcICJoEpxtvozXPA5n5OT0rfWiqGlJmJCI/vl16kctf/0XbBloh03vl7OF2xFnR8g==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css rel=stylesheet><script>$(document).ready(function(){$(".json-renderer").each(function(){try{data=JSON.parse($(this).text()),$(this).jsonViewer(data,{collapsed:!0,rootCollapsable:!1})}catch{}}),$(".datatable").each(function(){new DataTable(this,{paging:!0})}),$(".scroll-datatable").each(function(){let e=$(this),t=new DataTable(this,{paging:!1,scrollY:200})})})</script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>Velociraptor Curated Sigma</span></a></h2><ul><li><a href=/docs/sigma_in_velociraptor/><span class=icon><i class="fa-solid fa-blog"></i>
+Sigma In Velociraptor</span></a><ul><li><a href=/docs/sigma_in_velociraptor/customize/>Customizing Artifacts</a><ul></ul></li></ul></li><li><a href=/docs/artifacts/><span class=icon><i class="fa-solid fa-desktop"></i>
+Velociraptor Artifacts</span></a><ul><li><a href=/docs/artifacts/linux.ebpf.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Linux.EBPF.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/linux.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+Linux.Sigma.Triage</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.etw.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.ETW.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.hayabusa.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Hayabusa.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.hayabusa.rules/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Hayabusa.Rules</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Sigma.Triage</span></a><ul></ul></li></ul></li><li><a href=/docs/models/><span class=icon><i class="fa-solid fa-desktop"></i>
+Sigma Models</span></a><ul><li><a href=/docs/models/linux_base/><span class=icon><i class="fa-solid fa-book"></i>
+Linux Base</span></a><ul></ul></li><li><a href=/docs/models/linux_ebpf_base/><span class=icon><i class="fa-solid fa-book"></i>
+Linux Ebpf Base</span></a><ul></ul></li><li><a href=/docs/models/windows_base/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base</span></a><ul></ul></li><li><a href=/docs/models/windows_base_events/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Events</span></a><ul></ul></li><li><a href=/docs/models/windows_base_vql/ class=active><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Vql</span></a><ul></ul></li><li><a href=/docs/models/windows_etw_base/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Etw Base</span></a><ul></ul></li></ul></li><li><a href=/docs/github/><span class=icon><i class="fa-brands fa-github"></i>
+Github</span></a><ul></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label><h3><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Vql</span></h3><label for=toc-control></label></div></header><article class="markdown book-article"><h1 id=windows-base-vql-sigma-model>Windows Base VQL Sigma Model
+<a class=anchor href=#windows-base-vql-sigma-model>#</a></h1><p>This model is designed for triage of dead disk, or file based live
+analysis using VQL rules. The rules that use this model will be
+evaluated once on all events.</p><p>After all relevant rules are evaluated, the collection is complete.</p><p>Rules that utilize this model may include a <code>vql</code> section which may
+contain a VQL lambda to dictates how the event is generated. This
+allows the rule itself to generate all relevant fields.</p><p>For example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>vql</span>: <span style=color:#ae81ff>|</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>x=&gt;dict(</span>
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>Timestamp=timestamp(epoch=now()),</span>
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>EventData=dict(</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>Files=SearchFiles(Glob=&#39;C:/Users/*/AppData/Roaming/rclone/rclone.conf&#39;)</span>
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>))</span>
+</span></span></code></pre></div><p>The following utility functions are defined:</p><ul><li><p><code>SearchFiles(Glob)</code>: Allows searching for files with a
+glob. Returns the file size as well as the first 100 bytes.</p></li><li><p><code>SearchRegistryKeys(Glob)</code>: Allows searching for registry keys -
+returns a dict with key/value pairs from the registry.</p></li></ul><h2 id=log-sources>Log Sources
+<a class=anchor href=#log-sources>#</a></h2><p>Following is a list of recognized log sources.</p><table class=scroll-datatable><thead><tr><th>Log Source</th><th>Desc</th></tr></thead><tbody><tr><td><a href=#vqlwindows>vql/windows/*</a></td><td>This log source emits a single event. All rules using the log</td></tr><tr><td><a href=#filesystemwindowsglob>filesystem/windows/glob</a></td><td>This log source searches for all files on the drive - it takes a</td></tr><tr><td><a href=#windowsschtasks>*/windows/schtasks</a></td><td>Enumerates All Scheduled tasks</td></tr><tr><td><a href=#windowsservices>*/windows/services</a></td><td></td></tr><tr><td><a href=#persistencewindowsservices>persistence/windows/services</a></td><td></td></tr><tr><td><a href=#webserverwindows>webserver/windows/*</a></td><td></td></tr><tr><td><a href=#processcreationwindowspslist>process_creation/windows/pslist</a></td><td></td></tr><tr><td><a href=#imageloadvqlpslist>image_load/vql/pslist</a></td><td></td></tr><tr><td><a href=#networkconnectionwindowsnetstat>network_connection/windows/netstat</a></td><td></td></tr><tr><td><a href=#windowswmi>*/windows/wmi</a></td><td>Exposes permanent WMI subscriptions (Filter + Consumer) in a Sigma-friendly format.</td></tr><tr><td><a href=#forensicswindowsprefetch>forensics/windows/prefetch</a></td><td>Parse Windows Prefetch files (dead-disk or live). Emits one row per PF entry with useful triage fields for Sigma.</td></tr><tr><td><a href=#processcreationwindowsattackprefetch>process_creation/windows/attack_prefetch</a></td><td>Lightweight Prefetch view used by Windows.Attack.Prefetch. Helpful for quick presence checks of executables that created PF entries.</td></tr><tr><td><a href=#forensicswindowsusn>forensics/windows/usn</a></td><td>USN Journal parser output normalized for Sigma. Emits filesystem change records with path, filename, reason flags and MFT identifiers.</td></tr></tbody></table><h2 id=field-mappings>Field Mappings
+<a class=anchor href=#field-mappings>#</a></h2><p>The following field mappings can be used to access fields within the
+event. Note that it is also possible to access the fields directly
+(e.g. <code>EventData.AccessMask</code>)</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>View all Field Mappings</span></div><div class=expand-content style=display:none><table class=datatable><thead><tr><th>Name</th><th>Mapping</th></tr></thead><tbody><tr><td>EventData</td><td>x=>x.EventData</td></tr><tr><td>Hash</td><td>x=>hash(path=x.EventData.Image)</td></tr><tr><td>Image</td><td>x=>x.EventData.Image</td></tr><tr><td>Mtime</td><td>x=>x.EventData.Mtime</td></tr><tr><td>Name</td><td>x=>x.EventData.Name</td></tr><tr><td>OSPath</td><td>x=>x.EventData.OSPath</td></tr><tr><td>Size</td><td>x=>x.EventData.Size</td></tr><tr><td>Timestamp</td><td>x=>timestamp(epoch=now())</td></tr></tbody></table></div></div><hr><h2 id=vqlwindows><code>vql/windows/*</code>
+<a class=anchor href=#vqlwindows>#</a></h2><p>This log source emits a single event. All rules using the log
+source will receive this event, where they can run arbitrary VQL
+queries to build the event themselves.</p><p>This is most useful for rules that want to generate their own
+event data.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>timestamp</span>(epoch<span style=color:#f92672>=</span>now()) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    Computer<span style=color:#f92672>=</span>Hostname,
+</span></span><span style=display:flex><span>    Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;VQL Evaluation&#34;</span>,
+</span></span><span style=display:flex><span>    TimeCreated<span style=color:#f92672>=</span>dict(SystemTime<span style=color:#f92672>=</span>now())
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>  dict() <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> <span style=color:#66d9ef>scope</span>()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>vql</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span></code></pre></div></div></div><h2 id=filesystemwindowsglob><code>filesystem/windows/glob</code>
+<a class=anchor href=#filesystemwindowsglob>#</a></h2><p>This log source searches for all files on the drive - it takes a
+long time but allows rules to check for presence of a particular
+filename.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> Mtime <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>       dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>       dict(Name<span style=color:#f92672>=</span>Name,
+</span></span><span style=display:flex><span>            OSPath<span style=color:#f92672>=</span>OSPath,
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>Size</span><span style=color:#f92672>=</span><span style=color:#66d9ef>Size</span>,
+</span></span><span style=display:flex><span>            Mtime<span style=color:#f92672>=</span>Mtime) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> glob(globs<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;C:/**&#39;</span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>filesystem</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>glob</span>
+</span></span></code></pre></div></div></div><h2 id=windowsschtasks><code>*/windows/schtasks</code>
+<a class=anchor href=#windowsschtasks>#</a></h2><p>Enumerates All Scheduled tasks</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>, <span style=color:#f92672>*</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> Artifact.Windows.<span style=color:#66d9ef>System</span>.TaskScheduler()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>schtasks</span>
+</span></span></code></pre></div></div></div><h2 id=windowsservices><code>*/windows/services</code>
+<a class=anchor href=#windowsservices>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>, <span style=color:#f92672>*</span>,
+</span></span><span style=display:flex><span>    PathName <span style=color:#66d9ef>AS</span> CommandLine, ServiceDll <span style=color:#66d9ef>AS</span> Image,
+</span></span><span style=display:flex><span>    UserAccount <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>User</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> Artifact.Windows.<span style=color:#66d9ef>System</span>.Services()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>services</span>
+</span></span></code></pre></div></div></div><h2 id=persistencewindowsservices><code>persistence/windows/services</code>
+<a class=anchor href=#persistencewindowsservices>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>, <span style=color:#f92672>*</span>,
+</span></span><span style=display:flex><span>    PathName <span style=color:#66d9ef>AS</span> CommandLine, ServiceDll <span style=color:#66d9ef>AS</span> Image,
+</span></span><span style=display:flex><span>    UserAccount <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>User</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> Artifact.Windows.<span style=color:#66d9ef>System</span>.Services()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>persistence</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>services</span>
+</span></span></code></pre></div></div></div><h2 id=webserverwindows><code>webserver/windows/*</code>
+<a class=anchor href=#webserverwindows>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>, <span style=color:#f92672>*</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> Artifact.Windows.Applications.IISLogs()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>webserver</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span></code></pre></div></div></div><h2 id=process_creationwindowspslist><code>process_creation/windows/pslist</code>
+<a class=anchor href=#process_creationwindowspslist>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> CreateTime <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>       dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>       dict(CreateTime<span style=color:#f92672>=</span>CreateTime, CommandLine<span style=color:#f92672>=</span> CommandLine,
+</span></span><span style=display:flex><span>            Image<span style=color:#f92672>=</span>Exe, MD5<span style=color:#f92672>=</span>H.MD5, SHA256<span style=color:#f92672>=</span>H.SHA256, SHA1<span style=color:#f92672>=</span>H.SHA1,
+</span></span><span style=display:flex><span>            ParentCommandLine<span style=color:#f92672>=</span>P.CommandLine,
+</span></span><span style=display:flex><span>            ParentImage<span style=color:#f92672>=</span>P.Exe,
+</span></span><span style=display:flex><span>            ParentMD5<span style=color:#f92672>=</span>PH.MD5,
+</span></span><span style=display:flex><span>            ParentSHA1<span style=color:#f92672>=</span>PH.SHA1,
+</span></span><span style=display:flex><span>            ParentSHA256<span style=color:#f92672>=</span>PH.SHA256,
+</span></span><span style=display:flex><span>            GrandParentCommandLine<span style=color:#f92672>=</span>GP.CommandLine,
+</span></span><span style=display:flex><span>            GrandParentImage<span style=color:#f92672>=</span>GP.Exe,
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>User</span><span style=color:#f92672>=</span>Username
+</span></span><span style=display:flex><span>       ) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> foreach(<span style=color:#66d9ef>row</span><span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>{</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>SELECT</span> StartTime <span style=color:#66d9ef>AS</span> CreateTime,
+</span></span><span style=display:flex><span>          Pid, CommandLine, Exe,
+</span></span><span style=display:flex><span>          process_tracker_get(id<span style=color:#f92672>=</span>Ppid).<span style=color:#66d9ef>Data</span> <span style=color:#66d9ef>AS</span> P,
+</span></span><span style=display:flex><span>          <span style=color:#66d9ef>if</span>(condition<span style=color:#f92672>=</span>process_tracker_get(id<span style=color:#f92672>=</span>Ppid).<span style=color:#66d9ef>Data</span>.Exe,
+</span></span><span style=display:flex><span>             <span style=color:#66d9ef>then</span><span style=color:#f92672>=</span>hash(path<span style=color:#f92672>=</span>process_tracker_get(id<span style=color:#f92672>=</span>Ppid).<span style=color:#66d9ef>Data</span>.Exe)) <span style=color:#66d9ef>AS</span> PH,
+</span></span><span style=display:flex><span>          process_tracker_get(id<span style=color:#f92672>=</span>process_tracker_get(id<span style=color:#f92672>=</span>Ppid).ParentId).<span style=color:#66d9ef>Data</span> <span style=color:#66d9ef>AS</span> GP,
+</span></span><span style=display:flex><span>          <span style=color:#66d9ef>if</span>(condition<span style=color:#f92672>=</span>Exe, <span style=color:#66d9ef>then</span><span style=color:#f92672>=</span>hash(path<span style=color:#f92672>=</span>Exe)) <span style=color:#66d9ef>AS</span> H,
+</span></span><span style=display:flex><span>          Username
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>FROM</span> process_tracker_pslist()
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>process_creation</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>pslist</span>
+</span></span></code></pre></div></div></div><h2 id=image_loadvqlpslist><code>image_load/vql/pslist</code>
+<a class=anchor href=#image_loadvqlpslist>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> CreateTime <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>       dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>       dict(CommandLine<span style=color:#f92672>=</span>CommandLine,
+</span></span><span style=display:flex><span>            Image<span style=color:#f92672>=</span>Exe,
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>User</span><span style=color:#f92672>=</span>Username,
+</span></span><span style=display:flex><span>            MD5<span style=color:#f92672>=</span>H.MD5,
+</span></span><span style=display:flex><span>            SHA1<span style=color:#f92672>=</span>H.SHA1,
+</span></span><span style=display:flex><span>            SHA256<span style=color:#f92672>=</span>H.SHA256,
+</span></span><span style=display:flex><span>            ModuleName<span style=color:#f92672>=</span>ModuleName,
+</span></span><span style=display:flex><span>            ModulePath<span style=color:#f92672>=</span>ModulePath,
+</span></span><span style=display:flex><span>            ModuleMD5<span style=color:#f92672>=</span>MH.MD5,
+</span></span><span style=display:flex><span>            ModuleSHA1<span style=color:#f92672>=</span>MH.SHA1,
+</span></span><span style=display:flex><span>            ModuleSHA256<span style=color:#f92672>=</span>MH.SHA256,
+</span></span><span style=display:flex><span>            GrandParentImage<span style=color:#f92672>=</span>GP.Exe,
+</span></span><span style=display:flex><span>            GrandParentCommandLine<span style=color:#f92672>=</span>GP.CommandLine,
+</span></span><span style=display:flex><span>            ParentCommandLine<span style=color:#f92672>=</span>P.CommandLine,
+</span></span><span style=display:flex><span>            ParentImage<span style=color:#f92672>=</span>P.Exe,
+</span></span><span style=display:flex><span>            ParentMD5<span style=color:#f92672>=</span>PH.MD5,
+</span></span><span style=display:flex><span>            ParentSHA1<span style=color:#f92672>=</span>PH.SHA1,
+</span></span><span style=display:flex><span>            ParentSHA256<span style=color:#f92672>=</span>PH.SHA256) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> foreach(
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>row</span><span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>{</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>SELECT</span> StartTime <span style=color:#66d9ef>AS</span> CreateTime,
+</span></span><span style=display:flex><span>          Pid, CommandLine, Exe,
+</span></span><span style=display:flex><span>          process_tracker_get(id<span style=color:#f92672>=</span>Ppid).<span style=color:#66d9ef>Data</span> <span style=color:#66d9ef>AS</span> P,
+</span></span><span style=display:flex><span>          <span style=color:#66d9ef>if</span>(condition<span style=color:#f92672>=</span>Exe, <span style=color:#66d9ef>then</span><span style=color:#f92672>=</span>hash(path<span style=color:#f92672>=</span>Exe)) <span style=color:#66d9ef>AS</span> H,
+</span></span><span style=display:flex><span>          Username
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>FROM</span> process_tracker_pslist()<span style=color:#960050;background-color:#1e0010>}</span>,
+</span></span><span style=display:flex><span>  query<span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>{</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>SELECT</span> CreateTime, Exe, CommandLine, P, H, Username,
+</span></span><span style=display:flex><span>          <span style=color:#66d9ef>if</span>(condition<span style=color:#f92672>=</span>P.Exe, <span style=color:#66d9ef>then</span><span style=color:#f92672>=</span>hash(path<span style=color:#f92672>=</span>P.Exe), <span style=color:#66d9ef>else</span><span style=color:#f92672>=</span>P.Exe) <span style=color:#66d9ef>AS</span> PH,
+</span></span><span style=display:flex><span>          ModuleName, ExePath <span style=color:#66d9ef>AS</span> ModulePath,
+</span></span><span style=display:flex><span>          <span style=color:#66d9ef>if</span>(condition<span style=color:#f92672>=</span>ExePath, <span style=color:#66d9ef>then</span><span style=color:#f92672>=</span>hash(path<span style=color:#f92672>=</span>ExePath), <span style=color:#66d9ef>else</span><span style=color:#f92672>=</span>ExePath) <span style=color:#66d9ef>AS</span> MH,
+</span></span><span style=display:flex><span>          process_tracker_get(id<span style=color:#f92672>=</span>P.Ppid).<span style=color:#66d9ef>Data</span> <span style=color:#66d9ef>AS</span> GP
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>FROM</span> modules(pid<span style=color:#f92672>=</span>int(int<span style=color:#f92672>=</span>Pid))<span style=color:#960050;background-color:#1e0010>}</span>
+</span></span><span style=display:flex><span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>image_load</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>vql</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>pslist</span>
+</span></span></code></pre></div></div></div><h2 id=network_connectionwindowsnetstat><code>network_connection/windows/netstat</code>
+<a class=anchor href=#network_connectionwindowsnetstat>#</a></h2><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> pt.CreateTime <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>       dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>       dict(CommandLine<span style=color:#f92672>=</span>CommandLine,
+</span></span><span style=display:flex><span>            Status<span style=color:#f92672>=</span> Status,
+</span></span><span style=display:flex><span>            Image<span style=color:#f92672>=</span>Image,
+</span></span><span style=display:flex><span>            LocalIP<span style=color:#f92672>=</span> LocalIP,
+</span></span><span style=display:flex><span>            LocalPort<span style=color:#f92672>=</span> LocalPort,
+</span></span><span style=display:flex><span>            RemoteIP<span style=color:#f92672>=</span> RemoteIP,
+</span></span><span style=display:flex><span>            RemotePort <span style=color:#f92672>=</span> RemotePort,
+</span></span><span style=display:flex><span>            ParentImage<span style=color:#f92672>=</span> ParentImage,
+</span></span><span style=display:flex><span>            Protocol<span style=color:#f92672>=</span> Protocol) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> foreach(
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>row</span><span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>{</span><span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span> , process_tracker_get(id<span style=color:#f92672>=</span>Pid) <span style=color:#66d9ef>AS</span> pt <span style=color:#66d9ef>FROM</span> netstat()<span style=color:#960050;background-color:#1e0010>}</span>,
+</span></span><span style=display:flex><span>    query<span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>{</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>          Laddr.IP <span style=color:#66d9ef>as</span> LocalIP, Laddr.Port <span style=color:#66d9ef>AS</span> LocalPort,
+</span></span><span style=display:flex><span>          Raddr.IP <span style=color:#66d9ef>AS</span> RemoteIP, Raddr.Port <span style=color:#66d9ef>AS</span> RemotePort,
+</span></span><span style=display:flex><span>          Pid, TypeString <span style=color:#66d9ef>AS</span> Protocol, Status, pt.<span style=color:#66d9ef>Data</span>.Exe <span style=color:#66d9ef>AS</span> Image,
+</span></span><span style=display:flex><span>          pt.<span style=color:#66d9ef>Data</span>.CommandLine <span style=color:#66d9ef>as</span> CommandLine,
+</span></span><span style=display:flex><span>          process_tracker_get(id<span style=color:#f92672>=</span>pt.<span style=color:#66d9ef>Data</span>.Ppid).<span style=color:#66d9ef>Data</span>.Exe <span style=color:#66d9ef>AS</span> ParentImage,
+</span></span><span style=display:flex><span>          pt
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>FROM</span> <span style=color:#66d9ef>scope</span>()<span style=color:#960050;background-color:#1e0010>}</span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>network_connection</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>netstat</span>
+</span></span></code></pre></div></div></div><h2 id=windowswmi><code>*/windows/wmi</code>
+<a class=anchor href=#windowswmi>#</a></h2><p>Exposes permanent WMI subscriptions (Filter + Consumer) in a Sigma-friendly format.
+Helps detect uptime-based persistence and consumers that launch processes.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>timestamp</span>(epoch<span style=color:#f92672>=</span>now()) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    Computer<span style=color:#f92672>=</span>Hostname,
+</span></span><span style=display:flex><span>    Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Velociraptor&#34;</span>,
+</span></span><span style=display:flex><span>    TimeCreated<span style=color:#f92672>=</span>dict(SystemTime<span style=color:#f92672>=</span>now())
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    Namespace<span style=color:#f92672>=</span>Namespace,
+</span></span><span style=display:flex><span>    FilterDetails<span style=color:#f92672>=</span>FilterDetails,
+</span></span><span style=display:flex><span>    ConsumerDetails<span style=color:#f92672>=</span>ConsumerDetails
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> Artifact.Windows.Persistence.PermanentWMIEvents(
+</span></span><span style=display:flex><span>  AllRootNamespaces<span style=color:#f92672>=</span><span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>wmi</span>
+</span></span></code></pre></div></div></div><h2 id=forensicswindowsprefetch><code>forensics/windows/prefetch</code>
+<a class=anchor href=#forensicswindowsprefetch>#</a></h2><p>Parse Windows Prefetch files (dead-disk or live). Emits one row per PF entry with useful triage fields for Sigma.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>  ModificationTime <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>  dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    Name<span style=color:#f92672>=</span>PrefetchFileName,
+</span></span><span style=display:flex><span>    Image<span style=color:#f92672>=</span>Executable,
+</span></span><span style=display:flex><span>    OSPath<span style=color:#f92672>=</span>OSPath,
+</span></span><span style=display:flex><span>    Directory<span style=color:#f92672>=</span>dirname(path<span style=color:#f92672>=</span>OSPath),
+</span></span><span style=display:flex><span>    Mtime<span style=color:#f92672>=</span>ModificationTime,
+</span></span><span style=display:flex><span>    RunCount<span style=color:#f92672>=</span>RunCount,
+</span></span><span style=display:flex><span>    LastRunTimes<span style=color:#f92672>=</span>LastRunTimes,
+</span></span><span style=display:flex><span>    PrefetchHash<span style=color:#f92672>=</span>Hash
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> Artifact.Windows.Forensics.Prefetch()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>forensics</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>prefetch</span>
+</span></span></code></pre></div></div></div><h2 id=process_creationwindowsattack_prefetch><code>process_creation/windows/attack_prefetch</code>
+<a class=anchor href=#process_creationwindowsattack_prefetch>#</a></h2><p>Lightweight Prefetch view used by Windows.Attack.Prefetch. Helpful for quick presence checks of executables that created PF entries.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>  modified <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>  dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    Name<span style=color:#f92672>=</span>Name,
+</span></span><span style=display:flex><span>    Mtime<span style=color:#f92672>=</span>modified,
+</span></span><span style=display:flex><span>    ModTime<span style=color:#f92672>=</span>ModTime,
+</span></span><span style=display:flex><span>    Image<span style=color:#f92672>=</span><span style=color:#66d9ef>get</span>(item<span style=color:#f92672>=</span>split(string<span style=color:#f92672>=</span>Name, sep<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;-&#39;</span>), member<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> Artifact.Windows.Attack.Prefetch()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>process_creation</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>attack_prefetch</span>
+</span></span></code></pre></div></div></div><h2 id=forensicswindowsusn><code>forensics/windows/usn</code>
+<a class=anchor href=#forensicswindowsusn>#</a></h2><p>USN Journal parser output normalized for Sigma. Emits filesystem change records with path, filename, reason flags and MFT identifiers.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>  dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    OSPath<span style=color:#f92672>=</span>OSPath,
+</span></span><span style=display:flex><span>    FileName<span style=color:#f92672>=</span>Filename,
+</span></span><span style=display:flex><span>    Reason<span style=color:#f92672>=</span>Reason,
+</span></span><span style=display:flex><span>    MFTId<span style=color:#f92672>=</span>MFTId,
+</span></span><span style=display:flex><span>    ParentMFTId<span style=color:#f92672>=</span>ParentMFTId
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> Artifact.Windows.Forensics.Usn()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>forensics</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>windows</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>usn</span>
+</span></span></code></pre></div></div></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div></main></body></html>

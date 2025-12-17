@@ -1,4 +1,11 @@
-LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ EID2006)),]) FROM scope()[]SELECT * FROM Artifact.Windows.Hayabusa.Rules( RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=Title)[
+Query: LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ EID2006)),]) FROM scope()
+Output: []
+
+# This rule relies on a null value implemented in
+# https://github.com/Velocidex/velociraptor/pull/3356 Disabled until
+# this makes a release.
+Query: SELECT * FROM Artifact.Windows.Hayabusa.Rules( RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter=Title)
+Output: [
  {
   "Timestamp": "2024-03-15T12:53:53.333499193Z",
   "Computer": "WIN-2VKA2DK38DT",
@@ -53,3 +60,4 @@ LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(fil
   "_Source": "Windows.Hayabusa.Rules"
  }
 ]
+

@@ -1,4 +1,10 @@
-LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ fixture)),]) FROM scope()[]SELECT * FROM Artifact.Windows.Hayabusa.Rules( RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter="PwSh Engine Started") LIMIT 1[
+Query: LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(filename=testDir+ fixture)),]) FROM scope()
+Output: []
+
+# Check for Details field working correctly - the log source should
+# extract the HostApplication field.
+Query: SELECT * FROM Artifact.Windows.Hayabusa.Rules( RuleStatus='All Rules', RuleLevel='All', RuleTitleFilter="PwSh Engine Started") LIMIT 1
+Output: [
  {
   "Timestamp": "2024-01-13T06:25:55.168107271Z",
   "Computer": "WIN-2VKA2DK38DT",
@@ -44,3 +50,4 @@ LET _ <= SELECT mock(plugin='parse_evtx', results=[parse_json(data=read_file(fil
   "_Source": "Windows.Hayabusa.Rules"
  }
 ]
+

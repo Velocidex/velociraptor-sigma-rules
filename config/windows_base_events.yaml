@@ -368,6 +368,8 @@ FieldMappings:
   RemoteAddresses: "x=>x.EventData.RemoteAddresses"
   RemoteMachineID: "x=>x.EventData.RemoteMachineID"
   RemotePorts: "x=>x.EventData.RemotePorts"
+  RemoteAddress: "x=>x.EventData.RemoteAddress"
+  IsatapRouter: "x=>x.EventData.IsatapRouter"
   RemoteUserID: "x=>x.EventData.RemoteUserID"
   RequestedPolicy: "x=>x.EventData.RequestedPolicy"
   ReturnCode: "x=>x.EventData.ReturnCode"

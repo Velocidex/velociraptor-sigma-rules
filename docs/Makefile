@@ -1,5 +1,10 @@
+all: build
+
+serve:
+	hugo serve --bind 0.0.0.0
+
 build:
-	hugo
+	hugo build
 
 clean:
-	rm -rf ./public/
+	rm -rf ./public/*

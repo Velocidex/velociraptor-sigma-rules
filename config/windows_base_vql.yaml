@@ -357,16 +357,6 @@ Sources:
       - Status
       - User
 
-  process_creation/vql/execution:
-    query: |
-      SELECT dict(Computer=Hostname, Channel='Velociraptor') AS System, *
-      FROM Artifact.Windows.Analysis.EvidenceOfExecution()
-    fields:
-      - LastExecution
-      - Name
-      - NumberOfExecutions
-      - User
-
   webserver/windows/*:
     query: |
       SELECT dict(Computer=Hostname, Channel='Velociraptor') AS System, *
@@ -512,7 +502,7 @@ Sources:
     description: |
       Exposes permanent WMI subscriptions (Filter + Consumer) in a Sigma-friendly format.
       Helps detect uptime-based persistence and consumers that launch processes.
-  
+
     query: |
       SELECT
         timestamp(epoch=now()) AS Timestamp,
@@ -544,14 +534,14 @@ Sources:
         ModificationTime AS Timestamp,
         dict(Computer=Hostname, Channel='Velociraptor') AS System,
         dict(
-          Name=PrefetchFileName,      
-          Image=Executable,           
-          OSPath=OSPath,              
+          Name=PrefetchFileName,
+          Image=Executable,
+          OSPath=OSPath,
           Directory=dirname(path=OSPath),
-          Mtime=ModificationTime,     
+          Mtime=ModificationTime,
           RunCount=RunCount,
-          LastRunTimes=LastRunTimes,  
-          PrefetchHash=string(Hash)   
+          LastRunTimes=LastRunTimes,
+          PrefetchHash=Hash
         ) AS EventData
       FROM Artifact.Windows.Forensics.Prefetch()
     fields:
@@ -573,10 +563,10 @@ Sources:
         modified AS Timestamp,
         dict(Computer=Hostname, Channel='Velociraptor') AS System,
         dict(
-          Name=Name,                              
-          Mtime=modified,                         
-          ModTime=ModTime,                        
-          Image=get(item=split(string=Name, sep='-'), member=0)  
+          Name=Name,
+          Mtime=modified,
+          ModTime=ModTime,
+          Image=get(item=split(string=Name, sep='-'), member=0)
         ) AS EventData
       FROM Artifact.Windows.Attack.Prefetch()
     fields:
@@ -594,9 +584,9 @@ Sources:
         Timestamp,
         dict(Computer=Hostname, Channel='Velociraptor') AS System,
         dict(
-          OSPath=OSPath,        
-          FileName=Filename,    
-          Reason=Reason,       
+          OSPath=OSPath,
+          FileName=Filename,
+          Reason=Reason,
           MFTId=MFTId,
           ParentMFTId=ParentMFTId
         ) AS EventData

@@ -79,3 +79,12 @@ profile:
 
 serve:
 	cd docs && hugo serve --port 1314 --bind 0.0.0.0
+
+./tests/velociraptor:
+	echo "Downloading the Velociraptor binary"
+	curl -o ./tests/velociraptor -L https://github.com/Velocidex/velociraptor/releases/download/v0.75/velociraptor-v0.75.5-linux-amd64-musl
+	chmod +x ./tests/velociraptor
+
+
+verify: ./tests/velociraptor
+	tests/velociraptor artifacts verify -v --builtin output/*.yaml

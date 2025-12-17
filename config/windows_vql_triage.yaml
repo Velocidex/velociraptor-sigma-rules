@@ -73,6 +73,13 @@ RuleDirectories:
   - rules/vql/windows/
 
 DocTemplate: |
+  ---
+  title: Windows.Sigma.Triage
+  weight: 20
+  bookToc: false
+  IconClass: fa-solid fa-book
+  ---
+
   # Windows.Sigma.Triage artifact
 
   This artifact contains rules designed to triage a Windows host using

@@ -602,6 +602,8 @@ FieldMappings:
   RemoteIP: "x=>x.EventData.RemoteIP"
   RemotePort: "x=>x.EventData.RemotePort"
 
+  RemoteAddress: "x=>x.EventData.RemoteAddress"
+  IsatapRouter: "x=>x.EventData.IsatapRouter"
 
 # This controls the Details field to show when a rule matched. It aims
 # to be a more concise version of the log message, but if there is no

@@ -1,4 +1,16 @@
-LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=testDir + "/test_files/WindowsEvents/KernelLogger.json"))[]LET _ <= import(artifact="Windows.Sigma.ETWBase")[]LET _ <= import(artifact="Windows.ETW.Monitoring")[]LET TestingLogSources <= sigma_log_sources( `etw/windows/kernel`={ SELECT * FROM KernelLoggerRows })[]SELECT  _Rule.Title AS Rule ,
+Query: LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=testDir + "/test_files/WindowsEvents/KernelLogger.json"))
+Output: []
+
+Query: LET _ <= import(artifact="Windows.Sigma.ETWBase")
+Output: []
+
+Query: LET _ <= import(artifact="Windows.ETW.Monitoring")
+Output: []
+
+Query: LET TestingLogSources <= sigma_log_sources( `etw/windows/kernel`={ SELECT * FROM KernelLoggerRows })
+Output: []
+
+Query: SELECT  _Rule.Title AS Rule ,
       Details,
       dict(System=System,
            EventData=X.EventData || X.UserData,
@@ -11,7 +23,8 @@ LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=t
    rule_filter="x=>x.Title =~ RuleFilter",
    field_mapping= FieldMapping)
  ORDER BY Rule
-[
+
+Output: [
  {
   "Rule": "Credential discovery via VaultCmd.exe",
   "Details": "Process VaultCmd.exe launched C:\\Windows\\system32\\VaultCmd.exe /listcreds:Windows Credentials",
@@ -252,3 +265,4 @@ LET KernelLoggerRows = SELECT * FROM parse_json_array(data=read_file( filename=t
   }
  }
 ]
+

@@ -2,6 +2,7 @@
 title: "Sigma Models"
 date: 2023-10-15T00:14:44+10:00
 weight: 100
+IconClass: fa-solid fa-desktop
 ---
 
 # Sigma Models

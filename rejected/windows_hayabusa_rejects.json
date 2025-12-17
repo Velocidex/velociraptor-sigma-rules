@@ -157,6 +157,22 @@
    "Error": "Invalid modifier expand"
   },
   {
+   "Path": "hayabusa/sigma/builtin/process_creation/proc_creation_win_susp_copy_system_dir.yml",
+   "Error": "Invalid modifier i"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/process_creation/proc_creation_win_susp_copy_system_dir.yml",
+   "Error": "Invalid modifier i"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/threat-hunting/process_creation/proc_creation_win_susp_parent_execute_itself.yml",
+   "Error": "Invalid modifier fieldref"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/threat-hunting/process_creation/proc_creation_win_susp_parent_execute_itself.yml",
+   "Error": "Invalid modifier fieldref"
+  },
+  {
    "Path": "hayabusa/sigma/builtin/unsupported/proc_creation_win_correlation_multiple_susp_cli.yml",
    "Error": "In rule Quick Execution of a Series of Suspicious Commands: Timeframe detections not supported"
   },
@@ -263,6 +279,22 @@
   {
    "Path": "hayabusa/sigma/sysmon/placeholder/process_creation/proc_creation_win_userdomain_variable_enumeration.yml",
    "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/process_creation/proc_creation_win_susp_copy_system_dir.yml",
+   "Error": "Invalid modifier i"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/process_creation/proc_creation_win_susp_copy_system_dir.yml",
+   "Error": "Invalid modifier i"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/threat-hunting/process_creation/proc_creation_win_susp_parent_execute_itself.yml",
+   "Error": "Invalid modifier fieldref"
+  },
+  {
+   "Path": "hayabusa/sigma/sysmon/threat-hunting/process_creation/proc_creation_win_susp_parent_execute_itself.yml",
+   "Error": "Invalid modifier fieldref"
   },
   {
    "Path": "hayabusa/sigma/sysmon/unsupported/dns_query_win_possible_dns_rebinding.yml",

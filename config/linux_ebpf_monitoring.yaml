@@ -67,6 +67,13 @@ RuleDirectories:
 
 
 DocTemplate: |
+  ---
+  title: Linux.EBPF.Monitoring
+  weight: 20
+  bookToc: false
+  IconClass: fa-solid fa-book
+  ---
+
   # Linux.EBPF.Monitoring artifact
 
   This artifact contains rules designed to monitor a Linux host using

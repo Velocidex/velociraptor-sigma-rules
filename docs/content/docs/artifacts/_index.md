@@ -2,6 +2,7 @@
 title: "Velociraptor Artifacts"
 date: 2023-10-15T00:14:44+10:00
 weight: 10
+IconClass: fa-solid fa-desktop
 ---
 
 # Velociraptor Artifacts

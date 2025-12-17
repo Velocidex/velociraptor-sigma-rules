@@ -10,6 +10,11 @@ Preamble: |
     `SigmaStudio` notebook.
 
   type: CLIENT
+
+  # Uses the query() plugin
+  implied_permissions:
+    - IMPERSONATION
+
   parameters:
     - name: ROOT
       description: The Event Log Directory we use to read all logs

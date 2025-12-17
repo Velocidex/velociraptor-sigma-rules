@@ -1,4 +1,10 @@
 DocTemplate: |
+  ---
+  weight: 20
+  bookToc: false
+  IconClass: fa-solid fa-book
+  ---
+
   {{ .Config.Description }}
 
   ## Log Sources

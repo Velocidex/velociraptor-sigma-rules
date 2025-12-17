@@ -143,6 +143,13 @@ RuleDirectories:
   - hayabusa/sigma/sysmon/
 
 DocTemplate: |
+  ---
+  title: Windows.Hayabusa.Rules
+  weight: 20
+  bookToc: false
+  IconClass: fa-solid fa-book
+  ---
+
   # Windows.Hayabusa.Rules artifact
 
   This artifact contains rules designed to triage a Windows host

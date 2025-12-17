@@ -24,8 +24,8 @@ jobs:
       id: velociraptor
       with:
         repository: velocidex/velociraptor
-        tag: v0.74
-        fileName: "velociraptor-v0.74.2-linux-amd64-musl"
+        tag: v0.75
+        fileName: "velociraptor-v0.75.5-linux-amd64-musl"
         out-file-path: tests
 
     - name: Run tests
@@ -41,7 +41,8 @@ jobs:
       run: |
         mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor
         chmod +x ./tests/velociraptor
-        make golden
+        ls -l ./output/
+        ./tests/velociraptor artifacts verify --builtin -v ./output/*.yaml && make golden
 
     - uses: actions/upload-artifact@v4
       if: always()

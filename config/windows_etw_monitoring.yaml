@@ -84,6 +84,13 @@ RuleDirectories:
   - rules/fibratus/
 
 DocTemplate: |
+  ---
+  title: Windows.ETW.Monitoring
+  weight: 20
+  bookToc: false
+  IconClass: fa-solid fa-book
+  ---
+
   # Windows.ETW.Monitoring artifact
 
   This artifact contains rules designed to monitoring a windows host

@@ -1,0 +1,10 @@
+{
+    "service": "kTCCServiceSystemPolicyAllFiles",
+    "client": "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal",
+    "client_type": 0,
+    "auth_value": 2,
+    "auth_reason": 4,
+    "indirect_object_identifier": "UNUSED",
+    "flags": 0,
+    "last_modified": 1736937000
+}

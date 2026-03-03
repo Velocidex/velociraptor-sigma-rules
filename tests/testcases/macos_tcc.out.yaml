@@ -1,0 +1,51 @@
+Query: LET _ <= SELECT mock(plugin='info', results=[dict(Hostname="test-mac.local", OS="darwin"),]) FROM scope()
+Output: []
+
+Query: LET _ <= SELECT mock(plugin='glob', results=[dict(OSPath="/Library/Application Support/com.apple.TCC/TCC.db"),]) FROM scope()
+Output: []
+
+Query: LET _ <= SELECT mock(plugin='sqlite', results=[parse_json(data=read_file(filename=testDir + TCCRow)),]) FROM scope()
+Output: []
+
+Query: SELECT * FROM Artifact.MacOS.Sigma.BaseVQL(SigmaRules=SigmaRule, RuleLevel='All', RuleStatus='All Rules') LIMIT 1
+Output: [
+ {
+  "Timestamp": "2025-01-15T10:30:00Z",
+  "Computer": "test-mac.local",
+  "Channel": "TCC.db",
+  "Level": "critical",
+  "Title": "FDA Access Detected",
+  "Details": {
+   "Service": "kTCCServiceSystemPolicyAllFiles",
+   "Client": "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal",
+   "ClientType": 0,
+   "AuthValue": 2,
+   "AuthReason": 4,
+   "User": "System",
+   "LastModified": "2025-01-15T10:30:00Z",
+   "IndirectObjectIdentifier": "UNUSED",
+   "Flags": 0
+  },
+  "_Event": {
+   "System": {
+    "Computer": "test-mac.local",
+    "Channel": "TCC.db"
+   },
+   "EventData": {
+    "Service": "kTCCServiceSystemPolicyAllFiles",
+    "Client": "/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal",
+    "ClientType": 0,
+    "AuthValue": 2,
+    "AuthReason": 4,
+    "User": "System",
+    "LastModified": "2025-01-15T10:30:00Z",
+    "IndirectObjectIdentifier": "UNUSED",
+    "Flags": 0
+   },
+   "Message": null
+  },
+  "Enrichment": null,
+  "_Source": "MacOS.Sigma.BaseVQL"
+ }
+]
+

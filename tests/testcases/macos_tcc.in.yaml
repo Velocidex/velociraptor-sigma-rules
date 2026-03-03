@@ -1,0 +1,23 @@
+Parameters:
+  TCCRow: /testcases/fixtures/macos_tcc_access.json
+  SigmaRule: |
+    title: FDA Access Detected
+    status: test
+    logsource:
+      product: macos
+      service: tcc
+    detection:
+      selection:
+        Service: kTCCServiceSystemPolicyAllFiles
+        AuthValue: 2
+      condition: selection
+    level: critical
+
+Queries:
+- LET _ <= SELECT mock(plugin='info', results=[dict(Hostname="test-mac.local", OS="darwin"),]) FROM scope()
+
+- LET _ <= SELECT mock(plugin='glob', results=[dict(OSPath="/Library/Application Support/com.apple.TCC/TCC.db"),]) FROM scope()
+
+- LET _ <= SELECT mock(plugin='sqlite', results=[parse_json(data=read_file(filename=testDir + TCCRow)),]) FROM scope()
+
+- SELECT * FROM Artifact.MacOS.Sigma.BaseVQL(SigmaRules=SigmaRule, RuleLevel='All', RuleStatus='All Rules') LIMIT 1

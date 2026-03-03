@@ -1,0 +1,260 @@
+Name: MacOS.Sigma.BaseVQL
+ImportConfigs:
+  - config/base_doc.yaml
+
+Description: |
+  # macOS Base VQL Sigma Model
+
+  This model is designed for triage of macOS systems using VQL-based
+  Sigma rules. The rules that use this model will be evaluated once
+  on all events.
+
+  After all relevant rules are evaluated, the collection is complete.
+
+  Rules that utilise this model may include a `vql` section which may
+  contain a VQL lambda to dictate how the event is generated. This
+  allows the rule itself to generate all relevant fields.
+
+  For example:
+
+  ```yaml
+  vql: |
+  x=>dict(
+    Timestamp=timestamp(epoch=now()),
+    EventData=dict(
+      FieldA="value",
+      FieldB=SomeVQLExpression
+    ))
+  ```
+
+Preamble: |
+  name: MacOS.Sigma.BaseVQL
+  description: |
+    This artifact builds the basic set of log sources and field
+    mappings used for Sigma Forensic Triage on macOS.
+
+    NOTE: This artifact does not include any rules. You can launch it
+    with rules provided to the SigmaRules parameter or call it from
+    another artifact with a set of rules passed to the SigmaRules
+    parameter.
+
+    This artifact was built on {{ .Time }}
+
+  type: CLIENT
+
+  precondition:
+    SELECT OS FROM info() WHERE OS = 'darwin'
+
+  parameters:
+    - name: Debug
+      type: bool
+      description: Enable full debug trace
+
+    - name: RuleLevel
+      type: choices
+      default: All
+      choices:
+        - "Critical"
+        - "Critical and High"
+        - "Critical, High, and Medium"
+        - "All"
+
+    - name: RuleStatus
+      type: choices
+      default: All Rules
+      choices:
+        - Stable
+        - Stable and Experimental
+        - Stable and Test
+        - All Rules
+
+    - name: RuleTitleFilter
+      type: regex
+      default: .
+      description: Use this to filter only some rules to match
+
+    - name: RuleExclusions
+      type: csv
+      description: |
+        This table are rules that will be excluded by Title Regex
+      default: |
+        RuleTitleRegex,Reason
+        noisy,All rules marked noisy should be disabled by default.
+
+    - name: DateAfter
+      description: "search for events after this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+    - name: DateBefore
+      description: "search for events before this date. YYYY-MM-DDTmm:hh:ss Z"
+      type: timestamp
+
+    - name: SigmaRules
+      description: If provided we use these rules instead of the built in set.
+
+ExportTemplate: |
+  export: |
+    LET X = scope()
+
+    LET DateAfterTime <= X.DateAfter || timestamp(epoch="1600-01-01")
+    LET DateBeforeTime <= X.DateBefore || timestamp(epoch="2200-01-01")
+
+    LET ExcludeRegex <= if(condition=X.RuleExclusions,
+         then=join(array=RuleExclusions.RuleTitleRegex, sep="|"),
+         else="XXXXXXX")
+
+    LET RuleStatusRegex <= get(item=dict(
+         `Stable`="stable",
+         `Stable and Experimental`="stable|experimental",
+         `Stable and Test`="stable|test",
+         `All Rules`="."), member=X.RuleStatus || "All Rules")
+
+    LET RuleLevelRegex <= get(item=dict(
+         `Critical`="critical",
+         `Critical and High`="critical|high",
+         `Critical, High, and Medium`="critical|high|medium|default",
+         `All`="."), member=X.RuleLevel || "All")
+
+    LET Hostname <= dict(H={ SELECT Hostname FROM info()}).H[0].Hostname
+
+    {{ if .LogSources }}
+    LET LogSources <= sigma_log_sources(
+    {{ range .LogSources }}
+      `{{ .Name }}`={
+  {{ Indent .Query 5 }}
+      },
+    {{- end -}}
+    `velociraptor/info/*`={ SELECT * FROM info() })
+    {{ end }}
+
+    LET FieldMapping <= parse_json(data=gunzip(string=base64decode(string="{{.Base64FieldMapping}}")))
+
+    LET DefaultDetails <= parse_json(data=gunzip(string=base64decode(string="{{.Base64DefaultDetailsLookup}}")))
+
+    LET DefaultDetailsLambda = '''{{.Base64DefaultDetailsQuery}}'''
+    LET RuleFilterLambda = '''x=>x.Level =~ RuleLevelRegex AND x.Status =~ RuleStatusRegex AND x.Title =~ RuleTitleFilter AND NOT x.Title =~ ExcludeRegex'''
+
+
+FieldMappings:
+  EventData: "x=>x.EventData"
+  Timestamp: "x=>x.Timestamp"
+  Service: "x=>x.EventData.Service"
+  Client: "x=>x.EventData.Client"
+  ClientType: "x=>x.EventData.ClientType"
+  AuthValue: "x=>x.EventData.AuthValue"
+  AuthReason: "x=>x.EventData.AuthReason"
+  User: "x=>x.EventData.User"
+  LastModified: "x=>x.EventData.LastModified"
+  IndirectObjectIdentifier: "x=>x.EventData.IndirectObjectIdentifier"
+  Flags: "x=>x.EventData.Flags"
+
+
+DefaultDetails:
+  Query: |
+    x=>x.EventData
+  Lookup:
+    X: X
+
+Sources:
+  vql/macos/*:
+    description: |
+      This log source emits a single event. All rules using the log
+      source will receive this event, where they can run arbitrary VQL
+      queries to build the event themselves.
+
+      This is most useful for rules that want to generate their own
+      event data.
+
+    query: |
+      SELECT timestamp(epoch=now()) AS Timestamp,
+        dict(
+          Computer=Hostname,
+          Channel="VQL Evaluation",
+          TimeCreated=dict(SystemTime=now())
+        ) AS System,
+        dict() AS EventData
+      FROM scope()
+    fields:
+      - Timestamp
+      - EventData
+      - System
+
+  '*/macos/tcc':
+    description: |
+      Queries the TCC (Transparency, Consent, and Control) database
+      for privacy permission grants. Returns one row per permission
+      entry from both system-wide and per-user TCC databases.
+
+      The Velociraptor client service (LaunchDaemon) must be granted
+      Full Disk Access to read the system-wide TCC.db.
+
+    samples:
+      - name: "TCC access entry"
+        json: "config/samples/MacOS-TCC-access.json"
+
+    query: |
+      SELECT timestamp(epoch=last_modified) AS Timestamp,
+        dict(
+          Computer=Hostname,
+          Channel="TCC.db"
+        ) AS System,
+        dict(
+          Service=service,
+          Client=client,
+          ClientType=client_type,
+          AuthValue=auth_value,
+          AuthReason=auth_reason,
+          User=if(condition=OSPath =~ "Users",
+                  then=path_split(path=OSPath)[-5],
+                  else="System"),
+          LastModified=timestamp(epoch=last_modified),
+          IndirectObjectIdentifier=indirect_object_identifier,
+          Flags=flags
+        ) AS EventData
+      FROM foreach(row={
+        SELECT OSPath
+        FROM glob(globs=split(string="/Library/Application Support/com.apple.TCC/TCC.db,/Users/*/Library/Application Support/com.apple.TCC/TCC.db", sep=","))
+      }, query={
+        SELECT *, OSPath
+        FROM sqlite(file=OSPath, query="SELECT * FROM access")
+      })
+    fields:
+      - Service
+      - Client
+      - ClientType
+      - AuthValue
+      - AuthReason
+      - User
+      - LastModified
+      - IndirectObjectIdentifier
+      - Flags
+
+QueryTemplate: |
+ sources:
+ - query: |
+    LET Result = SELECT Timestamp,
+          System.Computer AS Computer,
+          System.Channel AS Channel,
+          _Rule.Level AS Level,
+          _Rule.Title AS Title,
+          Details,
+          dict(System=System,
+               EventData=X.EventData || X.UserData,
+               Message=X.Message) AS _Event,
+          _Match, *
+    FROM sigma(
+      rules=split(string=SigmaRules, sep="\n---+\r?\n"),
+      log_sources= LogSources, debug=Debug,
+      default_details=DefaultDetailsLambda,
+      rule_filter=RuleFilterLambda,
+      field_mapping= FieldMapping)
+
+    SELECT * FROM if(condition=Debug, then={
+      SELECT * FROM Result
+    }, else={
+      SELECT Timestamp, Computer, Channel,
+             Level, Title, Details,
+             _Event,
+             X.Enrichment AS Enrichment
+      FROM Result
+    })

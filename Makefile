@@ -8,7 +8,7 @@ windows:
 
 compile: compileThirdParty
 
-compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileLinuxTriage compileWindowsETW compileHayabusaMonitoring compileLinuxEBPF compileWindowsVQL
+compileThirdParty:  compileHayabusa compileHayabusaMonitoring compileLinuxTriage compileWindowsETW compileHayabusaMonitoring compileLinuxEBPF compileWindowsVQL compileMacOSBaseVQL
 
 compileWindowsBaseDebug:
 	dlv debug ./src/ -- compile --config ./config/windows_base.yaml --output ./output/Windows-Sigma-Base.zip --yaml ./output/Windows.Sigma.Base.yaml --docs ./docs/content/docs/models/windows_base/_index.md
@@ -49,6 +49,11 @@ compileLinuxEBPFBase:
 
 compileWindowsETW: compileWindowsBaseETW
 	./velosigmac compile --config ./config/windows_etw_monitoring.yaml --output ./output/Windows-ETW-Monitoring.zip --yaml ./output/Windows.ETW.Monitoring.yaml --rule_dir ./docs/content/docs/artifacts/Windows.ETW.Monitoring/ --docs ./docs/content/docs/artifacts/Windows.ETW.Monitoring/_index.md
+
+compileMacOSBaseVQL:
+	./velosigmac compile --config ./config/macos_base_vql.yaml --output ./output/MacOS-Sigma-BaseVQL.zip --yaml ./output/MacOS.Sigma.BaseVQL.yaml --docs ./docs/content/docs/models/macos_base_vql/_index.md
+	./velosigmac compile --config ./config/macos_base_vql_test.yaml --yaml ./output/MacOS.Sigma.BaseVQL.CaptureTestSet.yaml
+	./velosigmac compile --config ./config/macos_base_vql_test_replay.yaml --yaml ./output/MacOS.Sigma.BaseVQL.ReplayTestSet.yaml
 
 compileWindowsBaseVQL:
 	./velosigmac compile --config ./config/windows_base_vql.yaml --output ./output/Windows-Sigma-BaseVQL.zip --yaml ./output/Windows.Sigma.BaseVQL.yaml  --docs ./docs/content/docs/models/windows_base_vql/_index.md

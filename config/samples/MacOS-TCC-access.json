@@ -1,0 +1,1 @@
+{"Timestamp":"2025-01-15T10:30:00Z","System":{"Computer":"mac-host.local","Channel":"TCC.db"},"EventData":{"Service":"kTCCServiceSystemPolicyAllFiles","Client":"/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal","ClientType":0,"AuthValue":2,"AuthReason":4,"User":"System","LastModified":"2025-01-15T10:30:00Z","IndirectObjectIdentifier":"UNUSED","Flags":0}}

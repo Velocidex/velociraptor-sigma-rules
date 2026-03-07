@@ -117,6 +117,16 @@ ExportTemplate: |
 
     LET Hostname <= dict(H={ SELECT Hostname FROM info()}).H[0].Hostname
 
+    LET _AllProcs <= SELECT Pid, Ppid, Name, Exe,
+          CommandLine, Username, CreateTime
+    FROM pslist()
+
+    LET _ProcLookup <= to_dict(item={
+      SELECT str(str=Pid) AS _key,
+             dict(Exe=Exe, CommandLine=CommandLine) AS _value
+      FROM _AllProcs
+    })
+
     {{ if .LogSources }}
     LET LogSources <= sigma_log_sources(
     {{ range .LogSources }}
@@ -147,6 +157,10 @@ FieldMappings:
   LastModified: "x=>x.EventData.LastModified"
   IndirectObjectIdentifier: "x=>x.EventData.IndirectObjectIdentifier"
   Flags: "x=>x.EventData.Flags"
+  Image: "x=>x.EventData.Image"
+  CommandLine: "x=>x.EventData.CommandLine"
+  ParentImage: "x=>x.EventData.ParentImage"
+  ParentCommandLine: "x=>x.EventData.ParentCommandLine"
 
 
 DefaultDetails:
@@ -228,6 +242,49 @@ Sources:
       - LastModified
       - IndirectObjectIdentifier
       - Flags
+
+  process_creation/macos/*:
+    description: |
+      Lists all running processes using pslist() and looks up each parent
+      process by Ppid. Returns one row per process.
+
+      This captures a snapshot at the time of collection, not a continuous
+      stream. Processes that start and stop quickly may not appear in the
+      results.
+
+      Unlike Windows (Event Logs) or Linux (auditd), macOS does not keep a
+      history of process creation. The Unified Log does not include command-line
+      arguments for executed processes.
+
+      Future work: 
+      - ESF-based real-time monitoring for event-stream coverage
+        similar to Windows ETW and Linux eBPF.
+      - Shell history (~/.zsh_history, ~/.bash_history) as a
+        complementary log source for historical interactive commands. Covers
+        typed commands with timestamps but not non-interactive processes
+        (LaunchDaemons, cron, GUI apps).
+
+    query: |
+      SELECT CreateTime AS Timestamp,
+             dict(Computer=Hostname, Channel='Velociraptor') AS System,
+             dict(
+               CreateTime=CreateTime,
+               CommandLine=CommandLine,
+               Image=Exe,
+               Pid=Pid,
+               ParentCommandLine=get(item=_ProcLookup,
+                   member=str(str=Ppid)).CommandLine,
+               ParentImage=get(item=_ProcLookup,
+                   member=str(str=Ppid)).Exe,
+               User=Username
+             ) AS EventData
+      FROM _AllProcs
+    fields:
+      - CommandLine
+      - Image
+      - ParentCommandLine
+      - ParentImage
+      - User
 
 QueryTemplate: |
  sources:

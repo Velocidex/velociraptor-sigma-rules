@@ -132,6 +132,10 @@ FieldMappings:
   name: x=>x.Process.name
   CommandLine: x=>x.Process.title
 
+  # The Event field is selected when no selection is present. It is
+  # the JSON encoding of the entire event.
+  Event: x=>str(str=x.Data)
+
   # Auditd based rules
   a0: x=>x.Process.args[0]
   a1: x=>x.Process.args[1]

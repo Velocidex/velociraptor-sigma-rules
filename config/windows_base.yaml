@@ -169,6 +169,10 @@ FieldMappings:
 
   TargetParentProcessId: "x=>x.EventData.TargetParentProcessId"
 
+  # The Event field is selected when no selection is present. It is
+  # the JSON encoding of the entire event.
+  Event: x=>str(str=x.Data)
+
   AccessList: "x=>x.EventData.AccessList"
   AccessMask: "x=>x.EventData.AccessMask"
   AccessReason: "x=>x.EventData.AccessReason"
@@ -604,6 +608,12 @@ FieldMappings:
 
   RemoteAddress: "x=>x.EventData.RemoteAddress"
   IsatapRouter: "x=>x.EventData.IsatapRouter"
+
+  CallingProcess: "x=>x.EventData.CallingProcess"
+  Flags: "x=>x.EventData.Flags"
+  SubjectAccountName: "x=>x.EventData.SubjectAccountName"
+  PackageSourceUri: "x=>x.EventData.PackageSourceUri"
+  HasFullTrust: "x=>x.EventData.HasFullTrust"
 
 # This controls the Details field to show when a rule matched. It aims
 # to be a more concise version of the log message, but if there is no
@@ -1299,7 +1309,7 @@ QueryTemplate: |
           dict(System=System - SystemMask,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match, *
+          X._Match || X._Correlations AS _Match, *
     FROM sigma(
       rules=split(string=SigmaRules, sep="\n---+\r?\n"),
       log_sources= LogSources, debug=Debug,

@@ -169,6 +169,10 @@ FieldMappings:
   TokenElevationType:
     x=>get(item=TokenElevationTypeLookup, member=x.EventData.TokenElevationType || "-")
 
+  # The Event field is selected when no selection is present. It is
+  # the JSON encoding of the entire event.
+  Event: x=>str(str=x.Data)
+
   AccessList: "x=>x.EventData.AccessList"
   AccessMask: "x=>x.EventData.AccessMask"
   AccessReason: "x=>x.EventData.AccessReason"
@@ -588,6 +592,12 @@ FieldMappings:
   ProcessExe: "x=>x.EventData.ProcInfo.Exe"
 
   # etw/windows/process
+  CallingProcess: "x=>x.EventData.CallingProcess"
+  Flags: "x=>x.EventData.Flags"
+  SubjectAccountName: "x=>x.EventData.SubjectAccountName"
+  PackageSourceUri: "x=>x.EventData.PackageSourceUri"
+  HasFullTrust: "x=>x.EventData.HasFullTrust"
+
 
 DefaultDetails:
   Query: |

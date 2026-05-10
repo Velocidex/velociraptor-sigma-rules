@@ -507,6 +507,12 @@ func (self *CompilerContext) walk_fields(
 
 func (self *CompilerContext) normalize_logsource(
 	rule *sigma.Rule, path string) (string, error) {
+
+	// Correlation rules are allowed to not have a logsource
+	if rule.Correlation != nil {
+		return "", nil
+	}
+
 	source := rule.Logsource
 	category := source.Category
 	if category == "" {
@@ -539,6 +545,7 @@ func (self *CompilerContext) normalize_logsource(
 		return source_spec, nil
 
 	}
+
 	// Try to guess the source spec
 	DebugPrint("**** Log Source '%v' not found!\n", guessed_source_spec)
 	return source_spec, fmt.Errorf(

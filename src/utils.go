@@ -29,6 +29,16 @@ func MustMarshal(in interface{}) []byte {
 	return data
 }
 
+func InString(hay []string, needle string) bool {
+	for _, x := range hay {
+		if x == needle {
+			return true
+		}
+	}
+
+	return false
+}
+
 func MustMarshalIndent(in interface{}) []byte {
 	data, _ := json.MarshalIndent(in, "", " ")
 	return data

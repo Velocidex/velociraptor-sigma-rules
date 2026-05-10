@@ -5,11 +5,12 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/Velocidex/sigma-go"
@@ -66,7 +67,7 @@ func (self *CompilerContext) CompileDirs() error {
 					return err
 				}
 
-				data, err := ioutil.ReadAll(fd)
+				data, err := io.ReadAll(fd)
 				if err != nil {
 					return err
 				}
@@ -150,12 +151,13 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 
 	// This is the concise and reducted rule that will be hunted for.
 	new_rule := sigma.Rule{
-		Title:            rule.Title,
-		Author:           rule.Author,
-		Level:            rule.Level,
-		Status:           rule.Status,
-		Logsource:        rule.Logsource,
-		Detection:        rule.Detection,
+		Title:     rule.Title,
+		Author:    rule.Author,
+		Level:     rule.Level,
+		Status:    rule.Status,
+		Logsource: rule.Logsource,
+		Detection: self.normalize_detections(rule.Detection),
+		//Detection:        rule.Detection,
 		AdditionalFields: additional_fields,
 	}
 
@@ -205,6 +207,87 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	self.rules_by_path[path] = new_rule
 
 	return nil
+}
+
+func (self *CompilerContext) normalize_search(
+	search sigma.Search) sigma.Search {
+
+	res := sigma.Search{}
+
+	// Specifically handle a search with no field but a set of
+	// keywords. For example:
+	//
+	// detection:
+	//   keywords_filter:
+	//      - 'of='
+	//
+	// I think this means match any of the keywords on the event
+	if len(search.EventMatchers) == 0 && len(search.Keywords) > 0 {
+		new_matcher := sigma.FieldMatcher{
+			Field: "Event",
+		}
+		for _, kw := range search.Keywords {
+			new_matcher.Values = append(new_matcher.Values, kw)
+		}
+		res.EventMatchers = []sigma.EventMatcher{
+			[]sigma.FieldMatcher{new_matcher}}
+		return res
+	}
+
+	for _, field_matcher := range search.EventMatchers {
+		new_field_matchers := []sigma.FieldMatcher{}
+
+		// The following code expands strings in hex format to a OR
+		// condition with either the hex value or the decimal
+		// value. This is because Velociraptor's evtx parser preserves
+		// native types and so will emit the value as an integer, but
+		// many rules are matching against the value as a hex encoded
+		// number. In that case, where it is safe, we expand the
+		// condition to be a logical OR of the hex and decimal
+		// versions of the number.
+		for _, m := range field_matcher {
+			// Some rules do not name a field ar all. In that case we
+			// assume the field is called "Event" and let the log
+			// source do something sensible with it.
+			if m.Field == "" {
+				m.Field = "Event"
+			}
+			// Do not touch 'all' modifiers which represent a logical
+			// AND. If we expand them into an OR we can change the
+			// logic.
+			if !InString(m.Modifiers, "all") {
+				new_values := make([]interface{}, 0, len(m.Values))
+				for _, v := range m.Values {
+					v_str, ok := v.(string)
+					if ok {
+						if strings.HasPrefix(v_str, "0x") {
+							v_int, err := strconv.ParseUint(v_str, 0, 64)
+							if err == nil {
+								new_values = append(new_values,
+									fmt.Sprintf("%d", v_int))
+							}
+						}
+					}
+					new_values = append(new_values, v)
+				}
+				m.Values = new_values
+			}
+			new_field_matchers = append(new_field_matchers, m)
+		}
+
+		res.EventMatchers = append(res.EventMatchers, new_field_matchers)
+	}
+
+	return res
+}
+
+func (self *CompilerContext) normalize_detections(
+	detections sigma.Detection) sigma.Detection {
+
+	for k, v := range detections.Searches {
+		detections.Searches[k] = self.normalize_search(v)
+	}
+	return detections
 }
 
 func doCompile() (err error) {

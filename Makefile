@@ -25,7 +25,7 @@ compileLinuxBase:
 	./velosigmac compile --config ./config/linux_base_test_replay.yaml --yaml ./output/Linux.Sigma.Base.ReplayTestSet.yaml
 
 compileLinuxTriage: compileLinuxBase
-	./velosigmac compile --config ./config/linux_sigma_triage.yaml --output ./output/Linux-Sigma-Triage.zip --yaml ./output/Linux.Sigma.Triage.yaml --rule_dir ./docs/content/docs/artifacts/Linux.Sigma.Triage/ --docs ./docs/content/docs/artifacts/Linux.Sigma.Triage/_index.md
+	./velosigmac compile --config ./config/linux_sigma_triage.yaml --output ./output/Linux-Sigma-Triage.zip --yaml ./output/Linux.Sigma.Triage.yaml --rule_dir ./docs/content/docs/artifacts/Linux.Sigma.Triage/ --rejects rejected/linux_sigma_triage.json --ignore_previous_rejects --docs ./docs/content/docs/artifacts/Linux.Sigma.Triage/_index.md
 
 
 compileWindowsBaseEvents:

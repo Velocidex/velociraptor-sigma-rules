@@ -133,6 +133,22 @@
    "Error": "Invalid modifier expand"
   },
   {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_modification_of_msds_dmsa_link_attribute.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_modification_of_msds_dmsa_link_attribute.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_msds_dmsa_object_creation.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
+   "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_msds_dmsa_object_creation.yml",
+   "Error": "Invalid modifier expand"
+  },
+  {
    "Path": "hayabusa/sigma/builtin/placeholder/security/win_security_potential_pass_the_hash.yml",
    "Error": "Invalid modifier expand"
   },

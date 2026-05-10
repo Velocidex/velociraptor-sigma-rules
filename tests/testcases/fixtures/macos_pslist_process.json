@@ -1,0 +1,2 @@
+[{"Pid": 99992, "Ppid": 99991, "Name": "base64", "Exe": "/usr/bin/base64", "CommandLine": "/usr/bin/base64 -d /tmp/payload.enc", "Username": "admin", "StartTime": "2025-06-15T09:00:00Z"},
+{"Pid": 99991, "Ppid": 99990, "Name": "bash", "Exe": "/bin/bash", "CommandLine": "/bin/bash -c /usr/bin/base64 -d /tmp/payload.enc", "Username": "admin", "StartTime": "2025-06-15T08:55:00Z"}]

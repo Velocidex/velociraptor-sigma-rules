@@ -213,6 +213,28 @@ Sources:
       - EventData
       - System
 
+  process_creation/windows/attack_prefetch:
+    query: |
+      SELECT
+        modified AS Timestamp,
+        dict(Computer=Hostname, Channel='Velociraptor') AS System,
+        dict(
+          Name=Name,
+          Mtime=modified,
+          ModTime=ModTime,
+          Image=split(string=Name, sep='-')[0]
+        ) AS EventData
+      FROM Artifact.Windows.Attack.Prefetch()
+    fields:
+      - Timestamp
+      - Image
+      - Name
+      - Mtime
+      - ModTime
+      - System.Computer
+      - System.Channel
+
+
   filesystem/windows/glob:
     description: |
       This log source searches for all files on the drive - it takes a
@@ -232,6 +254,7 @@ Sources:
       - OSPath
       - Size
       - Mtime
+
 
   process_creation/windows/pslist:
     query: |
@@ -615,7 +638,7 @@ QueryTemplate: |
           dict(System=System,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match, *
+          X._Match || X._Correlations AS _Match, *
     FROM sigma(
       rules=split(string=SigmaRules, sep="\n---+\r?\n"),
       log_sources= LogSources, debug=Debug,

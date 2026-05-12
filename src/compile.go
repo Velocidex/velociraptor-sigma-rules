@@ -151,12 +151,13 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 
 	// This is the concise and reducted rule that will be hunted for.
 	new_rule := sigma.Rule{
-		Title:     rule.Title,
-		Author:    rule.Author,
-		Level:     rule.Level,
-		Status:    rule.Status,
-		Logsource: rule.Logsource,
-		Detection: self.normalize_detections(rule.Detection),
+		Title:       rule.Title,
+		Author:      rule.Author,
+		Level:       rule.Level,
+		Status:      rule.Status,
+		Logsource:   rule.Logsource,
+		Detection:   self.normalize_detections(rule.Detection),
+		Correlation: rule.Correlation,
 		//Detection:        rule.Detection,
 		AdditionalFields: additional_fields,
 	}
@@ -193,7 +194,7 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	}
 
 	DebugPrint("Processing %v\n", path)
-	self.rules = append(self.rules, string(buf.Bytes()))
+	self.rules = append(self.rules, buf.String())
 
 	self.incLogSource(logsource)
 

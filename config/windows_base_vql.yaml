@@ -638,7 +638,7 @@ QueryTemplate: |
           dict(System=System,
                EventData=X.EventData || X.UserData,
                Message=X.Message) AS _Event,
-          _Match, *
+          X._Match || X._Correlations AS _Match, *
     FROM sigma(
       rules=split(string=SigmaRules, sep="\n---+\r?\n"),
       log_sources= LogSources, debug=Debug,

@@ -1,0 +1,144 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="
+  macOS Base VQL Sigma Model
+  #
+
+This model is designed for triage of macOS systems using VQL-based
+Sigma rules. The rules that use this model will be evaluated once
+on all events.
+After all relevant rules are evaluated, the collection is complete.
+Rules that utilise this model may include a vql section which may
+contain a VQL lambda to dictate how the event is generated. This
+allows the rule itself to generate all relevant fields."><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://sigma.velocidex.com/docs/models/macos_base_vql/"><meta property="og:site_name" content="Velociraptor Curated Sigma"><meta property="og:title" content="Velociraptor Curated Sigma"><meta property="og:description" content="macOS Base VQL Sigma Model # This model is designed for triage of macOS systems using VQL-based Sigma rules. The rules that use this model will be evaluated once on all events.
+After all relevant rules are evaluated, the collection is complete.
+Rules that utilise this model may include a vql section which may contain a VQL lambda to dictate how the event is generated. This allows the rule itself to generate all relevant fields."><meta property="og:locale" content="en_us"><meta property="og:type" content="website"><title>&lt;span class="icon">
+&lt;i class="fa-solid fa-book">&lt;/i>
+Macos Base Vql
+&lt;/span> | Velociraptor Curated Sigma</title><link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://sigma.velocidex.com/docs/models/macos_base_vql/><link rel=stylesheet href=/book.min.3257a7ce7c061eb5dfc72257c356229b1470dc77ce9b982ac220c02542f9f04f.css integrity="sha256-MlenznwGHrXfxyJXw1YimxRw3HfOm5gqwiDAJUL58E8=" crossorigin=anonymous><link rel=alternate type=application/rss+xml href=http://sigma.velocidex.com/docs/models/macos_base_vql/index.xml title="Velociraptor Curated Sigma"><script src=/js/jquery-3.3.1.min.js?1703133391></script><link href=https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css?1703133392 rel=stylesheet><link href=/css/theme.css rel=stylesheet><link href=//cdn.datatables.net/2.3.0/css/dataTables.dataTables.min.css rel=stylesheet><script src=//cdn.datatables.net/2.3.0/js/dataTables.min.js></script><link href=//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css rel=stylesheet><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js></script><script src=https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js integrity="sha512-0UbR6HN0dY8fWN9T7fF658896tsPgnbRREHCNq46J9/JSn8GonXDZmqtTc3qS879GM0zV49b9LPhdc/maKP8Kg==" crossorigin=anonymous referrerpolicy=no-referrer></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css integrity="sha512-56GJrpSgHk6Mc9Fltt+bQKcICJoEpxtvozXPA5n5OT0rfWiqGlJmJCI/vl16kctf/0XbBloh03vl7OF2xFnR8g==" crossorigin=anonymous referrerpolicy=no-referrer><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css rel=stylesheet><script>$(document).ready(function(){$(".json-renderer").each(function(){try{data=JSON.parse($(this).text()),$(this).jsonViewer(data,{collapsed:!0,rootCollapsable:!1})}catch{}}),$(".datatable").each(function(){new DataTable(this,{paging:!0})}),$(".scroll-datatable").each(function(){let e=$(this),t=new DataTable(this,{paging:!1,scrollY:200})})})</script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>Velociraptor Curated Sigma</span></a></h2><ul><li><a href=/docs/sigma_in_velociraptor/><span class=icon><i class="fa-solid fa-blog"></i>
+Sigma In Velociraptor</span></a><ul><li><a href=/docs/sigma_in_velociraptor/customize/>Customizing Artifacts</a><ul></ul></li></ul></li><li><a href=/docs/artifacts/><span class=icon><i class="fa-solid fa-desktop"></i>
+Velociraptor Artifacts</span></a><ul><li><a href=/docs/artifacts/linux.ebpf.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Linux.EBPF.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/linux.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+Linux.Sigma.Triage</span></a><ul></ul></li><li><a href=/docs/artifacts/macos.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+MacOS.Sigma.Triage</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.etw.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.ETW.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.hayabusa.monitoring/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Hayabusa.Monitoring</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.hayabusa.rules/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Hayabusa.Rules</span></a><ul></ul></li><li><a href=/docs/artifacts/windows.sigma.triage/><span class=icon><i class="fa-solid fa-book"></i>
+Windows.Sigma.Triage</span></a><ul></ul></li></ul></li><li><a href=/docs/models/><span class=icon><i class="fa-solid fa-desktop"></i>
+Sigma Models</span></a><ul><li><a href=/docs/models/linux_base/><span class=icon><i class="fa-solid fa-book"></i>
+Linux Base</span></a><ul></ul></li><li><a href=/docs/models/linux_ebpf_base/><span class=icon><i class="fa-solid fa-book"></i>
+Linux Ebpf Base</span></a><ul></ul></li><li><a href=/docs/models/macos_base_vql/ class=active><span class=icon><i class="fa-solid fa-book"></i>
+Macos Base Vql</span></a><ul></ul></li><li><a href=/docs/models/windows_base/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base</span></a><ul></ul></li><li><a href=/docs/models/windows_base_events/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Events</span></a><ul></ul></li><li><a href=/docs/models/windows_base_vql/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Base Vql</span></a><ul></ul></li><li><a href=/docs/models/windows_etw_base/><span class=icon><i class="fa-solid fa-book"></i>
+Windows Etw Base</span></a><ul></ul></li></ul></li><li><a href=/docs/github/><span class=icon><i class="fa-brands fa-github"></i>
+Github</span></a><ul></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label><h3><span class=icon><i class="fa-solid fa-book"></i>
+Macos Base Vql</span></h3><label for=toc-control></label></div></header><article class="markdown book-article"><h1 id=macos-base-vql-sigma-model>macOS Base VQL Sigma Model
+<a class=anchor href=#macos-base-vql-sigma-model>#</a></h1><p>This model is designed for triage of macOS systems using VQL-based
+Sigma rules. The rules that use this model will be evaluated once
+on all events.</p><p>After all relevant rules are evaluated, the collection is complete.</p><p>Rules that utilise this model may include a <code>vql</code> section which may
+contain a VQL lambda to dictate how the event is generated. This
+allows the rule itself to generate all relevant fields.</p><p>For example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>vql</span>: <span style=color:#ae81ff>|</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>x=&gt;dict(</span>
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>Timestamp=timestamp(epoch=now()),</span>
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>EventData=dict(</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>FieldA=&#34;value&#34;,</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>FieldB=SomeVQLExpression</span>
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>))</span>
+</span></span></code></pre></div><h2 id=log-sources>Log Sources
+<a class=anchor href=#log-sources>#</a></h2><p>Following is a list of recognized log sources.</p><table class=scroll-datatable><thead><tr><th>Log Source</th><th>Desc</th></tr></thead><tbody><tr><td><a href=#vqlmacos>vql/macos/*</a></td><td>This log source emits a single event. All rules using the log</td></tr><tr><td><a href=#macostcc>*/macos/tcc</a></td><td>Queries the TCC (Transparency, Consent, and Control) database</td></tr><tr><td><a href=#processcreationmacos>process_creation/macos/*</a></td><td>Uses the Velociraptor process tracker to list processes and resolve</td></tr></tbody></table><h2 id=field-mappings>Field Mappings
+<a class=anchor href=#field-mappings>#</a></h2><p>The following field mappings can be used to access fields within the
+event. Note that it is also possible to access the fields directly
+(e.g. <code>EventData.AccessMask</code>)</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>View all Field Mappings</span></div><div class=expand-content style=display:none><table class=datatable><thead><tr><th>Name</th><th>Mapping</th></tr></thead><tbody><tr><td>AuthReason</td><td>x=>x.EventData.AuthReason</td></tr><tr><td>AuthValue</td><td>x=>x.EventData.AuthValue</td></tr><tr><td>Client</td><td>x=>x.EventData.Client</td></tr><tr><td>ClientType</td><td>x=>x.EventData.ClientType</td></tr><tr><td>CommandLine</td><td>x=>x.EventData.CommandLine</td></tr><tr><td>EventData</td><td>x=>x.EventData</td></tr><tr><td>Flags</td><td>x=>x.EventData.Flags</td></tr><tr><td>GrandParentCommandLine</td><td>x=>x.EventData.GrandParentCommandLine</td></tr><tr><td>GrandParentImage</td><td>x=>x.EventData.GrandParentImage</td></tr><tr><td>Image</td><td>x=>x.EventData.Image</td></tr><tr><td>IndirectObjectIdentifier</td><td>x=>x.EventData.IndirectObjectIdentifier</td></tr><tr><td>LastModified</td><td>x=>x.EventData.LastModified</td></tr><tr><td>ParentCommandLine</td><td>x=>x.EventData.ParentCommandLine</td></tr><tr><td>ParentImage</td><td>x=>x.EventData.ParentImage</td></tr><tr><td>Service</td><td>x=>x.EventData.Service</td></tr><tr><td>Timestamp</td><td>x=>x.Timestamp</td></tr><tr><td>User</td><td>x=>x.EventData.User</td></tr></tbody></table></div></div><hr><h2 id=vqlmacos><code>vql/macos/*</code>
+<a class=anchor href=#vqlmacos>#</a></h2><p>This log source emits a single event. All rules using the log
+source will receive this event, where they can run arbitrary VQL
+queries to build the event themselves.</p><p>This is most useful for rules that want to generate their own
+event data.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>timestamp</span>(epoch<span style=color:#f92672>=</span>now()) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    Computer<span style=color:#f92672>=</span>Hostname,
+</span></span><span style=display:flex><span>    Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;VQL Evaluation&#34;</span>,
+</span></span><span style=display:flex><span>    TimeCreated<span style=color:#f92672>=</span>dict(SystemTime<span style=color:#f92672>=</span>now())
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>  dict() <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> <span style=color:#66d9ef>scope</span>()
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>vql</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>macos</span>
+</span></span></code></pre></div></div></div><h2 id=macostcc><code>*/macos/tcc</code>
+<a class=anchor href=#macostcc>#</a></h2><p>Queries the TCC (Transparency, Consent, and Control) database
+for privacy permission grants. Returns one row per permission
+entry from both system-wide and per-user TCC databases.</p><p>The Velociraptor client service (LaunchDaemon) must be granted
+Full Disk Access to read the system-wide TCC.db.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> <span style=color:#66d9ef>timestamp</span>(epoch<span style=color:#f92672>=</span>last_modified) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    Computer<span style=color:#f92672>=</span>Hostname,
+</span></span><span style=display:flex><span>    Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;TCC.db&#34;</span>
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>  dict(
+</span></span><span style=display:flex><span>    Service<span style=color:#f92672>=</span>service,
+</span></span><span style=display:flex><span>    Client<span style=color:#f92672>=</span>client,
+</span></span><span style=display:flex><span>    ClientType<span style=color:#f92672>=</span>client_type,
+</span></span><span style=display:flex><span>    AuthValue<span style=color:#f92672>=</span>auth_value,
+</span></span><span style=display:flex><span>    AuthReason<span style=color:#f92672>=</span>auth_reason,
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>User</span><span style=color:#f92672>=</span><span style=color:#66d9ef>if</span>(condition<span style=color:#f92672>=</span>OSPath <span style=color:#f92672>=~</span> <span style=color:#e6db74>&#34;Users&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>then</span><span style=color:#f92672>=</span>path_split(path<span style=color:#f92672>=</span>OSPath)[<span style=color:#f92672>-</span><span style=color:#ae81ff>5</span>],
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>else</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;System&#34;</span>),
+</span></span><span style=display:flex><span>    LastModified<span style=color:#f92672>=</span><span style=color:#66d9ef>timestamp</span>(epoch<span style=color:#f92672>=</span>last_modified),
+</span></span><span style=display:flex><span>    IndirectObjectIdentifier<span style=color:#f92672>=</span>indirect_object_identifier,
+</span></span><span style=display:flex><span>    Flags<span style=color:#f92672>=</span>flags
+</span></span><span style=display:flex><span>  ) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> foreach(<span style=color:#66d9ef>row</span><span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>{</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>SELECT</span> OSPath
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>FROM</span> glob(globs<span style=color:#f92672>=</span>split(string<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/Library/Application Support/com.apple.TCC/TCC.db,/Users/*/Library/Application Support/com.apple.TCC/TCC.db&#34;</span>, sep<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;,&#34;</span>))
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span>, query<span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>{</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>SELECT</span> <span style=color:#f92672>*</span>, OSPath
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>FROM</span> sqlite(file<span style=color:#f92672>=</span>OSPath, query<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;SELECT * FROM access&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span>)
+</span></span></code></pre></div><h4 id=sample-events>Sample Events
+<a class=anchor href=#sample-events>#</a></h4><h5 id=tcc-access-entry>TCC access entry
+<a class=anchor href=#tcc-access-entry>#</a></h5><pre class=json-renderer>
+{"Timestamp":"2025-01-15T10:30:00Z","System":{"Computer":"mac-host.local","Channel":"TCC.db"},"EventData":{"Service":"kTCCServiceSystemPolicyAllFiles","Client":"/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal","ClientType":0,"AuthValue":2,"AuthReason":4,"User":"System","LastModified":"2025-01-15T10:30:00Z","IndirectObjectIdentifier":"UNUSED","Flags":0}}
+
+</pre><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>macos</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service</span>: <span style=color:#ae81ff>tcc</span>
+</span></span></code></pre></div></div></div><h2 id=process_creationmacos><code>process_creation/macos/*</code>
+<a class=anchor href=#process_creationmacos>#</a></h2><p>Uses the Velociraptor process tracker to list processes and resolve
+parent/grandparent call chains. When the process tracker is enabled (via a
+client monitoring artifact), this includes historical processes that have
+already exited. When the tracker is not enabled, process_tracker_pslist()
+degrades to pslist() behaviour (snapshot of currently running processes
+only), and parent/grandparent fields will be empty.</p><div class=expand><div class=expand-label style=cursor:pointer onclick='$h=$(this),$h.next("div").slideToggle(100,function(){$h.children("i").attr("class",function(){return $h.next("div").is(":visible")?"fas fa-chevron-down":"fas fa-chevron-right"})})'><i style=font-size:x-small class="fas fa-chevron-right"></i>
+<span>Details</span></div><div class=expand-content style=display:none><h4 id=vql-query>VQL Query
+<a class=anchor href=#vql-query>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sql data-lang=sql><span style=display:flex><span><span style=color:#66d9ef>SELECT</span> CreateTime <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>Timestamp</span>,
+</span></span><span style=display:flex><span>       dict(Computer<span style=color:#f92672>=</span>Hostname, Channel<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Velociraptor&#39;</span>) <span style=color:#66d9ef>AS</span> <span style=color:#66d9ef>System</span>,
+</span></span><span style=display:flex><span>       dict(
+</span></span><span style=display:flex><span>         CreateTime<span style=color:#f92672>=</span>CreateTime,
+</span></span><span style=display:flex><span>         CommandLine<span style=color:#f92672>=</span>CommandLine,
+</span></span><span style=display:flex><span>         Image<span style=color:#f92672>=</span>Exe,
+</span></span><span style=display:flex><span>         Pid<span style=color:#f92672>=</span>Pid,
+</span></span><span style=display:flex><span>         ParentCommandLine<span style=color:#f92672>=</span>P.CommandLine,
+</span></span><span style=display:flex><span>         ParentImage<span style=color:#f92672>=</span>P.Exe,
+</span></span><span style=display:flex><span>         GrandParentCommandLine<span style=color:#f92672>=</span>GP.CommandLine,
+</span></span><span style=display:flex><span>         GrandParentImage<span style=color:#f92672>=</span>GP.Exe,
+</span></span><span style=display:flex><span>         <span style=color:#66d9ef>User</span><span style=color:#f92672>=</span>Username
+</span></span><span style=display:flex><span>       ) <span style=color:#66d9ef>AS</span> EventData
+</span></span><span style=display:flex><span><span style=color:#66d9ef>FROM</span> foreach(<span style=color:#66d9ef>row</span><span style=color:#f92672>=</span><span style=color:#960050;background-color:#1e0010>{</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>SELECT</span> StartTime <span style=color:#66d9ef>AS</span> CreateTime,
+</span></span><span style=display:flex><span>      Pid, CommandLine, Exe,
+</span></span><span style=display:flex><span>      process_tracker_get(id<span style=color:#f92672>=</span>Ppid).<span style=color:#66d9ef>Data</span> <span style=color:#66d9ef>AS</span> P,
+</span></span><span style=display:flex><span>      process_tracker_get(id<span style=color:#f92672>=</span>process_tracker_get(id<span style=color:#f92672>=</span>Ppid).ParentId).<span style=color:#66d9ef>Data</span> <span style=color:#66d9ef>AS</span> GP,
+</span></span><span style=display:flex><span>      Username
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>FROM</span> process_tracker_pslist()
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>}</span>)
+</span></span></code></pre></div><h4 id=sample-use-in-a-sigma-rule>Sample use in a sigma rule:
+<a class=anchor href=#sample-use-in-a-sigma-rule>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>logsource</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>category</span>: <span style=color:#ae81ff>process_creation</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>product</span>: <span style=color:#ae81ff>macos</span>
+</span></span></code></pre></div></div></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div></main></body></html>

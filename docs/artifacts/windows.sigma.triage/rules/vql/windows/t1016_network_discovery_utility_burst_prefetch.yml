@@ -1,0 +1,17 @@
+title: T1016 Multiple Rare Network Discovery Tools In Prefetch
+name: t1016_prefetch_rare_tools_count
+status: experimental
+description: |
+  Detects two or more distinct rare network or domain discovery
+  utilities in Prefetch within five minutes.
+correlation:
+  type: value_count
+  rules:
+    - t1016_prefetch_rare_tools
+  group-by:
+    - System.Computer
+  timespan: 5m
+  condition:
+    field: Image
+    gte: 2
+level: medium

@@ -1,0 +1,31 @@
+title: "RegCheck: LSASS memory dump preparation via SilentProcessExit"
+description: |
+  Adversaries may exploit the SilentProcessExit debugging technique to
+  conduct LSASS memory dump via WerFault.exe (Windows Error Reporting)
+  binary by creating specific registry keys/values.
+
+logsource:
+    category: vql
+    product: windows
+
+detection:
+  selection:
+    "EventData|vql":
+      x=>x.SilentProcessExit
+
+  condition: selection
+
+level: high
+ruletype: VQL
+
+details: |
+  LSASS SilentProcessExit detected: %EventData.SilentProcessExit%
+
+vql: |
+  x=>dict(
+    Timestamp=timestamp(epoch=now()),
+    EventData=dict(
+       SilentProcessExit=SearchRegistryKeys(
+         Glob="HKEY_LOCAL_MACHINE/SOFTWARE/Microsoft/Windows NT/CurrentVersion/SilentProcessExit/lsass.exe/*")
+    )
+  )

@@ -1,0 +1,63 @@
+html {
+    font-size: 16px;
+}
+
+.full-width {
+    width: 800px;
+}
+
+i.linkcolour {
+    cursor: pointer;
+}
+
+
+
+.featherlight-content {
+    width: 90%;
+}
+
+.featherlight-content .figure {
+    max-width: none;
+}
+
+.featherlight-content svg {
+    max-height: 80vh;
+}
+
+figure div.figure {
+    cursor: pointer;
+    margin: 0 auto;
+    max-width: 80%;
+    text-align: center;
+}
+
+figure div.figure svg,
+figure div.figure img {
+    max-width: 80%;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
+    height: auto;
+    margin: 1rem auto 0rem auto;
+    text-align: center;
+}
+
+.featherlight .featherlight-content img {
+    margin: 0 auto !important;
+}
+
+figcaption  {
+    display: block;
+    font-size: .875rem;
+    font-style: italic;
+    color: var(--gray-600);
+    text-align: center;
+    margin-top: .5rem;
+    margin-bottom: 2.5rem;
+}
+
+.icon {
+    display: flex;
+}
+
+.icon i {
+    padding-right: 5px;
+}

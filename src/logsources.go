@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/Velocidex/ordereddict"
@@ -340,6 +341,9 @@ func (self *CompilerContext) check_condition(rule *sigma.Rule) error {
 		for k := range rule.Detection.Searches {
 			fields = append(fields, k)
 		}
+		// Sort so the output is stable and the golden test does not fail
+		// when the field order changes between runs.
+		sort.Strings(fields)
 
 		rule.Detection.Conditions = append(rule.Detection.Conditions,
 			sigma.Condition{

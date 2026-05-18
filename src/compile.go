@@ -150,8 +150,12 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	}
 
 	// This is the concise and reducted rule that will be hunted for.
+	// Name and ID are preserved so correlation rules can reference their
+	// source rules at evaluation time.
 	new_rule := sigma.Rule{
 		Title:       rule.Title,
+		Name:        rule.Name,
+		ID:          rule.ID,
 		Author:      rule.Author,
 		Level:       rule.Level,
 		Status:      rule.Status,
@@ -165,23 +169,27 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	// Record all the rules we added
 	self.total_visited_rules++
 
-	// Skip errored rules.
-	logsource, err := self.normalize_logsource(&new_rule, path)
-	if err != nil {
-		self.addError(err.Error(), path)
-		return nil
-	}
+	// Correlation rules have no Detection block; skip Detection-only validators
+	// so they do not mutate the empty Detection and break sigma-go parsing.
+	var logsource string
+	if rule.Correlation == nil {
+		logsource, err = self.normalize_logsource(&new_rule, path)
+		if err != nil {
+			self.addError(err.Error(), path)
+			return nil
+		}
 
-	err = self.walk_fields(&new_rule, path, logsource)
-	if err != nil {
-		self.addError(err.Error(), path)
-		return nil
-	}
+		err = self.walk_fields(&new_rule, path, logsource)
+		if err != nil {
+			self.addError(err.Error(), path)
+			return nil
+		}
 
-	err = self.check_condition(&new_rule)
-	if err != nil {
-		self.addError(err.Error(), path)
-		return nil
+		err = self.check_condition(&new_rule)
+		if err != nil {
+			self.addError(err.Error(), path)
+			return nil
+		}
 	}
 
 	buf := &bytes.Buffer{}
@@ -196,7 +204,9 @@ func (self *CompilerContext) CompileRule(rule_yaml, path string) error {
 	DebugPrint("Processing %v\n", path)
 	self.rules = append(self.rules, buf.String())
 
-	self.incLogSource(logsource)
+	if rule.Correlation == nil {
+		self.incLogSource(logsource)
+	}
 
 	// Only write the original_rules we actually added -
 	// rejected rules will not be added to the zip file.

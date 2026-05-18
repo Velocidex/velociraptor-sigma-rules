@@ -1,0 +1,38 @@
+title: First Source Rule
+name: source_rule_one
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  condition: selection
+  selection:
+    CommandLine: foo
+id: 11111111-1111-1111-1111-111111111111
+level: default
+
+---
+title: Second Source Rule
+name: source_rule_two
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  condition: selection
+  selection:
+    CommandLine: bar
+id: 22222222-2222-2222-2222-222222222222
+level: default
+
+---
+title: Correlation Of Two Source Rules
+name: correlation_example
+correlation:
+  type: temporal
+  rules:
+    - source_rule_one
+    - source_rule_two
+  group-by:
+    - Computer
+  timespan: 5m
+id: 33333333-3333-3333-3333-333333333333
+level: high

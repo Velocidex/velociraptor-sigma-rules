@@ -145,6 +145,7 @@ Output: [
      }
     ]
    },
+   "Id": "2ce607d3-5a14-4628-be8a-22bcde97dab5",
    "Level": "default",
    "AdditionalFields": {
     "details": "Process %ProcessName% launched %CommandLine%"
@@ -258,6 +259,7 @@ Output: [
      }
     ]
    },
+   "Id": "e3dace20-4962-4381-884e-40dcdde66626",
    "Level": "default",
    "AdditionalFields": {
     "details": "Process %ProcessExe% accessed file %FileName%"

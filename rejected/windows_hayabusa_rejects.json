@@ -25,24 +25,12 @@
    "Error": "In rule User Guessing: Timeframe detections not supported"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_UserGuessing_Correlation.yml",
-   "Error": "Missing Source: '*/*/*'"
-  },
-  {
    "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_WrongPW_PW-Guessing_Cnt_Deprecated.yml",
    "Error": "In rule PW Guessing: Timeframe detections not supported"
   },
   {
-   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4625_Med_LogonFail_WrongPW_PW-Guessing_Correlation.yml",
-   "Error": "Missing Source: '*/*/*'"
-  },
-  {
    "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_PW-Spray_Cnt_Deprecated.yml",
    "Error": "In rule PW Spray: Timeframe detections not supported"
-  },
-  {
-   "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4648_Med_ExplicitLogon_PW-Spray_Correlation.yml",
-   "Error": "Missing Source: '*/*/*'"
   },
   {
    "Path": "hayabusa/hayabusa/builtin/TerminalServices-Gateway_Op/RDS_Gateway_302_Info_LogonSuccess.yml",

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"golang.org/x/exp/slices"
@@ -12,6 +13,16 @@ import (
 
 var (
 	common_fields = []string{"Channel", "EventID", ""}
+
+	// The event object passed to a field-mapping lambda exposes these
+	// top-level members. A mapping body must reach them through the lambda
+	// argument (e.g. "x=>x.System.UserID"); referencing one as a bare free
+	// symbol (e.g. "x=>System.UserID") compiles but throws at evaluation
+	// time with "Symbol System not found". This regexp matches a bare
+	// reference - a root that starts a fresh path expression rather than
+	// following "x.".
+	bare_event_root_regexp = regexp.MustCompile(
+		`(?:^|[(=,>\s])(System|EventData|UserData|Message)\.`)
 )
 
 type EventSchema struct {
@@ -93,6 +104,47 @@ func (self *EventResolver) CheckFieldMapping(field string) bool {
 	fmt.Printf("Error: Need to add the following field mapping to the base artifact:\n %v: \"x=>x.EventData.%s\"\n",
 		field, field)
 	return false
+}
+
+// CheckFieldMappingLambda returns the offending event-root field name if
+// the field-mapping lambda references it as a bare free symbol instead of
+// reaching it through the lambda argument (x.<root>), or "" if the lambda
+// is well formed. This catches the typo class "x=>System.UserID" (which
+// should be "x=>x.System.UserID") that compiles but fails at evaluation
+// time. Function-call lambdas (e.g. "x=>timestamp(epoch=now())") and
+// roots reached through the argument or nested in a function argument
+// (e.g. "x=>process_tracker_get(id=x.System.ProcessID).Data.Exe") are not
+// flagged.
+func CheckFieldMappingLambda(lambda string) string {
+	// Only inspect the lambda body, after the "=>".
+	body := lambda
+	if _, after, found := strings.Cut(lambda, "=>"); found {
+		body = after
+	}
+
+	matches := bare_event_root_regexp.FindStringSubmatch(body)
+	if matches == nil {
+		return ""
+	}
+	return matches[1]
+}
+
+// CheckFieldMappings validates every field-mapping lambda in the loaded
+// config and reports any that reference an event-root field as a bare free
+// symbol. Following the same non-fatal reporting style as CheckFieldMapping,
+// it prints an Error line (surfaced in compile/CI output) rather than
+// aborting the build.
+func (self *CompilerContext) CheckFieldMappings() {
+	for name, lambda := range self.config_obj.field_mappings {
+		root := CheckFieldMappingLambda(lambda)
+		if root == "" {
+			continue
+		}
+
+		fmt.Printf("Error: Field mapping %q (%v) references %q as a free symbol; "+
+			"did you mean x.%v? VQL fails with \"Symbol %v not found\" at evaluation time.\n",
+			name, lambda, root, root, root)
+	}
 }
 
 func (self *EventResolver) Load(filename string) error {

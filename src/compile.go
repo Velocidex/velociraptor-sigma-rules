@@ -319,6 +319,8 @@ func doCompile() (err error) {
 		return fmt.Errorf("Reading Config: %w", err)
 	}
 
+	context.CheckFieldMappings()
+
 	if *ignore_previous_rejects && *rejects_output != "" {
 		err := context.LoadRejectSupporessions(*rejects_output)
 		if err != nil && !errors.Is(err, os.ErrNotExist) {

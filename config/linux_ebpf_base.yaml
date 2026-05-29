@@ -163,7 +163,7 @@ FieldMappings:
   ParentImage: "x=>process_tracker_get(id=x.System.ParentProcessID).Data.Exe"
   ParentCommandLine: "x=>process_tracker_get(id=x.System.ParentProcessID).Data.CommandLine"
   User: "x=>process_tracker_get(id=x.System.ProcessID).Data.Username"
-  LogonId: "x=>System.UserID"
+  LogonId: "x=>x.System.UserID"
   CurrentDirectory: "x=>stat(filename=format(format='/proc/%v/cwd', args=x.System.ProcessID)).Data.Link"
   DestinationIp: "x=>x.EventData.remote_addr.sin_addr"
   DestinationHostname: "x=>x.EventData.remote_addr.dns_names"

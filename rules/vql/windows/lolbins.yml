@@ -1,0 +1,327 @@
+title: LOLBin MSHTA Remote Script Execution
+description: |
+  MSHTA loading remote or script content (https, javascript:, vbscript:, .hta).
+  Adversaries abuse mshta.exe to proxy execution of malicious scripts and HTA files
+  (System Binary Proxy Execution, MITRE T1218.005). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \mshta.exe
+    CommandLine|re:
+      - (?i)(https?://|javascript:|vbscript:|\.hta\b)
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin RunDLL32 Script Execution
+description: |
+  RunDLL32 executing script content or a remote DLL (javascript:, vbscript:, .sct,
+  remote .dll). Adversaries abuse rundll32.exe to proxy execution of malicious code
+  (System Binary Proxy Execution, MITRE T1218.011). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \rundll32.exe
+    CommandLine|re:
+      - (?i)(javascript:|vbscript:|\.sct\b|https?://\S*\.dll)
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin Regsvr32 Silent COM Scriptlet Execution
+description: |
+  Regsvr32 silently executing a COM scriptlet (/s /u /i: or /i:https://...).
+  Adversaries abuse regsvr32.exe to bypass application control and proxy execution
+  (System Binary Proxy Execution, MITRE T1218.010). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \regsvr32.exe
+    CommandLine|re:
+      - (?i)(/s\s+/u\s+/i:|/i\s*:\s*https?://)
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin CertUtil Payload Download
+description: |
+  CertUtil downloading or decoding a payload (-decode, -encode, -urlcache, -verifyctl).
+  Adversaries abuse certutil.exe to download and decode malicious files
+  (Ingress Tool Transfer, MITRE T1105). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \certutil.exe
+    CommandLine|re:
+      - (?i)-(decode|encode|urlcache|verifyctl)\b
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin Bitsadmin Transfer Job
+description: |
+  Bitsadmin creating or starting a transfer/download job. Adversaries abuse
+  bitsadmin.exe to download malicious files and persist transfer jobs
+  (BITS Jobs, MITRE T1197). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \bitsadmin.exe
+    CommandLine|re:
+      - (?i)/(transfer|download|create)\b
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin Msiexec Remote Package Install
+description: |
+  Msiexec installing a package from a URL. Adversaries abuse msiexec.exe to
+  download and execute remote MSI packages (System Binary Proxy Execution,
+  MITRE T1218.007). This also occurs in legitimate software deployment, so
+  results need review. Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \msiexec.exe
+    CommandLine|re:
+      - (?i)/[iq]\s+https?://
+  condition: selection
+level: medium
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin Wmic Process Creation
+description: |
+  WMIC spawning a process or targeting a remote node (process call create, /node:).
+  Adversaries abuse wmic.exe for lateral movement and remote execution
+  (Windows Management Instrumentation, MITRE T1047). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \wmic.exe
+    CommandLine|re:
+      - (?i)(process\s+call\s+create|/node\s*:)
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin PowerShell Encoded Invocation
+description: |
+  PowerShell launched with encoded or obfuscated invocation (encoded command,
+  FromBase64String, IEX, DownloadString, bypass). Adversaries abuse powershell.exe
+  to execute malicious scripts while evading detection (PowerShell, MITRE T1059.001).
+  Encoded invocations also occur in administration, so results need review.
+  Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \powershell.exe
+    CommandLine|re:
+      - (?i)(-(e|ec|en|enc)\s|frombase64string|\biex\b\s*\(|downloadstring|bypass)
+  condition: selection
+level: medium
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin PowerShell Core Encoded Invocation
+description: |
+  PowerShell Core (pwsh.exe) launched with encoded or obfuscated invocation
+  (encoded command, FromBase64String, IEX, DownloadString, bypass). Same abuse
+  pattern as powershell.exe (PowerShell, MITRE T1059.001). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \pwsh.exe
+    CommandLine|re:
+      - (?i)(-(e|ec|en|enc)\s|frombase64string|\biex\b\s*\(|downloadstring|bypass)
+  condition: selection
+level: medium
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin Script Host Remote Script
+description: |
+  Windows script host (cscript/wscript) running a script from a temp/appdata path
+  or a remote URL. Adversaries abuse the script hosts to execute malicious
+  JScript/VBScript (Visual Basic, MITRE T1059.005). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \cscript.exe
+      - \wscript.exe
+    CommandLine|re:
+      - (?i)(\\(temp|tmp|appdata|public)\S*\.(js|vbs|wsf|jse|vbe)\b|https?://\S*\.(js|vbs|wsf)\b)
+  condition: selection
+level: medium
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin MSBuild Project Compile
+description: |
+  MSBuild compiling a project file (.xml, .csproj, .vbproj, .proj, .targets) outside
+  a development context. Adversaries abuse msbuild.exe to compile and execute
+  malicious inline code (Trusted Developer Utilities Proxy Execution, MITRE T1127).
+  Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \msbuild.exe
+    CommandLine|re:
+      - (?i)\.(xml|csproj|vbproj|proj|targets)\b
+  condition: selection
+level: medium
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin InstallUtil Silent Execution
+description: |
+  InstallUtil executing an assembly silently (/logfile= or /LogToConsole=false).
+  Adversaries abuse installutil.exe to proxy execution of malicious .NET assemblies
+  (System Binary Proxy Execution, MITRE T1218.004). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \installutil.exe
+    CommandLine|re:
+      - (?i)(/logfile\s*=|/LogToConsole\s*=\s*false)
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin Regasm Unregister Assembly
+description: |
+  Regasm/Regsvcs unregistering a managed assembly (/u). Adversaries abuse
+  regasm.exe to proxy execution of malicious code (System Binary Proxy Execution,
+  MITRE T1218.009). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \regasm.exe
+      - \regsvcs.exe
+    CommandLine|re:
+      - (?i)\s/u\b
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))
+---
+title: LOLBin Cmstp INF Install
+description: |
+  CMSTP installing an INF file silently (/ni or /s with .inf). Adversaries abuse
+  cmstp.exe to install malicious INF files and bypass application control
+  (System Binary Proxy Execution, MITRE T1218.003). Reference: https://lolbas-project.github.io/
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - \cmstp.exe
+    CommandLine|re:
+      - (?i)(/ni\b|/s\s+\S+\.inf\b)
+  condition: selection
+level: high
+details: Detected suspicious LOLBin invocation %EventData.CommandLine%
+enrichment: |
+  x=>dict(
+    CallChain=GetCallChain(Pid=x.EventData.Pid),
+    ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+    ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

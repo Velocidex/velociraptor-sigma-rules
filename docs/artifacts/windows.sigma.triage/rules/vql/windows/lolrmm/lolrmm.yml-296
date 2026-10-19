@@ -1,0 +1,21 @@
+title: RMM Acronis Cyber Protect (Remotix) (filesystem)
+description: |
+   Acronis Cyber Protect (Remotix) is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - AcronisCyberProtectConnectAgent.exe
+   - OSPath|re:
+     - AcronisCyberProtectConnectQuickAssist.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

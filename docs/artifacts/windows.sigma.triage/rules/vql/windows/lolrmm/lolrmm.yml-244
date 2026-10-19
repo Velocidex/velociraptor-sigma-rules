@@ -1,0 +1,26 @@
+title: RMM VNC (filesystem)
+description: |
+   VNC is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - vncserver.exe
+     - winwvc.exe
+     - winvncsc.exe
+     - vncserverui.exe
+     - vncviewer.exe
+     - winvnc.exe
+   - OSPath|re:
+     - winvnc.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

@@ -1,0 +1,28 @@
+title: RMM Netop Remote Control (Impero Connect) (filesystem)
+description: |
+   Netop Remote Control (Impero Connect) is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - nhostsvc.exe
+     - nhstw32.exe
+     - ngstw32.exe
+     - Netop Ondemand.exe
+     - nldrw32.exe
+     - rmserverconsolemediator.exe
+     - ImperoInit.exe
+     - ImperoClientSVC.exe
+   - OSPath|re:
+     - Connect.Backdrop.cloud.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

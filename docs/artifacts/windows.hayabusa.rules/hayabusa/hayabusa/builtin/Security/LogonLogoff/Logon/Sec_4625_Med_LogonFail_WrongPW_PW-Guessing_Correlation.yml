@@ -1,0 +1,32 @@
+title: PW Guessing
+id: 23179f25-6fce-4827-bae1-b219deaf563e
+related:
+    - id: 35e8a0fc-60c2-46d7-ba39-aafb15b9854e
+      type: obsolete
+status: test
+description: Detects password guessing attacks
+references: https://attack.mitre.org/techniques/T1110/003/
+author: Zach Mathis
+date: 2024-10-13
+modified: 2025-02-10
+tags:
+    - attack.t1110.003
+    - attack.credential-access
+correlation:
+    type: event_count
+    rules:
+        - incorrect_password
+    group-by:
+        - TargetUserName
+        - TargetDomainName
+        - IpAddress
+        - LogonType
+        - ProcessName
+        - LogonProcessName
+    timespan: 5m
+    condition:
+        gte: 5
+falsepositives:
+    - User mistyping password
+level: medium
+ruletype: Hayabusa

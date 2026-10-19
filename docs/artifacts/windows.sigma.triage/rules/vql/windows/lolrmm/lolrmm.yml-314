@@ -1,0 +1,29 @@
+title: RMM MSP360 (filesystem)
+description: |
+   MSP360 is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - Online Backup.exe
+     - CBBackupPlan.exe
+     - Cloud.Backup.Scheduler.exe
+     - Cloud.Backup.RM.Service.exe
+     - cbb.exe
+     - CloudRaService.exe
+     - CloudRaSd.exe
+     - CloudRaCmd.exe
+     - CloudRaUtilities.exe
+     - Remote Desktop.exe
+     - Connect.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

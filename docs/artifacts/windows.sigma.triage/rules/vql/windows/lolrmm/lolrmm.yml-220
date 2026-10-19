@@ -1,0 +1,22 @@
+title: RMM AnyDesk (Pslist)
+description: |
+   AnyDesk is a popular remote desktop software that enables users to access and control a computer or device from a remote location. It was developed with the primary goal of facilitating remote work, technical support, and collaboration between individuals and teams.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|re:
+     - C:\\Program Files (x86)\\AnyDesk\\.*
+     - C:\\Program Files\\AnyDesk\\.*
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

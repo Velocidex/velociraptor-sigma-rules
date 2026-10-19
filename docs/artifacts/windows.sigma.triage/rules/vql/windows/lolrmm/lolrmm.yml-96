@@ -1,0 +1,24 @@
+title: RMM Splashtop (Pslist)
+description: |
+   Splashtop is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \strwinclt.exe
+   - Image|re:
+     - C:\\Program Files (x86)\\Splashtop\\.*
+     - .*\\Splashtop\\Splashtop Remote\\Client for RMM\\.*
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

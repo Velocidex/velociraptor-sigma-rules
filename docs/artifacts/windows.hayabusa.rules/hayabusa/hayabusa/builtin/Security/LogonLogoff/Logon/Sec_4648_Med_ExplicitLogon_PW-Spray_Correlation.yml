@@ -1,0 +1,28 @@
+title: PW Spray
+id: 49d15187-4203-4e11-8acd-8736f25b6608
+related:
+    - id: ffd622af-d049-449f-af5a-0492fdcc3a58
+      type: obsolete
+status: test
+description: Search for many 4648 explicit credential logon attempts in a short period of time.
+references: https://attack.mitre.org/techniques/T1110/003/
+author: Zach Mathis
+date: 2024-10-19
+modified: 2024-10-19
+tags:
+    - attack.t1110.003
+    - attack.credential-access
+correlation:
+    type: value_count
+    rules:
+        - explicit_logon
+    group-by:
+        - IpAddress
+        - Computer
+    timespan: 5m
+    condition:
+        gte: 5
+        field: TargetUserName
+falsepositives:
+level: medium
+ruletype: Hayabusa

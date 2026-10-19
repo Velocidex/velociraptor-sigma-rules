@@ -1,0 +1,21 @@
+title: RMM LabTech RMM (Now ConnectWise Automate) (filesystem)
+description: |
+   LabTech RMM (Now ConnectWise Automate) is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - ltsvc.exe
+     - ltsvcmon.exe
+     - lttray.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

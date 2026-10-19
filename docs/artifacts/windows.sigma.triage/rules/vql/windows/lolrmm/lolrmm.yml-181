@@ -1,0 +1,26 @@
+title: RMM Ammyy Admin (Pslist)
+description: |
+   Ammyy Admin is a remote monitoring and management (RMM) tool. Ammyy admin has been used by scammers to gain remote access to victims' computers. The tool is legitimate and is used by IT professionals for remote management. However, it has been abused by scammers to gain unauthorized access to victims' computers. The tool is free for personal use, but a license is required for commercial use. The tool allows for remote desktop control, file transfer, voice chat, and more. The tool is available for Windows only. will be added as it becomes available.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \AMMYY_Admin.exe
+   - Image|re:
+     - C:\\\\ProgramData\\\\AMMYY\\\\.*
+     - aa_v.*.exe
+     - C:\\Users\\.*\\Downloads\\AMMYY_Admin.exe
+     - .*\\AMMYY_Admin.exe
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

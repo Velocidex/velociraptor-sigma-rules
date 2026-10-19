@@ -1,0 +1,32 @@
+title: RMM Atera (Pslist)
+description: |
+   Atera is a remote monitoring and management (RMM) tool. It is used by threat actors to deploy ransomware or facilitate command execution and lateral movement.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \atera_agent.exe
+     - \atera_agent.exe
+     - \ateraagent.exe
+     - \C:\Program Files\Atera Networks
+     - \C:\Program Files (x86)\Atera Networks
+     - \syncrosetup.exe
+   - Image|re:
+     - .*\\AgentPackageNetworkDiscovery.exe
+     - .*\\AgentPackageTaskScheduler.exe
+     - .*\\ATERA Networks\\AteraAgent\\.*
+     - .*\\AteraAgent.exe
+     - C:\\Program Files\\ATERA Networks\\AteraAgent\\.*
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

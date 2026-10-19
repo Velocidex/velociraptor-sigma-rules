@@ -1,0 +1,31 @@
+title: RMM UltraViewer (filesystem)
+description: |
+   UltraViewer is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - UltraViewer_Service.exe
+     - UltraViewer_Desktop.exe
+     - ultraviewer.exe
+     - C:\Program Files (x86)\UltraViewer\UltraViewer_Desktop.exe
+     - ultraviewer_desktop.exe
+     - ultraviewer_service.exe
+     - UltraViewer_Desktop.exe
+     - UltraViewer_Service.exe
+   - OSPath|re:
+     - UltraViewer_setup.*
+     - .*\\UltraViewer\\
+     - .*\\UltraViewer_Desktop.exe
+     - UltraViewer_setup.*
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

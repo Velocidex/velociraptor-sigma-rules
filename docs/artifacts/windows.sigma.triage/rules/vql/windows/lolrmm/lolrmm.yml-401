@@ -1,0 +1,24 @@
+title: RMM Parallels Access (filesystem)
+description: |
+   Parallels Access is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - TSClient.exe
+     - prl_deskctl_agent.exe
+     - prl_deskctl_wizard.exe
+     - prl_pm_service.exe
+   - OSPath|re:
+     - parallelsaccess-.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

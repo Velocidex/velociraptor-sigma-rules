@@ -1,0 +1,23 @@
+title: RMM Tanium (filesystem)
+description: |
+   Tanium is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - TaniumClient.exe
+     - TaniumCX.exe
+     - TaniumExecWrapper.exe
+     - TaniumFileInfo.exe
+     - TPowerShell.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

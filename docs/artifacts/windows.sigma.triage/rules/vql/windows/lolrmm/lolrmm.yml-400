@@ -1,0 +1,21 @@
+title: RMM Rapid7 (filesystem)
+description: |
+   Rapid7 is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - ir_agent.exe
+     - rapid7_agent_core.exe
+     - rapid7_endpoint_broker.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

@@ -1,0 +1,26 @@
+title: T1016 Core Network Discovery Tools In Prefetch
+name: t1016_prefetch_core_tools
+status: experimental
+description: Detects execution evidence of common Windows network discovery utilities from Prefetch.
+references:
+  - https://attack.mitre.org/techniques/T1016/
+tags:
+  - attack.discovery
+  - attack.t1016
+logsource:
+  category: forensics
+  product: windows
+  service: prefetch
+detection:
+  selection:
+    Image|contains:
+      - ipconfig
+      - arp
+      - route
+      - netstat
+      - nbtstat
+      - netsh
+      - nslookup
+      - nltest
+  condition: selection
+level: low

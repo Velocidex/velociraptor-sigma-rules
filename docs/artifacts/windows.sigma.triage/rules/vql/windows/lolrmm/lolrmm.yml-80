@@ -1,0 +1,31 @@
+title: RMM MSP360 (Pslist)
+description: |
+   MSP360 is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \Online Backup.exe
+     - \CBBackupPlan.exe
+     - \Cloud.Backup.Scheduler.exe
+     - \Cloud.Backup.RM.Service.exe
+     - \cbb.exe
+     - \CloudRaService.exe
+     - \CloudRaSd.exe
+     - \CloudRaCmd.exe
+     - \CloudRaUtilities.exe
+     - \Remote Desktop.exe
+     - \Connect.exe
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

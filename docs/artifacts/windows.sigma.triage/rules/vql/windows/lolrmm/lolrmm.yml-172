@@ -1,0 +1,26 @@
+title: RMM Chrome Remote Desktop (Pslist)
+description: |
+   Chrome Remote Desktop is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \remote_host.exe
+     - \remoting_host.exe
+   - Image|re:
+     - C:\\Program Files (x86)\\Google\\Chrome Remote Desktop\\.*
+     - .*\\Google\\Chrome Remote Desktop\\.*
+     - .*\\remoting_host.exe
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

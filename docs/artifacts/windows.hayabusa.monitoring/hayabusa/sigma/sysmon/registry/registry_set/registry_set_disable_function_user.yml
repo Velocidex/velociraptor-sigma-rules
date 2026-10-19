@@ -1,0 +1,88 @@
+title: Disable Internal Tools or Feature in Registry
+id: 84365129-bd4b-12a9-de77-63423fa0d7db
+related:
+    - id: e2482f8d-3443-4237-b906-cc145d87a076
+      type: derived
+status: test
+description: Detects registry modifications that change features of internal Windows tools (malware like Agent Tesla uses this technique)
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1112/T1112.md
+    - https://www.mandiant.com/resources/unc2165-shifts-to-evade-sanctions
+    - https://blogs.vmware.com/security/2022/11/batloader-the-evasive-downloader-malware.html
+    - https://www.malwarebytes.com/blog/detections/pum-optional-nodispbackgroundpage
+    - https://www.malwarebytes.com/blog/detections/pum-optional-nodispcpl
+    - https://bazaar.abuse.ch/sample/7bde840c7e8c36dce4c3bac937bcf39f36a6f118001b406bfbbc25451ce44fb4/
+author: frack113, Nasreddine Bencherchali (Nextron Systems), CrimpSec
+date: 2022-03-18
+modified: 2025-06-04
+tags:
+    - attack.persistence
+    - attack.defense-impairment
+    - attack.t1112
+    - sysmon
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    registry_set:
+        EventID: 13
+        Channel: Microsoft-Windows-Sysmon/Operational
+    selection_set_1:
+        TargetObject|endswith:
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisableCMD
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoControlPanel
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoRun
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\StartMenuLogOff
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\DisableChangePassword
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\DisableLockWorkstation
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\DisableRegistryTools
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskmgr
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\NoDispBackgroundPage
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\NoDispCPL
+            - SOFTWARE\Policies\Microsoft\Windows\Explorer\DisableNotificationCenter
+            - SOFTWARE\Policies\Microsoft\Windows\System\DisableCMD
+        Details: DWORD (0x00000001)
+    selection_set_0:
+        TargetObject|endswith:
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\ConsentPromptBehaviorAdmin
+            - Software\Microsoft\Windows\CurrentVersion\Policies\System\InactivityTimeoutSecs
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\shutdownwithoutlogon
+            - SOFTWARE\Microsoft\Windows\CurrentVersion\PushNotifications\ToastEnabled
+            - SYSTEM\CurrentControlSet\Control\Storage\Write Protection
+            - SYSTEM\CurrentControlSet\Control\StorageDevicePolicies\WriteProtect
+        Details: DWORD (0x00000000)
+    condition: registry_set and (1 of selection_set_*)
+falsepositives:
+    - Legitimate admin script
+level: medium
+simulation:
+    - type: atomic-red-team
+      name: Disable Windows Registry Tool
+      technique: T1112
+      atomic_guid: ac34b0f7-0f85-4ac0-b93e-3ced2bc69bb8
+    - type: atomic-red-team
+      name: Disable Windows CMD application
+      technique: T1112
+      atomic_guid: d2561a6d-72bd-408c-b150-13efe1801c2a
+    - type: atomic-red-team
+      name: Disable Windows Task Manager application
+      technique: T1112
+      atomic_guid: af254e70-dd0e-4de6-9afe-a994d9ea8b62
+    - type: atomic-red-team
+      name: Disable Windows Notification Center
+      technique: T1112
+      atomic_guid: c0d6d67f-1f63-42cc-95c0-5fd6b20082ad
+    - type: atomic-red-team
+      name: Disable Windows Lock Workstation Feature
+      technique: T1112
+      atomic_guid: 3dacb0d2-46ee-4c27-ac1b-f9886bf91a56
+    - type: atomic-red-team
+      name: Disable Windows Change Password Feature
+      technique: T1112
+      atomic_guid: d4a6da40-618f-454d-9a9e-26af552aaeb0
+    - type: atomic-red-team
+      name: Disable Windows Shutdown Button
+      technique: T1112
+      atomic_guid: 6e0d1131-2d7e-4905-8ca5-d6172f05d03d
+regression_tests_path: regression_data/rules/windows/registry/registry_set/registry_set_disable_function_user/info.yml
+ruletype: Sigma

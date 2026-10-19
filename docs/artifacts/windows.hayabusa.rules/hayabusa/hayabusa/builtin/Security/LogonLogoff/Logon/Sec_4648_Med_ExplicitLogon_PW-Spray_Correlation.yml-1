@@ -1,0 +1,26 @@
+title: Failed Logon - Incorrect Password
+id: ab1accc0-b6e2-4841-8dfb-5902581392c3
+name: explicit_logon
+related:
+    - id: 35e8a0fc-60c2-46d7-ba39-aafb15b9854e
+      type: obsolete
+status: test
+description: Detects a failed logon event due to a wrong password
+references:
+author: Zach Mathis
+date: 2024-10-19
+modified: 2025-02-10
+tags:
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        Channel: Security
+        EventID: 4648
+    filter:
+       - IpAddress: "-"
+    condition: selection and not filter
+falsepositives:
+level: medium
+ruletype: Hayabusa

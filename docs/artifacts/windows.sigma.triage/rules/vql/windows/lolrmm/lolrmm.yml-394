@@ -1,0 +1,28 @@
+title: RMM Syncro (filesystem)
+description: |
+   Syncro is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - Syncro.Installer.exe
+     - Kabuto.App.Runner.exe
+     - Syncro.Overmind.Service.exe
+     - Kabuto.Installer.exe
+     - KabutoSetup.exe
+     - Syncro.Service.exe
+     - Kabuto.Service.Runner.exe
+     - Syncro.App.Runner.exe
+     - SyncroLive.Service.exe
+     - SyncroLive.Agent.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

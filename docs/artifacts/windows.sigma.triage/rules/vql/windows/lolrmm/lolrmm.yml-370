@@ -1,0 +1,20 @@
+title: RMM Action1 (filesystem)
+description: |
+   Action1 is a powerful Remote Monitoring and Management(RMM) tool that enables users to execute commands, scripts, and binaries. 
+   Through the web interface of action1, the administrator must create a new policy or an app to establish remote execution and then points that the agent is installed.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - OSPath|re:
+     - C:\\Windows\\Action1\\.*
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

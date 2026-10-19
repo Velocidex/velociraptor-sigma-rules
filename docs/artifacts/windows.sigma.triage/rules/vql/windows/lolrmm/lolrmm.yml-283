@@ -1,0 +1,24 @@
+title: RMM ManageEngine (filesystem)
+description: |
+   ManageEngine is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - InstallShield Setup.exe
+     - ManageEngine_Remote_Access_Plus.exe
+   - OSPath|re:
+     - .*\\dcagentservice.exe
+     - C:\\Program Files (x86)\\DesktopCentral_Agent\\bin\\.*
+     - .*\\DesktopCentral_Agent\\bin\\.*
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

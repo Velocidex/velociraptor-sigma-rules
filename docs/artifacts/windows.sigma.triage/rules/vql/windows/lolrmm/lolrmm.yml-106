@@ -1,0 +1,23 @@
+title: RMM Pocket Cloud (Wyse) (Pslist)
+description: |
+   Pocket Cloud (Wyse) is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \pocketcloudservice.exe
+   - Image|re:
+     - pocketcloud.*.exe
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

@@ -1,0 +1,29 @@
+title: RMM DameWare (filesystem)
+description: |
+   DameWare is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - dwrcs.exe
+     - DameWare Remote Support.exe
+   - OSPath|re:
+     - SolarWinds-Dameware-DRS.*.exe
+     - DameWare Mini Remote Control.*.exe
+     - C:\\Windows\\dwrcs\\.*
+     - C:\\Program Files\\SolarWinds\\Dameware Mini Remote Control\\.*
+     - dntus.*.exe
+     - .*\\dwrcs\\.*
+     - .*\\dwrcst.exe
+     - SolarWinds-Dameware-MRC.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

@@ -1,0 +1,21 @@
+title: RMM Ericom Connect (filesystem)
+description: |
+   Ericom Connect is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - ericomconnnectconfigurationtool.exe
+   - OSPath|re:
+     - EricomConnectRemoteHost.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

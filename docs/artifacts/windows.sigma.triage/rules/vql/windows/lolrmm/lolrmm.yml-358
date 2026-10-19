@@ -1,0 +1,26 @@
+title: RMM Splashtop Remote (filesystem)
+description: |
+   Splashtop Remote is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - strwinclt.exe
+     - SplashtopSOS.exe
+     - sragent.exe
+     - srmanager.exe
+     - srserver.exe
+     - srservice.exe
+   - OSPath|re:
+     - Splashtop_Streamer_Windows.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

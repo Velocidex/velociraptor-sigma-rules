@@ -1,0 +1,33 @@
+title: RMM ScreenConnect (filesystem)
+description: |
+   ScreenConnect is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - C:\Program Files (x86)\ScreenConnect Client (Random)\ScreenConnect.ClientService.exe
+     - Remote Workforce Client.exe
+     - screenconnect.windowsclient.exe
+     - Remote Workforce Client.exe
+     - screenconnect.windowsclient.exe
+     - screenconnect.clientservice.exe
+   - OSPath|re:
+     - .*\\.*\\ScreenConnect.ClientService.exe
+     - C:\\Program Files (x86)\\ScreenConnect Client (<string ID>)\\.*
+     - .*\\ScreenConnect Client.*\\.*
+     - .*\\.*\\ScreenConnect.WindowsClient.exe
+     - screenconnect.*.exe
+     - screenconnect.*.exe
+     - ConnectWiseControl.*.exe
+     - connectwise.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

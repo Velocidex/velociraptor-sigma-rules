@@ -1,0 +1,29 @@
+title: RMM Zoho Assist (filesystem)
+description: |
+   Zoho Assist is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - zaservice.exe
+     - ZMAgent.exe
+     - ZohoMeeting.exe
+     - Zohours.exe
+     - zohotray.exe
+     - ZohoURSService.exe
+     - Zaservice.exe
+     - za_connect.exe
+   - OSPath|re:
+     - C:\\.*\\ZA_Access.exe
+     - .*\\ZA_Access.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

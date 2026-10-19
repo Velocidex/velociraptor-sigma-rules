@@ -1,0 +1,47 @@
+title: CMSTP App Paths Registry Key Modification
+id: b8a0225d-b29e-788e-1ec3-2e79c37dd80f
+related:
+    - id: b6d235fc-1d38-4b12-adbe-325f06728f37
+      type: derived
+status: stable
+description: |
+    Detects modifications to the CMSTP App Paths registry key. This may indicate abuse of
+    Microsoft Connection Manager Profile Installer (CMSTP) for arbitrary code execution or UAC bypass.
+references:
+    - https://lolbas-project.github.io/lolbas/Binaries/Cmstp/
+    - https://web.archive.org/web/20190720093911/http://www.endurant.io/cmstp/detecting-cmstp-enabled-code-execution-and-uac-bypass-with-sysmon/
+    - https://web.archive.org/web/20190722224110/https://oddvar.moe/2017/08/15/research-on-cmstp-exe/
+author: Nik Seetharaman
+date: 2018-07-16
+modified: 2026-08-27
+tags:
+    - attack.execution
+    - attack.stealth
+    - attack.t1218.003
+    - attack.g0069
+    - car.2019-04-001
+    - sysmon
+logsource:
+    category: registry_event
+    product: windows
+detection:
+    registry_event:
+        EventID:
+            - 12
+            - 13
+            - 14
+        Channel: Microsoft-Windows-Sysmon/Operational
+    selection:
+        TargetObject|contains: SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\cmmgr32.exe\
+    filter_main_cmcfg32:
+        TargetObject|endswith: SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\cmmgr32.exe\CmstpExtensionDll
+        Details:
+            - C:\Windows\System32\cmcfg32.dll
+            - C:\Windows\SysWOW64\cmcfg32.dll
+    filter_main_empty:
+        Details: (Empty)
+    condition: registry_event and (selection and not 1 of filter_main_*)
+falsepositives:
+    - Legitimate CMSTP use (unlikely in modern enterprise environments)
+level: high
+ruletype: Sigma

@@ -1,0 +1,21 @@
+title: RMM Level (Pslist)
+description: |
+   Level is a remote monitoring and management (RMM) tool. Threat actors has been seen using the automation feature of it. The tool is using OSQuery to collect basic machine information, and will also spawn osqueri.exe.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|re:
+     - C:\\Program Files\\Level\\.*
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

@@ -1,0 +1,21 @@
+title: RMM ezHelp (filesystem)
+description: |
+   ezHelp is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - ezhelpclientmanager.exe
+     - ezHelpManager.exe
+     - ezhelpclient.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

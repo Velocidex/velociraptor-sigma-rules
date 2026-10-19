@@ -1,0 +1,26 @@
+title: RMM PSEXEC (Clone) (filesystem)
+description: |
+   PSEXEC (Clone) is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - paexec.exe
+     - csexec.exe 
+     - remcom.exe
+     - remcomsvc.exe
+     - xcmd.exe
+     - xcmdsvc.exe
+   - OSPath|re:
+     - PAExec-.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

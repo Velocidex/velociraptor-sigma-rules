@@ -1,0 +1,30 @@
+title: RMM FixMe.it (filesystem)
+description: |
+   FixMe.it is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - FixMeit Client.exe
+     - TiExpertStandalone.exe
+     - TiExpertCore.exe
+     - FixMeit Unattended Access Setup.exe
+     - FixMeit Expert Setup.exe
+     - TiExpertCore.exe
+     - fixmeitclient.exe
+     - TiClientCore.exe
+     - 9380CC75B872221A7425D7503565B67580407F60
+   - OSPath|re:
+     - FixMeitClient.*.exe
+     - TiClientHelper.*.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

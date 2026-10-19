@@ -1,0 +1,21 @@
+title: RMM Microsoft RDP (filesystem)
+description: |
+   Microsoft RDP is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - termsrv.exe
+     - mstsc.exe
+     - Microsoft Remote Desktop
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

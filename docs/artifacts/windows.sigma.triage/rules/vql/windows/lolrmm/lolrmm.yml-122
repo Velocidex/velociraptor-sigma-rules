@@ -1,0 +1,33 @@
+title: RMM UltraViewer (Pslist)
+description: |
+   UltraViewer is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \UltraViewer_Service.exe
+     - \UltraViewer_Desktop.exe
+     - \ultraviewer.exe
+     - \C:\Program Files (x86)\UltraViewer\UltraViewer_Desktop.exe
+     - \ultraviewer_desktop.exe
+     - \ultraviewer_service.exe
+     - \UltraViewer_Desktop.exe
+     - \UltraViewer_Service.exe
+   - Image|re:
+     - UltraViewer_setup.*
+     - .*\\UltraViewer\\
+     - .*\\UltraViewer_Desktop.exe
+     - UltraViewer_setup.*
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

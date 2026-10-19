@@ -1,0 +1,35 @@
+title: RMM ScreenConnect (Pslist)
+description: |
+   ScreenConnect is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \C:\Program Files (x86)\ScreenConnect Client (Random)\ScreenConnect.ClientService.exe
+     - \Remote Workforce Client.exe
+     - \screenconnect.windowsclient.exe
+     - \Remote Workforce Client.exe
+     - \screenconnect.windowsclient.exe
+     - \screenconnect.clientservice.exe
+   - Image|re:
+     - .*\\.*\\ScreenConnect.ClientService.exe
+     - C:\\Program Files (x86)\\ScreenConnect Client (<string ID>)\\.*
+     - .*\\ScreenConnect Client.*\\.*
+     - .*\\.*\\ScreenConnect.WindowsClient.exe
+     - screenconnect.*.exe
+     - screenconnect.*.exe
+     - ConnectWiseControl.*.exe
+     - connectwise.*.exe
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

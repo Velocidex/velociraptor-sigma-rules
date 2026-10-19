@@ -1,0 +1,24 @@
+title: RMM Ammyy Admin (filesystem)
+description: |
+   Ammyy Admin is a remote monitoring and management (RMM) tool. Ammyy admin has been used by scammers to gain remote access to victims' computers. The tool is legitimate and is used by IT professionals for remote management. However, it has been abused by scammers to gain unauthorized access to victims' computers. The tool is free for personal use, but a license is required for commercial use. The tool allows for remote desktop control, file transfer, voice chat, and more. The tool is available for Windows only. will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - AMMYY_Admin.exe
+   - OSPath|re:
+     - C:\\\\ProgramData\\\\AMMYY\\\\.*
+     - aa_v.*.exe
+     - C:\\Users\\.*\\Downloads\\AMMYY_Admin.exe
+     - .*\\AMMYY_Admin.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

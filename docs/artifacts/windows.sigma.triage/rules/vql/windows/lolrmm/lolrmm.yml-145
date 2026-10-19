@@ -1,0 +1,30 @@
+title: RMM Netop Remote Control (Impero Connect) (Pslist)
+description: |
+   Netop Remote Control (Impero Connect) is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: process_creation
+  product: windows
+  service: pslist
+
+detection:
+  condition: selection
+  selection:
+   - Image|endswith:
+     - \nhostsvc.exe
+     - \nhstw32.exe
+     - \ngstw32.exe
+     - \Netop Ondemand.exe
+     - \nldrw32.exe
+     - \rmserverconsolemediator.exe
+     - \ImperoInit.exe
+     - \ImperoClientSVC.exe
+   - Image|re:
+     - Connect.Backdrop.cloud.*.exe
+
+details: Detected RMM process %EventData.Image%
+enrichment: |
+  x=>dict(
+   CallChain=GetCallChain(Pid=x.EventData.Pid),
+   ImageHash=x.EventData.Image && hash(path=x.EventData.Image),
+   ParentHash=x.EventData.ParentImage && hash(path=x.EventData.ParentImage))

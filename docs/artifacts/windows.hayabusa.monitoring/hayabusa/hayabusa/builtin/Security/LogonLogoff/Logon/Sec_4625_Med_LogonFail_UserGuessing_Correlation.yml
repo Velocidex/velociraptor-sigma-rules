@@ -1,0 +1,33 @@
+title: User Guessing
+id: 0ae09af3-f30f-47c2-a31c-83e0b918eeee
+related:
+    - id: 4574194d-e7ca-4356-a95c-21b753a1787e
+      type: obsolete
+status: test
+description: Search for many 4625 failed logon attempts due to wrong usernames in a short period of time.
+references: https://attack.mitre.org/techniques/T1110/003/
+author: Zach Mathis
+date: 2024-10-13
+modified: 2024-10-13
+tags:
+    - attack.t1110.003
+    - attack.credential-access
+correlation:
+    type: value_count
+    rules:
+        - non_existent_user
+    group-by:
+        - IpAddress
+        - LogonType
+        - TargetDomainName
+        - ProcessName
+        - LogonProcessName
+        - WorkstationName
+    timespan: 5m
+    condition:
+        gt: 3
+        field: TargetUserName
+falsepositives:
+    - User mistyping username
+level: medium
+ruletype: Hayabusa

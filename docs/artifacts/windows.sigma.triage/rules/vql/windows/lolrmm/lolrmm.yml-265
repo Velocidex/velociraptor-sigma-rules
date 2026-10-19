@@ -1,0 +1,27 @@
+title: RMM Mikogo (filesystem)
+description: |
+   Mikogo is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - mikogo.exe
+     - mikogo-starter.exe
+     - mikogo-service.exe
+     - mikogolauncher.exe
+   - OSPath|re:
+     - C:\\Users\\.*\\AppData\\Roaming\\Mikogo\\.*
+     - .*Users\\.*\\AppData\\Roaming\\Mikogo\\.*
+     - .*\\Mikogo-Service.exe
+     - .*\\Mikogo-Screen-Service.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

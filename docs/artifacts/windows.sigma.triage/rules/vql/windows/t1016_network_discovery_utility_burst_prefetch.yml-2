@@ -1,0 +1,19 @@
+title: T1016 Multiple Core Network Discovery Tools In Prefetch
+name: t1016_prefetch_core_tools_count
+status: experimental
+description: Detects four or more distinct core network discovery utilities in Prefetch within five minutes.
+logsource:
+  category: forensics
+  product: windows
+  service: prefetch
+correlation:
+  type: value_count
+  rules:
+    - t1016_prefetch_core_tools
+  group-by:
+    - System.Computer
+  timespan: 5m
+  condition:
+    field: Image
+    gte: 4
+level: medium

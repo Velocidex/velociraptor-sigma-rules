@@ -1,0 +1,30 @@
+title: RMM Atera (filesystem)
+description: |
+   Atera is a remote monitoring and management (RMM) tool. It is used by threat actors to deploy ransomware or facilitate command execution and lateral movement.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - atera_agent.exe
+     - atera_agent.exe
+     - ateraagent.exe
+     - C:\Program Files\Atera Networks
+     - C:\Program Files (x86)\Atera Networks
+     - syncrosetup.exe
+   - OSPath|re:
+     - .*\\AgentPackageNetworkDiscovery.exe
+     - .*\\AgentPackageTaskScheduler.exe
+     - .*\\ATERA Networks\\AteraAgent\\.*
+     - .*\\AteraAgent.exe
+     - C:\\Program Files\\ATERA Networks\\AteraAgent\\.*
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

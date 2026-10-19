@@ -1,0 +1,22 @@
+title: RMM Site24x7 (filesystem)
+description: |
+   Site24x7 is a remote monitoring and management (RMM) tool. More information will be added as it becomes available.
+
+logsource:
+  category: filesystem
+  product: windows
+  service: glob
+
+detection:
+  condition: selection
+  selection:
+   - Name:
+     - MEAgentHelper.exe
+     - MonitoringAgent.exe
+     - Site24x7WindowsAgentTrayIcon.exe
+     - Site24x7PluginAgent.exe
+
+details: Detected RMM executable %EventData.OSPath%
+enrichment: |
+  x=>dict(
+   Hash=hash(path=x.EventData.OSPath))

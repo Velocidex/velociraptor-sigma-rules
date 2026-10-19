@@ -71,6 +71,10 @@ func (self *CompilerContext) GetArtifact() (string, error) {
 
 	self.completed_artifact = preamble_templ + export_templ + query_templ + postscript_temp
 
+	if !strings.Contains("required_permissions", self.completed_artifact) {
+		self.completed_artifact += "\nrequired_permissions:\n- EXECVE\n- FILESYSTEM_WRITE\n- IMPERSONATION\n"
+	}
+
 	return self.completed_artifact, nil
 }
 

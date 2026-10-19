@@ -28,7 +28,7 @@ QueryTemplate: |
    - query: |
        // Feed all the json rows to the log sources.
        LET AllRows = SELECT * FROM parse_json_array(
-          read_file(filename=JSONDump))
+          data=read_file(filename=JSONDump))
 
        LET TestingLogSourceDict <= to_dict(item={
          SELECT _key, AllRows AS _value

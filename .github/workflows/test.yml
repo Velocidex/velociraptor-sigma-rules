@@ -42,7 +42,24 @@ jobs:
         mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor
         chmod +x ./tests/velociraptor
         ls -l ./output/
-        ./tests/velociraptor artifacts verify --builtin -v ./output/*.yaml --max_length 10000000 && make golden
+        ./tests/velociraptor artifacts verify --builtin -v ./output/*.yaml --max_length 10000000
+
+    - name: Download Latest Velociraptor
+      uses: robinraju/release-downloader@v1
+      id: velociraptor
+      with:
+        repository: velocidex/velociraptor
+        tag: v0.77.3
+        fileName: "velociraptor-v0.77.3-linux-amd64-musl.gz"
+        out-file-path: tests
+
+    - name: Run Velociraptor
+      run: |
+        mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor.gz
+        gunzip ./tests/velociraptor.gz
+        chmod +x ./tests/velociraptor
+        ls -l ./output/
+        make golden
 
     - uses: actions/upload-artifact@v4
       if: always()

@@ -73,13 +73,18 @@ func (self *CompilerContext) CompileDirs() error {
 				}
 
 				// Allow each file to contain multiple rules.
-				for _, rule := range strings.Split(string(data), "\n---\n") {
+				for idx, rule := range strings.Split(string(data), "\n---\n") {
 					rule_data := strings.TrimSpace(rule) + "\n"
 					if rule_data == "" {
 						continue
 					}
 
-					err := self.CompileRule(rule_data, path)
+					key := path
+					if idx > 0 {
+						key = fmt.Sprintf("%s-%d", path, idx)
+					}
+
+					err := self.CompileRule(rule_data, key)
 					if err != nil {
 						fmt.Printf("Rule %v: %v\n", err, rule_data)
 						return err

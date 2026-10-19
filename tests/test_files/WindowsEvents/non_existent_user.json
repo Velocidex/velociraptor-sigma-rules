@@ -1,0 +1,98 @@
+[
+{
+    "System": {
+        "Channel": "Security",
+        "Computer": "WIN-SJE0CKQO83P",
+        "EventID": {
+            "Value": 4625
+        },
+        "TimeCreated": {
+            "SystemTime": "2025-01-30T14:01:46Z"
+        }
+    },
+    "EventData": {
+        "SubjectUserSid": "S-1-5-18",
+        "TargetUserSid": "S-1-0-0",
+        "TargetUserName": "User1",
+        "IpAddress": "192.169.1.1",
+        "SubStatus": "0xc0000064",
+        "LogonType": 8,
+        "TargetDomainName": "XXX",
+        "ProcessName": "C:\\Program Files\\OpenSSH-Win64\\sshd.exe",
+        "LogonProcessName": "Advapi",
+        "WorkstationName": "FS01"
+    }
+},
+{
+    "System": {
+        "Channel": "Security",
+        "Computer": "WIN-SJE0CKQO83P",
+        "EventID": {
+            "Value": 4625
+        },
+        "TimeCreated": {
+            "SystemTime": "2025-01-30T14:02:46Z"
+        }
+    },
+    "EventData": {
+        "SubjectUserSid": "S-1-5-18",
+        "TargetUserSid": "S-1-0-0",
+        "TargetUserName": "User2",
+        "IpAddress": "192.169.1.1",
+        "SubStatus": "0xc0000064",
+        "LogonType": 8,
+        "TargetDomainName": "XXX",
+        "ProcessName": "C:\\Program Files\\OpenSSH-Win64\\sshd.exe",
+        "LogonProcessName": "Advapi",
+        "WorkstationName": "FS01"
+    }
+},
+{
+    "System": {
+        "Channel": "Security",
+        "Computer": "WIN-SJE0CKQO83P",
+        "EventID": {
+            "Value": 4625
+        },
+        "TimeCreated": {
+            "SystemTime": "2025-01-30T14:03:46Z"
+        }
+    },
+    "EventData": {
+        "SubjectUserSid": "S-1-5-18",
+        "TargetUserSid": "S-1-0-0",
+        "TargetUserName": "User3",
+        "IpAddress": "192.169.1.1",
+        "SubStatus": "0xc0000064",
+        "LogonType": 8,
+        "TargetDomainName": "XXX",
+        "ProcessName": "C:\\Program Files\\OpenSSH-Win64\\sshd.exe",
+        "LogonProcessName": "Advapi",
+        "WorkstationName": "FS01"
+    }
+},
+{
+    "System": {
+        "Channel": "Security",
+        "Computer": "WIN-SJE0CKQO83P",
+        "EventID": {
+            "Value": 4625
+        },
+        "TimeCreated": {
+            "SystemTime": "2025-01-30T14:04:46Z"
+        }
+    },
+    "EventData": {
+        "SubjectUserSid": "S-1-5-18",
+        "TargetUserSid": "S-1-0-0",
+        "TargetUserName": "User4",
+        "IpAddress": "192.169.1.1",
+        "SubStatus": "0xc0000064",
+        "LogonType": 8,
+        "TargetDomainName": "XXX",
+        "ProcessName": "C:\\Program Files\\OpenSSH-Win64\\sshd.exe",
+        "LogonProcessName": "Advapi",
+        "WorkstationName": "FS01"
+    }
+}
+]

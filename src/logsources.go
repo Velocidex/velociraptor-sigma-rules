@@ -335,6 +335,10 @@ func updateRuleLogSources(source_spec string, log_source *sigma.Logsource) {
 }
 
 func (self *CompilerContext) check_condition(rule *sigma.Rule) error {
+	if rule.Correlation != nil {
+		return nil
+	}
+
 	// If a condition is missing make it up
 	if len(rule.Detection.Conditions) == 0 {
 		fields := []string{}

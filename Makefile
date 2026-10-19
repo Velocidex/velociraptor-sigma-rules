@@ -68,7 +68,7 @@ compileHayabusa: compileWindowsBase
 	./velosigmac compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor.Hayabusa.Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects --rule_dir ./docs/content/docs/artifacts/Windows.Hayabusa.Rules/ --docs ./docs/content/docs/artifacts/Windows.Hayabusa.Rules/_index.md
 
 debugHayabusa:
-	dlv debug ./src -- compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor-Hayabusa-Rules.yaml
+	dlv debug ./src -- compile --config ./config/windows_hayabusa_rules.yaml --output ./output/Velociraptor-Hayabusa-Rules.zip --yaml ./output/Velociraptor-Hayabusa-Rules.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects --rule_dir ./docs/content/docs/artifacts/Windows.Hayabusa.Monitoring/ --docs ./docs/content/docs/artifacts/Windows.Hayabusa.Monitoring/_index.md
 
 compileHayabusaMonitoring: compileWindowsBaseEvents
 	./velosigmac compile --config ./config/windows_hayabusa_event_monitoring.yaml --output ./output/Velociraptor-Hayabusa-Monitoring.zip --yaml ./output/Velociraptor-Hayabusa-Monitoring.yaml --rejects rejected/windows_hayabusa_rejects.json --ignore_previous_rejects --rule_dir ./docs/content/docs/artifacts/Windows.Hayabusa.Monitoring/ --docs ./docs/content/docs/artifacts/Windows.Hayabusa.Monitoring/_index.md

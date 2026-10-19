@@ -27,7 +27,8 @@ QueryTemplate: |
    sources:
    - query: |
        // Feed all the json rows to the log sources.
-       LET AllRows = SELECT * FROM parse_jsonl(filename=JSONDump)
+       LET AllRows = SELECT * FROM parse_json_array(
+          data=read_file(filename=JSONDump))
 
        LET TestingLogSourceDict <= to_dict(item={
          SELECT _key, AllRows AS _value
@@ -60,7 +61,7 @@ QueryTemplate: |
        SELECT * FROM if(condition=Debug, then={
           SELECT * FROM Result
        }, else={
-          SELECT Timestamp, Computer, Channel , EID, EventType,
+          SELECT Timestamp, Computer, Channel , EID,
              Level, Title, Details, X._Correlations[:5] || _Event AS _Event,
              X.Enrichment AS Enrichment
           FROM Result

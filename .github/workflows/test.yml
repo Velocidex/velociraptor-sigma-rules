@@ -46,7 +46,7 @@ jobs:
 
     - name: Download Latest Velociraptor
       uses: robinraju/release-downloader@v1
-      id: velociraptor
+      id: velociraptor_latest
       with:
         repository: velocidex/velociraptor
         tag: v0.77.3
@@ -55,7 +55,7 @@ jobs:
 
     - name: Run Velociraptor
       run: |
-        mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor.gz
+        mv ${{ fromJson(steps.velociraptor_latest.outputs.downloaded_files)[0]}} ./tests/velociraptor.gz
         gunzip ./tests/velociraptor.gz
         chmod +x ./tests/velociraptor
         ls -l ./output/

@@ -56,6 +56,7 @@ jobs:
     - name: Run Velociraptor
       run: |
         mv ${{ fromJson(steps.velociraptor_latest.outputs.downloaded_files)[0]}} ./tests/velociraptor.gz
+        rm -f ./tests/velociraptor
         gunzip ./tests/velociraptor.gz
         chmod +x ./tests/velociraptor
         ls -l ./output/

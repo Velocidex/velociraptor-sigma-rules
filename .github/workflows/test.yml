@@ -42,7 +42,7 @@ jobs:
         mv ${{ fromJson(steps.velociraptor.outputs.downloaded_files)[0]}} ./tests/velociraptor
         chmod +x ./tests/velociraptor
         ls -l ./output/
-        ./tests/velociraptor artifacts verify --builtin -v ./output/*.yaml --max_length 1000000 && make golden
+        ./tests/velociraptor artifacts verify --builtin -v ./output/*.yaml --max_length 10000000 && make golden
 
     - uses: actions/upload-artifact@v4
       if: always()

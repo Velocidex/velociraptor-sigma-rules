@@ -1175,6 +1175,14 @@ Sources:
       - SeverityID
       - ThreatName
 
+  '*/windows/dfsn-server':
+    query: |
+      SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *
+      FROM parse_evtx(filename=ROOT + "/Microsoft-Windows-DFSN-Server%4Operational.evtx")
+      WHERE Timestamp >= DateAfterTime AND Timestamp <= DateBeforeTime
+    channel:
+      - Microsoft-Windows-DFSN-Server/Operational
+
   '*/windows/wmi':
     query: |
       SELECT timestamp(epoch=System.TimeCreated.SystemTime) AS Timestamp, *

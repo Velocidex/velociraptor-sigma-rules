@@ -591,6 +591,20 @@ FieldMappings:
   ETWFileName: "x=>x.EventData.FileName"
   ProcessExe: "x=>x.EventData.ProcInfo.Exe"
 
+  ModuleName: "x=>x.EventData.ModuleName"
+  ModulePath: "x=>x.EventData.ModulePath"
+  ModuleMD5: "x=>x.EventData.ModuleMD5"
+  ModuleSHA1: "x=>x.EventData.ModuleSHA1"
+  ModuleSHA256: "x=>x.EventData.ModuleSHA256"
+
+  LocalIP: "x=>x.EventData.LocalIP"
+  LocalPort: "x=>x.EventData.LocalPort"
+  RemoteIP: "x=>x.EventData.RemoteIP"
+  RemotePort: "x=>x.EventData.RemotePort"
+
+  RemoteAddress: "x=>x.EventData.RemoteAddress"
+  IsatapRouter: "x=>x.EventData.IsatapRouter"
+
   # etw/windows/process
   CallingProcess: "x=>x.EventData.CallingProcess"
   Flags: "x=>x.EventData.Flags"
@@ -808,6 +822,13 @@ Sources:
     fields:
       - Channel
       - EventID
+
+  '*/windows/dfsn-server':
+    query: |
+      SELECT * FROM watch_evtx(accessor='file', filename=ROOT + "/Microsoft-Windows-DFSN-Server%4Operational.evtx")
+    channel:
+      - Microsoft-Windows-DFSN-Server/Operational
+
 
   '*/windows/dns-client':
     query: |
